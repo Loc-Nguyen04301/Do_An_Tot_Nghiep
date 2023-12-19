@@ -35,7 +35,7 @@ const Home = () => {
               <div className="mt-8">
                 <div className="grid grid-cols-6 max-md:hidden">
                   {Array.from({ length: 6 }, (_i, index) => (
-                    <div className={`px-[10px] ${styles.containerProduct}`}>
+                    <div className={`px-[10px] ${styles.containerProduct}`} key={index}>
                       <div className="relative">
                         <a
                           href={`/san-pham/${index}`}

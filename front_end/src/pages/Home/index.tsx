@@ -25,8 +25,8 @@ const Home = () => {
         </div>
 
         <div className="flex flex-col gap-14">
-          {Array.from({ length: 3 }, () => (
-            <div className="px-2">
+          {Array.from({ length: 3 }, (_i, index) => (
+            <div className="px-2" key={index}>
               <div className="border-b-[1px] border-border-color pb-2">
                 <span className="text-category-title text-[20px] font-bold uppercase border-b-[3px] border-border-color pb-2">
                   Tăng cân nhanh, thoát gầy
@@ -74,7 +74,7 @@ const Home = () => {
                     loop={true}
                   >
                     {Array.from({ length: 6 }, (_i, index) => (
-                      <SwiperSlide>
+                      <SwiperSlide key={index}>
                         <div className={`px-[10px] ${styles.containerProduct}`}>
                           <div className="relative">
                             <a

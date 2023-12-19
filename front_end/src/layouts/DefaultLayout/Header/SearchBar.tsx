@@ -8,7 +8,6 @@ const SearchBar = () => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value)
   }
-  console.log(searchTerm)
 
   return (
     <div className="w-full">

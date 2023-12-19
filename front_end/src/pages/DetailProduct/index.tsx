@@ -117,7 +117,6 @@ const DetailProduct = () => {
             </h1>
             <div className="">
               <Swiper
-                slidesPerView={3}
                 navigation={true}
                 modules={[Navigation]}
                 loop={true}
@@ -134,7 +133,7 @@ const DetailProduct = () => {
                 }}
               >
                 {Array.from({ length: 7 }, (_i, index) => (
-                  <SwiperSlide>
+                  <SwiperSlide key={index}>
                     <div className="px-[10px] containerProduct">
                       <div className="relative">
                         <a

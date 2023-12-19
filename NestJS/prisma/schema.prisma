@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User{
+  id              Int      @id @default(autoincrement())
+  username        String 
+  email           String   @unique
+  password        String   
+  refresh_token   String? 
+  avatar          String?  @default("linkImage")
+  role            Role     @default(USER)
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+  review          Review?
+}
+
+model Product{
+  id              Int      @id @default(autoincrement())
+  name            String   @unique
+  description     String  
+  old_price       Int  
+  new_price       Int  
+  image           String   @default("linkImage")
+  categories      Category[]
+  available       Int     @default(0)
+  review          Review?
+  cart            Cart?
+}
+
+model Category{
+  id             Int        @id @default(autoincrement())
+  name           String     @unique     
+  products       Product[]   
+}
+
+model Review{
+  id              Int        @id @default(autoincrement())
+  title           String
+  description     String
+  star            Int
+  user            User      @relation(fields: [user_id], references: [id])
+  user_id         Int       @unique
+  product         Product   @relation(fields: [product_id], references: [id])
+  product_id      Int       @unique
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+}
+
+model Bill{
+  id              Int        @id @default(autoincrement())
+  phone_number    String 
+  address         String
+  information     String?
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+  cart            Cart[]
+}
+
+model Cart{
+  id              Int        @id @default(autoincrement())
+  product         Product    @relation(fields: [product_id], references: [id])
+  product_id      Int        @unique 
+  quantity        Int  
+  total_price     Int  
+  bill            Bill       @relation(fields: [bill_id], references: [id])
+  bill_id         Int        
+}
+
+enum Role{
+  USER
+  ADMIN
+}
+

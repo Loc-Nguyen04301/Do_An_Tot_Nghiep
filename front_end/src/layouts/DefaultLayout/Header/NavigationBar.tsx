@@ -1,6 +1,7 @@
 import React from "react"
 import { RoutePath } from "../../../routes"
 import clsx from "clsx"
+import { Link } from "react-router-dom"
 
 interface NavigationBarProps {
   currentPath: string
@@ -10,48 +11,48 @@ const NavigationBar = ({ currentPath }: NavigationBarProps) => {
   return (
     <ul className="flex py-1 items-center px-2">
       <li className="mx-2">
-        <a
+        <Link
           className={clsx(
             "py-2 hover:text-white text-[#fafafacc] font-semibold uppercase duration-300",
             currentPath === RoutePath.Home ? "text-white" : ""
           )}
-          href="/"
+          to="/"
         >
           Trang chủ
-        </a>
+        </Link>
       </li>
       <li className="mx-2">
-        <a
+        <Link
           className={clsx(
             "py-2 hover:text-white text-[#fafafacc] font-semibold uppercase duration-300",
             currentPath === RoutePath.AboutUs ? "text-white" : ""
           )}
-          href="/gioi-thieu"
+          to="/gioi-thieu"
         >
           Giới thiệu
-        </a>
+        </Link>
       </li>
       <li className="mx-2">
-        <a
+        <Link
           className={clsx(
             "py-2 hover:text-white text-[#fafafacc] font-semibold uppercase duration-300",
             currentPath === RoutePath.Contact ? "text-white" : ""
           )}
-          href="/lien-he"
+          to="/lien-he"
         >
           Liên hệ
-        </a>
+        </Link>
       </li>
       <li className="mx-2">
-        <a
+        <Link
           className={clsx(
             "py-2 hover:text-white text-[#fafafacc] font-semibold uppercase duration-300",
             currentPath === RoutePath.BankAccount ? "text-white" : ""
           )}
-          href="/tai-khoan-ngan-hang"
+          to="/tai-khoan-ngan-hang"
         >
           Tài khoản ngân hàng
-        </a>
+        </Link>
       </li>
     </ul>
   )

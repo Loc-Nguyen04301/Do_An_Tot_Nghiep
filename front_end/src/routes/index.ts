@@ -1,13 +1,16 @@
-import DefaultLayout from "../layouts/DefaultLayout"
-import AboutUs from "../pages/AboutUs"
-import BankAccount from "../pages/BankAccount"
-import Contact from "../pages/Contact"
-import DetailProduct from "../pages/DetailProduct"
-import Home from "../pages/Home"
-import ListProductByCategory from "../pages/ListProductByCategory"
-import Login from "../pages/Login"
-import NotFound from "../pages/NotFound"
-import Register from "../pages/Register"
+import React, { Suspense, lazy } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import DefaultLayout from "../layouts/DefaultLayout";
+import NotFound from "../pages/NotFound";
+
+const Home = lazy(() => import("../pages/Home"));
+const AboutUs = lazy(() => import("../pages/AboutUs"));
+const Contact = lazy(() => import("../pages/Contact"));
+const BankAccount = lazy(() => import("../pages/BankAccount"));
+const DetailProduct = lazy(() => import("../pages/DetailProduct"));
+const ListProductByCategory = lazy(() => import("../pages/ListProductByCategory"));
+const Login = lazy(() => import("../pages/Login"));
+const Register = lazy(() => import("../pages/Register"));
 
 export enum RoutePath {
   Home = "/",

@@ -1,5 +1,3 @@
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { ConfigProvider, Drawer } from "antd"
 import { DrawerStyles } from "antd/es/drawer/DrawerPanel"
 import React from "react"

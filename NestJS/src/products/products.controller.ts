@@ -17,13 +17,14 @@ import { AtGuard } from 'src/common/guards';
 
 @Controller('api/v1/products')
 export class ProductsController {
-  constructor(private readonly productsService: ProductsService) {}
+  constructor(private readonly productsService: ProductsService) { }
 
   @Post()
   create(@Body() createProductDto: CreateProductDto) {
     return this.productsService.create(createProductDto);
   }
 
+  @Public()
   @Get()
   findAll() {
     return this.productsService.findAll();

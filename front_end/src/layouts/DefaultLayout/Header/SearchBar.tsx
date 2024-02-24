@@ -1,12 +1,14 @@
 import React, { ChangeEvent, useState } from "react"
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useSearch } from "../../../contexts/SearchContext"
+
 
 const SearchBar = () => {
-  const [searchTerm, setSearchTerm] = useState("")
+  const { search, setSearch } = useSearch()
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value)
+    setSearch(e.target.value)
   }
 
   return (
@@ -15,7 +17,7 @@ const SearchBar = () => {
         <input
           placeholder="Tìm kiếm..."
           className="px-2 border-[1px] border-solid border-border-color rounded-2xl bg-[#f7f7f7] w-full h-8"
-          value={searchTerm}
+          value={search}
           onChange={handleChange}
         />
         <FontAwesomeIcon

@@ -11,7 +11,7 @@ export default {
         "main-grey-color": "#666666d9",
         "footer-bg": "#273647",
         "text-gray": "#666666d9",
-        "category-title": "#555555"
+        "category-title": "#555555",
       },
       screens: {
         xs: "576px",
@@ -20,7 +20,10 @@ export default {
         md: "850px",
         // => @media (min-width: 850px) { ... }
       },
+      boxShadow: {
+        "search-box": "0 0 10px 0 rgba(0,0,0,.1);",
+      },
     },
   },
   plugins: [],
-};
+}

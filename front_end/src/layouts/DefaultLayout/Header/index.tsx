@@ -17,6 +17,7 @@ import CompanyInfomation from "./CompanyInfomation"
 import Logo from "./Logo"
 import DrawerRightCart from "./DrawerRightCart"
 import SearchBar from "./SearchBar"
+import SearchResult from "./SearchResult"
 
 const Header = () => {
   const [openLeftModal, setOpenLeftModal] = useState(false)
@@ -35,7 +36,7 @@ const Header = () => {
   return (
     <header>
       <div className="mx-auto px-1 max-w-[1140px] mb-1">
-        <div className="flex justify-between flex-1 pt-2 px-3">
+        <div className="flex justify-between items-center flex-1 pt-2 px-3">
           {/* Left Element mobile */}
           <div className="md:hidden">
             <div
@@ -77,15 +78,16 @@ const Header = () => {
             </ul>
           </div>
           {/* SearchBar */}
-          <div className="max-md:hidden w-1/2 flex items-center">
+          <div className="max-md:hidden w-1/2 relative">
             <SearchBar />
+            <SearchResult />
           </div>
 
           {/* Company Infomation */}
           <CompanyInfomation />
         </div>
       </div>
-      <div className="header-bottom bg-main-orange-color max-[950px]:text-xs text-sm max-md:hidden">
+      <div className="bg-main-orange-color max-[950px]:text-xs text-sm max-md:hidden">
         <div className="max-w-[1140px] mx-auto container px-4 flex items-center justify-between">
           <div className="max-h-full">
             <div className="flex">

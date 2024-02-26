@@ -1,7 +1,8 @@
 import React from "react"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import styles from "./ListProductByCategory.module.scss"
 import categoryList from "../../assets/data/navigation"
+import { RoutePath } from "../../routes"
 
 const ListProductByCategory = () => {
   const { category } = useParams()
@@ -16,7 +17,7 @@ const ListProductByCategory = () => {
                   {categoryItem.title}
                 </h1>
                 <div className="p-4 pb-6 text-white text-[16px]">
-                  <a href="/">Trang chủ</a>
+                  <Link to="/">Trang chủ</Link>
                   <span className="divider mx-2 opacity-50">/</span>
                   <span> {categoryItem.title}</span>
                 </div>
@@ -32,15 +33,15 @@ const ListProductByCategory = () => {
           {Array.from({ length: 15 }, (_i, index) => (
             <div className={`px-[10px] ${styles.containerProduct}`} key={index}>
               <div className="relative">
-                <a
-                  href={`/san-pham/${index}`}
+                <Link
+                  to={`${RoutePath.DetailProduct}/${index}`}
                   className="text-center block mx-auto"
                 >
                   <img
                     src="https://www.thol.com.vn/wp-content/uploads/2019/07/Superhugemockcholateshake-300x300.jpg"
                     width={274}
                   />
-                </a>
+                </Link>
                 <div
                   className={`hidden absolute bottom-0 w-full bg-main-orange-color text-center py-1 opacity-95 duration-500 ${styles.showView}`}
                 >
@@ -49,12 +50,12 @@ const ListProductByCategory = () => {
                   </span>
                 </div>
               </div>
-              <a
-                href={`/san-pham/${index}`}
+              <Link
+                to={`${RoutePath.DetailProduct}/${index}`}
                 className="text-base block leading-5 mt-2"
               >
                 Super Huge Gain – MASS Evogen tăng cân đẳng cấp nhất
-              </a>
+              </Link>
               <div>
                 <span className="font-semibold">1.750.000₫</span>
               </div>

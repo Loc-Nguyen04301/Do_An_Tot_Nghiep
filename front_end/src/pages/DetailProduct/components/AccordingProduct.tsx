@@ -15,7 +15,8 @@ const AccordingProduct = () => {
     {
       key: "1",
       label: (
-        <a className="text-lg hover:text-main-orange-color block" href="#mota">
+        <a className="text-lg hover:text-main-orange-color block"
+          href="#mota">
           Mô tả
         </a>
       ),

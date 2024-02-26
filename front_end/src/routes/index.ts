@@ -17,8 +17,8 @@ export enum RoutePath {
   AboutUs = "/gioi-thieu",
   Contact = "/lien-he",
   BankAccount = "/tai-khoan-ngan-hang",
-  DetailProduct = "/san-pham/:label",
-  ListByCategory = "/danh-muc/:category",
+  DetailProduct = "/san-pham",
+  ListByCategory = "/danh-muc",
 }
 
 const publicRoutes = [
@@ -43,7 +43,7 @@ const publicRoutes = [
     layout: DefaultLayout,
   },
   {
-    path: RoutePath.DetailProduct,
+    path: `${RoutePath.DetailProduct}/:label`,
     component: DetailProduct,
     layout: DefaultLayout,
   },
@@ -73,7 +73,7 @@ const publicRoutes = [
   //     layout: DefaultLayout,
   //   },
   {
-    path: "/danh-muc/:category",
+    path: `${RoutePath.ListByCategory}/:category`,
     component: ListProductByCategory,
     layout: DefaultLayout,
   },

@@ -11,6 +11,8 @@ import {
 } from "@fortawesome/free-brands-svg-icons"
 import categoryList from "../../../assets/data/navigation"
 import SearchBar from "./SearchBar"
+import { Link } from "react-router-dom"
+import { RoutePath } from "../../../routes"
 
 interface DrawerLeftMenuProps {
   openLeftModal: boolean
@@ -59,7 +61,7 @@ const DrawerLeftMenu = ({
         <div className="font-bold uppercase flex flex-col text-text-gray text-sm font-['Open_Sans']">
           {categoryList.map((category) => (
             <a
-              href={`/danh-muc/${category.path}`}
+              href={`${RoutePath.ListByCategory}/${category.path}`}
               key={category.path}
               className="category-item block py-4 border-b-[1px] border-border-color"
             >

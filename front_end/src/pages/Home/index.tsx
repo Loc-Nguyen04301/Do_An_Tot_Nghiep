@@ -10,6 +10,8 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation } from "swiper/modules"
 import "swiper/scss"
 import "swiper/scss/navigation"
+import { Link } from "react-router-dom"
+import { RoutePath } from "../../routes"
 
 const Home = () => {
   return (
@@ -37,15 +39,15 @@ const Home = () => {
                   {Array.from({ length: 6 }, (_i, index) => (
                     <div className={`px-[10px] ${styles.containerProduct}`} key={index}>
                       <div className="relative">
-                        <a
-                          href={`/san-pham/${index}`}
+                        <Link
+                          to={`${RoutePath.DetailProduct}/${index}`}
                           className="text-center block mx-auto"
                         >
                           <img
                             src="https://www.thol.com.vn/wp-content/uploads/2019/07/Superhugemockcholateshake-300x300.jpg"
                             width={274}
                           />
-                        </a>
+                        </Link>
                         <div
                           className={`hidden absolute bottom-0 w-full bg-main-orange-color text-center py-1 opacity-95 duration-500 ${styles.showView}`}
                         >
@@ -54,18 +56,19 @@ const Home = () => {
                           </span>
                         </div>
                       </div>
-                      <a
-                        href={`/san-pham/${index}`}
+                      <Link
+                        to={`${RoutePath.DetailProduct}/${index}`}
                         className="text-base block leading-5 mt-2"
                       >
                         Super Huge Gain – MASS Evogen tăng cân đẳng cấp nhất
-                      </a>
+                      </Link>
                       <div>
                         <span className="font-semibold">1.750.000₫</span>
                       </div>
                     </div>
                   ))}
                 </div>
+
                 <div className="md:hidden">
                   <Swiper
                     slidesPerView={3}
@@ -77,15 +80,15 @@ const Home = () => {
                       <SwiperSlide key={index}>
                         <div className={`px-[10px] ${styles.containerProduct}`}>
                           <div className="relative">
-                            <a
-                              href={`/san-pham/${index}`}
+                            <Link
+                              to={`${RoutePath.DetailProduct}/${index}`}
                               className="text-center block mx-auto"
                             >
                               <img
                                 src="https://www.thol.com.vn/wp-content/uploads/2019/07/Superhugemockcholateshake-300x300.jpg"
                                 width={274}
                               />
-                            </a>
+                            </Link>
                             <div
                               className={`hidden absolute bottom-0 w-full bg-main-orange-color text-center py-1 opacity-95 duration-500 ${styles.showView}`}
                             >
@@ -94,12 +97,12 @@ const Home = () => {
                               </span>
                             </div>
                           </div>
-                          <a
-                            href={`/san-pham/${index}`}
+                          <Link
+                            to={`${RoutePath.DetailProduct}/${index}`}
                             className="text-base block leading-5 mt-2"
                           >
                             Super Huge Gain – MASS Evogen tăng cân đẳng cấp nhất
-                          </a>
+                          </Link>
                           <div>
                             <span className="font-semibold">1.750.000₫</span>
                           </div>

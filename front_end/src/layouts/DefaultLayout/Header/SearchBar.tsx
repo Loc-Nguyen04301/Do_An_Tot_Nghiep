@@ -11,8 +11,14 @@ const SearchBar = () => {
     setSearch(e.target.value)
   }
 
+  const handleClick = () => {
+    const selectedElement = document.getElementById("search-result")
+    console.log(selectedElement);
+    selectedElement && selectedElement?.classList.remove("hidden")
+  }
+
   return (
-    <div className="w-full">
+    <div className="w-full z-[1000]" onClick={handleClick}>
       <div className="h-[34px] w-full relative">
         <input
           placeholder="Tìm kiếm..."

@@ -12,6 +12,7 @@ import {
 import MasterCard from "../../../assets/svg/Mastercard"
 import Paypal from "../../../assets/svg/Paypal"
 import Visa from "../../../assets/svg/Visa"
+import { Link } from "react-router-dom"
 
 const Footer = () => {
   return (
@@ -20,9 +21,9 @@ const Footer = () => {
         <div className="container mx-auto max-w-[1170px] flex max-md:flex-col">
           <div className="px-3 w-1/3 max-md:w-full">
             <div className="logo">
-              <a href="#">
+              <Link to={"/"}>
                 <img src={logoImage} alt="logo" className="max-w-[216px]" />
-              </a>
+              </Link>
             </div>
             <p className="text-lg text-white mt-6">
               Công ty TNHH Thương Mại BBT
@@ -50,22 +51,22 @@ const Footer = () => {
                 <ul>
                   <li className="py-[9px] pl-6 relative border-b-[1px] border-border-color cursor-pointer before:content-['>'] before:text-[#7a9c59] before:left-0 before:absolute">
                     <span className="text-[#f1f1f1] hover:text-white">
-                      <a href="#">Xem đơn hàng </a>
+                      <Link to={"/"}>Xem đơn hàng </Link>
                     </span>
                   </li>
                   <li className="py-[9px] pl-6 relative border-b-[1px] border-border-color cursor-pointer before:content-['>'] before:text-[#7a9c59] before:left-0 before:absolute">
                     <span className="text-[#f1f1f1] hover:text-white">
-                      <a href="#">Tài khoản </a>
+                      <Link to={"/"}>Tài khoản </Link>
                     </span>
                   </li>
                   <li className="py-[9px] pl-6 relative border-b-[1px] border-border-color cursor-pointer before:content-['>'] before:text-[#7a9c59] before:left-0 before:absolute">
                     <span className="text-[#f1f1f1] hover:text-white">
-                      <a href="#">Danh sách yêu thích </a>
+                      <Link to={"/"}>Danh sách yêu thích </Link>
                     </span>
                   </li>
                   <li className="py-[9px] pl-6 relative border-b-[1px] border-border-color cursor-pointer before:content-['>'] before:text-[#7a9c59] before:left-0 before:absolute">
                     <span className="text-[#f1f1f1] hover:text-white">
-                      <a href="#">Đối tượng quà tặng </a>
+                      <Link to={"/"}>Đối tượng quà tặng </Link>
                     </span>
                   </li>
                 </ul>
@@ -75,22 +76,22 @@ const Footer = () => {
                 <ul>
                   <li className="py-[9px] pl-6 relative border-b-[1px] border-border-color cursor-pointer before:content-['>'] before:text-[#7a9c59] before:left-0 before:absolute">
                     <span className="text-[#f1f1f1] hover:text-white">
-                      <a href="#">Hướng dẫn mua hàng </a>
+                      <Link to={"/"}>Hướng dẫn mua hàng </Link>
                     </span>
                   </li>
                   <li className="py-[9px] pl-6 relative border-b-[1px] border-border-color cursor-pointer before:content-['>'] before:text-[#7a9c59] before:left-0 before:absolute">
                     <span className="text-[#f1f1f1] hover:text-white">
-                      <a href="#">Hướng dẫn thanh toán </a>
+                      <Link to={"/"}>Hướng dẫn thanh toán </Link>
                     </span>
                   </li>
                   <li className="py-[9px] pl-6 relative border-b-[1px] border-border-color cursor-pointer before:content-['>'] before:text-[#7a9c59] before:left-0 before:absolute">
                     <span className="text-[#f1f1f1] hover:text-white">
-                      <a href="#">Vận chuyển - đổi trả </a>
+                      <Link to={"/"}>Vận chuyển - đổi trả </Link>
                     </span>
                   </li>
                   <li className="py-[9px] pl-6 relative border-b-[1px] border-border-color cursor-pointer before:content-['>'] before:text-[#7a9c59] before:left-0 before:absolute">
                     <span className="text-[#f1f1f1] hover:text-white">
-                      <a href="#">Dành cho đại lý </a>
+                      <Link to={"/"}>Dành cho đại lý </Link>
                     </span>
                   </li>
                 </ul>
@@ -100,22 +101,22 @@ const Footer = () => {
                 <ul>
                   <li className="py-[9px] pl-6 relative border-b-[1px] border-border-color cursor-pointer before:content-['>'] before:text-[#7a9c59] before:left-0 before:absolute">
                     <span className="text-[#f1f1f1] hover:text-white">
-                      <a href="#">Giới thiệu THOL </a>
+                      <Link to={"/"}>Giới thiệu THOL </Link>
                     </span>
                   </li>
                   <li className="py-[9px] pl-6 relative border-b-[1px] border-border-color cursor-pointer before:content-['>'] before:text-[#7a9c59] before:left-0 before:absolute">
                     <span className="text-[#f1f1f1] hover:text-white">
-                      <a href="#">Công ty TNHH BBT </a>
+                      <Link to={"/"}>Công ty TNHH BBT </Link>
                     </span>
                   </li>
                   <li className="py-[9px] pl-6 relative border-b-[1px] border-border-color cursor-pointer before:content-['>'] before:text-[#7a9c59] before:left-0 before:absolute">
                     <span className="text-[#f1f1f1] hover:text-white">
-                      <a href="#">Tin tức </a>
+                      <Link to={"/"}>Tin tức </Link>
                     </span>
                   </li>
                   <li className="py-[9px] pl-6 relative border-b-[1px] border-border-color cursor-pointer before:content-['>'] before:text-[#7a9c59] before:left-0 before:absolute">
                     <span className="text-[#f1f1f1] hover:text-white">
-                      <a href="#">Liên hệ </a>
+                      <Link to={"/"}>Liên hệ </Link>
                     </span>
                   </li>
                 </ul>

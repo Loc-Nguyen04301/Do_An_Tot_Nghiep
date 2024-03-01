@@ -1,11 +1,11 @@
 import React, { ChangeEvent, useState } from "react"
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useSearch } from "../../../contexts/SearchContext"
+import { useSearchContext } from "../../../contexts/SearchContext"
 
 
 const SearchBar = () => {
-  const { search, setSearch } = useSearch()
+  const { search, setSearch } = useSearchContext()
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value)
@@ -18,7 +18,7 @@ const SearchBar = () => {
   }
 
   return (
-    <div className="w-full z-[1000]" onClick={handleClick}>
+    <div className="w-full z-[10]" onClick={handleClick}>
       <div className="h-[34px] w-full relative">
         <input
           placeholder="Tìm kiếm..."

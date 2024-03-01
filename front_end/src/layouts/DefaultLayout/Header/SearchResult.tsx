@@ -1,14 +1,14 @@
 import React from 'react'
 import {
-    useSearch
+    useSearchContext
 } from '../../../contexts/SearchContext'
 
 const SearchResult = () => {
-    const { search } = useSearch()
+    const { search } = useSearchContext()
 
     if (search.length >= 3)
         return (
-            <div className="absolute left-0 w-full z-[1000]" id="search-result">
+            <div className="absolute left-0 w-full z-[10]" id="search-result">
                 <div className="max-h-[80vh] bg-white shadow-[0_0_10px_0_rgba(0,0,0,.1)] overflow-y-auto">
                     <ul className="h-full">
                         {Array.from({ length: 30 }, (_i, index) =>

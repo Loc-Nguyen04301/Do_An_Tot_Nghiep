@@ -1,6 +1,6 @@
 import React, { ReactNode, SetStateAction, useState } from 'react';
 
-interface AlertProviderProps {
+interface SearchContextProviderProps {
     children: ReactNode;
 }
 
@@ -11,18 +11,18 @@ interface SearchContextType {
 
 const SearchContext = React.createContext<SearchContextType | undefined>(undefined)
 
-const useSearch = () => {
+const useSearchContext = () => {
     const context = React.useContext(SearchContext);
     if (!context) {
-        throw new Error('useSearch must be used within a SearchProvider');
+        throw new Error('useSearchContext must be used within a SearchContextProvider');
     }
     return context;
 }
 
-const SearchProvider = ({ children }: AlertProviderProps) => {
+const SearchContextProvider = ({ children }: SearchContextProviderProps) => {
     const [search, setSearch] = useState("");
 
     return (<SearchContext.Provider value={{ search, setSearch }}>{children}</SearchContext.Provider>)
 }
 
-export { SearchProvider, useSearch }
+export { SearchContextProvider, useSearchContext }

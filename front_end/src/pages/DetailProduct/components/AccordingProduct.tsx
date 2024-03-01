@@ -57,6 +57,11 @@ const AccordingProduct = () => {
             Đánh giá
           </h3>
           <p className="text-[#777777] text-[16px]">Chưa có đánh giá nào.</p>
+          <div className="mt-10 border-2 border-main-orange-color pt-3 pl-8 pb-10">
+            <span className="text-lg">
+              Chỉ những khách hàng đã đăng nhập và mua sản phẩm này mới có thể đưa ra đánh giá.
+            </span>
+          </div>
         </div>
       ),
       showArrow: true,

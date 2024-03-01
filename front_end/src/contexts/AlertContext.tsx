@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { AlertAction, AlertState, alertReducer } from "../reducers/AlertReducer";
 import React from "react";
 
-interface AlertProviderProps {
+interface AlertContextProviderProps {
     children: ReactNode;
 }
 
@@ -20,13 +20,21 @@ const initialState = {
     dispatch: () => null
 }
 
-export const AlertContext = React.createContext<AlertContextType>(initialState);
+const AlertContext = React.createContext<AlertContextType>(initialState);
 
-const AlertProvider = ({ children }: AlertProviderProps) => {
+const useAlertContext = () => {
+    const context = React.useContext(AlertContext);
+    if (!context) {
+        throw new Error('useSearchContext must be used within a AlertContextProvider');
+    }
+    return context;
+}
+
+const AlertContextProvider = ({ children }: AlertContextProviderProps) => {
     const [state, dispatch] = React.useReducer(alertReducer, initialState)
     const value = { ...state, dispatch }
 
     return (<AlertContext.Provider value={value}>{children}</AlertContext.Provider>)
 }
 
-export default AlertProvider
+export { AlertContextProvider, useAlertContext }

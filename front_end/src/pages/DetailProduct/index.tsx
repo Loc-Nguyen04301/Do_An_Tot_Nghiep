@@ -10,6 +10,7 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation } from "swiper/modules"
 import "swiper/scss"
 import "swiper/scss/navigation"
+import { Helmet } from "react-helmet-async"
 
 const DetailProduct = () => {
   const { label } = useParams()
@@ -28,7 +29,13 @@ const DetailProduct = () => {
   }
 
   return (
-    <div className="">
+    <>
+      <>
+        <Helmet>
+          <title> Chi tiết sản phẩm - THOL</title>
+          <meta name='description' content='Beginner friendly page for learning React Helmet.' />
+        </Helmet>
+      </>
       <div className=" bg-[url('https://www.thol.com.vn/wp-content/uploads/2015/11/nang-luong-suc-khoe-scaled.jpg')] bg-no-repeat bg-center bg-cover">
         <div className="container max-w-[1140px] mx-auto max-md:text-center">
           <div className="px-4 py-5 text-white text-[16px]">
@@ -168,7 +175,7 @@ const DetailProduct = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

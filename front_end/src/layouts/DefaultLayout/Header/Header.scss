@@ -10,6 +10,7 @@
 .dropdown {
   position: relative;
   display: inline-block;
+  cursor: pointer;
 }
 
 /* Dropdown Content (Hidden by Default) */
@@ -33,9 +34,22 @@
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {
   background-color: #ddd;
-}
+} 
 
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
   display: block;
+}
+
+.dropdown-content:after {
+	position: absolute;
+	bottom: 100%;
+	left: 20%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	border-bottom-color: white;
+	border-width: 8px;
+	margin-left: 4px;
 }

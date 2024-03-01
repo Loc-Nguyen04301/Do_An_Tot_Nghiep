@@ -3,6 +3,7 @@ import { faBars, faChevronDown } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import categoryList from "../../../assets/data/navigation"
 import { RoutePath } from "../../../routes"
+import { Link } from "react-router-dom"
 
 const DropDown = () => {
   return (
@@ -16,9 +17,9 @@ const DropDown = () => {
       </div>
       <div className="dropdown-content text-text-gray text-base">
         {categoryList.map((category) => (
-          <a href={`${RoutePath.ListByCategory}/${category.path}`} key={category.path}>
+          <Link to={`${RoutePath.ListByCategory}/${category.path}`} key={category.path}>
             {category.title}
-          </a>
+          </Link>
         ))}
       </div>
     </div>

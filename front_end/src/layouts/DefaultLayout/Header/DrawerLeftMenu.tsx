@@ -60,13 +60,13 @@ const DrawerLeftMenu = ({
       >
         <div className="font-bold uppercase flex flex-col text-text-gray text-sm font-['Open_Sans']">
           {categoryList.map((category) => (
-            <a
-              href={`${RoutePath.ListByCategory}/${category.path}`}
+            <Link
+              to={`${RoutePath.ListByCategory}/${category.path}`}
               key={category.path}
               className="category-item block py-4 border-b-[1px] border-border-color"
             >
               {category.title}
-            </a>
+            </Link>
           ))}
         </div>
       </Drawer>

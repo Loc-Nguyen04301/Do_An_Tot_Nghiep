@@ -11,6 +11,7 @@ const DrawerRightCart = ({
   openRightModal,
   setOpenRightModal,
 }: DrawerRightCartProps) => {
+
   const drawerStyles: DrawerStyles = {
     content: {
       boxShadow: "-10px 0 10px #666",

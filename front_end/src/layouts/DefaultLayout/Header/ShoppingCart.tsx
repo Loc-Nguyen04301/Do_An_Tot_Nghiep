@@ -2,7 +2,7 @@ import React from "react"
 
 const ShoppingCart = () => {
   return (
-    <div className="dropdown-content left-[-60px] top-[35px] bg-white">
+    <div className="dropdown-content left-[-60px] top-[30px] bg-white">
       <div className="py-8 px-5">
         <ul className="min-w-[260px] max-h-[250px] overflow-y-auto">
           <li className="py-2">

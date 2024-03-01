@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom"
 import styles from "./ListProductByCategory.module.scss"
 import categoryList from "../../assets/data/navigation"
 import { RoutePath } from "../../routes"
+import { Helmet } from "react-helmet-async"
 
 const ListProductByCategory = () => {
   const { category } = useParams()
@@ -13,6 +14,12 @@ const ListProductByCategory = () => {
           {categoryList.map((categoryItem) =>
             categoryItem.path === category ? (
               <div>
+                <>
+                  <Helmet>
+                    <title>{categoryItem.title} </title>
+                    <meta name='description' content={categoryItem.title} />
+                  </Helmet>
+                </>
                 <h1 className="px-4 pt-4 text-white text-[24px] font-semibold">
                   {categoryItem.title}
                 </h1>

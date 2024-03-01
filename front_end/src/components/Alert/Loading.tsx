@@ -3,7 +3,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 
 const Loading = () => {
     return (
-        <div className='#overlay' style={{
+        <div style={{
             position: "fixed",
             display: "block",
             width: "100%",

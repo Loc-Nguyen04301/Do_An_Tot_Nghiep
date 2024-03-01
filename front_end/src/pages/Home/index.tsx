@@ -12,10 +12,15 @@ import "swiper/scss"
 import "swiper/scss/navigation"
 import { Link } from "react-router-dom"
 import { RoutePath } from "../../routes"
+import { Helmet } from "react-helmet-async"
 
 const Home = () => {
   return (
     <>
+      <Helmet>
+        <title>Trang chủ - THOL </title>
+        <meta name='description' content='Beginner friendly page for learning React Helmet.' />
+      </Helmet>
       <div className="mx-auto max-w-[1140px] py-8">
         <div className="grid grid-cols-2">
           <div className="px-4 pb-7">

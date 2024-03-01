@@ -97,7 +97,7 @@ const Header = () => {
           </div>
           <div className="max-h-full">
             <div className="3-icon">
-              <ul className="flex items-center gap-[15px]">
+              <ul className="flex items-center gap-[10px]">
                 <li className="cursor-pointer">
                   <FontAwesomeIcon icon={faHeart} size="xl" />
                 </li>
@@ -106,7 +106,7 @@ const Header = () => {
                   <FontAwesomeIcon icon={faUser} size="xl" />
                 </li>
                 <li className="divider border-l-[1px] h-[2rem] border-white opacity-40"></li>
-                <li className="cursor-pointer relative dropdown">
+                <li className="dropdown ">
                   <FontAwesomeIcon icon={faCartShopping} size="xl" />
                   <div className="absolute -top-2 -right-1 bg-button-red-color text-white w-4 h-4 rounded-full text-center">
                     <span className="text-xs font-semibold block">11</span>

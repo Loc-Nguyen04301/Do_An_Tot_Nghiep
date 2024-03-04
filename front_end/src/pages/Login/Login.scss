@@ -1,0 +1,12 @@
+  .label-name::after,
+  .label-email::after,
+  .label-password::after
+  {
+      content: "*";
+      color: #e02b27;
+      font-size: .8rem;
+      margin: 0 0 0px 5px;
+      position: relative;
+      left: 0px;
+      bottom: 2px;
+  }

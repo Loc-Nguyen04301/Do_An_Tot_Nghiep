@@ -36,6 +36,20 @@ const Header = () => {
 
   return (
     <header>
+      <div className="bg-[#f2f2f2]">
+        <div className="d-flex justify-content-between">
+          <p className="pl-10 pt-3 pb-2 text-text-gray text-sm">
+            Chào mừng bạn đến với THOL Store
+            <Link to={RoutePath.RegisterPage} className="text-main-orange-color px-1">
+              Đăng ký
+            </Link>
+            hoặc
+            <Link to={RoutePath.LoginPage} className="text-main-orange-color px-1">
+              Đăng nhập
+            </Link>
+          </p>
+        </div>
+      </div>
       <div className="mx-auto px-1 max-w-[1140px] mb-1">
         <div className="flex justify-between items-center flex-1 pt-2 px-3">
           {/* Left Element mobile */}
@@ -104,7 +118,9 @@ const Header = () => {
                 </li>
                 <li className="divider border-l-[1px] h-[2rem] border-white opacity-40"></li>
                 <li className="cursor-pointer">
-                  <FontAwesomeIcon icon={faUser} size="xl" />
+                  <Link to={RoutePath.LoginPage}>
+                    <FontAwesomeIcon icon={faUser} size="xl" />
+                  </Link>
                 </li>
                 <li className="divider border-l-[1px] h-[2rem] border-white opacity-40"></li>
                 <li className="dropdown">
@@ -120,11 +136,11 @@ const Header = () => {
                 <li>
                   <Link to={RoutePath.CheckoutPage}>
                     <div className="bg-button-red-color rounded-full hover:bg-red-800 duration-300 cursor-pointer">
-                      <a className="px-3 block h-[2rem]">
+                      <div className="px-3 block h-[2rem]">
                         <span className="uppercase text-white font-semibold tracking-wide block leading-[2rem]">
                           Thanh toán
                         </span>
-                      </a>
+                      </div>
                     </div>
                   </Link>
                 </li>

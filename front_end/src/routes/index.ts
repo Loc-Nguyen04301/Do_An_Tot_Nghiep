@@ -22,7 +22,9 @@ export enum RoutePath {
   DetailProduct = "/san-pham",
   ListByCategory = "/danh-muc",
   CartPage = "/gio-hang",
-  CheckoutPage = "/thanh-toan"
+  CheckoutPage = "/thanh-toan",
+  LoginPage = "/dang-nhap",
+  RegisterPage = "/dang-ky"
 }
 
 const publicRoutes = [
@@ -52,12 +54,12 @@ const publicRoutes = [
     layout: DefaultLayout,
   },
   {
-    path: "/dang-nhap",
+    path: RoutePath.LoginPage,
     component: Login,
     layout: DefaultLayout,
   },
   {
-    path: "/dang-ky",
+    path: RoutePath.RegisterPage,
     component: Register,
     layout: DefaultLayout,
   },

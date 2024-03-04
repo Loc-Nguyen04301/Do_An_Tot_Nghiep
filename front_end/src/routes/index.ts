@@ -2,6 +2,8 @@ import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import DefaultLayout from "../layouts/DefaultLayout";
 import NotFound from "../pages/NotFound";
+import Cart from "../pages/Cart";
+import Checkout from "../pages/Checkout";
 
 const Home = lazy(() => import("../pages/Home"));
 const AboutUs = lazy(() => import("../pages/AboutUs"));
@@ -19,6 +21,8 @@ export enum RoutePath {
   BankAccount = "/tai-khoan-ngan-hang",
   DetailProduct = "/san-pham",
   ListByCategory = "/danh-muc",
+  CartPage = "/gio-hang",
+  CheckoutPage = "/thanh-toan"
 }
 
 const publicRoutes = [
@@ -57,16 +61,16 @@ const publicRoutes = [
     component: Register,
     layout: DefaultLayout,
   },
-  //   {
-  //     path: "/gio-hang",
-  //     component: ShoppingCart,
-  //     layout: DefaultLayout,
-  //   },
-  //   {
-  //     path: "/thanh-toan",
-  //     component: Checkout,
-  //     layout: DefaultLayout,
-  //   },
+  {
+    path: RoutePath.CartPage,
+    component: Cart,
+    layout: DefaultLayout,
+  },
+  {
+    path: RoutePath.CheckoutPage,
+    component: Checkout,
+    layout: DefaultLayout,
+  },
   //   {
   //     path: "/search/:search",
   //     component: Search,

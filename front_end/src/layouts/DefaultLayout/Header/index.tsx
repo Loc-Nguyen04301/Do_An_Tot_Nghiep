@@ -7,7 +7,7 @@ import {
   faBars,
   faCartShopping,
 } from "@fortawesome/free-solid-svg-icons"
-import { useLocation } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import "./Header.scss"
 import DropDown from "./DropDown"
 import NavigationBar from "./NavigationBar"
@@ -18,6 +18,7 @@ import Logo from "./Logo"
 import DrawerRightCart from "./DrawerRightCart"
 import SearchBar from "./SearchBar"
 import SearchResult from "./SearchResult"
+import { RoutePath } from "../../../routes"
 
 const Header = () => {
   const [openLeftModal, setOpenLeftModal] = useState(false)
@@ -106,22 +107,26 @@ const Header = () => {
                   <FontAwesomeIcon icon={faUser} size="xl" />
                 </li>
                 <li className="divider border-l-[1px] h-[2rem] border-white opacity-40"></li>
-                <li className="dropdown ">
-                  <FontAwesomeIcon icon={faCartShopping} size="xl" />
-                  <div className="absolute -top-2 -right-1 bg-button-red-color text-white w-4 h-4 rounded-full text-center">
-                    <span className="text-xs font-semibold block">11</span>
-                  </div>
-                  <ShoppingCart />
+                <li className="dropdown">
+                  <Link to={RoutePath.CartPage}>
+                    <FontAwesomeIcon icon={faCartShopping} size="xl" />
+                    <div className="absolute -top-2 -right-1 bg-button-red-color text-white w-4 h-4 rounded-full text-center">
+                      <span className="text-xs font-semibold block">11</span>
+                    </div>
+                    <ShoppingCart />
+                  </Link>
                 </li>
                 <li className="divider border-l-[1px] h-[2rem] border-white opacity-40"></li>
                 <li>
-                  <div className="bg-button-red-color rounded-full hover:bg-red-800 duration-300 cursor-pointer">
-                    <a className="px-3 block h-[2rem]">
-                      <span className="uppercase text-white font-semibold tracking-wide block leading-[2rem]">
-                        Thanh toán
-                      </span>
-                    </a>
-                  </div>
+                  <Link to={RoutePath.CheckoutPage}>
+                    <div className="bg-button-red-color rounded-full hover:bg-red-800 duration-300 cursor-pointer">
+                      <a className="px-3 block h-[2rem]">
+                        <span className="uppercase text-white font-semibold tracking-wide block leading-[2rem]">
+                          Thanh toán
+                        </span>
+                      </a>
+                    </div>
+                  </Link>
                 </li>
               </ul>
             </div>

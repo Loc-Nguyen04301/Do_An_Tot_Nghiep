@@ -12,6 +12,7 @@ export default {
         "footer-bg": "#273647",
         "text-gray": "#666666d9",
         "category-title": "#555555",
+        "placeholder-color":"#4e4d4d"
       },
       screens: {
         xs: "576px",

@@ -22,7 +22,7 @@ const Contact = () => {
                 POSTED ON THÁNG MƯỜI,19 2023 BY LOCNGUYEN
               </div>
             </div>
-            <div>
+            <div className="mt-16">
               <p className="text-[#555] font-extrabold text-3xl mb-5">Liên hệ</p>
               <p className="mb-5 text-[#777777] text-lg">
                 Công ty TNHH Thương Mại Lộc Nguyễn

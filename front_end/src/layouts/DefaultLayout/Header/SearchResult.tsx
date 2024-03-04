@@ -9,7 +9,7 @@ const SearchResult = () => {
     if (search.length >= 3)
         return (
             <div className="absolute left-0 w-full z-[10]" id="search-result">
-                <div className="max-h-[80vh] bg-white shadow-[0_0_10px_0_rgba(0,0,0,.1)] overflow-y-auto">
+                <div className="max-h-[80vh] bg-white shadow-search-box overflow-y-auto">
                     <ul className="h-full">
                         {Array.from({ length: 30 }, (_i, index) =>
                             <li className="p-3 flex items-center justify-between hover:bg-[#f7f7f7] hover:cursor-pointer border-b-[1px]" key={index}>

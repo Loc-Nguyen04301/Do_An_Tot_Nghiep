@@ -21,8 +21,9 @@ const SearchBar = () => {
     <div className="w-full z-[10]" onClick={handleClick}>
       <div className="h-[34px] w-full relative">
         <input
+          type="text"
           placeholder="Tìm kiếm..."
-          className="px-2 border-[1px] border-solid border-border-color rounded-2xl bg-[#f7f7f7] w-full h-8"
+          className="px-2 border-[1px] border-solid border-border-color rounded-2xl bg-[#f7f7f7] text-placeholder-color w-full h-8"
           value={search}
           onChange={handleChange}
         />

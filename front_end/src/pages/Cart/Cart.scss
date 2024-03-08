@@ -1,0 +1,42 @@
+#cart-page {
+  form {
+    min-width: 128px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .value-button {
+    display: inline-block;
+    border: 1px solid #ddd;
+    width: 30px;
+    height: 30px;
+    vertical-align: top;
+    padding: 2px 0;
+    background: #eee;
+  }
+
+  .value-button:hover {
+    cursor: pointer;
+  }
+
+  form #input-wrap {
+    margin: 0px;
+    padding: 0px;
+  }
+
+  input#number {
+    text-align: center;
+    border: none;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    margin: 0px;
+    width: 30px;
+    height: 30px;
+  }
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}

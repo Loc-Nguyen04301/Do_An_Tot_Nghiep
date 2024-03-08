@@ -3,14 +3,12 @@ import { useParams } from "react-router-dom"
 import ProductSlider from "./components/ProductSlider"
 import AccordingProduct from "./components/AccordingProduct"
 import "./DetailProduct.scss"
+import { Helmet } from "react-helmet-async"
 
-// Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react"
-// import required modules
 import { Navigation } from "swiper/modules"
 import "swiper/scss"
 import "swiper/scss/navigation"
-import { Helmet } from "react-helmet-async"
 
 const DetailProduct = () => {
   const { label } = useParams()

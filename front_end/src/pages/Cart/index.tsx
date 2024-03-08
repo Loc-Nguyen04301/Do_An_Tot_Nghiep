@@ -1,16 +1,18 @@
 import React from 'react'
 import { Helmet } from 'react-helmet-async'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { RoutePath } from '../../routes'
 import { RightOutlined } from '@ant-design/icons';
-import { Space, Table, TableProps, Tag } from 'antd';
+import { Button, Table, TableProps } from 'antd';
+import { convertNumbertoMoney } from '../../helpers';
+import { Swiper, SwiperSlide } from "swiper/react"
+import { Navigation } from 'swiper/modules';
 
 interface DataType {
-    key: string;
+    image: string;
     name: string;
     price: number;
     number: number;
-    totalPrice: number;
 }
 
 const Cart = () => {
@@ -19,12 +21,24 @@ const Cart = () => {
             title: "SẢN PHẨM",
             key: "name",
             dataIndex: "name",
-            render: (text) => <a>{text}</a>,
+            render: (_, record) => <div>
+                <Link to={"/"} className='hover:text-[#334862] text-base'>
+                    <div className='flex items-center'>
+                        <img src={record.image} width={70} />
+                        <div>{record.name}</div>
+                    </div>
+                </Link>
+            </div>
         },
         {
             title: 'ĐƠN GIÁ',
             key: 'price',
-            dataIndex: "price"
+            dataIndex: "price",
+            render: (_, record) => <div>
+                <div className='flex items-center'>
+                    <div className='font-bold'>{convertNumbertoMoney(record.price)}</div>
+                </div>
+            </div>
         },
         {
             title: 'SỐ LƯỢNG',
@@ -34,33 +48,39 @@ const Cart = () => {
         {
             title: 'TẠM TÍNH',
             key: 'totalPrice',
-            dataIndex: "totalPrice"
+            dataIndex: "totalPrice",
+            render: (_, record) => <div className='flex items-center'>
+                <div className='font-bold'>{convertNumbertoMoney(record.price * record.number)}</div>
+            </div>
         },
     ];
 
     const data: DataType[] = [
-        {
-            key: '1',
-            name: 'John Brown',
-            price: 1000,
-            number: 2,
-            totalPrice: 100
-        },
-        {
-            key: '2',
-            name: 'Jim Green',
-            price: 1000,
-            number: 3,
-            totalPrice: 100
-        },
-        {
-            key: '3',
-            name: 'Joe Black',
-            price: 2000,
-            number: 4,
-            totalPrice: 100
-        },
+        // {
+        //     image: "https://www.thol.com.vn/wp-content/uploads/2019/08/iso-whey.jpg",
+        //     name: 'John Brown',
+        //     price: 1000,
+        //     number: 2,
+        // },
+        // {
+        //     image: "https://www.thol.com.vn/wp-content/uploads/2019/08/iso-whey.jpg",
+        //     name: 'Jim Green',
+        //     price: 1000,
+        //     number: 3,
+        // },
+        // {
+        //     image: "https://www.thol.com.vn/wp-content/uploads/2019/08/iso-whey.jpg",
+        //     name: 'Joe Black',
+        //     price: 2000,
+        //     number: 4,
+        // }, {
+        //     image: "https://www.thol.com.vn/wp-content/uploads/2019/08/iso-whey.jpg",
+        //     name: 'Joe Black',
+        //     price: 2000,
+        //     number: 4,
+        // },
     ];
+
     return (
         <>
             <Helmet>
@@ -73,14 +93,100 @@ const Cart = () => {
                     <RightOutlined className='text-text-gray' />
                     <NavLink to={RoutePath.CheckoutPage} className={({ isActive }) => isActive ? "mx-5 text-2xl text-main-orange-color" : "mx-5 text-2xl hover:text-main-orange-color"}>CHECKOUT DETAILS</NavLink>
                 </div>
-                <div className="pb-[50px]">
-                    <div className='grid grid-cols-12 gap-3'>
-                        <div className='col-span-9'>
-                            <Table columns={columns} dataSource={data} />
+                {data.length > 0 &&
+                    <>
+                        <div className="pb-[50px]">
+                            <div className='grid grid-cols-12 gap-3'>
+                                <div className='col-span-7'>
+                                    <Table columns={columns} dataSource={data} pagination={false} />
+                                </div>
+                                <div className='col-span-5'>
+                                    <div className='text-category-title font-semibold text-lg tracking-wide border-b-[3px] pb-1'>Cộng giỏ hàng</div>
+                                    <div className='mt-5'>
+                                        <div className='text-category-title tracking-wide border-b-[1px] py-1 flex justify-between'>
+                                            <span>Tạm tính</span>
+                                            <span className='font-extrabold text-black'>{convertNumbertoMoney(10000000)}</span>
+                                        </div>
+                                        <div className='text-category-title tracking-wide border-b-[3px] py-1 flex justify-between'>
+                                            <span>Tổng</span>
+                                            <span className='font-extrabold text-black'>{convertNumbertoMoney(10000000)}</span>
+                                        </div>
+                                    </div>
+                                    <div className='mt-5'>
+                                        <Link to={RoutePath.CheckoutPage}>
+                                            <button className='w-full bg-button-red-color py-2 hover:shadow-checkout-btn'>
+                                                <span className='text-white font-semibold tracking-wide'>TIẾN HÀNH THANH TOÁN</span>
+                                            </button>
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div className=''>b</div>
+                        <h1 className='font-bold text-2xl text-category-title'>Bạn có thể thích ...</h1>
+                        <div className="pt-6 pb-16">
+                            <Swiper
+                                navigation={true}
+                                modules={[Navigation]}
+                                loop={true}
+                                breakpoints={{
+                                    850: {
+                                        slidesPerView: 6,
+                                    },
+                                    550: {
+                                        slidesPerView: 4,
+                                    },
+                                    300: {
+                                        slidesPerView: 3,
+                                    },
+                                }}
+                            >
+                                {Array.from({ length: 7 }, (_i, index) => (
+                                    <SwiperSlide key={index}>
+                                        <div className="px-[10px] containerProduct">
+                                            <div className="relative">
+                                                <a
+                                                    href={`/san-pham/${index}`}
+                                                    className="text-center block mx-auto"
+                                                >
+                                                    <img
+                                                        src="https://www.thol.com.vn/wp-content/uploads/2019/07/Superhugemockcholateshake-300x300.jpg"
+                                                        width={274}
+                                                    />
+                                                </a>
+                                                <div className="hidden absolute bottom-0 w-full bg-main-orange-color text-center py-1 duration-500 showView">
+                                                    <span className="text-white font-semibold uppercase text-sm">
+                                                        Quick View
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <a
+                                                href={`/san-pham/${index}`}
+                                                className="text-base block leading-5 mt-2"
+                                            >
+                                                Super Huge Gain – MASS Evogen tăng cân đẳng cấp nhất
+                                            </a>
+                                            <div>
+                                                <span className="font-semibold">1.750.000₫</span>
+                                            </div>
+                                        </div>
+                                    </SwiperSlide>
+                                ))}
+                            </Swiper>
+                        </div>
+                    </>
+                }
+                {data.length === 0 &&
+                    <div>
+                        <div className='text-lg text-text-gray'>Chưa có sản phẩm nào trong giỏ hàng.</div>
+                        <div className='mt-8 text-center mb-20'>
+                            <Link to={RoutePath.Home} className=''>
+                                <button className=' bg-main-orange-color py-2 px-8 hover:shadow-checkout-btn'>
+                                    <span className='text-white font-semibold tracking-wide'>QUAY TRỞ LẠI CỬA HÀNG</span>
+                                </button>
+                            </Link>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
         </>
     )

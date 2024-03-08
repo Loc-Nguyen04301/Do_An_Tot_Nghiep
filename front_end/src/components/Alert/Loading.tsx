@@ -16,7 +16,7 @@ const Loading = () => {
             cursor: "pointer",
             zIndex: "10000"
         }}>
-            <Spin indicator={<LoadingOutlined style={{ fontSize: 60 }} />} className='fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2' />
+            <Spin indicator={<LoadingOutlined style={{ fontSize: 60 }} className='text-main-orange-color'/>} className='fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2' />
         </div >
     )
 }

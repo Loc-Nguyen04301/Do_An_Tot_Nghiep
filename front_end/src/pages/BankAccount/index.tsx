@@ -1,5 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
+import aboutUsBanner from "../../assets/images/aboutus_banner.jpg"
 
 const BankAccount = () => {
   return <>
@@ -34,6 +35,9 @@ const BankAccount = () => {
               </p>
             </div>
           </div>
+        </div>
+        <div className="col-span-3 max-sm:hidden px-4">
+          <img src={aboutUsBanner} className="w-full" />
         </div>
       </div>
     </div>

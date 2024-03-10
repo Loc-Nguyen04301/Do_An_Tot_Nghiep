@@ -2,7 +2,7 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
-  UnauthorizedException,
+  UseInterceptors,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
@@ -14,7 +14,7 @@ const saltOrRounds = 10;
 
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService, private jwtService: JwtService) {}
+  constructor(private prisma: PrismaService, private jwtService: JwtService) { }
 
   hashData(data: string) {
     return bcrypt.hash(data, saltOrRounds);
@@ -60,7 +60,7 @@ export class AuthService {
         password: hashPassword,
       },
     });
-    if (newUser) return { message: 'Create New User Successfully' };
+    if (newUser) return;
   }
 
   async logIn(loginAuthDto: LoginAuthDto) {
@@ -70,7 +70,7 @@ export class AuthService {
     });
 
     if (!matchingUser)
-      throw new ForbiddenException('Access Denied', 'Email is not matching');
+      throw new ForbiddenException('Email is not matching',);
     // Check if password matching
     const isMatchingPassword = bcrypt.compareSync(
       loginAuthDto.password,
@@ -78,7 +78,7 @@ export class AuthService {
     );
 
     if (!isMatchingPassword)
-      throw new ForbiddenException('Access Denied', 'Password is not matching');
+      throw new ForbiddenException('Password is not matching');
     //create access token and refresh token
     const { accessToken, refreshToken } = await this.generateToken(
       matchingUser.id,
@@ -86,6 +86,7 @@ export class AuthService {
     );
     // create hashed refresh token saved in DB
     await this.updateRefreshTokenHash(matchingUser.id, refreshToken);
+
     return {
       user: {
         username: matchingUser.username,
@@ -94,7 +95,7 @@ export class AuthService {
       },
       access_token: accessToken,
       refresh_token: refreshToken,
-    };
+    }
   }
 
   async logOut(id: number) {
@@ -103,7 +104,7 @@ export class AuthService {
       where: { id: id },
       data: { refresh_token: null },
     });
-    return { message: 'Logout Successfully' };
+    return;
   }
 
   async refreshToken(id: number, refresh_token: string) {

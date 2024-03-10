@@ -70,10 +70,7 @@ CREATE UNIQUE INDEX "Product_name_key" ON "Product"("name");
 CREATE UNIQUE INDEX "Category_name_key" ON "Category"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Review_user_id_key" ON "Review"("user_id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Review_product_id_key" ON "Review"("product_id");
+CREATE UNIQUE INDEX "Review_user_id_product_id_key" ON "Review"("user_id", "product_id");
 
 -- AddForeignKey
 ALTER TABLE "CategoriesOnProducts" ADD CONSTRAINT "CategoriesOnProducts_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

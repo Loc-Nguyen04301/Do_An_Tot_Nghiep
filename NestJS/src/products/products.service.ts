@@ -12,7 +12,7 @@ export class ProductsService {
 
   async findAll() {
     const products = await this.prisma.product.findMany({
-      include: { categories: { select: { name: true } } },
+      // include: { categories: { select: { name: true } } },
     });
     return products;
   }
@@ -20,7 +20,7 @@ export class ProductsService {
   async findOne(id: number) {
     const product = await this.prisma.product.findUnique({
       where: { id: id },
-      include: { categories: { select: { name: true } } },
+      // include: { categories: { select: { name: true } } },
     });
     return product;
   }

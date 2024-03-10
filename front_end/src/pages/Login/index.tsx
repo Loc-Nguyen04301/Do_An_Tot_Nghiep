@@ -4,7 +4,40 @@ import { Link } from "react-router-dom";
 import { RoutePath } from "../../routes";
 import "./Login.scss"
 
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { useAlertDispatch } from "../../contexts/AlertContext";
+import AuthService from "../../services/AuthService";
+import { LoginInterface } from "../../types";
+
+const schema = yup
+  .object({
+    email: yup.string().required('Email is required').email('Must be a valid email'),
+    password: yup.string().required('Password is required').min(6, 'Password must be at least 6 characters'),
+  })
+  .required()
+
+
 const Login = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const dispatchAlert = useAlertDispatch()
+
+  const onSubmit = async (data: LoginInterface) => {
+    dispatchAlert({ loading: true })
+    try {
+      const response = await AuthService.login(data)
+      console.log(response);
+      dispatchAlert({ loading: false })
+    } catch (error) {
+      console.log(error);
+      dispatchAlert({ errors: error?.response?.data.error, loading: false })
+    }
+  };
+
   return (<>
     <Helmet>
       <title>Đăng nhập - THOL </title>
@@ -19,14 +52,16 @@ const Login = () => {
             Nếu bạn có một tài khoản, hãy đăng nhập bằng địa chỉ email của
             bạn.
           </p>
-          <form className="">
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="my-2">
               <div className="label-email font-semibold tracking-wide">Email</div>
-              <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} />
+              <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"email"} {...register('email')} />
+              {errors.email && <p className="text-red-500">{errors.email.message}</p>}
             </div>
             <div className="my-2">
               <div className="label-password font-semibold tracking-wide">Mật khẩu</div>
-              <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"password"} />
+              <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"password"} {...register('password')} />
+              {errors.password && <p className="text-red-500">{errors.password.message}</p>}
             </div>
             <div className="flex justify-between">
               <button type="submit" className="bg-main-orange-color text-white px-5 py-2 rounded-sm hover:bg-bold-main-orange-color">

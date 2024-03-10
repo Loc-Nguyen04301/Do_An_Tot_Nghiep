@@ -6,6 +6,7 @@ import {
   Post,
   Req,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
@@ -14,13 +15,16 @@ import { JwtPayload, JwtRefreshPayload } from './strategies';
 import { AtGuard, RtGuard } from 'src/common/guards';
 import { Public } from 'src/common/decorators';
 import { LoginAuthDto } from './dto/login-auth.dto';
+import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 
 @Controller('api/v1/auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @Public()
   @Post('register')
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor('Register Success'))
   register(@Body() createAuthDto: CreateAuthDto) {
     return this.authService.register(createAuthDto);
   }
@@ -28,6 +32,7 @@ export class AuthController {
   @Public()
   @Post('login')
   @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor('Login Success'))
   logIn(@Body() loginAuthDto: LoginAuthDto) {
     return this.authService.logIn(loginAuthDto);
   }
@@ -36,6 +41,7 @@ export class AuthController {
   @UseGuards(AtGuard)
   @Post('logout')
   @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor('Logout Success'))
   logOut(@Req() req: Request) {
     const user = req.user as JwtPayload;
     console.log(req);
@@ -46,6 +52,7 @@ export class AuthController {
   @UseGuards(RtGuard)
   @Post('refreshtoken')
   @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor())
   refreshToken(@Req() req: Request) {
     const user = req.user as JwtRefreshPayload;
     console.log(req);

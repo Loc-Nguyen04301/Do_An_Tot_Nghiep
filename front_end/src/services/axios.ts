@@ -5,8 +5,17 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 
+
+const getBaseUrl = () => {
+  if (import.meta.env.MODE === 'development') {
+    return 'http://localhost:8000/api/v1';
+  }
+  return process.env.VITE_SERVER_URL || 'https://example.com';
+};
+
+
 const instance: AxiosInstance = axios.create({
-  baseURL: process.env.VITE_SERVER_URL,
+  baseURL: getBaseUrl(),
   headers: {
     "Content-Type": "application/json",
   },
@@ -19,8 +28,6 @@ const getAccessToken = () => {
 // Request interceptor
 instance.interceptors.request.use(
   (request: InternalAxiosRequestConfig) => {
-    // Modify the request config before sending the request (headers )
-    // Add authentication token or other request modifications here
     const token = getAccessToken();
     const newHeaders = {
       ...request.headers,

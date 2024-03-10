@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { AlertAction, AlertState, alertReducer } from "../reducers/AlertReducer";
+import { ALERT, AlertAction, AlertState, alertReducer } from "../reducers/AlertReducer";
 import React from "react";
 
 interface AlertContextProviderProps {
@@ -30,6 +30,19 @@ const useAlertContext = () => {
     return context;
 }
 
+const useAlertDispatch = () => {
+    const { dispatch } = useAlertContext();
+
+    const showAlert = (payload: AlertState) => {
+        dispatch({
+            type: ALERT,
+            payload: payload,
+        });
+    };
+
+    return showAlert;
+};
+
 const AlertContextProvider = ({ children }: AlertContextProviderProps) => {
     const [state, dispatch] = React.useReducer(alertReducer, initialState)
     const value = { ...state, dispatch }
@@ -37,4 +50,4 @@ const AlertContextProvider = ({ children }: AlertContextProviderProps) => {
     return (<AlertContext.Provider value={value}>{children}</AlertContext.Provider>)
 }
 
-export { AlertContextProvider, useAlertContext }
+export { AlertContextProvider, useAlertContext, useAlertDispatch }

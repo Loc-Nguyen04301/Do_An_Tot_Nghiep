@@ -30,11 +30,9 @@ const Login = () => {
     dispatchAlert({ loading: true })
     try {
       const response = await AuthService.login(data)
-      console.log(response);
-      dispatchAlert({ loading: false })
-    } catch (error) {
-      console.log(error);
-      dispatchAlert({ errors: error?.response?.data.error, loading: false })
+      dispatchAlert({ loading: false, success: response.data.message })
+    } catch (error: any) {
+      dispatchAlert({ errors: error.message })
     }
   };
 

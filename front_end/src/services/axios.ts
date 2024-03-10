@@ -1,4 +1,5 @@
 import axios, {
+  AxiosError,
   AxiosInstance,
   AxiosRequestHeaders,
   AxiosResponse,
@@ -49,9 +50,13 @@ instance.interceptors.response.use(
     // Handle common response processing here
     return response;
   },
-  (error) => {
+  (error: AxiosError) => {
     // Handle errors or responses with non-2xx status codes
-    return Promise.reject(error);
+    if (error.response && error.response.data) {
+      return Promise.reject(error.response.data);
+    } else {
+      return Promise.reject({ message: 'Unknown error' });
+    }
   },
 );
 

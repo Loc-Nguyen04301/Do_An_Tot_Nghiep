@@ -17,10 +17,10 @@ model User{
   password        String   
   refresh_token   String? 
   avatar          String?  @default("linkImage")
-  role            Role     @default(USER)
-  created_at      DateTime @default(now())
-  updated_at      DateTime @updatedAt
-  review          Review?
+  role            Role?    @default(USER)
+  active          Boolean? @default(true)
+  created_at      DateTime? @default(now())
+  reviews         Review[]
 }
 
 model Product{
@@ -29,50 +29,41 @@ model Product{
   description     String  
   old_price       Int  
   new_price       Int  
-  image           String   @default("linkImage")
-  categories      Category[]
-  available       Int     @default(0)
-  review          Review?
-  cart            Cart?
+  image           String?  @default("linkImage")
+  categories      CategoriesOnProducts[]
+  available       Int?     @default(0)
+  created_at      DateTime? @default(now())
+  reviews         Review[]
 }
 
 model Category{
   id             Int        @id @default(autoincrement())
   name           String     @unique     
-  products       Product[]   
+  products       CategoriesOnProducts[]   
+  created_at     DateTime?  @default(now())
+}
+
+model CategoriesOnProducts {
+  product        Product     @relation(fields: [product_id], references: [id])
+  product_id     Int
+  category       Category   @relation(fields: [category_id], references: [id])
+  category_id    Int 
+  created_at     DateTime @default(now())
+
+  @@id([product_id, category_id])
 }
 
 model Review{
-  id              Int        @id @default(autoincrement())
-  title           String
+  id              Int         @id @default(autoincrement())
   description     String
-  star            Int
-  user            User      @relation(fields: [user_id], references: [id])
-  user_id         Int       @unique
-  product         Product   @relation(fields: [product_id], references: [id])
-  product_id      Int       @unique
-  created_at      DateTime  @default(now())
-  updated_at      DateTime  @updatedAt
-}
+  star            Int?        @default(3)
+  user            User        @relation(fields: [user_id], references: [id])
+  user_id         Int         
+  product         Product     @relation(fields: [product_id], references: [id])
+  product_id      Int         
+  created_at      DateTime?   @default(now())
 
-model Bill{
-  id              Int        @id @default(autoincrement())
-  phone_number    String 
-  address         String
-  information     String?
-  created_at      DateTime  @default(now())
-  updated_at      DateTime  @updatedAt
-  cart            Cart[]
-}
-
-model Cart{
-  id              Int        @id @default(autoincrement())
-  product         Product    @relation(fields: [product_id], references: [id])
-  product_id      Int        @unique 
-  quantity        Int  
-  total_price     Int  
-  bill            Bill       @relation(fields: [bill_id], references: [id])
-  bill_id         Int        
+  @@unique([user_id, product_id])
 }
 
 enum Role{

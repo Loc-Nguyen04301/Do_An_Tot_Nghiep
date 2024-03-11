@@ -10,6 +10,8 @@ import * as yup from 'yup';
 import { useAlertDispatch } from "../../contexts/AlertContext";
 import AuthService from "../../services/AuthService";
 import { LoginInterface } from "../../types";
+import { useAppDispatch } from "../../redux-toolkit/hook";
+import { login } from "../../redux-toolkit/authSlice";
 
 const schema = yup
   .object({
@@ -24,12 +26,15 @@ const Login = () => {
     resolver: yupResolver(schema),
   });
 
+  const dispatch = useAppDispatch()
   const dispatchAlert = useAlertDispatch()
 
   const onSubmit = async (data: LoginInterface) => {
     dispatchAlert({ loading: true })
     try {
       const response = await AuthService.login(data)
+      const { user, access_token, refresh_token } = response.data.data
+      dispatch(login({ user, access_token, refresh_token }))
       dispatchAlert({ loading: false, success: response.data.message })
     } catch (error: any) {
       dispatchAlert({ errors: error.message })

@@ -9,6 +9,7 @@ import { CreateAuthDto } from './dto/create-auth.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { LoginAuthDto } from './dto/login-auth.dto';
+import { Role } from 'src/types';
 
 const saltOrRounds = 10;
 
@@ -20,14 +21,14 @@ export class AuthService {
     return bcrypt.hash(data, saltOrRounds);
   }
 
-  async generateToken(id: number, email: string) {
+  async generateToken(id: number, email: string, role: string) {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
-        { id: id, email: email },
+        { id: id, email: email, role: role },
         { secret: process.env.SECRET_AT, expiresIn: 60 * 5 },
       ),
       this.jwtService.signAsync(
-        { id: id, email: email },
+        { id: id, email: email, role: role },
         { secret: process.env.SECRET_RT, expiresIn: '7d' },
       ),
     ]);
@@ -83,6 +84,7 @@ export class AuthService {
     const { accessToken, refreshToken } = await this.generateToken(
       matchingUser.id,
       matchingUser.email,
+      matchingUser.role
     );
     // create hashed refresh token saved in DB
     await this.updateRefreshTokenHash(matchingUser.id, refreshToken);
@@ -123,6 +125,7 @@ export class AuthService {
     const { accessToken, refreshToken } = await this.generateToken(
       matchingUser.id,
       matchingUser.email,
+      matchingUser.role
     );
 
     // create hashed refresh token saved in DB

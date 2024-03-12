@@ -100,93 +100,91 @@ const Cart = () => {
                 <title>Giỏ hàng - THOL</title>
                 <meta name='description' content='Beginner friendly page for learning React Helmet.' />
             </Helmet>
-            <div className="max-w-[1140px] container mx-auto" id="cart-page">
-                <div className='my-12 text-center'>
-                    <NavLink to={RoutePath.CartPage} className={({ isActive }) => clsx("mx-5 text-2xl hover:text-main-orange-color", isActive && "text-main-orange-color")}>SHOPPING CART</NavLink>
-                    <span className='relative bottom-[3px] max-[475px]:hidden'>
+            <div className="max-w-[1140px] container mx-auto py-12" id="cart-page">
+                <div className='mb-12 text-center'>
+                    <NavLink to={RoutePath.CartPage} className={({ isActive }) => clsx("mx-5 text-3xl hover:text-main-orange-color", isActive && "text-main-orange-color")}>SHOPPING CART</NavLink>
+                    <span className='relative bottom-[5px] max-[475px]:hidden'>
                         <RightOutlined className='text-text-gray' />
                     </span>
-                    <NavLink to={RoutePath.CheckoutPage} className={({ isActive }) => clsx("mx-5 text-2xl hover:text-main-orange-color max-[475px]:hidden", isActive && "text-main-orange-color")}>CHECKOUT DETAILS</NavLink>
+                    <NavLink to={RoutePath.CheckoutPage} className={({ isActive }) => clsx("mx-5 text-3xl hover:text-main-orange-color max-[475px]:hidden", isActive && "text-main-orange-color")}>CHECKOUT DETAILS</NavLink>
                 </div>
                 {data.length > 0 &&
                     <>
-                        <div className="pb-[50px]">
-                            <div className='grid grid-cols-12 gap-3 px-5'>
-                                <div className='col-span-7 max-md:col-span-12'>
-                                    <Table columns={columns} dataSource={data} pagination={false} />
-                                </div>
-                                <div className='col-span-5 max-md:col-span-12'>
-                                    <div className='text-category-title font-semibold text-lg tracking-wide border-b-[3px] pb-1'>Cộng giỏ hàng</div>
-                                    <div className='mt-5'>
-                                        <div className='text-category-title tracking-wide border-b-[1px] py-1 flex justify-between'>
-                                            <span>Tạm tính</span>
-                                            <span className='font-extrabold text-black'>{convertNumbertoMoney(10000000)}</span>
-                                        </div>
-                                        <div className='text-category-title tracking-wide border-b-[3px] py-1 flex justify-between'>
-                                            <span>Tổng</span>
-                                            <span className='font-extrabold text-black'>{convertNumbertoMoney(10000000)}</span>
-                                        </div>
+                        <div className='grid grid-cols-12 gap-3 px-5'>
+                            <div className='col-span-7 max-md:col-span-12'>
+                                <Table columns={columns} dataSource={data} pagination={false} />
+                            </div>
+                            <div className='col-span-5 max-md:col-span-12'>
+                                <div className='text-category-title font-semibold text-lg tracking-wide border-b-[3px] pb-1'>Cộng giỏ hàng</div>
+                                <div className='mt-5'>
+                                    <div className='text-category-title tracking-wide border-b-[1px] py-1 flex justify-between'>
+                                        <span>Tạm tính</span>
+                                        <span className='font-extrabold text-black'>{convertNumbertoMoney(10000000)}</span>
                                     </div>
-                                    <div className='mt-5'>
-                                        <Link to={RoutePath.CheckoutPage}>
-                                            <button className='w-full bg-button-red-color py-2 hover:shadow-checkout-btn'>
-                                                <span className='text-white font-semibold tracking-wide'>TIẾN HÀNH THANH TOÁN</span>
-                                            </button>
-                                        </Link>
+                                    <div className='text-category-title tracking-wide border-b-[3px] py-1 flex justify-between'>
+                                        <span>Tổng</span>
+                                        <span className='font-extrabold text-black'>{convertNumbertoMoney(10000000)}</span>
                                     </div>
                                 </div>
-                                <div className='recommend-product col-span-12 max-md:mt-14'>
-                                    <h1 className='font-bold text-2xl text-category-title'>Bạn có thể thích ...</h1>
-                                    <div className="pt-6 pb-16">
-                                        <Swiper
-                                            navigation={true}
-                                            modules={[Navigation]}
-                                            loop={true}
-                                            breakpoints={{
-                                                850: {
-                                                    slidesPerView: 6,
-                                                },
-                                                550: {
-                                                    slidesPerView: 4,
-                                                },
-                                                300: {
-                                                    slidesPerView: 3,
-                                                },
-                                            }}
-                                        >
-                                            {Array.from({ length: 7 }, (_i, index) => (
-                                                <SwiperSlide key={index}>
-                                                    <div className="px-[10px] containerProduct">
-                                                        <div className="relative">
-                                                            <a
-                                                                href={`/san-pham/${index}`}
-                                                                className="text-center block mx-auto"
-                                                            >
-                                                                <img
-                                                                    src="https://www.thol.com.vn/wp-content/uploads/2019/07/Superhugemockcholateshake-300x300.jpg"
-                                                                    width={274}
-                                                                />
-                                                            </a>
-                                                            <div className="hidden absolute bottom-0 w-full bg-main-orange-color text-center py-1 duration-500 showView">
-                                                                <span className="text-white font-semibold uppercase text-sm">
-                                                                    Quick View
-                                                                </span>
-                                                            </div>
-                                                        </div>
+                                <div className='mt-5'>
+                                    <Link to={RoutePath.CheckoutPage}>
+                                        <button className='w-full bg-button-red-color py-2 hover:shadow-checkout-btn'>
+                                            <span className='text-white font-semibold tracking-wide'>TIẾN HÀNH THANH TOÁN</span>
+                                        </button>
+                                    </Link>
+                                </div>
+                            </div>
+                            <div className='recommend-product col-span-12 max-md:mt-14'>
+                                <h1 className='font-bold text-2xl text-category-title'>Bạn có thể thích ...</h1>
+                                <div className="pt-6 pb-16">
+                                    <Swiper
+                                        navigation={true}
+                                        modules={[Navigation]}
+                                        loop={true}
+                                        breakpoints={{
+                                            850: {
+                                                slidesPerView: 6,
+                                            },
+                                            550: {
+                                                slidesPerView: 4,
+                                            },
+                                            300: {
+                                                slidesPerView: 3,
+                                            },
+                                        }}
+                                    >
+                                        {Array.from({ length: 7 }, (_i, index) => (
+                                            <SwiperSlide key={index}>
+                                                <div className="px-[10px] containerProduct">
+                                                    <div className="relative">
                                                         <a
                                                             href={`/san-pham/${index}`}
-                                                            className="text-base block leading-5 mt-2"
+                                                            className="text-center block mx-auto"
                                                         >
-                                                            Super Huge Gain – MASS Evogen tăng cân đẳng cấp nhất
+                                                            <img
+                                                                src="https://www.thol.com.vn/wp-content/uploads/2019/07/Superhugemockcholateshake-300x300.jpg"
+                                                                width={274}
+                                                            />
                                                         </a>
-                                                        <div>
-                                                            <span className="font-semibold">1.750.000₫</span>
+                                                        <div className="hidden absolute bottom-0 w-full bg-main-orange-color text-center py-1 duration-500 showView">
+                                                            <span className="text-white font-semibold uppercase text-sm">
+                                                                Quick View
+                                                            </span>
                                                         </div>
                                                     </div>
-                                                </SwiperSlide>
-                                            ))}
-                                        </Swiper>
-                                    </div>
+                                                    <a
+                                                        href={`/san-pham/${index}`}
+                                                        className="text-base block leading-5 mt-2"
+                                                    >
+                                                        Super Huge Gain – MASS Evogen tăng cân đẳng cấp nhất
+                                                    </a>
+                                                    <div>
+                                                        <span className="font-semibold">1.750.000₫</span>
+                                                    </div>
+                                                </div>
+                                            </SwiperSlide>
+                                        ))}
+                                    </Swiper>
                                 </div>
                             </div>
                         </div>

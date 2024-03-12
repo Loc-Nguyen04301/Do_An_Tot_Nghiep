@@ -43,8 +43,8 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(new SuccessInterceptor('Logout Success'))
   logOut(@Req() req: Request) {
-    const user = req.user as JwtPayload;
     console.log(req);
+    const user = req.user as JwtPayload;
     return this.authService.logOut(user.id);
   }
 
@@ -54,8 +54,8 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(new SuccessInterceptor())
   refreshToken(@Req() req: Request) {
-    const user = req.user as JwtRefreshPayload;
     console.log(req);
+    const user = req.user as JwtRefreshPayload;
     return this.authService.refreshToken(user.id, user.refresh_token);
   }
 }

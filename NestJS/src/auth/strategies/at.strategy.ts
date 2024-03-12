@@ -5,6 +5,7 @@ import { Injectable } from '@nestjs/common';
 export type JwtPayload = {
   id: number;
   email: string;
+  role: string;
   iat: number;
   exp: number;
 };

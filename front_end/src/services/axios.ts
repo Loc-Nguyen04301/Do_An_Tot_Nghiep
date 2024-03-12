@@ -5,9 +5,10 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
+import { getAccessToken } from "../utils";
 
 
-const getBaseUrl = () => {
+export const getBaseUrl = () => {
   if (import.meta.env.MODE === 'development') {
     return 'http://localhost:8000/api/v1';
   }
@@ -21,10 +22,6 @@ const instance: AxiosInstance = axios.create({
     "Content-Type": "application/json",
   },
 });
-
-const getAccessToken = () => {
-  return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJuZ3V5ZW5naWFsb2MyQGdtYWlsLmNvbSIsImlhdCI6MTY5Njk1MTQ1MiwiZXhwIjoxNjk2OTUyMDUyfQ.BJus-4UjzkLt2SU5XdQtUH-oWQFRH28r-RuFLsM6HjM";
-};
 
 // Request interceptor
 instance.interceptors.request.use(

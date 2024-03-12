@@ -14,5 +14,5 @@ export interface RegisterInterface {
 export interface IUser {
     username: string;
     email: string;
-    avatart: string;
+    avatar: string;
 }

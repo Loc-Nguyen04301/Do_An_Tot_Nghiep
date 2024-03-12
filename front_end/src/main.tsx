@@ -9,7 +9,7 @@ import { Provider } from 'react-redux'
 import { store } from "./redux-toolkit/store";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+  <>
     <Provider store={store}>
       <AlertContextProvider>
         <SearchContextProvider>
@@ -17,5 +17,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </SearchContextProvider>
       </AlertContextProvider>
     </Provider>
-  </React.StrictMode>
+  </>
 )

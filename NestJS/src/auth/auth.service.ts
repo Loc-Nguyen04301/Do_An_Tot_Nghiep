@@ -25,7 +25,7 @@ export class AuthService {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         { id: id, email: email, role: role },
-        { secret: process.env.SECRET_AT, expiresIn: 60 * 5 },
+        { secret: process.env.SECRET_AT, expiresIn: 30 },
       ),
       this.jwtService.signAsync(
         { id: id, email: email, role: role },
@@ -130,6 +130,14 @@ export class AuthService {
 
     // create hashed refresh token saved in DB
     await this.updateRefreshTokenHash(matchingUser.id, refreshToken);
-    return { access_token: accessToken, refresh_token: refreshToken };
+    return {
+      user: {
+        username: matchingUser.username,
+        email: matchingUser.email,
+        avatar: matchingUser.avatar,
+      },
+      access_token: accessToken,
+      refresh_token: refreshToken,
+    }
   }
 }

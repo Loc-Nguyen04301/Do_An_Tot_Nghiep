@@ -25,7 +25,7 @@ const AlertContext = React.createContext<AlertContextType>(initialState);
 const useAlertContext = () => {
     const context = React.useContext(AlertContext);
     if (!context) {
-        throw new Error('useSearchContext must be used within a AlertContextProvider');
+        throw new Error('useAlertContext must be used within a AlertContextProvider');
     }
     return context;
 }

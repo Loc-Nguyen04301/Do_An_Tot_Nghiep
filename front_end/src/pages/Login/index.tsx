@@ -12,6 +12,7 @@ import AuthService from "../../services/AuthService";
 import { LoginInterface } from "../../types";
 import { useAppDispatch } from "../../redux-toolkit/hook";
 import { login } from "../../redux-toolkit/authSlice";
+import { setAccessToken } from "../../utils";
 
 const schema = yup
   .object({

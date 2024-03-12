@@ -6,6 +6,7 @@ import { Request } from 'express';
 export type JwtRefreshPayload = {
   id: number;
   email: string;
+  role: string;
   iat: number;
   exp: number;
   refresh_token: string;

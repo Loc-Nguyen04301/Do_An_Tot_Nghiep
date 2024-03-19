@@ -29,28 +29,32 @@ const Checkout = () => {
                 <div className='grid grid-cols-12 gap-7 px-5'>
                     <div className='col-span-7 border-t-2 border-border-color'>
                         <div>
-                            <form>
-                                <h1 className='mt-8 text-category-title text-lg font-semibold'>THÔNG TIN THANH TOÁN</h1>
-                                <div className="my-3">
-                                    <div className="label-email font-semibold tracking-wide">Tên</div>
+                            <form className=''>
+                                <h1 className='mt-8 text-category-title text-lg '>
+                                    THÔNG TIN THANH TOÁN
+                                </h1>
+                                <div className="my-2">
+                                    <div className="label-email tracking-wide leading-6 font-semibold">Tên</div>
                                     <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} />
                                 </div>
-                                <div className="my-3">
-                                    <div className="label-email  font-semibold tracking-wide">Địa chỉ</div>
+                                <div className="my-2">
+                                    <div className="label-email tracking-wide leading-6 font-semibold">Địa chỉ</div>
                                     <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} />
                                 </div>
-                                <div className="my-3">
-                                    <div className="label-email  font-semibold tracking-wide">Số điện thoại</div>
+                                <div className="my-2">
+                                    <div className="label-email tracking-wide leading-6 font-semibold">Số điện thoại</div>
                                     <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"number"} />
                                 </div>
-                                <div className="my-3">
-                                    <div className="label-email  font-semibold tracking-wide">Địa chỉ email</div>
+                                <div className="my-2">
+                                    <div className="label-email tracking-wide leading-6 font-semibold">Địa chỉ email</div>
                                     <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"email"} />
                                 </div>
-                                <h1 className='mt-8 text-category-title text-lg font-semibold'>THÔNG TIN BỔ SUNG </h1>
-                                <div className="my-3">
-                                    <div className="font-semibold tracking-wide">Ghi chú đơn hàng (tuỳ chọn)</div>
-                                    <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} />
+                                <h1 className='mt-12 text-category-title text-lg'>
+                                    THÔNG TIN BỔ SUNG
+                                </h1>
+                                <div className="my-2">
+                                    <div className="tracking-wide leading-6">Ghi chú đơn hàng (tuỳ chọn)</div>
+                                    <textarea className="w-full h-[80px] border-[1px] border-[#adadad] rounded-sm" title='abc' />
                                 </div>
                             </form>
                         </div>

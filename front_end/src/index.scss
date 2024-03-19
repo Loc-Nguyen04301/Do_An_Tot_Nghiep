@@ -28,7 +28,7 @@ html
   font-family: sans-serif;
 }
 
-input:focus-visible
+input:focus-visible,textarea:focus-visible
 {
   outline: none;
 }

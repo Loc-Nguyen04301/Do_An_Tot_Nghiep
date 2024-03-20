@@ -15,9 +15,9 @@ const DropDown = () => {
         </span>
         <FontAwesomeIcon icon={faChevronDown} />
       </div>
-      <div className="dropdown-content text-text-gray text-base">
+      <div className="dropdown-content text-text-gray text-base bg-white">
         {categoryList.map((category) => (
-          <Link to={`${RoutePath.ListByCategory}/${category.path}`} key={category.path}>
+          <Link to={`${RoutePath.ListByCategory}/${category.path}`} key={category.path} className="px-4 py-3 block w-[244px] border-b border-border-color">
             {category.title}
           </Link>
         ))}

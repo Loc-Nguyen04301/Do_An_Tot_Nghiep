@@ -125,7 +125,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="container mx-auto max-w-[1170px] my-10 ">
-          <div className="ml-2 mr-3 h-1 bg-white"></div>
+          <div className="ml-2 mr-3 h-[2px] bg-white"></div>
         </div>
         <div className="max-w-[1170px] container mx-auto px-2">
           <div className="text-white relative">

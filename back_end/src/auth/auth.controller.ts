@@ -54,8 +54,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(new SuccessInterceptor())
   refreshToken(@Req() req: Request) {
-    console.log(req);
     const user = req.user as JwtRefreshPayload;
-    return this.authService.refreshToken(user.id, user.refresh_token);
+    return this.authService.refreshToken(user.id);
   }
 }

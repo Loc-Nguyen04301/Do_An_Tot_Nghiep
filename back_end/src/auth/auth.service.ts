@@ -110,7 +110,7 @@ export class AuthService {
     return;
   }
 
-  async refreshToken(id: number, refresh_token: string) {
+  async refreshToken(id: number) {
     // Check if user exists
     const matchingUser = await this.prisma.user.findUnique({
       where: { id: id },

@@ -9,7 +9,7 @@ import {
   faTiktok,
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons"
-import categoryList from "../../../assets/data/navigation"
+import categoryList from "../../../assets/data/categoryList"
 import SearchBar from "./SearchBar"
 import { Link, useLocation } from "react-router-dom"
 import { RoutePath } from "../../../routes"

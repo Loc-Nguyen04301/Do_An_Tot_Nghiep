@@ -13,6 +13,8 @@ import "swiper/scss/navigation"
 import { Link } from "react-router-dom"
 import { RoutePath } from "../../routes"
 import { Helmet } from "react-helmet-async"
+import ProductsByCategory from "./components/ProductsByCategory"
+import categoryList from "../../assets/data/categoryList"
 
 const Home = () => {
   return (
@@ -32,93 +34,12 @@ const Home = () => {
         </div>
 
         <div className="flex flex-col gap-14">
-          {Array.from({ length: 3 }, (_i, index) => (
-            <div className="px-2" key={index}>
-              <div className="border-b-[1px] border-border-color pb-2">
-                <span className="text-category-title text-[20px] font-bold uppercase border-b-[3px] border-border-color pb-2">
-                  Tăng cân nhanh, thoát gầy
-                </span>
-              </div>
-              <div className="mt-8">
-                <div className="grid grid-cols-6 max-md:hidden">
-                  {Array.from({ length: 6 }, (_i, index) => (
-                    <div className={`px-[10px] ${styles.containerProduct}`} key={index}>
-                      <div className="relative">
-                        <Link
-                          to={`${RoutePath.DetailProduct}/${index}`}
-                          className="text-center block mx-auto"
-                        >
-                          <img
-                            src="https://www.thol.com.vn/wp-content/uploads/2019/07/Superhugemockcholateshake-300x300.jpg"
-                            width={274}
-                          />
-                        </Link>
-                        <div
-                          className={`hidden absolute bottom-0 w-full bg-main-orange-color text-center py-1 opacity-95 duration-500 ${styles.showView}`}
-                        >
-                          <span className="text-white font-semibold uppercase text-sm">
-                            Quick View
-                          </span>
-                        </div>
-                      </div>
-                      <Link
-                        to={`${RoutePath.DetailProduct}/${index}`}
-                        className="text-base block leading-5 mt-2"
-                      >
-                        Super Huge Gain – MASS Evogen tăng cân đẳng cấp nhất
-                      </Link>
-                      <div>
-                        <span className="font-semibold">1.750.000₫</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="md:hidden">
-                  <Swiper
-                    slidesPerView={3}
-                    navigation={true}
-                    modules={[Navigation]}
-                    loop={true}
-                  >
-                    {Array.from({ length: 6 }, (_i, index) => (
-                      <SwiperSlide key={index}>
-                        <div className={`px-[10px] ${styles.containerProduct}`}>
-                          <div className="relative">
-                            <Link
-                              to={`${RoutePath.DetailProduct}/${index}`}
-                              className="text-center block mx-auto"
-                            >
-                              <img
-                                src="https://www.thol.com.vn/wp-content/uploads/2019/07/Superhugemockcholateshake-300x300.jpg"
-                                width={274}
-                              />
-                            </Link>
-                            <div
-                              className={`hidden absolute bottom-0 w-full bg-main-orange-color text-center py-1 opacity-95 duration-500 ${styles.showView}`}
-                            >
-                              <span className="text-white font-semibold uppercase text-sm">
-                                Quick View
-                              </span>
-                            </div>
-                          </div>
-                          <Link
-                            to={`${RoutePath.DetailProduct}/${index}`}
-                            className="text-base block leading-5 mt-2"
-                          >
-                            Super Huge Gain – MASS Evogen tăng cân đẳng cấp nhất
-                          </Link>
-                          <div>
-                            <span className="font-semibold">1.750.000₫</span>
-                          </div>
-                        </div>
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
-                </div>
-              </div>
-            </div>
-          ))}
+          {/* {Array.from({ length: 3 }, (_i, index) => (
+            <ProductsByCategory categoryPath="" categoryTitle="" key={index} />
+          ))} */}
+          <ProductsByCategory categoryPath={categoryList[0].path} categoryTitle={categoryList[0].title} />
+          <ProductsByCategory categoryPath={categoryList[1].path} categoryTitle={categoryList[1].title} />
+          <ProductsByCategory categoryPath={categoryList[2].path} categoryTitle={categoryList[2].title} />
         </div>
       </div>
       <img src={bottomImage} className="w-full" />

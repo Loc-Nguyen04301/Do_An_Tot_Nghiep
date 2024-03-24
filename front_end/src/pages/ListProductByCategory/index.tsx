@@ -1,7 +1,7 @@
 import React from "react"
 import { Link, useParams } from "react-router-dom"
 import styles from "./ListProductByCategory.module.scss"
-import categoryList from "../../assets/data/navigation"
+import categoryList from "../../assets/data/categoryList"
 import { RoutePath } from "../../routes"
 import { Helmet } from "react-helmet-async"
 

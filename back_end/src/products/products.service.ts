@@ -5,10 +5,10 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class ProductsService {
-  constructor(private prisma: PrismaService) {}
-  create(createProductDto: CreateProductDto) {
-    return 'This action adds a new product';
-  }
+  constructor(private prisma: PrismaService) { }
+  // create(createProductDto: CreateProductDto) {
+  //   return 'This action adds a new product';
+  // }
 
   async findAll() {
     const products = await this.prisma.product.findMany({
@@ -25,11 +25,27 @@ export class ProductsService {
     return product;
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async findByCategory(category: string) {
+    console.log("a")
+    const products = await this.prisma.product.findMany({
+      where: {
+        categories: {
+          some: {
+            category: {
+              name: category
+            }
+          }
+        }
+      }
+    })
+    return products;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
-  }
+  // update(id: number, updateProductDto: UpdateProductDto) {
+  //   return `This action updates a #${id} product`;
+  // }
+
+  // remove(id: number) {
+  //   return `This action removes a #${id} product`;
+  // }
 }

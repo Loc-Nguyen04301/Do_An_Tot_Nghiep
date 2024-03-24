@@ -18,6 +18,17 @@ export interface IUser {
     avatar: string;
 }
 
+export interface IProduct {
+    id: number;
+    name: string;
+    description: string;
+    old_price: number;
+    new_price: number;
+    image: string;
+    available: number;
+    created_at: string;
+}
+
 export enum Role {
     USER = 'USER',
     ADMIN = 'ADMIN',

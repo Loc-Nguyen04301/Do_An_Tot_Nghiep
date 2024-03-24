@@ -3,7 +3,6 @@ import React, { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faHeart, faUser } from "@fortawesome/free-regular-svg-icons"
 import {
-  faMagnifyingGlass,
   faBars,
   faCartShopping,
 } from "@fortawesome/free-solid-svg-icons"
@@ -19,10 +18,17 @@ import DrawerRightCart from "./DrawerRightCart"
 import SearchBar from "./SearchBar"
 import SearchResult from "./SearchResult"
 import { RoutePath } from "../../../routes"
+import { isLogin } from "../../../utils"
+import { useAppDispatch, useAppSelector } from '../../../redux-toolkit/hook';
+import { logOut } from "../../../redux-toolkit/authSlice"
 
 const Header = () => {
+  const logged = isLogin()
   const [openLeftModal, setOpenLeftModal] = useState(false)
   const [openRightModal, setOpenRightModal] = useState(false)
+
+  const { user } = useAppSelector(state => state.auth)
+  const dispatch = useAppDispatch()
   const location = useLocation()
   const currentPath = location.pathname
 
@@ -34,21 +40,34 @@ const Header = () => {
     setOpenRightModal(true)
   }
 
+  const handleLogout = () => {
+    dispatch(logOut())
+  }
+
   return (
     <header>
       <div className="bg-[#f2f2f2]">
-        <div className="d-flex justify-content-between">
-          <p className="pl-10 pt-3 pb-2 text-text-gray text-sm">
-            Chào mừng bạn đến với THOL Store
-            <Link to={RoutePath.RegisterPage} className="text-main-orange-color px-1">
-              Đăng ký
-            </Link>
-            hoặc
-            <Link to={RoutePath.LoginPage} className="text-main-orange-color px-1">
-              Đăng nhập
-            </Link>
-          </p>
-        </div>
+        {
+          logged === "true"
+            ?
+            <div className="flex justify-end items-end pr-3 pt-3 pb-2 gap-4">
+              <p className="text-text-gray text-sm"> Hello, <span className="cursor-pointer hover:text-main-orange-color">{user.username}</span> </p>
+              <p className="cursor-pointer hover:text-red-500 font-medium" onClick={handleLogout}>Đăng xuất</p>
+            </div>
+            :
+            <>
+              <p className="pl-10 pt-3 pb-2 text-text-gray text-sm">
+                Chào mừng bạn đến với THOL Store
+                <Link to={RoutePath.RegisterPage} className="text-main-orange-color px-1">
+                  Đăng ký
+                </Link>
+                hoặc
+                <Link to={RoutePath.LoginPage} className="text-main-orange-color px-1">
+                  Đăng nhập
+                </Link>
+              </p>
+            </>
+        }
       </div>
       <div className="mx-auto px-1 max-w-[1140px] mb-1">
         <div className="flex justify-between items-center flex-1 pt-2 px-3">

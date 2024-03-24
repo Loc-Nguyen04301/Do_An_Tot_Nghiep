@@ -41,7 +41,7 @@ const DrawerRightCart = ({
         <div className="w-full">
           <div>
             {Array.from({ length: 10 }, (_i, index) =>
-              <Link to={`${RoutePath.DetailProduct}/${index}`} className="flex pb-3 border-b border-border-color category-item my-4">
+              <Link to={`${RoutePath.DetailProduct}/${index}`} className="flex pb-3 border-b border-border-color category-item my-4" key={index}>
                 <img
                   src="https://www.thol.com.vn/wp-content/uploads/2016/06/muscle-mass-choco.jpg"
                   className="w-[60px] h-[60px]"

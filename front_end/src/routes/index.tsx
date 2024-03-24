@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate, useRoutes } from "react-router-
 import DefaultLayout from "../layouts/DefaultLayout";
 import NotFound from "../pages/NotFound";
 import Loading from "../components/Alert/Loading";
+import GuestGuard from "../guards/GuestGuard";
+import AuthGuard from "../guards/AuthGuard";
 
 const Home = lazy(() => import("../pages/Home"));
 const AboutUs = lazy(() => import("../pages/AboutUs"));
@@ -34,34 +36,53 @@ const Router: React.FC = () => {
       element: <DefaultLayout />,
       children: [
         {
-          path: RoutePath.Home, element: <Home />,
+          path: RoutePath.Home,
+          element: <Home />,
         },
         {
-          path: RoutePath.LoginPage, element: <Login />,
+          path: RoutePath.LoginPage,
+          element:
+            <GuestGuard>
+              <Login />
+            </GuestGuard>
         },
         {
-          path: RoutePath.RegisterPage, element: <Register />,
+          path: RoutePath.RegisterPage,
+          element:
+            <GuestGuard>
+              <Register />
+            </GuestGuard>
         },
         {
-          path: RoutePath.AboutUs, element: <AboutUs />,
+          path: RoutePath.AboutUs,
+          element: <AboutUs />,
         },
         {
-          path: RoutePath.Contact, element: <Contact />,
+          path: RoutePath.Contact,
+          element: <Contact />,
         },
         {
-          path: RoutePath.BankAccount, element: <BankAccount />,
+          path: RoutePath.BankAccount,
+          element: <BankAccount />,
         },
         {
-          path: `${RoutePath.DetailProduct}/:label`, element: <DetailProduct />,
+          path: `${RoutePath.DetailProduct}/:label`,
+          element: <DetailProduct />,
         },
         {
-          path: RoutePath.CartPage, element: <Cart />,
+          path: RoutePath.CartPage,
+          element: <Cart />,
         },
         {
-          path: RoutePath.CheckoutPage, element: <Checkout />,
+          path: RoutePath.CheckoutPage,
+          element:
+            <AuthGuard>
+              <Checkout />
+            </AuthGuard>
         },
         {
-          path: `${RoutePath.ListByCategory}/:category`, element: <ListProductByCategory />,
+          path: `${RoutePath.ListByCategory}/:category`,
+          element: <ListProductByCategory />,
         },
       ]
     }

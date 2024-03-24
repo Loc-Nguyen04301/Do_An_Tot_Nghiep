@@ -12,7 +12,14 @@ export interface RegisterInterface {
 }
 
 export interface IUser {
+    id?: number;
     username: string;
     email: string;
     avatar: string;
 }
+
+export enum Role {
+    USER = 'USER',
+    ADMIN = 'ADMIN',
+}
+

@@ -14,6 +14,14 @@ export const setRefreshToken = (refreshToken: string) => {
     localStorage.setItem('refreshToken', refreshToken)
 }
 
+export const removeAccessToken = () => {
+    localStorage.removeItem('accessToken')
+}
+
+export const removeRefreshToken = () => {
+    localStorage.removeItem('refreshToken')
+}
+
 export const isLogin = (): string => {
     return localStorage.getItem("logged") || ''
 }

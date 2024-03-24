@@ -91,6 +91,7 @@ export class AuthService {
 
     return {
       user: {
+        id: matchingUser.id,
         username: matchingUser.username,
         email: matchingUser.email,
         avatar: matchingUser.avatar,

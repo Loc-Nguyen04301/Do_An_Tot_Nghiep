@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { IUser } from '../types';
-import { isLogin, setAccessToken, setLoginTrue, setRefreshToken } from '../utils';
+import { isLogin, removeAccessToken, removeRefreshToken, setAccessToken, setLoginFalse, setLoginTrue, setRefreshToken } from '../utils';
 import AuthService from '../services/AuthService';
 
 
@@ -16,6 +16,7 @@ const initialState: AuthState = {
     access_token: "",
     refresh_token: "",
     user: {
+        id: undefined,
         avatar: "",
         email: "",
         username: ""
@@ -31,6 +32,12 @@ export const getAccount = createAsyncThunk('auth/getAccount', async () => {
     return response.data.data
 })
 
+export const logOut = createAsyncThunk('auth/logOut', async () => {
+    const response = await AuthService.logout()
+    console.log(response)
+    return response.data.data
+})
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -41,7 +48,7 @@ export const authSlice = createSlice({
             setRefreshToken(refresh_token)
             setLoginTrue()
             return { ...action.payload }
-        }
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(getAccount.fulfilled, (state, action: PayloadAction<AuthState>) => {
@@ -57,6 +64,18 @@ export const authSlice = createSlice({
             return
         })
         builder.addCase(getAccount.pending, () => {
+            return
+        })
+        builder.addCase(logOut.fulfilled, (state) => {
+            removeAccessToken()
+            removeRefreshToken()
+            setLoginFalse()
+            return { ...initialState }
+        })
+        builder.addCase(logOut.rejected, () => {
+            return
+        })
+        builder.addCase(logOut.pending, () => {
             return
         })
     }

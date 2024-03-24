@@ -30,8 +30,6 @@ const Alert = () => {
                 transition={Bounce}
             />
             {loading && <Loading />}
-            {/* {success && toast.success(success)}
-            {errors && toast.error(errors)} */}
         </>
     )
 }

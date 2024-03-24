@@ -1,10 +1,20 @@
 import axios from "axios";
 import { LoginInterface } from "../types";
-import { getRefreshToken } from "../utils";
+import { getAccessToken, getRefreshToken } from "../utils";
 import http, { getBaseUrl } from "./axios";
 
 const login = (data: LoginInterface) => {
     return http.post("/auth/login", data)
+}
+
+const logout = () => {
+    const accessToken = getAccessToken()
+    const urlAPI = getBaseUrl()
+    return axios.post(`${urlAPI}/auth/logout`, {}, {
+        headers: {
+            Authorization: "Bearer " + accessToken
+        }
+    })
 }
 
 const refreshToken = () => {
@@ -17,6 +27,6 @@ const refreshToken = () => {
     })
 }
 
-const AuthService = { login, refreshToken }
+const AuthService = { login, refreshToken, logout }
 
 export default AuthService

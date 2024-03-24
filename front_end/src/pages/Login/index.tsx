@@ -1,6 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RoutePath } from "../../routes";
 import "./Login.scss"
 
@@ -12,7 +12,6 @@ import AuthService from "../../services/AuthService";
 import { LoginInterface } from "../../types";
 import { useAppDispatch } from "../../redux-toolkit/hook";
 import { login } from "../../redux-toolkit/authSlice";
-import { setAccessToken } from "../../utils";
 
 const schema = yup
   .object({
@@ -29,6 +28,7 @@ const Login = () => {
 
   const dispatch = useAppDispatch()
   const dispatchAlert = useAlertDispatch()
+  const navigate = useNavigate()
 
   const onSubmit = async (data: LoginInterface) => {
     dispatchAlert({ loading: true })
@@ -36,7 +36,8 @@ const Login = () => {
       const response = await AuthService.login(data)
       const { user, access_token, refresh_token } = response.data.data
       dispatch(login({ user, access_token, refresh_token }))
-      dispatchAlert({ loading: false, success: response.data.message })
+      dispatchAlert({ loading: false })
+      navigate(RoutePath.Home)
     } catch (error: any) {
       dispatchAlert({ errors: error.message })
     }

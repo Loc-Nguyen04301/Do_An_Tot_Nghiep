@@ -36,7 +36,6 @@ export const getAccount = createAsyncThunk('auth/getAccount', async () => {
 })
 
 export const logOut = createAsyncThunk('auth/logOut', async (_, { dispatch }) => {
-    checkTokenExpiration() && dispatch(getAccount())
     try {
         const response = await AuthService.logout()
         return response.data.data

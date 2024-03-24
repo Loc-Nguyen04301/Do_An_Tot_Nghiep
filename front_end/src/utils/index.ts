@@ -42,8 +42,7 @@ export const convertNumbertoMoney = (number: number) => {
     return Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number)
 }
 
-export const checkTokenExpiration = () => {
-    const token = getAccessToken();
+export const checkTokenExpiration = (token: string) => {
     const decoded = jwtDecode(token);
     if (token && decoded && decoded.exp) {
         if (decoded.exp >= Date.now() / 1000) return false;

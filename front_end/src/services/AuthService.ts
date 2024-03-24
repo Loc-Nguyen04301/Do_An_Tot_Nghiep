@@ -8,13 +8,8 @@ const login = (data: LoginInterface) => {
 }
 
 const logout = () => {
-    const accessToken = getAccessToken()
     const urlAPI = getBaseUrl()
-    return axios.post(`${urlAPI}/auth/logout`, {}, {
-        headers: {
-            Authorization: "Bearer " + accessToken
-        }
-    })
+    return http.post(`${urlAPI}/auth/logout`)
 }
 
 const refreshToken = () => {

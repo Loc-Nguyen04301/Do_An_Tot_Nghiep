@@ -5,7 +5,8 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
-import { getAccessToken } from "../utils";
+import { checkTokenExpiration, getAccessToken, setAccessToken } from "../utils";
+import AuthService from "./AuthService";
 
 
 export const getBaseUrl = () => {
@@ -25,12 +26,26 @@ const instance: AxiosInstance = axios.create({
 
 // Request interceptor
 instance.interceptors.request.use(
-  (request: InternalAxiosRequestConfig) => {
+  async (request: InternalAxiosRequestConfig) => {
     const token = getAccessToken();
-    const newHeaders = {
-      ...request.headers,
-      Authorization: "Bearer " + token,
-    };
+    let newHeaders
+    if (token) {
+      newHeaders = {
+        ...request.headers,
+        Authorization: "Bearer " + token,
+      };
+      if (checkTokenExpiration(token)) {
+        console.log("token expired");
+        const response = await AuthService.refreshToken()
+        const new_token = response.data.data.access_token
+        setAccessToken(new_token);
+        newHeaders = {
+          ...request.headers,
+          Authorization: "Bearer " + new_token,
+        };
+      }
+    }
+
     request = { ...request, headers: newHeaders as AxiosRequestHeaders };
     console.log(request);
     return request;
@@ -43,8 +58,6 @@ instance.interceptors.request.use(
 // Response interceptor
 instance.interceptors.response.use(
   (response: AxiosResponse) => {
-    // Modify the response data before resolving the promise
-    // Handle common response processing here
     return response;
   },
   (error: AxiosError) => {

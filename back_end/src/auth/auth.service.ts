@@ -22,12 +22,10 @@ export class AuthService {
   }
 
   async generateToken(id: number, email: string, role: string) {
-
-    console.log(process.env.AT_EXPIRES, process.env.RT_EXPIRES)
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         { id: id, email: email, role: role },
-        { secret: process.env.SECRET_AT, expiresIn: process.env.AT_EXPIRES },
+        { secret: process.env.SECRET_AT, expiresIn: 10 },
       ),
       this.jwtService.signAsync(
         { id: id, email: email, role: role },

@@ -1,8 +1,10 @@
 import React, { useState } from "react"
-import image from "../../../assets/images/aboutus_banner.jpg"
 import Slider from "react-slick"
+interface ProductSlider {
+  image: string;
+}
 
-const ProductSlider = () => {
+const ProductSlider = ({ image }: ProductSlider) => {
   const [nav1, setNav1] = useState()
   const [nav2, setNav2] = useState()
   return (

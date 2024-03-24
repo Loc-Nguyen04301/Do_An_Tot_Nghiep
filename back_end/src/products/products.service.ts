@@ -20,7 +20,16 @@ export class ProductsService {
   async findOne(id: number) {
     const product = await this.prisma.product.findUnique({
       where: { id: id },
-      // include: { categories: { select: { name: true } } },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        old_price: true,
+        new_price: true,
+        image: true,
+        categories: { select: { category: { select: { name: true } } } },
+        reviews: true
+      }
     });
     return product;
   }

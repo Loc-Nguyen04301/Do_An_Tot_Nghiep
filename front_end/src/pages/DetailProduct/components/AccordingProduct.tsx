@@ -1,13 +1,17 @@
 import React from "react"
 import type { CollapseProps } from "antd"
 import { Collapse } from "antd"
+import { IDetailProduct } from ".."
+import { convertNumbertoMoney } from "../../../utils"
 
-const AccordingProduct = () => {
+interface AccordingProductProps {
+  product: IDetailProduct
+}
+
+const AccordingProduct = ({ product }: AccordingProductProps) => {
   const text = (
     <p style={{ paddingLeft: 24 }}>
-      A dog is a type of domesticated animal. Known for its loyalty and
-      faithfulness, it can be found as a welcome guest in many households across
-      the world.
+      {product.description}
     </p>
   )
 
@@ -34,10 +38,16 @@ const AccordingProduct = () => {
         </a>
       ),
       children: (
-        <div className="flex justify-between text-category-title border-b-[1px] border-border-color pb-[2px]">
-          <p className="font-semibold text-lg uppercase">Trọng lượng</p>
-          <p className="">7100g</p>
-        </div>
+        <>
+          <div className="flex justify-between text-category-title border-b-[1px] border-border-color py-3">
+            <p className="font-semibold text-lg uppercase">Trọng lượng</p>
+            <p>0g</p>
+          </div>
+          <div className="flex justify-between text-category-title border-b-[1px] border-border-color py-3">
+            <p className="font-semibold text-lg uppercase">Giá</p>
+            <p>{convertNumbertoMoney(product.new_price)}</p>
+          </div>
+        </>
       ),
       showArrow: true,
     },

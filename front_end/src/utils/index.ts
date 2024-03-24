@@ -1,3 +1,7 @@
+import { jwtDecode } from "jwt-decode"
+import { getAccount } from "../redux-toolkit/authSlice"
+import { Dispatch } from "@reduxjs/toolkit"
+
 export const getAccessToken = (): string => {
     return localStorage.getItem('accessToken') || ''
 }
@@ -34,3 +38,15 @@ export const setLoginFalse = () => {
     return localStorage.setItem("logged", "false")
 }
 
+export const convertNumbertoMoney = (number: number) => {
+    return Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number)
+}
+
+export const checkTokenExpiration = () => {
+    const token = getAccessToken();
+    const decoded = jwtDecode(token);
+    if (token && decoded && decoded.exp) {
+        if (decoded.exp >= Date.now() / 1000) return false;
+    }
+    return true;
+}

@@ -4,7 +4,7 @@ import { Link, NavLink } from 'react-router-dom'
 import { RoutePath } from '../../routes'
 import { RightOutlined } from '@ant-design/icons';
 import { Table, TableProps } from 'antd';
-import { convertNumbertoMoney } from '../../helpers';
+import { convertNumbertoMoney } from '../../utils';
 import clsx from 'clsx';
 import "./Cart.scss"
 

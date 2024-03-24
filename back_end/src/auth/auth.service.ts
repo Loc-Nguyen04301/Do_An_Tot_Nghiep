@@ -22,14 +22,16 @@ export class AuthService {
   }
 
   async generateToken(id: number, email: string, role: string) {
+
+    console.log(process.env.AT_EXPIRES, process.env.RT_EXPIRES)
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         { id: id, email: email, role: role },
-        { secret: process.env.SECRET_AT, expiresIn: 30 },
+        { secret: process.env.SECRET_AT, expiresIn: process.env.AT_EXPIRES },
       ),
       this.jwtService.signAsync(
         { id: id, email: email, role: role },
-        { secret: process.env.SECRET_RT, expiresIn: '7d' },
+        { secret: process.env.SECRET_RT, expiresIn: process.env.RT_EXPIRES },
       ),
     ]);
 
@@ -118,7 +120,6 @@ export class AuthService {
 
     if (!matchingUser.refresh_token)
       throw new ForbiddenException(
-        'Access Denied',
         'Logged in!, Refresh Token is null',
       );
 

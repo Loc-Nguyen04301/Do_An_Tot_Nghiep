@@ -11,8 +11,9 @@ import {
 } from "@fortawesome/free-brands-svg-icons"
 import categoryList from "../../../assets/data/navigation"
 import SearchBar from "./SearchBar"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { RoutePath } from "../../../routes"
+import clsx from "clsx"
 
 interface DrawerLeftMenuProps {
   openLeftModal: boolean
@@ -31,6 +32,9 @@ const DrawerLeftMenu = ({
   const onClose = () => {
     setOpenLeftModal(false)
   }
+
+  const location = useLocation()
+  const currentPath = location.pathname
 
   return (
     <ConfigProvider
@@ -63,14 +67,14 @@ const DrawerLeftMenu = ({
             <Link
               to={`${RoutePath.ListByCategory}/${category.path}`}
               key={category.path}
-              className="category-item block py-4 border-b-[1px] border-border-color"
+              className={clsx("category-item block py-4 border-b-[1px] border-border-color", currentPath.includes(category.path) && "text-main-orange-color")}
             >
               {category.title}
             </Link>
           ))}
         </div>
       </Drawer>
-    </ConfigProvider>
+    </ConfigProvider >
   )
 }
 

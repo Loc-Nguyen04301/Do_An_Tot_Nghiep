@@ -28,6 +28,7 @@ const Header = () => {
   const [openRightModal, setOpenRightModal] = useState(false)
 
   const { user } = useAppSelector(state => state.auth)
+  const { totalQuantity } = useAppSelector(state => state.cart)
   const accessToken = getAccessToken()
   const dispatch = useAppDispatch()
   const location = useLocation()
@@ -147,7 +148,7 @@ const Header = () => {
                   <Link to={RoutePath.CartPage}>
                     <FontAwesomeIcon icon={faCartShopping} size="xl" />
                     <div className="absolute -top-2 -right-1 bg-button-red-color text-white w-4 h-4 rounded-full text-center">
-                      <span className="text-xs font-semibold block">11</span>
+                      <span className="text-xs font-semibold block">{totalQuantity}</span>
                     </div>
                     <ShoppingCart />
                   </Link>

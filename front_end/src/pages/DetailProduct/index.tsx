@@ -13,6 +13,8 @@ import { RoutePath } from "../../routes"
 import "swiper/scss"
 import "swiper/scss/navigation"
 import styles from "./DetailProduct.module.scss"
+import { useAppDispatch, useAppSelector } from "../../redux-toolkit/hook"
+import { addItemToCartWithQuantity } from "../../redux-toolkit/cartSlice"
 
 interface Category {
   name: string;
@@ -27,8 +29,10 @@ const DetailProduct = () => {
   const [relatedCategory, setRelatedCategory] = useState("")
   const [relatedProducts, setRelatedProducts] = useState<IDetailProduct[]>([]);
   const [quantity, setQuantity] = useState<number>(0)
+  const { cartItems } = useAppSelector((state) => state.cart)
 
   const { label } = useParams()
+  const dispatch = useAppDispatch()
 
   const handleChangeQuantity = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
@@ -41,21 +45,44 @@ const DetailProduct = () => {
     }
   }
 
+  const addProductToCart = (product: any, quantity: number) => {
+    console.log("hello")
+    dispatch(addItemToCartWithQuantity({ ...product, quantityAdded: quantity }))
+  }
+
   const getProductById = async () => {
-    const res = await ProductService.getProductById(Number(label))
-    setProduct(res.data.data)
-    // default = 0 
-    const randomCategory = res.data.data.categories[0].category.name
-    setRelatedCategory(randomCategory)
+    try {
+      const res = await ProductService.getProductById(Number(label))
+      setProduct(res.data.data)
+      // default = 0 
+      const randomCategory = res.data.data.categories[0].category.name
+      setRelatedCategory(randomCategory)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const getProductsByCategory = async (relatedCategory: string) => {
-    if (relatedCategory) {
-      const res = await ProductService.getProductsByCategory(relatedCategory)
-      // Show maximun 6 items in Related Products
-      setRelatedProducts(res.data.data.slice(0, 6))
+    try {
+      if (relatedCategory) {
+        const res = await ProductService.getProductsByCategory(relatedCategory)
+        // Show maximum 6 items in Related Products
+        setRelatedProducts(res.data.data.slice(0, 6))
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
+
+  useEffect(() => {
+    if (product)
+      cartItems.map((item) => {
+        if (item.id === product.id) {
+          setQuantity(item.quantity)
+          return;
+        }
+      })
+  }, [product])
 
   useEffect(() => {
     getProductById()
@@ -130,7 +157,7 @@ const DetailProduct = () => {
                     onClick={() => setQuantity((prev) => prev + 1)}
                   />
                 </div>
-                <div className="inline-block bg-button-red-color hover:bg-red-800 duration-300 cursor-pointer px-5 rounded-sm border-[1px]">
+                <div className="inline-block bg-button-red-color hover:bg-red-800 duration-300 cursor-pointer px-5 rounded-sm border-[1px]" onClick={() => addProductToCart(product, quantity)}>
                   <span className="uppercase text-white font-semibold tracking-wide text-center block py-2">
                     Thêm vào giỏ hàng
                   </span>

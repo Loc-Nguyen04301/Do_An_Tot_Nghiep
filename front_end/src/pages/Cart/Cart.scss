@@ -39,4 +39,10 @@
     -webkit-appearance: none;
     margin: 0;
   }
+
+  .containerProduct:hover {
+    .showView {
+      display: block !important;
+    }
+  }
 }

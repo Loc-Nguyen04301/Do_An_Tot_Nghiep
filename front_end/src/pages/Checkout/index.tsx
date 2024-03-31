@@ -6,8 +6,10 @@ import { RightOutlined } from '@ant-design/icons';
 import "../Login/Login.scss"
 import { convertNumbertoMoney } from '../../utils';
 import clsx from 'clsx';
+import { useAppSelector } from '../../redux-toolkit/hook';
 
 const Checkout = () => {
+    const { totalAmount } = useAppSelector(state => state.cart)
     const onSubmit = async () => {
 
     };
@@ -65,11 +67,11 @@ const Checkout = () => {
                             <div className='mt-5'>
                                 <div className='text-category-title tracking-wide border-b-[1px] py-1 flex justify-between'>
                                     <span>Tạm tính</span>
-                                    <span className='font-extrabold text-black'>{convertNumbertoMoney(10000000)}</span>
+                                    <span className='font-extrabold text-black'>{convertNumbertoMoney(totalAmount)}</span>
                                 </div>
                                 <div className='text-category-title tracking-wide border-b-[3px] py-1 flex justify-between'>
                                     <span>Tổng</span>
-                                    <span className='font-extrabold text-black'>{convertNumbertoMoney(10000000)}</span>
+                                    <span className='font-extrabold text-black'>{convertNumbertoMoney(totalAmount)}</span>
                                 </div>
                             </div>
                             <div className='mt-5'>

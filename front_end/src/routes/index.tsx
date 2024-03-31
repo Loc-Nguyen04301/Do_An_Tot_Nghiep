@@ -5,6 +5,7 @@ import NotFound from "../pages/NotFound";
 import Loading from "../components/Alert/Loading";
 import GuestGuard from "../guards/GuestGuard";
 import AuthGuard from "../guards/AuthGuard";
+import HavingCart from "../guards/HavingCart";
 
 const Home = lazy(() => import("../pages/Home"));
 const AboutUs = lazy(() => import("../pages/AboutUs"));
@@ -77,7 +78,9 @@ const Router: React.FC = () => {
           path: RoutePath.CheckoutPage,
           element:
             <AuthGuard>
-              <Checkout />
+              <HavingCart>
+                <Checkout />
+              </HavingCart>
             </AuthGuard>
         },
         {

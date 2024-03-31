@@ -107,7 +107,7 @@ const DetailProduct = () => {
       <>
         <>
           <Helmet>
-            <title> Chi tiết sản phẩm - THOL</title>
+            <title> {product.name} - THOL</title>
             <meta name='description' content='Beginner friendly page for learning React Helmet.' />
           </Helmet>
         </>

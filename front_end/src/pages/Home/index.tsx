@@ -27,9 +27,6 @@ const Home = () => {
         </div>
 
         <div className="flex flex-col gap-14">
-          {/* {Array.from({ length: 3 }, (_i, index) => (
-            <ProductsByCategory categoryPath="" categoryTitle="" key={index} />
-          ))} */}
           <ProductsByCategory categoryPath={categoryList[0].path} categoryTitle={categoryList[0].title} />
           <ProductsByCategory categoryPath={categoryList[1].path} categoryTitle={categoryList[1].title} />
           <ProductsByCategory categoryPath={categoryList[2].path} categoryTitle={categoryList[2].title} />

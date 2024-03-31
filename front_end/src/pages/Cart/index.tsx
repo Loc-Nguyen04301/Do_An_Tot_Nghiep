@@ -1,24 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link, NavLink } from 'react-router-dom'
 import { RoutePath } from '../../routes'
-import { RightOutlined } from '@ant-design/icons';
-import { Table, TableProps } from 'antd';
+import { RightOutlined, DeleteOutlined } from '@ant-design/icons';
+import { ConfigProvider, Modal, Table, TableProps } from 'antd';
 import { convertNumbertoMoney } from '../../utils';
+import { useAppDispatch, useAppSelector } from '../../redux-toolkit/hook';
+import { addItemToCart, IProductItem, removeItemToCart, deleteItemToCart } from '../../redux-toolkit/cartSlice';
+import { useAlertDispatch } from '../../contexts/AlertContext';
 import clsx from 'clsx';
-import "./Cart.scss"
+
 
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation } from 'swiper/modules';
 import "swiper/scss"
 import "swiper/scss/navigation"
-import { useAppDispatch, useAppSelector } from '../../redux-toolkit/hook';
-import { addItemToCart, IProductItem, removeItemToCart } from '../../redux-toolkit/cartSlice';
-import { useAlertDispatch } from '../../contexts/AlertContext';
+import "./Cart.scss"
 
 const Cart = () => {
     const { cartItems, totalAmount } = useAppSelector((state) => state.cart)
     const data: IProductItem[] = cartItems;
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const dispatch = useAppDispatch()
     const dispatchAlert = useAlertDispatch()
@@ -39,6 +41,20 @@ const Cart = () => {
             dispatchAlert({ loading: false })
         }, 1000)
     }
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleOk = (product: any) => {
+        dispatch(deleteItemToCart(product))
+        setIsModalOpen(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+
 
     const columns: TableProps<IProductItem>['columns'] = [
         {
@@ -85,6 +101,26 @@ const Cart = () => {
                 <div className='font-bold'>{convertNumbertoMoney(record.totalPrice)}</div>
             </div>
         },
+        {
+            title: '',
+            key: 'deleteItem',
+            dataIndex: "deleteItem",
+            render: (_, record) =>
+                <div className='flex items-center'>
+                    <div className='cursor-pointer transform hover:scale-125' onClick={showModal}>
+                        <DeleteOutlined className='text-red-500 text-2xl' />
+                    </div>
+                    <ConfigProvider theme={{
+                        token: {
+                            colorPrimary: '#f48220'
+                        }
+                    }}>
+                        <Modal centered title="Xóa sản phẩm" open={isModalOpen} onOk={() => handleOk(record)} onCancel={handleCancel}>
+                            <p className='text-base'>Bạn muốn xóa sản phẩm này khỏi giỏ hàng ?</p>
+                        </Modal>
+                    </ConfigProvider>
+                </div >
+        },
     ];
 
     return (
@@ -103,7 +139,7 @@ const Cart = () => {
                 </div>
                 {data.length > 0 &&
                     <>
-                        <div className='grid grid-cols-12 gap-3 px-5'>
+                        <div className='grid grid-cols-12 gap-6 px-5'>
                             <div className='col-span-7 max-md:col-span-12'>
                                 <Table columns={columns} dataSource={data} pagination={false} />
                             </div>
@@ -127,9 +163,9 @@ const Cart = () => {
                                     </Link>
                                 </div>
                             </div>
-                            <div className='recommend-product col-span-12 max-md:mt-14'>
+                            <div className='recommend-product pt-12 col-span-12 max-md:mt-14'>
                                 <h1 className='font-bold text-2xl text-category-title'>Bạn có thể thích ...</h1>
-                                <div className="pt-6 pb-16">
+                                <div className="pt-3 pb-16">
                                     <Swiper
                                         navigation={true}
                                         modules={[Navigation]}
@@ -165,12 +201,12 @@ const Cart = () => {
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <a
-                                                        href={`/san-pham/${index}`}
+                                                    <Link
+                                                        to={`/san-pham/${index}`}
                                                         className="text-base block leading-5 mt-2"
                                                     >
                                                         Super Huge Gain – MASS Evogen tăng cân đẳng cấp nhất
-                                                    </a>
+                                                    </Link>
                                                     <div>
                                                         <span className="font-semibold">1.750.000₫</span>
                                                     </div>

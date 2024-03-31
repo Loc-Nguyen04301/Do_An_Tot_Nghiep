@@ -1,13 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit"
-import authReducer from "./authSlice"
-import cartReducer from "./cartSlice"
+import rootReducer from "./rootReducer"
+import { persistStore } from "redux-persist"
 
 export const store = configureStore({
-    reducer: {
-        auth: authReducer,
-        cart: cartReducer
-    }
+    reducer: rootReducer
 })
+
+export const persistor = persistStore(store)
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch

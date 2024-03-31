@@ -14,7 +14,7 @@ interface IProductItemWithQuantity extends IProductItem {
     quantityAdded: number
 }
 
-interface CartState {
+export interface CartState {
     cartItems: IProductItem[],
     totalQuantity: number,
     totalAmount: number,

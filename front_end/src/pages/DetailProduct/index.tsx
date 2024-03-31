@@ -15,6 +15,7 @@ import "swiper/scss/navigation"
 import styles from "./DetailProduct.module.scss"
 import { useAppDispatch, useAppSelector } from "../../redux-toolkit/hook"
 import { addItemToCartWithQuantity } from "../../redux-toolkit/cartSlice"
+import { useAlertDispatch } from "../../contexts/AlertContext"
 
 interface Category {
   name: string;
@@ -31,6 +32,8 @@ const DetailProduct = () => {
   const [quantity, setQuantity] = useState<number>(0)
   const { cartItems } = useAppSelector((state) => state.cart)
 
+  const dispatchAlert = useAlertDispatch()
+
   const { label } = useParams()
   const dispatch = useAppDispatch()
 
@@ -46,8 +49,15 @@ const DetailProduct = () => {
   }
 
   const addProductToCart = (product: any, quantity: number) => {
-    console.log("hello")
-    dispatch(addItemToCartWithQuantity({ ...product, quantityAdded: quantity }))
+    dispatchAlert({ loading: true })
+    try {
+      setTimeout(() => {
+        dispatch(addItemToCartWithQuantity({ ...product, quantityAdded: quantity }))
+        dispatchAlert({ loading: false })
+      }, 1000)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const getProductById = async () => {

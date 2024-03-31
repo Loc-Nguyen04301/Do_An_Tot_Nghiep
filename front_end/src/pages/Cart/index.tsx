@@ -12,23 +12,42 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation } from 'swiper/modules';
 import "swiper/scss"
 import "swiper/scss/navigation"
-
-interface DataType {
-    image: string;
-    name: string;
-    price: number;
-    number: number;
-}
+import { useAppDispatch, useAppSelector } from '../../redux-toolkit/hook';
+import { addItemToCart, IProductItem, removeItemToCart } from '../../redux-toolkit/cartSlice';
+import { useAlertDispatch } from '../../contexts/AlertContext';
 
 const Cart = () => {
-    const columns: TableProps<DataType>['columns'] = [
+    const { cartItems, totalAmount } = useAppSelector((state) => state.cart)
+    const data: IProductItem[] = cartItems;
+
+    const dispatch = useAppDispatch()
+    const dispatchAlert = useAlertDispatch()
+
+
+    const removeItem = (product: any) => {
+        dispatchAlert({ loading: true })
+        setTimeout(() => {
+            dispatch(removeItemToCart(product))
+            dispatchAlert({ loading: false })
+        }, 1000)
+    }
+
+    const addItem = (product: any) => {
+        dispatchAlert({ loading: true })
+        setTimeout(() => {
+            dispatch(addItemToCart(product))
+            dispatchAlert({ loading: false })
+        }, 1000)
+    }
+
+    const columns: TableProps<IProductItem>['columns'] = [
         {
             title: "SẢN PHẨM",
             key: "name",
             dataIndex: "name",
             render: (_, record) => <div>
                 <Link to={"/"} className='hover:text-[#334862] text-base'>
-                    <div className='flex items-center max-xs:flex-col max-xs:text-center'>
+                    <div className='flex items-center max-xs:flex-col max-xs:text-center gap-2'>
                         <img src={record.image} width={70} />
                         <div>{record.name}</div>
                     </div>
@@ -41,7 +60,7 @@ const Cart = () => {
             dataIndex: "price",
             render: (_, record) => <div>
                 <div className='flex items-center'>
-                    <div className='font-bold'>{convertNumbertoMoney(record.price)}</div>
+                    <div className='font-bold'>{convertNumbertoMoney(record.new_price)}</div>
                 </div>
             </div>
         },
@@ -52,9 +71,9 @@ const Cart = () => {
             render: (_, record) =>
                 <div>
                     <form>
-                        <div className="value-button" id="decrease" >-</div>
-                        <input type="number" id="number" value={record.number} />
-                        <div className="value-button" id="increase" >+</div>
+                        <div className="value-button" id="decrease" onClick={() => removeItem(record)}>-</div>
+                        <input type="number" id="number" value={record.quantity} />
+                        <div className="value-button" id="increase" onClick={() => addItem(record)}>+</div>
                     </form>
                 </div>
         },
@@ -63,34 +82,8 @@ const Cart = () => {
             key: 'totalPrice',
             dataIndex: "totalPrice",
             render: (_, record) => <div className='flex items-center'>
-                <div className='font-bold'>{convertNumbertoMoney(record.price * record.number)}</div>
+                <div className='font-bold'>{convertNumbertoMoney(record.totalPrice)}</div>
             </div>
-        },
-    ];
-
-    const data: DataType[] = [
-        {
-            image: "https://www.thol.com.vn/wp-content/uploads/2019/08/iso-whey.jpg",
-            name: 'ISO Whey LABRADA - 100% Whey Protein Isolate',
-            price: 1000,
-            number: 2,
-        },
-        {
-            image: "https://www.thol.com.vn/wp-content/uploads/2019/08/iso-whey.jpg",
-            name: 'ISO Whey LABRADA - 100% Whey Protein Isolate',
-            price: 1000,
-            number: 3,
-        },
-        {
-            image: "https://www.thol.com.vn/wp-content/uploads/2019/08/iso-whey.jpg",
-            name: 'Joe Black',
-            price: 2000,
-            number: 4,
-        }, {
-            image: "https://www.thol.com.vn/wp-content/uploads/2019/08/iso-whey.jpg",
-            name: 'Joe Black',
-            price: 2000,
-            number: 4,
         },
     ];
 
@@ -119,11 +112,11 @@ const Cart = () => {
                                 <div className='mt-5'>
                                     <div className='text-category-title tracking-wide border-b-[1px] py-1 flex justify-between'>
                                         <span>Tạm tính</span>
-                                        <span className='font-extrabold text-black'>{convertNumbertoMoney(10000000)}</span>
+                                        <span className='font-extrabold text-black'>{convertNumbertoMoney(totalAmount)}</span>
                                     </div>
                                     <div className='text-category-title tracking-wide border-b-[3px] py-1 flex justify-between'>
                                         <span>Tổng</span>
-                                        <span className='font-extrabold text-black'>{convertNumbertoMoney(10000000)}</span>
+                                        <span className='font-extrabold text-black'>{convertNumbertoMoney(totalAmount)}</span>
                                     </div>
                                 </div>
                                 <div className='mt-5'>

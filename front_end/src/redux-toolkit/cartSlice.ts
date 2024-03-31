@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IProduct } from '../types/index';
 
-interface IProductItem {
+export interface IProductItem {
     id: number;
     name: string;
-    quantity: number,
     new_price: number;
     image: string;
+    quantity: number,
     totalPrice: number
 }
 
@@ -31,25 +31,34 @@ export const cartSlice = createSlice({
     initialState,
     reducers: {
         addItemToCartWithQuantity: (state, action: PayloadAction<IProductItemWithQuantity>) => {
-            const newItem = action.payload;
-            const existingItem = state.cartItems.find(
-                (item) => item.id === action.payload.id
-            );
-
-            if (!existingItem) {
-                state.cartItems.push({
-                    id: newItem.id,
-                    name: newItem.name,
-                    new_price: newItem.new_price,
-                    image: newItem.image,
-                    quantity: action.payload.quantityAdded,
-                    totalPrice: newItem.new_price * action.payload.quantityAdded,
-                });
-            } else {
-                existingItem.quantity = action.payload.quantityAdded;
-                existingItem.totalPrice =
-                    Number(existingItem.quantity) * Number(existingItem.new_price);
+            // if quantityAdded=0 => delete item 
+            if (action.payload.quantityAdded == 0) {
+                state.cartItems = state.cartItems.filter(
+                    (item) => item.id !== action.payload.id
+                );
             }
+            else {
+                const newItem = action.payload;
+                const existingItem = state.cartItems.find(
+                    (item) => item.id === action.payload.id
+                );
+
+                if (!existingItem) {
+                    state.cartItems.push({
+                        id: newItem.id,
+                        name: newItem.name,
+                        new_price: newItem.new_price,
+                        image: newItem.image,
+                        quantity: action.payload.quantityAdded,
+                        totalPrice: newItem.new_price * action.payload.quantityAdded,
+                    });
+                } else {
+                    existingItem.quantity = action.payload.quantityAdded;
+                    existingItem.totalPrice =
+                        Number(existingItem.quantity) * Number(existingItem.new_price);
+                }
+            }
+
             state.totalQuantity = state.cartItems.reduce((total, item) => {
                 return total + item.quantity;
             }, 0);
@@ -78,6 +87,7 @@ export const cartSlice = createSlice({
                 existingItem.totalPrice =
                     Number(existingItem.quantity) * Number(existingItem.new_price);
             }
+
             state.totalQuantity = state.cartItems.reduce((total, item) => {
                 return total + item.quantity;
             }, 0);
@@ -104,6 +114,7 @@ export const cartSlice = createSlice({
                         Number(existingItem.quantity) * Number(existingItem.new_price);
                 }
             }
+
             state.totalQuantity = state.cartItems.reduce((total, item) => {
                 return total + item.quantity;
             }, 0);

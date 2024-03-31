@@ -1,17 +1,18 @@
 import React, { ChangeEvent, useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import ProductSlider from "./components/ProductSlider"
 import AccordingProduct from "./components/AccordingProduct"
-import "./DetailProduct.scss"
 import { Helmet } from "react-helmet-async"
-
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation } from "swiper/modules"
-import "swiper/scss"
-import "swiper/scss/navigation"
 import { IProduct } from "../../types"
 import ProductService from "../../services/ProductService"
 import { convertNumbertoMoney } from "../../utils"
+import { RoutePath } from "../../routes"
+
+import "swiper/scss"
+import "swiper/scss/navigation"
+import styles from "./DetailProduct.module.scss"
 
 interface Category {
   name: string;
@@ -23,10 +24,11 @@ export interface IDetailProduct extends IProduct {
 
 const DetailProduct = () => {
   const [product, setProduct] = useState<IDetailProduct>();
+  const [relatedCategory, setRelatedCategory] = useState("")
+  const [relatedProducts, setRelatedProducts] = useState<IDetailProduct[]>([]);
   const [quantity, setQuantity] = useState<number>(0)
 
   const { label } = useParams()
-
 
   const handleChangeQuantity = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
@@ -42,11 +44,26 @@ const DetailProduct = () => {
   const getProductById = async () => {
     const res = await ProductService.getProductById(Number(label))
     setProduct(res.data.data)
+    // default = 0 
+    const randomCategory = res.data.data.categories[0].category.name
+    setRelatedCategory(randomCategory)
+  }
+
+  const getProductsByCategory = async (relatedCategory: string) => {
+    if (relatedCategory) {
+      const res = await ProductService.getProductsByCategory(relatedCategory)
+      // Show maximun 6 items in Related Products
+      setRelatedProducts(res.data.data.slice(0, 6))
+    }
   }
 
   useEffect(() => {
     getProductById()
   }, [label])
+
+  useEffect(() => {
+    getProductsByCategory(relatedCategory)
+  }, [relatedCategory])
 
   if (product)
     return (
@@ -157,37 +174,37 @@ const DetailProduct = () => {
                     },
                   }}
                 >
-                  {Array.from({ length: 7 }, (_i, index) => (
-                    <SwiperSlide key={index}>
-                      <div className="px-[10px] containerProduct">
+                  {relatedProducts && relatedProducts.map(product =>
+                    <SwiperSlide key={product.id}>
+                      <div className={`px-[10px] ${styles.containerProduct}`}>
                         <div className="relative">
-                          <a
-                            href={`/san-pham/${index}`}
+                          <Link
+                            to={`${RoutePath.DetailProduct}/${product.id}`}
                             className="text-center block mx-auto"
                           >
                             <img
-                              src="https://www.thol.com.vn/wp-content/uploads/2019/07/Superhugemockcholateshake-300x300.jpg"
+                              src={product.image}
                               width={274}
                             />
-                          </a>
-                          <div className="hidden absolute bottom-0 w-full bg-main-orange-color text-center py-1 duration-500 showView">
+                          </Link>
+                          <div className={`hidden absolute bottom-0 w-full bg-main-orange-color text-center py-1 duration-500 ${styles.showView}`}>
                             <span className="text-white font-semibold uppercase text-sm">
                               Quick View
                             </span>
                           </div>
                         </div>
-                        <a
-                          href={`/san-pham/${index}`}
+                        <Link
+                          to={`${RoutePath.DetailProduct}/${product.id}`}
                           className="text-base block leading-5 mt-2"
                         >
-                          Super Huge Gain – MASS Evogen tăng cân đẳng cấp nhất
-                        </a>
-                        <div>
-                          <span className="font-semibold">1.750.000₫</span>
+                          {product.name}
+                        </Link>
+                        <div className='flex justify-start gap-1'>
+                          {product.old_price != 0 && <span className="font-medium line-through text-category-title">{convertNumbertoMoney(product.old_price)}</span>}
+                          <span className="font-semibold">{convertNumbertoMoney(product.new_price)}</span>
                         </div>
                       </div>
-                    </SwiperSlide>
-                  ))}
+                    </SwiperSlide>)}
                 </Swiper>
               </div>
             </div>

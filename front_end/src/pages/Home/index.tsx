@@ -2,16 +2,9 @@ import React from "react"
 import homeImage1 from "../../assets/images/home_image1.jpg"
 import homeImage2 from "../../assets/images/home_image2.jpg"
 import bottomImage from "../../assets/images/bottom_image.jpg"
-import styles from "./Home.module.scss"
-
-// Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react"
 // import required modules
-import { Navigation } from "swiper/modules"
 import "swiper/scss"
 import "swiper/scss/navigation"
-import { Link } from "react-router-dom"
-import { RoutePath } from "../../routes"
 import { Helmet } from "react-helmet-async"
 import ProductsByCategory from "./components/ProductsByCategory"
 import categoryList from "../../assets/data/categoryList"

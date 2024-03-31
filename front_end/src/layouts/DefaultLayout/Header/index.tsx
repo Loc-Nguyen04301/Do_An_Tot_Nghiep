@@ -18,7 +18,7 @@ import DrawerRightCart from "./DrawerRightCart"
 import SearchBar from "./SearchBar"
 import SearchResult from "./SearchResult"
 import { RoutePath } from "../../../routes"
-import { isLogin } from "../../../utils"
+import { getAccessToken, isLogin } from "../../../utils"
 import { useAppDispatch, useAppSelector } from '../../../redux-toolkit/hook';
 import { logOut } from "../../../redux-toolkit/authSlice"
 
@@ -28,6 +28,7 @@ const Header = () => {
   const [openRightModal, setOpenRightModal] = useState(false)
 
   const { user } = useAppSelector(state => state.auth)
+  const accessToken = getAccessToken()
   const dispatch = useAppDispatch()
   const location = useLocation()
   const currentPath = location.pathname
@@ -48,7 +49,7 @@ const Header = () => {
     <header>
       <div className="bg-[#f2f2f2]">
         {
-          logged === "true"
+          logged === "true" && accessToken
             ?
             <div className="flex justify-end items-end pr-3 pt-3 pb-2 gap-4">
               <p className="text-text-gray text-sm"> Hello, <span className="cursor-pointer hover:text-main-orange-color">{user.username}</span> </p>

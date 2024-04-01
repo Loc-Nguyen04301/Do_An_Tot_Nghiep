@@ -16,7 +16,6 @@ import CompanyInfomation from "./CompanyInfomation"
 import Logo from "./Logo"
 import DrawerRightCart from "./DrawerRightCart"
 import SearchBar from "./SearchBar"
-import SearchResult from "./SearchResult"
 import { RoutePath } from "../../../routes"
 import { getAccessToken, isLogin } from "../../../utils"
 import { useAppDispatch, useAppSelector } from '../../../redux-toolkit/hook';
@@ -116,9 +115,7 @@ const Header = () => {
           {/* SearchBar */}
           <div className="max-md:hidden w-1/2 relative">
             <SearchBar />
-            <SearchResult />
           </div>
-
           {/* Company Infomation */}
           <CompanyInfomation />
         </div>

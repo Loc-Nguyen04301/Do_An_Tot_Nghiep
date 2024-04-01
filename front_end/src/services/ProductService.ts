@@ -15,6 +15,10 @@ const getProductsByCategory = (category: string) => {
     return http.get(`/products/category/${category}`)
 }
 
-const ProductService = { getProductByCategory, getProductById, getProductsByCategory }
+const getProductsByName = (name: string) => {
+    return http.get(`/products/name/${name}`)
+}
+
+const ProductService = { getProductByCategory, getProductById, getProductsByCategory, getProductsByName }
 
 export default ProductService

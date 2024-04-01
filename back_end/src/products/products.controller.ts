@@ -52,6 +52,14 @@ export class ProductsController {
     return this.productsService.findOne(id);
   }
 
+  @Public()
+  @Get('/name/:name')
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor())
+  findByName(@Param('name') name: string) {
+    return this.productsService.findByName(name);
+  }
+
 
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {

@@ -35,7 +35,6 @@ export class ProductsService {
   }
 
   async findByCategory(category: string) {
-    console.log("a")
     const products = await this.prisma.product.findMany({
       where: {
         categories: {
@@ -44,6 +43,18 @@ export class ProductsService {
               name: category
             }
           }
+        }
+      }
+    })
+    return products;
+  }
+
+  async findByName(name: string) {
+    const products = await this.prisma.product.findMany({
+      where: {
+        name: {
+          contains: name,
+          mode: "insensitive"
         }
       }
     })

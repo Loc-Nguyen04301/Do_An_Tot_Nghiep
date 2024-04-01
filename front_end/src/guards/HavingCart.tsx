@@ -15,9 +15,11 @@ const HavingCart = ({ children }: HavingCartProps) => {
 
     useEffect(() => {
         dispatchAlert({ loading: true })
-        setTimeout(() => {
+        const timer = setTimeout(() => {
             dispatchAlert({ loading: false })
         }, 1000)
+
+        return () => clearTimeout(timer);
     }, [])
 
     if (cartItems.length === 0) return <Navigate to={RoutePath.CartPage} replace />

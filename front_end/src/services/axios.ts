@@ -35,7 +35,6 @@ instance.interceptors.request.use(
         Authorization: "Bearer " + token,
       };
       if (checkTokenExpiration(token)) {
-        console.log("token expired");
         const response = await AuthService.refreshToken()
         const new_token = response.data.data.access_token
         setAccessToken(new_token);
@@ -47,7 +46,6 @@ instance.interceptors.request.use(
     }
 
     request = { ...request, headers: newHeaders as AxiosRequestHeaders };
-    console.log(request);
     return request;
   },
   (error) => {

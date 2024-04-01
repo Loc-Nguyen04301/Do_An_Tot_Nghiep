@@ -203,11 +203,14 @@ const DetailProduct = () => {
                     850: {
                       slidesPerView: 6,
                     },
-                    550: {
+                    680: {
                       slidesPerView: 4,
                     },
-                    300: {
+                    530: {
                       slidesPerView: 3,
+                    },
+                    300: {
+                      slidesPerView: 2,
                     },
                   }}
                 >
@@ -215,6 +218,11 @@ const DetailProduct = () => {
                     <SwiperSlide key={product.id}>
                       <div className={`px-[10px] ${styles.containerProduct}`}>
                         <div className="relative">
+                          {product.old_price != 0 &&
+                            <div className="absolute top-6 left-0 bg-[#fe0000] rounded-full py-3 px-1">
+                              <span className='text-white font-bold text-lg'>Giảm giá!</span>
+                            </div>
+                          }
                           <Link
                             to={`${RoutePath.DetailProduct}/${product.id}`}
                             className="text-center block mx-auto"
@@ -236,7 +244,7 @@ const DetailProduct = () => {
                         >
                           {product.name}
                         </Link>
-                        <div className='flex justify-start gap-1'>
+                        <div className='flex justify-start gap-2'>
                           {product.old_price != 0 && <span className="font-medium line-through text-category-title">{convertNumbertoMoney(product.old_price)}</span>}
                           <span className="font-semibold">{convertNumbertoMoney(product.new_price)}</span>
                         </div>

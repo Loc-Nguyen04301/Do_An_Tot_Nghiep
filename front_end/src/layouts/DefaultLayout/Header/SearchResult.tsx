@@ -5,6 +5,8 @@ import {
 import ProductService from '../../../services/ProductService'
 import { IProduct } from '../../../types';
 import { convertNumbertoMoney } from '../../../utils';
+import { Link } from 'react-router-dom';
+import { RoutePath } from '../../../routes';
 
 interface SearchResultProps {
     loading?: boolean,
@@ -44,7 +46,7 @@ const SearchResult = ({ setLoading }: SearchResultProps) => {
             <div className="max-h-[80vh] bg-white shadow-search-box overflow-y-auto">
                 <ul className="h-full">
                     {products.map((product) =>
-                        <li className="p-3 flex items-center justify-between hover:bg-[#f7f7f7] hover:cursor-pointer border-b-[1px]" key={product.id}>
+                        <Link to={`${RoutePath.DetailProduct}/${product.id}`} className="p-3 flex items-center justify-between hover:bg-[#f7f7f7] hover:cursor-pointer border-b-[1px]" key={product.id}>
                             <div className="flex items-center gap-5">
                                 <img src={product.image} width={50} />
                                 <span>{product.name}</span >
@@ -54,7 +56,7 @@ const SearchResult = ({ setLoading }: SearchResultProps) => {
                                     {convertNumbertoMoney(product.new_price)}
                                 </strong>
                             </span>
-                        </li>)}
+                        </Link>)}
                 </ul>
             </div>
         </div>

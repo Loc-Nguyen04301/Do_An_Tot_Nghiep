@@ -37,6 +37,11 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                     {products && products.map((product) =>
                         <div className={`px-[10px] ${styles.containerProduct}`} key={product.id}>
                             <div className="relative">
+                                {product.old_price != 0 &&
+                                    <div className="absolute top-6 left-0 bg-[#fe0000] rounded-full py-3 px-1">
+                                        <span className='text-white font-bold text-lg'>Giảm giá!</span>
+                                    </div>
+                                }
                                 <Link
                                     to={`${RoutePath.DetailProduct}/${product.id}`}
                                     className="text-center block mx-auto"
@@ -44,7 +49,6 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                                     <img
                                         src={product.image}
                                         width={247}
-                                        height={247}
                                     />
                                 </Link>
                                 <div
@@ -61,7 +65,7 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                             >
                                 {product.name}
                             </Link>
-                            <div className='flex justify-start gap-1'>
+                            <div className='flex justify-start gap-2'>
                                 {product.old_price != 0 && <span className="font-medium line-through text-category-title">{convertNumbertoMoney(product.old_price)}</span>}
                                 <span className="font-semibold">{convertNumbertoMoney(product.new_price)}</span>
                             </div>
@@ -70,21 +74,39 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
 
                 <div className="md:hidden">
                     <Swiper
-                        slidesPerView={3}
                         navigation={true}
                         modules={[Navigation]}
                         loop={true}
+                        breakpoints={{
+                            850: {
+                                slidesPerView: 6,
+                            },
+                            680: {
+                                slidesPerView: 4,
+                            },
+                            530: {
+                                slidesPerView: 3,
+                            },
+                            300: {
+                                slidesPerView: 2,
+                            },
+                        }}
                     >
-                        {Array.from({ length: 6 }, (_i, index) => (
-                            <SwiperSlide key={index}>
+                        {products && products.map((product) =>
+                            <SwiperSlide key={product.id}>
                                 <div className={`px-[10px] ${styles.containerProduct}`}>
                                     <div className="relative">
+                                        {product.old_price != 0 &&
+                                            <div className="absolute top-6 left-0 bg-[#fe0000] rounded-full py-3 px-1">
+                                                <span className='text-white font-bold text-lg'>Giảm giá!</span>
+                                            </div>
+                                        }
                                         <Link
-                                            to={`${RoutePath.DetailProduct}/${index}`}
+                                            to={`${RoutePath.DetailProduct}/${product.id}`}
                                             className="text-center block mx-auto"
                                         >
                                             <img
-                                                src="https://www.thol.com.vn/wp-content/uploads/2019/07/Superhugemockcholateshake-300x300.jpg"
+                                                src={product.image}
                                                 width={274}
                                             />
                                         </Link>
@@ -97,21 +119,21 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                                         </div>
                                     </div>
                                     <Link
-                                        to={`${RoutePath.DetailProduct}/${index}`}
+                                        to={`${RoutePath.DetailProduct}/${product.id}`}
                                         className="text-base block leading-5 mt-2"
                                     >
-                                        Super Huge Gain – MASS Evogen tăng cân đẳng cấp nhất
+                                        {product.name}
                                     </Link>
-                                    <div>
-                                        <span className="font-semibold">1.750.000₫</span>
+                                    <div className='flex justify-start gap-2'>
+                                        {product.old_price != 0 && <span className="font-medium line-through text-category-title">{convertNumbertoMoney(product.old_price)}</span>}
+                                        <span className="font-semibold">{convertNumbertoMoney(product.new_price)}</span>
                                     </div>
                                 </div>
-                            </SwiperSlide>
-                        ))}
+                            </SwiperSlide>)}
                     </Swiper>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

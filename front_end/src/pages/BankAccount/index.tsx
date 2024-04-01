@@ -10,7 +10,7 @@ const BankAccount = () => {
     </Helmet>
     <div className="mx-auto max-w-[1140px] py-8 px-2">
       <div className="grid grid-cols-12">
-        <div className="col-span-9 max-sm:col-span-12 px-4">
+        <div className="col-span-9 max-md:col-span-12 px-4">
           <div className="text-center">
             <div className="text-[#334862] text-xs font-bold tracking-wider mb-1">
               Chưa phân loại
@@ -36,7 +36,7 @@ const BankAccount = () => {
             </div>
           </div>
         </div>
-        <div className="col-span-3 max-sm:hidden px-4">
+        <div className="col-span-3 max-md:hidden px-4">
           <img src={aboutUsBanner} className="w-full" />
         </div>
       </div>

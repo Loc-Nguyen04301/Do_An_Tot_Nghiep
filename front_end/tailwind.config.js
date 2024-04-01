@@ -17,9 +17,8 @@ export default {
       screens: {
         xs: "576px",
         sm: "600px",
-        // => @media (min-width: 576px) { ... }
         md: "850px",
-        // => @media (min-width: 850px) { ... }
+        lg: "1024px",
       },
       boxShadow: {
         "search-box": "0 0 10px 0 rgba(0,0,0,.1);",

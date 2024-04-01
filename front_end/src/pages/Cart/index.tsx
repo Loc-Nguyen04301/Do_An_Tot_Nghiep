@@ -140,10 +140,10 @@ const Cart = () => {
                 {data.length > 0 &&
                     <>
                         <div className='grid grid-cols-12 gap-6 px-5'>
-                            <div className='col-span-7 max-md:col-span-12'>
+                            <div className='col-span-7 max-lg:col-span-12'>
                                 <Table columns={columns} dataSource={data} pagination={false} />
                             </div>
-                            <div className='col-span-5 max-md:col-span-12'>
+                            <div className='col-span-5 max-lg:col-span-12'>
                                 <div className='text-category-title font-semibold text-lg tracking-wide border-b-[3px] pb-1'>Cộng giỏ hàng</div>
                                 <div className='mt-5'>
                                     <div className='text-category-title tracking-wide border-b-[1px] py-1 flex justify-between'>
@@ -174,11 +174,14 @@ const Cart = () => {
                                             850: {
                                                 slidesPerView: 6,
                                             },
-                                            550: {
+                                            680: {
                                                 slidesPerView: 4,
                                             },
-                                            300: {
+                                            530: {
                                                 slidesPerView: 3,
+                                            },
+                                            300: {
+                                                slidesPerView: 2,
                                             },
                                         }}
                                     >

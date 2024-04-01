@@ -57,6 +57,11 @@ const ListProductByCategory = () => {
           {products && products.map((product) =>
             <div className={`px-[10px] ${styles.containerProduct}`} key={product.id}>
               <div className="relative">
+                {product.old_price != 0 &&
+                  <div className="absolute top-6 left-0 bg-[#fe0000] rounded-full py-3 px-1">
+                    <span className='text-white font-bold text-lg'>Giảm giá!</span>
+                  </div>
+                }
                 <Link
                   to={`${RoutePath.DetailProduct}/${product.id}`}
                   className="text-center block mx-auto"
@@ -80,7 +85,7 @@ const ListProductByCategory = () => {
               >
                 {product.name}
               </Link>
-              <div className='flex justify-start gap-1'>
+              <div className='flex justify-start gap-2'>
                 {product.old_price != 0 && <span className="font-medium line-through text-category-title">{convertNumbertoMoney(product.old_price)}</span>}
                 <span className="font-semibold">{convertNumbertoMoney(product.new_price)}</span>
               </div>

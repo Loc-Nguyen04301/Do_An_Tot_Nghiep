@@ -17,8 +17,12 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
     const [products, setProducts] = useState<IProduct[]>([]);
 
     const getProductsByCategory = async () => {
-        const res = await ProductService.getProductByCategory(categoryPath)
-        setProducts(res.data.data)
+        try {
+            const res = await ProductService.getProductByCategory(categoryPath)
+            setProducts(res.data.data)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     useEffect(() => {

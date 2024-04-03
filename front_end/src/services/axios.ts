@@ -5,7 +5,7 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
-import { checkTokenExpiration, getAccessToken, setAccessToken } from "../utils";
+import { isTokenExpiration, getAccessToken, setAccessToken } from "../utils";
 import AuthService from "./AuthService";
 
 
@@ -34,7 +34,7 @@ instance.interceptors.request.use(
         ...request.headers,
         Authorization: "Bearer " + token,
       };
-      if (checkTokenExpiration(token)) {
+      if (isTokenExpiration(token)) {
         const response = await AuthService.refreshToken()
         const new_token = response.data.data.access_token
         setAccessToken(new_token);

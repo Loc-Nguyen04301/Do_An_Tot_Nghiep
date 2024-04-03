@@ -37,7 +37,6 @@ export class AuthController {
     return this.authService.logIn(loginAuthDto);
   }
 
-  // put guard in front of route
   @UseGuards(AtGuard)
   @Post('logout')
   @HttpCode(HttpStatus.OK)

@@ -20,6 +20,7 @@ import { RoutePath } from "../../../routes"
 import { getAccessToken, isLogin } from "../../../utils"
 import { useAppDispatch, useAppSelector } from '../../../redux-toolkit/hook';
 import { logOut } from "../../../redux-toolkit/authSlice"
+import { isTokenExpiration } from "../../../utils"
 
 const Header = () => {
   const logged = isLogin()
@@ -49,7 +50,7 @@ const Header = () => {
     <header>
       <div className="bg-[#f2f2f2]">
         {
-          logged === "true" && accessToken
+          logged === "true" && !isTokenExpiration(accessToken)
             ?
             <div className="flex justify-end items-end pr-3 pt-3 pb-2 gap-4">
               <p className="text-text-gray text-sm"> Hello, <span className="cursor-pointer hover:text-main-orange-color">{user.username}</span> </p>

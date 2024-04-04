@@ -15,11 +15,13 @@ const logout = () => {
 const refreshToken = () => {
     const refreshToken = getRefreshToken()
     const urlAPI = getBaseUrl()
-    return axios.post(`${urlAPI}/auth/refreshToken`, {}, {
-        headers: {
-            Authorization: "Bearer " + refreshToken
-        }
-    })
+    if (refreshToken)
+        return axios.post(`${urlAPI}/auth/refreshToken`, {}, {
+            headers: {
+                Authorization: "Bearer " + refreshToken
+            }
+        })
+    else return
 }
 
 const AuthService = { login, refreshToken, logout }

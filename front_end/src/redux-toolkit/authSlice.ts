@@ -29,7 +29,7 @@ export const getAccount = createAsyncThunk('auth/getAccount', async () => {
         if (logged !== "true") return
 
         const response = await AuthService.refreshToken()
-        return response.data.data
+        return response?.data.data
     } catch (error) {
         console.log(error)
     }

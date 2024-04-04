@@ -36,7 +36,7 @@ instance.interceptors.request.use(
       };
       if (isTokenExpiration(token)) {
         const response = await AuthService.refreshToken()
-        const new_token = response.data.data.access_token
+        const new_token = response?.data.data.access_token
         setAccessToken(new_token);
         newHeaders = {
           ...request.headers,
@@ -44,8 +44,8 @@ instance.interceptors.request.use(
         };
       }
     }
-
     request = { ...request, headers: newHeaders as AxiosRequestHeaders };
+    console.log(request)
     return request;
   },
   (error) => {

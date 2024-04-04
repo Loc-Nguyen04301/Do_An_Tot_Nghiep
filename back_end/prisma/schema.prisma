@@ -57,6 +57,7 @@ model Review{
   id              Int         @id @default(autoincrement())
   description     String
   star            Int?        @default(3)
+  image           String?     
   user            User        @relation(fields: [user_id], references: [id])
   user_id         Int         
   product         Product     @relation(fields: [product_id], references: [id])

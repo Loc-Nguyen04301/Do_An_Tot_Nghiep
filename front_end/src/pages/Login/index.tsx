@@ -60,26 +60,26 @@ const Login = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="my-2">
               <div className="label-email font-semibold tracking-wide">Email</div>
-              <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"email"} {...register('email')} />
+              <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"email"} {...register('email')} autoComplete="current-email" />
               {errors.email && <p className="text-red-500">{errors.email.message}</p>}
             </div>
             <div className="my-2">
               <div className="label-password font-semibold tracking-wide">Mật khẩu</div>
-              <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"password"} {...register('password')} />
+              <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"password"} {...register('password')} autoComplete="current-password"/>
               {errors.password && <p className="text-red-500">{errors.password.message}</p>}
-            </div>
-            <div className="flex justify-between">
-              <button type="submit" className="bg-main-orange-color text-white px-5 py-2 rounded-sm hover:bg-bold-main-orange-color">
-                <span>Đăng nhập</span>
-              </button>
-              <Link to={RoutePath.RegisterPage}>
-                <span className="underline">Bạn chưa có tài khoản ?</span>
-              </Link>
-            </div>
-          </form>
         </div>
-      </div>
+        <div className="flex justify-between">
+          <button type="submit" className="bg-main-orange-color text-white px-5 py-2 rounded-sm hover:bg-bold-main-orange-color">
+            <span>Đăng nhập</span>
+          </button>
+          <Link to={RoutePath.RegisterPage}>
+            <span className="underline">Bạn chưa có tài khoản ?</span>
+          </Link>
+        </div>
+      </form>
     </div>
+  </div >
+    </div >
   </>)
 };
 

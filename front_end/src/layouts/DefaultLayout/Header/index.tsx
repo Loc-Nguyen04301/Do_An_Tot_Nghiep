@@ -50,7 +50,7 @@ const Header = () => {
     <header>
       <div className="bg-[#f2f2f2]">
         {
-          logged === "true" && !isTokenExpiration(accessToken)
+          logged === "true" && accessToken && user.username.length > 0
             ?
             <div className="flex justify-end items-end pr-3 pt-3 pb-2 gap-4">
               <p className="text-text-gray text-sm"> Hello, <span className="cursor-pointer hover:text-main-orange-color">{user.username}</span> </p>

@@ -1,13 +1,11 @@
 import { jwtDecode } from "jwt-decode"
-import { getAccount } from "../redux-toolkit/authSlice"
-import { Dispatch } from "@reduxjs/toolkit"
 
-export const getAccessToken = (): string => {
-    return localStorage.getItem('accessToken') || ''
+export const getAccessToken = () => {
+    return localStorage.getItem('accessToken')
 }
 
-export const getRefreshToken = (): string => {
-    return localStorage.getItem('refreshToken') || ''
+export const getRefreshToken = () => {
+    return localStorage.getItem('refreshToken')
 }
 
 export const setAccessToken = (accessToken: string) => {
@@ -26,8 +24,8 @@ export const removeRefreshToken = () => {
     localStorage.removeItem('refreshToken')
 }
 
-export const isLogin = (): string => {
-    return localStorage.getItem("logged") || ''
+export const isLogin = () => {
+    return localStorage.getItem("logged")
 }
 
 export const setLoginTrue = () => {

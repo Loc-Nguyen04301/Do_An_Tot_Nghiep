@@ -1,21 +1,22 @@
-import React from "react"
+import { useState } from "react"
 import type { CollapseProps } from "antd"
 import { Collapse } from "antd"
 import { IDetailProduct } from ".."
 import { convertNumbertoMoney } from "../../../utils"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+import clsx from "clsx"
 
 interface AccordingProductProps {
   product: IDetailProduct
 }
 
 const AccordingProduct = ({ product }: AccordingProductProps) => {
-  const text = (
-    <p style={{ paddingLeft: 24 }}>
-      {product.description}
-    </p>
-  )
+  const [imagePreview, setImagePreview] = useState("")
+
+  const handlePreviewImage = (src: string) => {
+    setImagePreview(src)
+  }
 
   const items: CollapseProps["items"] = [
     {
@@ -26,7 +27,10 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
           Mô tả
         </a>
       ),
-      children: text,
+      children:
+        <p style={{ paddingLeft: 24 }}>
+          {product.description}
+        </p>,
       showArrow: true,
     },
     {
@@ -105,14 +109,14 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
                 </p>
                 <div className="image-lists flex gap-2 mt-3">
                   <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV-Gh6uC11b9BUzfJ1OAuC3MgwwQdOLZL7PA&usqp=CAU"
-                    alt="user_name"
-                    className="max-h-16 cursor-pointer"
+                    src={product.image}
+                    className="max-h-16 cursor-pointer hover:opacity-70"
+                    onClick={() => handlePreviewImage(product.image)}
                   />
                   <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV-Gh6uC11b9BUzfJ1OAuC3MgwwQdOLZL7PA&usqp=CAU"
-                    alt="user_name"
-                    className="max-h-16 cursor-pointer"
+                    src={product.image}
+                    className="max-h-16 cursor-pointer hover:opacity-70"
+                    onClick={() => handlePreviewImage(product.image)}
                   />
                 </div>
               </div>
@@ -128,7 +132,16 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
       showArrow: true,
     },
   ]
-  return <Collapse accordion items={items} bordered={false} />
+
+  return (
+    <>
+      <Collapse accordion items={items} bordered={false} />
+      <div id="myModal" className={clsx("modal", imagePreview.length > 0 ? "block" : "hidden")}>
+        <span className="close" onClick={() => handlePreviewImage("")}>&times;</span>
+        <img className="modal-content" src={imagePreview} />
+      </div >
+    </>
+  )
 }
 
 export default AccordingProduct

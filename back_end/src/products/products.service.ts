@@ -28,7 +28,19 @@ export class ProductsService {
         new_price: true,
         image: true,
         categories: { select: { category: { select: { name: true } } } },
-        reviews: true
+        reviews: {
+          select: {
+            description: true,
+            star: true,
+            created_at: true,
+            user: {
+              select: {
+                avatar: true,
+                username: true
+              }
+            },
+          }
+        }
       }
     });
     return product;

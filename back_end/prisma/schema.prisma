@@ -30,6 +30,7 @@ model Product {
   available   Int?                   @default(0)
   created_at  DateTime?              @default(now())
   categories  CategoriesOnProducts[]
+  Item        Item[]
   reviews     Review[]
 }
 
@@ -62,6 +63,26 @@ model Review {
   user        User      @relation(fields: [user_id], references: [id])
 
   @@unique([user_id, product_id])
+}
+
+model Bill {
+  id            Int     @id @default(autoincrement())
+  customer_name String
+  address       String
+  phone_number  String
+  email         String
+  note          String?
+  item          Item[]
+}
+
+model Item {
+  bill_id    Int
+  product_id Int
+  quantity   Int
+  bill       Bill    @relation(fields: [bill_id], references: [id])
+  product    Product @relation(fields: [product_id], references: [id])
+
+  @@unique([bill_id, product_id])
 }
 
 enum Role {

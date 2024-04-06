@@ -7,9 +7,10 @@ import { ProductsModule } from './products/products.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { SuccessInterceptor } from './common/interceptors/success.interceptor';
 import { ReviewsModule } from './reviews/reviews.module';
+import { BillsModule } from './bills/bills.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, ProductsModule, ReviewsModule],
+  imports: [PrismaModule, AuthModule, ProductsModule, ReviewsModule, BillsModule],
   providers: [
     {
       provide: APP_GUARD,

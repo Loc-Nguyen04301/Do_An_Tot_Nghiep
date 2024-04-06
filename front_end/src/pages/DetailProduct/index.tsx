@@ -20,13 +20,25 @@ import { useAlertDispatch } from "../../contexts/AlertContext"
 interface Category {
   name: string;
 }
+
+interface Review {
+  id: number;
+  user: { avatar: string, username: string };
+  images: string[],
+  description: string;
+  star: number;
+  created_at: string;
+}
+
 export interface IDetailProduct extends IProduct {
-  reviews: string[]
+  reviews: Review[]
   categories: { category: Category }[]
+  _count: { reviews: number }
 }
 
 const DetailProduct = () => {
   const [product, setProduct] = useState<IDetailProduct>();
+  console.log(product)
   const [relatedCategory, setRelatedCategory] = useState("")
   const [relatedProducts, setRelatedProducts] = useState<IDetailProduct[]>([]);
   const [quantity, setQuantity] = useState<number>(0)

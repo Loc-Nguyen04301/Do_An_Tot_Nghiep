@@ -64,7 +64,7 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
           className="text-lg hover:text-main-orange-color block"
           href="#danhgia"
         >
-          Đánh giá (0)
+          Đánh giá ({product._count.reviews})
         </a>
       ),
       children: (
@@ -72,56 +72,49 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
           <h3 className="font-bold text-2xl text-category-title mb-3">
             Đánh giá
           </h3>
-          {Array.from({ length: 6 }, (_i, index) =>
+          {product.reviews.map((review) =>
             <div
-              key={`${index}`}
+              key={`${review.id}`}
               className="flex border-b border-border-color py-4"
             >
               <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV-Gh6uC11b9BUzfJ1OAuC3MgwwQdOLZL7PA&usqp=CAU"
-                alt="user_name"
+                src={review.user.avatar}
                 className="max-h-10 pr-2"
               />
               <div>
                 <span className="text-[#222] text-xs">
-                  Nguyen Gia Loc
+                  {review.user.username}
                 </span>
                 <div>
-                  {[...Array(3)].map((_i, index) => (
+                  {[...Array(review.star)].map((_i, index) => (
                     <FontAwesomeIcon
                       key={index}
                       icon={faStar}
                       className="text-main-orange-color"
                     />
                   ))}
-                  {5 - 3 > 0 &&
-                    [...Array(5 - 3)].map((_i, index) => (
+                  {5 - review.star > 0 &&
+                    [...Array(5 - review.star)].map((_i, index) => (
                       <FontAwesomeIcon icon={faStar} key={index} className="text-main-grey-color" />
                     ))}
                 </div>
                 <p className="text-[#0000008a] text-xs">
-                  {new Date()
-                    .toISOString()
-                    .substring(0, 10)}
+                  {review.created_at.substring(0, 10)}
                 </p>
                 <p className="text-black text-base">
-                  sản phâm này rất tốt chúng tôi muốn mua số lượng lơn
+                  {review.description}
                 </p>
                 <div className="image-lists flex gap-2 mt-3">
-                  <img
-                    src={product.image}
-                    className="max-h-16 cursor-pointer hover:opacity-70"
-                    onClick={() => handlePreviewImage(product.image)}
-                  />
-                  <img
-                    src={product.image}
-                    className="max-h-16 cursor-pointer hover:opacity-70"
-                    onClick={() => handlePreviewImage(product.image)}
-                  />
+                  {review.images.map((image) =>
+                    <img
+                      src={image}
+                      className="max-h-16 cursor-pointer hover:opacity-70"
+                      onClick={() => handlePreviewImage(image)}
+                    />)}
                 </div>
               </div>
             </div>)}
-          {/* <p className="text-[#777777] text-[16px]">Chưa có đánh giá nào.</p> */}
+          {product.reviews.length === 0 && <p className="text-[#777777] text-[16px]">Chưa có đánh giá nào.</p>}
           <div className="mt-10 border-2 border-main-orange-color pt-3 pl-8 pb-10">
             <span className="text-lg">
               Chỉ những khách hàng đã đăng nhập và mua sản phẩm này mới có thể đưa ra đánh giá.

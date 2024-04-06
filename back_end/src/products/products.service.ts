@@ -30,17 +30,24 @@ export class ProductsService {
         categories: { select: { category: { select: { name: true } } } },
         reviews: {
           select: {
-            description: true,
-            star: true,
-            created_at: true,
+            id: true,
             user: {
               select: {
                 avatar: true,
                 username: true
               }
             },
+            images: true,
+            description: true,
+            star: true,
+            created_at: true,
           }
-        }
+        },
+        _count: {
+          select: {
+            reviews: true
+          }
+        },
       }
     });
     return product;

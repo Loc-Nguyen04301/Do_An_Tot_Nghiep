@@ -42,7 +42,6 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(new SuccessInterceptor('Logout Success'))
   logOut(@Req() req: Request) {
-    console.log(req);
     const user = req.user as JwtPayload;
     return this.authService.logOut(user.id);
   }

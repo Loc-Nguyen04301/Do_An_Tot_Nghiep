@@ -1,34 +1,37 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus } from '@nestjs/common';
 import { BillsService } from './bills.service';
 import { CreateBillDto } from './dto/create-bill.dto';
 import { UpdateBillDto } from './dto/update-bill.dto';
+import { Public } from 'src/common/decorators';
 
-@Controller('bills')
+@Controller('api/v1/bills')
 export class BillsController {
-  constructor(private readonly billsService: BillsService) {}
+  constructor(private readonly billsService: BillsService) { }
 
-  @Post()
+  @Public()
+  @Post("")
+  @HttpCode(HttpStatus.OK)
   create(@Body() createBillDto: CreateBillDto) {
     return this.billsService.create(createBillDto);
   }
 
-  @Get()
-  findAll() {
-    return this.billsService.findAll();
-  }
+  // @Get()
+  // findAll() {
+  //   return this.billsService.findAll();
+  // }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.billsService.findOne(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.billsService.findOne(+id);
+  // }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBillDto: UpdateBillDto) {
-    return this.billsService.update(+id, updateBillDto);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateBillDto: UpdateBillDto) {
+  //   return this.billsService.update(+id, updateBillDto);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.billsService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.billsService.remove(+id);
+  // }
 }

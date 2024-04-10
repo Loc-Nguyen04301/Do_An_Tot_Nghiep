@@ -28,7 +28,7 @@ const instance: AxiosInstance = axios.create({
 instance.interceptors.request.use(
   async (request: InternalAxiosRequestConfig) => {
     const token = getAccessToken();
-    let newHeaders
+    let newHeaders = { ...request.headers }
     if (token) {
       newHeaders = {
         ...request.headers,

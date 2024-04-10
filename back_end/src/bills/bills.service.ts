@@ -7,23 +7,10 @@ import { PrismaService } from '../prisma/prisma.service';
 export class BillsService {
   constructor(private prisma: PrismaService) { }
 
-  create(createBillDto: CreateBillDto) {
-    return this.prisma.
+  async create(createBillDto: CreateBillDto) {
+    const { address, customer_name, email, note, phone_number } = createBillDto
+    const bill = await this.prisma.bill.create({ data: { address, customer_name, email, phone_number, note } })
+    return bill
   }
 
-  findAll() {
-    return `This action returns all bills`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} bill`;
-  }
-
-  update(id: number, updateBillDto: UpdateBillDto) {
-    return `This action updates a #${id} bill`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} bill`;
-  }
 }

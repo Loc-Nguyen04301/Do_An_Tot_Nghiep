@@ -3,15 +3,44 @@ import { Helmet } from 'react-helmet-async'
 import { Link, NavLink } from 'react-router-dom'
 import { RoutePath } from '../../routes'
 import { RightOutlined } from '@ant-design/icons';
+
 import "../Login/Login.scss"
 import { convertNumbertoMoney } from '../../utils';
 import clsx from 'clsx';
 import { useAppSelector } from '../../redux-toolkit/hook';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import { useAlertDispatch } from '../../contexts/AlertContext';
+import BillService from '../../services/BillService';
+
+const schema = yup
+    .object({
+        customer_name: yup.string().required('Customer name is required'),
+        address: yup.string().required('Address is required'),
+        phone_number: yup.string().required('Phone number is required').min(10, 'Phone number is 10 characters').max(10, 'Phone number is 10 characters'),
+        email: yup.string().required('Email is required').email('Must be a valid email'),
+        note: yup.string()
+    })
 
 const Checkout = () => {
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(schema),
+    });
     const { totalAmount } = useAppSelector(state => state.cart)
-    const onSubmit = async () => {
 
+    const dispatchAlert = useAlertDispatch()
+
+    const onSubmit = async (data: any) => {
+        console.log(data)
+        dispatchAlert({ loading: true })
+        try {
+            const res = await BillService.createBill(data)
+            console.log(res)
+            dispatchAlert({ loading: false })
+        } catch (error: any) {
+            dispatchAlert({ errors: error.message })
+        }
     };
 
     return (
@@ -31,32 +60,41 @@ const Checkout = () => {
                 <div className='grid grid-cols-12 gap-7 px-5'>
                     <div className='col-span-7 border-t-2 border-border-color'>
                         <div>
-                            <form className=''>
+                            <form onSubmit={handleSubmit(onSubmit)}>
                                 <h1 className='mt-8 text-category-title text-lg '>
                                     THÔNG TIN THANH TOÁN
                                 </h1>
                                 <div className="my-2">
                                     <div className="label-email tracking-wide leading-6 font-semibold">Tên</div>
-                                    <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} />
+                                    <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('customer_name')} />
+                                    {errors.email && <p className="text-red-500">{errors.customer_name?.message}</p>}
                                 </div>
                                 <div className="my-2">
                                     <div className="label-email tracking-wide leading-6 font-semibold">Địa chỉ</div>
-                                    <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} />
+                                    <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('address')} />
+                                    {errors.email && <p className="text-red-500">{errors.address?.message}</p>}
                                 </div>
                                 <div className="my-2">
                                     <div className="label-email tracking-wide leading-6 font-semibold">Số điện thoại</div>
-                                    <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"number"} />
+                                    <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"number"} {...register('phone_number')} />
+                                    {errors.email && <p className="text-red-500">{errors.phone_number?.message}</p>}
                                 </div>
                                 <div className="my-2">
                                     <div className="label-email tracking-wide leading-6 font-semibold">Địa chỉ email</div>
-                                    <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"email"} />
+                                    <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"email"} {...register('email')} />
+                                    {errors.email && <p className="text-red-500">{errors.email?.message}</p>}
                                 </div>
                                 <h1 className='mt-12 text-category-title text-lg'>
                                     THÔNG TIN BỔ SUNG
                                 </h1>
                                 <div className="my-2">
                                     <div className="tracking-wide leading-6">Ghi chú đơn hàng (tuỳ chọn)</div>
-                                    <textarea className="w-full h-[80px] border-[1px] border-[#adadad] rounded-sm" title='abc' />
+                                    <textarea className="w-full h-[80px] border-[1px] border-[#adadad] rounded-sm" title='abc' {...register('note')} />
+                                </div>
+                                <div className='mt-5'>
+                                    <button className='w-1/4 bg-button-red-color py-2 hover:shadow-checkout-btn'>
+                                        <span className='text-white font-semibold tracking-wide' onSubmit={handleSubmit(onSubmit)}>Đặt hàng</span>
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -65,27 +103,19 @@ const Checkout = () => {
                         <div className='border-2 border-main-orange-color py-4 px-8'>
                             <h1 className='text-category-title text-lg font-semibold'>ĐƠN HÀNG CỦA BẠN</h1>
                             <div className='mt-5'>
-                                <div className='text-category-title tracking-wide border-b-[1px] py-1 flex justify-between'>
+                                <div className='text-category-title tracking-wide border-b py-2 flex justify-between'>
                                     <span>Tạm tính</span>
                                     <span className='font-extrabold text-black'>{convertNumbertoMoney(totalAmount)}</span>
                                 </div>
-                                <div className='text-category-title tracking-wide border-b-[3px] py-1 flex justify-between'>
+                                <div className='text-category-title tracking-wide border-b-[2px] py-2 flex justify-between'>
                                     <span>Tổng</span>
                                     <span className='font-extrabold text-black'>{convertNumbertoMoney(totalAmount)}</span>
                                 </div>
-                            </div>
-                            <div className='mt-5'>
-                                <Link to={RoutePath.CheckoutPage}>
-                                    <button className='w-1/3 bg-button-red-color py-2 hover:shadow-checkout-btn'>
-                                        <span className='text-white font-semibold tracking-wide'>Đặt hàng</span>
-                                    </button>
-                                </Link>
                             </div>
                             <div className='my-5'>
                                 <p className='text-[#777777] text-sm'>Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our</p>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

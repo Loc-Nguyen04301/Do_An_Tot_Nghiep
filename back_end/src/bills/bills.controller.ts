@@ -1,17 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, UseInterceptors } from '@nestjs/common';
 import { BillsService } from './bills.service';
 import { CreateBillDto } from './dto/create-bill.dto';
 import { UpdateBillDto } from './dto/update-bill.dto';
 import { Public } from 'src/common/decorators';
+import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 
 @Controller('api/v1/bills')
 export class BillsController {
   constructor(private readonly billsService: BillsService) { }
 
   @Public()
-  @Post("")
+  @Post()
   @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor())
   create(@Body() createBillDto: CreateBillDto) {
+    console.log(createBillDto)
     return this.billsService.create(createBillDto);
   }
 

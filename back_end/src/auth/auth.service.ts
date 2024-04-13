@@ -69,18 +69,23 @@ export class AuthService {
     const matchingUser = await this.prisma.user.findUnique({
       where: { email: loginAuthDto.email },
     });
-
     if (!matchingUser)
       throw new ForbiddenException('Email is not matching',);
+
     // Check if password matching
     const isMatchingPassword = bcrypt.compareSync(
       loginAuthDto.password,
       matchingUser.password,
     );
-
     if (!isMatchingPassword)
       throw new ForbiddenException('Password is not matching');
-    //create access token and refresh token
+
+    // Check if account is active
+    if (!matchingUser.active) {
+      throw new ForbiddenException('Account is not active. Please contact admin');
+    }
+
+    //Create access token and refresh token
     const { accessToken, refreshToken } = await this.generateToken(
       matchingUser.id,
       matchingUser.email,
@@ -132,6 +137,7 @@ export class AuthService {
     await this.updateRefreshTokenHash(matchingUser.id, refreshToken);
     return {
       user: {
+        id: matchingUser.id,
         username: matchingUser.username,
         email: matchingUser.email,
         avatar: matchingUser.avatar,

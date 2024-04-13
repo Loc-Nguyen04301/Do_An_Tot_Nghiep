@@ -8,15 +8,15 @@ datasource db {
 }
 
 model User {
-  id            Int       @id @default(autoincrement())
+  id            Int      @id @default(autoincrement())
   username      String
-  email         String    @unique
+  email         String   @unique
   password      String
   refresh_token String?
-  avatar        String?   @default("https://res.cloudinary.com/dr98sm712/image/upload/v1712373133/guest-user_it2nym.png")
-  role          Role?     @default(USER)
-  active        Boolean?  @default(true)
-  created_at    DateTime? @default(now())
+  avatar        String   @default("https://res.cloudinary.com/dr98sm712/image/upload/v1712373133/guest-user_it2nym.png")
+  role          Role     @default(USER)
+  active        Boolean  @default(false)
+  created_at    DateTime @default(now())
   bills         Bill[]
   reviews       Review[]
 }
@@ -28,8 +28,8 @@ model Product {
   old_price   Int
   new_price   Int
   image       String
-  available   Int?                   @default(0)
-  created_at  DateTime?              @default(now())
+  available   Int                    @default(0)
+  created_at  DateTime               @default(now())
   categories  CategoriesOnProducts[]
   items       Item[]
   reviews     Review[]
@@ -38,7 +38,7 @@ model Product {
 model Category {
   id         Int                    @id @default(autoincrement())
   name       String                 @unique
-  created_at DateTime?              @default(now())
+  created_at DateTime               @default(now())
   products   CategoriesOnProducts[]
 }
 
@@ -55,11 +55,12 @@ model CategoriesOnProducts {
 model Review {
   id          Int       @id @default(autoincrement())
   description String
-  star        Int?      @default(3)
+  star        Int       @default(3)
   user_id     Int
   product_id  Int
-  created_at  DateTime? @default(now())
   images      String[]
+  created_at  DateTime  @default(now())
+  update_at   DateTime? @updatedAt
   product     Product   @relation(fields: [product_id], references: [id])
   user        User      @relation(fields: [user_id], references: [id])
 
@@ -67,15 +68,20 @@ model Review {
 }
 
 model Bill {
-  id            Int     @id @default(autoincrement())
-  customer_name String
-  address       String
-  phone_number  String
-  email         String
-  note          String?
-  user_id       Int?
-  user          User?   @relation(fields: [user_id], references: [id])
-  items         Item[]
+  id             Int          @id @default(autoincrement())
+  customer_name  String
+  address        String
+  phone_number   String
+  email          String
+  note           String?
+  user_id        Int?
+  user           User?        @relation(fields: [user_id], references: [id])
+  order_status   OrderStatus  @default(PROCESSING)
+  payment_status Boolean      @default(false)
+  return_status  ReturnStatus @default(NONE)
+  created_at     DateTime     @default(now())
+  update_at      DateTime?    @updatedAt
+  items          Item[]
 }
 
 model Item {
@@ -91,4 +97,17 @@ model Item {
 enum Role {
   USER
   ADMIN
+}
+
+enum OrderStatus {
+  PROCESSING
+  SUCCESS
+  CANCELLED
+}
+
+enum ReturnStatus {
+  NONE
+  REQUESTED
+  PROCESSING
+  RETURNED
 }

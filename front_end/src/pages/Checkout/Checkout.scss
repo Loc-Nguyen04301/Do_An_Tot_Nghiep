@@ -1,0 +1,17 @@
+.payment-accordion {
+  .ant-collapse-item:last-child {
+    border-bottom: none !important;
+  }
+  .ant-collapse-item:first-child {
+    border-top: none !important;
+  }
+  .ant-collapse-item-active .ant-collapse-header {
+    background-color: white;
+  }
+  .ant-collapse-item-active {
+    border-top: 1px solid #d9d9d9 !important;
+  }
+  .ant-collapse-content-box {
+    padding: 0px 16px 8px !important;
+  }
+}

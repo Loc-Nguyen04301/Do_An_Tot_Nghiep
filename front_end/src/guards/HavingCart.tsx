@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { getAccessToken, isLogin } from '../utils'
+import { getAccessToken } from '../utils'
 import { Navigate } from 'react-router-dom'
 import { RoutePath } from '../routes'
 import { useAppSelector } from '../redux-toolkit/hook'

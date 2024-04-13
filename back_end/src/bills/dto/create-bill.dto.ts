@@ -1,4 +1,14 @@
-import { IsNotEmpty, IsString, IsEmail } from 'class-validator';
+import { IsNotEmpty, IsString, IsEmail, IsNumber } from 'class-validator';
+
+class ShortCartItem {
+    @IsNumber()
+    @IsNotEmpty()
+    product_id: number
+
+    @IsNumber()
+    @IsNotEmpty()
+    quantity: number
+}
 
 export class CreateBillDto {
     @IsString()
@@ -19,4 +29,9 @@ export class CreateBillDto {
 
     @IsString()
     note: string
+
+    @IsNumber()
+    user_id: number
+
+    shortCartItems: ShortCartItem[]
 }

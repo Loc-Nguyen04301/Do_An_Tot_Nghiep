@@ -1,5 +1,5 @@
 import React from 'react'
-import { getAccessToken, isLogin } from '../utils'
+import { getAccessToken } from '../utils'
 import Loading from '../components/Alert/Loading'
 import { Navigate } from 'react-router-dom'
 import { RoutePath } from '../routes'
@@ -9,10 +9,9 @@ interface AuthGuardProps {
 }
 
 const AuthGuard = ({ children }: AuthGuardProps) => {
-    const logged = isLogin()
     const accessToken = getAccessToken()
 
-    if (logged !== "true" && !accessToken) return <Navigate to={RoutePath.LoginPage} replace />
+    if (!accessToken) return <Navigate to={RoutePath.LoginPage} replace />
 
     return <>{children}</>
 }

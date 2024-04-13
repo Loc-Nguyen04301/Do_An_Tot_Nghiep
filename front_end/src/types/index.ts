@@ -12,7 +12,7 @@ export interface RegisterInterface {
 }
 
 export interface IUser {
-    id?: number;
+    id: number | null;
     username: string;
     email: string;
     avatar: string;

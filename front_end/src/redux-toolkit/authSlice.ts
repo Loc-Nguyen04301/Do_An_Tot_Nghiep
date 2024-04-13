@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { IUser } from '../types';
-import { isLogin, removeAccessToken, removeRefreshToken, setAccessToken, setLoginFalse, setLoginTrue, setRefreshToken } from '../utils';
+import { removeAccessToken, removeRefreshToken, setAccessToken, setRefreshToken } from '../utils';
 import AuthService from '../services/AuthService';
 
 
@@ -16,7 +16,7 @@ const initialState: AuthState = {
     access_token: "",
     refresh_token: "",
     user: {
-        id: undefined,
+        id: null,
         avatar: "",
         email: "",
         username: ""
@@ -25,9 +25,6 @@ const initialState: AuthState = {
 
 export const getAccount = createAsyncThunk('auth/getAccount', async () => {
     try {
-        const logged = isLogin()
-        if (logged !== "true") return
-
         const response = await AuthService.refreshToken()
         return response?.data.data
     } catch (error) {
@@ -52,7 +49,6 @@ export const authSlice = createSlice({
             const { access_token, refresh_token } = action.payload
             setAccessToken(access_token)
             setRefreshToken(refresh_token)
-            setLoginTrue()
             return { ...action.payload }
         },
     },
@@ -62,14 +58,12 @@ export const authSlice = createSlice({
                 const { access_token, refresh_token } = action.payload
                 setAccessToken(access_token)
                 setRefreshToken(refresh_token)
-                setLoginTrue()
                 return { ...action.payload }
             }
         })
         builder.addCase(getAccount.rejected, () => {
             removeAccessToken()
             removeRefreshToken()
-            setLoginFalse()
             return { ...initialState }
         })
         builder.addCase(getAccount.pending, () => {
@@ -78,7 +72,6 @@ export const authSlice = createSlice({
         builder.addCase(logOut.fulfilled, (state) => {
             removeAccessToken()
             removeRefreshToken()
-            setLoginFalse()
             return { ...initialState }
         })
         builder.addCase(logOut.rejected, () => {

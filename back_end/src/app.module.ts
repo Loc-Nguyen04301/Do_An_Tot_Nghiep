@@ -15,10 +15,10 @@ import { BillsModule } from './bills/bills.module';
       provide: APP_GUARD,
       useClass: AtGuard,
     },
-    {
-      provide: APP_FILTER,
-      useClass: HttpExceptionFilter,
-    },
+    // {
+    //   provide: APP_FILTER,
+    //   useClass: HttpExceptionFilter,
+    // },
     // {
     //   provide: APP_INTERCEPTOR,
     //   useClass: SuccessInterceptor,

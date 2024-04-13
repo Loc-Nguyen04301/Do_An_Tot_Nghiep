@@ -38,7 +38,6 @@ export interface IDetailProduct extends IProduct {
 
 const DetailProduct = () => {
   const [product, setProduct] = useState<IDetailProduct>();
-  console.log(product)
   const [relatedCategory, setRelatedCategory] = useState("")
   const [relatedProducts, setRelatedProducts] = useState<IDetailProduct[]>([]);
   const [quantity, setQuantity] = useState<number>(0)

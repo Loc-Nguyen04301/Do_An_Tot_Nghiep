@@ -1,10 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link, NavLink } from 'react-router-dom'
 import { RoutePath } from '../../routes'
 import { RightOutlined } from '@ant-design/icons';
 
-import "../Login/Login.scss"
 import { convertNumbertoMoney } from '../../utils';
 import clsx from 'clsx';
 import { useAppSelector } from '../../redux-toolkit/hook';
@@ -13,6 +12,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useAlertDispatch } from '../../contexts/AlertContext';
 import BillService from '../../services/BillService';
+import { Collapse, CollapseProps } from 'antd';
+
+import "../Login/Login.scss"
+import "./Checkout.scss"
 
 const schema = yup
     .object({
@@ -22,25 +25,78 @@ const schema = yup
         email: yup.string().required('Email is required').email('Must be a valid email'),
         note: yup.string()
     })
+const text = `
+  A dog is a type of domesticated animal.
+  Known for its loyalty and faithfulness,
+  it can be found as a welcome guest in many households across the world.
+`;
 
 const Checkout = () => {
+    const [activeKey, setActiveKey] = useState<string>("1")
+
+    const items: CollapseProps['items'] = [
+        {
+            key: '1',
+            label:
+                <div className='flex gap-3 items-center'>
+                    <input type={"radio"} checked={activeKey === "1"} />
+                    <span className='font-bold'>Chuyển khoản ngân hàng</span>
+                </div>,
+            children:
+                <p>Thực hiện thanh toán vào ngay tài khoản ngân hàng của chúng tôi.
+                    Đơn hàng sẽ đươc giao sau khi tiền đã chuyển.
+                </p>,
+            showArrow: false,
+        },
+        {
+            key: '2',
+            label:
+                <div className='flex gap-3 items-center'>
+                    <input type={"radio"} checked={activeKey === "2"} />
+                    <span className='font-bold'>Trả tiền mặt khi nhận hàng</span>
+                </div>,
+            children: <p>Trả tiền mặt khi nhận hàng</p>,
+            showArrow: false,
+        },
+        {
+            key: '3',
+            label:
+                <div className='flex gap-3 items-center'>
+                    <input type={"radio"} checked={activeKey === "3"} />
+                    <span className='font-bold'>Thanh toán cổng VNPay</span>
+                </div>,
+            children: <p> Thực hiện thanh toán thanh toán qua cổng VNPay'</p>,
+            showArrow: false,
+        },
+    ];
+
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });
-    const { totalAmount } = useAppSelector(state => state.cart)
-
+    const { totalAmount, cartItems } = useAppSelector(state => state.cart)
+    const { user } = useAppSelector(state => state.auth)
+    const shortCartItems = cartItems.map((item) => {
+        return { product_id: item.id, quantity: item.quantity }
+    })
     const dispatchAlert = useAlertDispatch()
 
     const onSubmit = async (data: any) => {
         console.log(data)
         dispatchAlert({ loading: true })
         try {
-            const res = await BillService.createBill(data)
+            const createBillDto = { ...data, shortCartItems, user_id: user.id }
+            console.log(createBillDto)
+            const res = await BillService.createBill(createBillDto)
             console.log(res)
             dispatchAlert({ loading: false })
         } catch (error: any) {
             dispatchAlert({ errors: error.message })
         }
+    };
+
+    const onChange = (key: string) => {
+        if (key.length > 0)
+            setActiveKey(key[0])
     };
 
     return (
@@ -49,18 +105,19 @@ const Checkout = () => {
                 <title>Thanh toán - THOL</title>
                 <meta name='description' content='Beginner friendly page for learning React Helmet.' />
             </Helmet>
-            <div className="max-w-[1140px] container mx-auto py-12">
-                <div className='mb-12 text-center'>
-                    <NavLink to={RoutePath.CartPage} className={({ isActive }) => clsx("mx-5 text-3xl hover:text-main-orange-color max-[475px]:hidden", isActive && "text-main-orange-color")}>SHOPPING CART</NavLink>
-                    <span className='relative bottom-[5px] max-[475px]:hidden'>
-                        <RightOutlined className='text-text-gray' />
-                    </span>
-                    <NavLink to={RoutePath.CheckoutPage} className={({ isActive }) => clsx("mx-5 text-3xl hover:text-main-orange-color", isActive && "text-main-orange-color")}>CHECKOUT DETAILS</NavLink>
-                </div>
-                <div className='grid grid-cols-12 gap-7 px-5'>
-                    <div className='col-span-7 border-t-2 border-border-color'>
-                        <div>
-                            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="max-w-[1140px] container mx-auto py-12">
+                    <div className='mb-12 text-center'>
+                        <NavLink to={RoutePath.CartPage} className={({ isActive }) => clsx("mx-5 text-3xl hover:text-main-orange-color max-[475px]:hidden", isActive && "text-main-orange-color")}>SHOPPING CART</NavLink>
+                        <span className='relative bottom-[5px] max-[475px]:hidden'>
+                            <RightOutlined className='text-text-gray' />
+                        </span>
+                        <NavLink to={RoutePath.CheckoutPage} className={({ isActive }) => clsx("mx-5 text-3xl hover:text-main-orange-color", isActive && "text-main-orange-color")}>CHECKOUT DETAILS</NavLink>
+                    </div>
+                    <div className='grid grid-cols-12 gap-7 px-5'>
+                        <div className='col-span-7 border-t-2 border-border-color'>
+                            <div>
+
                                 <h1 className='mt-8 text-category-title text-lg '>
                                     THÔNG TIN THANH TOÁN
                                 </h1>
@@ -96,30 +153,31 @@ const Checkout = () => {
                                         <span className='text-white font-semibold tracking-wide' onSubmit={handleSubmit(onSubmit)}>Đặt hàng</span>
                                     </button>
                                 </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div className='col-span-5'>
-                        <div className='border-2 border-main-orange-color py-4 px-8'>
-                            <h1 className='text-category-title text-lg font-semibold'>ĐƠN HÀNG CỦA BẠN</h1>
-                            <div className='mt-5'>
-                                <div className='text-category-title tracking-wide border-b py-2 flex justify-between'>
-                                    <span>Tạm tính</span>
-                                    <span className='font-extrabold text-black'>{convertNumbertoMoney(totalAmount)}</span>
-                                </div>
-                                <div className='text-category-title tracking-wide border-b-[2px] py-2 flex justify-between'>
-                                    <span>Tổng</span>
-                                    <span className='font-extrabold text-black'>{convertNumbertoMoney(totalAmount)}</span>
-                                </div>
+
                             </div>
-                            <div className='my-5'>
-                                <p className='text-[#777777] text-sm'>Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our</p>
+                        </div>
+                        <div className='col-span-5'>
+                            <div className='border-2 border-main-orange-color py-4 px-8'>
+                                <h1 className='text-category-title text-lg font-semibold'>ĐƠN HÀNG CỦA BẠN</h1>
+                                <div className='mt-5'>
+                                    <div className='text-category-title tracking-wide border-b py-2 flex justify-between'>
+                                        <span>Tạm tính</span>
+                                        <span className='font-extrabold text-black'>{convertNumbertoMoney(totalAmount)}</span>
+                                    </div>
+                                    <div className='text-category-title tracking-wide border-b-[2px] py-2 flex justify-between'>
+                                        <span>Tổng</span>
+                                        <span className='font-extrabold text-black'>{convertNumbertoMoney(totalAmount)}</span>
+                                    </div>
+                                </div>
+                                <Collapse className='mt-7 payment-accordion' activeKey={activeKey} ghost items={items} accordion onChange={onChange} />
+                                <div className='my-5'>
+                                    <p className='text-[#777777] text-sm'>Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
+            </form>
         </>
     )
 }

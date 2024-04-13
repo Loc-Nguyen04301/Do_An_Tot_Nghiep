@@ -24,18 +24,6 @@ export const removeRefreshToken = () => {
     localStorage.removeItem('refreshToken')
 }
 
-export const isLogin = () => {
-    return localStorage.getItem("logged")
-}
-
-export const setLoginTrue = () => {
-    return localStorage.setItem("logged", "true")
-}
-
-export const setLoginFalse = () => {
-    return localStorage.setItem("logged", "false")
-}
-
 export const convertNumbertoMoney = (number: number) => {
     return Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number)
 }

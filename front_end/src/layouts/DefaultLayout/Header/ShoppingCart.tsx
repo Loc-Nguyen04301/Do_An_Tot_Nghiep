@@ -54,8 +54,8 @@ const ShoppingCart = () => {
           </div>
         </div>
         :
-        <div className="py-8 px-4 min-w-[260px]">
-          <p className="text-center text-[#666666] text-lg">
+        <div className="py-5 px-4 min-w-[260px]">
+          <p className="text-center text-[#666666] text-base">
             Chưa có sản phẩm trong giỏ hàng.
           </p>
         </div>}

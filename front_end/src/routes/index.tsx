@@ -1,24 +1,27 @@
 import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useRoutes } from "react-router-dom";
 import DefaultLayout from "../layouts/DefaultLayout";
-import NotFound from "../pages/NotFound";
 import Loading from "../components/Alert/Loading";
 import GuestGuard from "../guards/GuestGuard";
 import AuthGuard from "../guards/AuthGuard";
 import HavingCart from "../guards/HavingCart";
 
 const Home = lazy(() => import("../pages/Home"));
+const Login = lazy(() => import("../pages/Login"));
+const Register = lazy(() => import("../pages/Register"));
 const AboutUs = lazy(() => import("../pages/AboutUs"));
 const Contact = lazy(() => import("../pages/Contact"));
 const BankAccount = lazy(() => import("../pages/BankAccount"));
 const DetailProduct = lazy(() => import("../pages/DetailProduct"));
 const ListProductByCategory = lazy(() => import("../pages/ListProductByCategory"));
-const Login = lazy(() => import("../pages/Login"));
-const Register = lazy(() => import("../pages/Register"));
 const Cart = lazy(() => import("../pages/Cart"));
 const Checkout = lazy(() => import("../pages/Checkout"));
+const OrderComplete = lazy(() => import("../pages/OrderComplete"));
+const NotFound = lazy(() => import("../pages/NotFound"));
 
 export enum RoutePath {
+  LoginPage = "/dang-nhap",
+  RegisterPage = "/dang-ky",
   Home = "/",
   AboutUs = "/gioi-thieu",
   Contact = "/lien-he",
@@ -27,8 +30,7 @@ export enum RoutePath {
   ListByCategory = "/danh-muc",
   CartPage = "/gio-hang",
   CheckoutPage = "/thanh-toan",
-  LoginPage = "/dang-nhap",
-  RegisterPage = "/dang-ky"
+  OrderComplete = "/order-complete"
 }
 
 const Router: React.FC = () => {
@@ -84,8 +86,17 @@ const Router: React.FC = () => {
             </AuthGuard>
         },
         {
-          path: `${RoutePath.ListByCategory}/:category`,
-          element: <ListProductByCategory />,
+          path: RoutePath.OrderComplete,
+          element:
+            <AuthGuard>
+              <HavingCart>
+                <OrderComplete />
+              </HavingCart>
+            </AuthGuard>
+        },
+        {
+          path: `*`,
+          element: <NotFound />,
         },
       ]
     }

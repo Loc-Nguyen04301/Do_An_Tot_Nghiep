@@ -1,18 +1,20 @@
 import React, { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { RoutePath } from '../../routes'
 import { RightOutlined } from '@ant-design/icons';
 
 import { convertNumbertoMoney } from '../../utils';
 import clsx from 'clsx';
-import { useAppSelector } from '../../redux-toolkit/hook';
+import { useAppDispatch, useAppSelector } from '../../redux-toolkit/hook';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useAlertDispatch } from '../../contexts/AlertContext';
 import BillService from '../../services/BillService';
 import { Collapse, CollapseProps } from 'antd';
+import { PaymentMethod } from '../../types';
+import { resetCart } from '../../redux-toolkit/cartSlice';
 
 import "../Login/Login.scss"
 import "./Checkout.scss"
@@ -25,21 +27,16 @@ const schema = yup
         email: yup.string().required('Email is required').email('Must be a valid email'),
         note: yup.string()
     })
-const text = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
-`;
 
 const Checkout = () => {
-    const [activeKey, setActiveKey] = useState<string>("1")
+    const [activeKey, setActiveKey] = useState<string>(PaymentMethod.SHIPCOD)
 
     const items: CollapseProps['items'] = [
         {
-            key: '1',
+            key: PaymentMethod.SHIPCOD,
             label:
                 <div className='flex gap-3 items-center'>
-                    <input type={"radio"} checked={activeKey === "1"} />
+                    <input type={"radio"} checked={activeKey === PaymentMethod.SHIPCOD} />
                     <span className='font-bold'>Chuyển khoản ngân hàng</span>
                 </div>,
             children:
@@ -49,20 +46,20 @@ const Checkout = () => {
             showArrow: false,
         },
         {
-            key: '2',
+            key: PaymentMethod.BANK_TRANSFER,
             label:
                 <div className='flex gap-3 items-center'>
-                    <input type={"radio"} checked={activeKey === "2"} />
+                    <input type={"radio"} checked={activeKey === PaymentMethod.BANK_TRANSFER} />
                     <span className='font-bold'>Trả tiền mặt khi nhận hàng</span>
                 </div>,
             children: <p>Trả tiền mặt khi nhận hàng</p>,
             showArrow: false,
         },
         {
-            key: '3',
+            key: PaymentMethod.VNPAY,
             label:
                 <div className='flex gap-3 items-center'>
-                    <input type={"radio"} checked={activeKey === "3"} />
+                    <input type={"radio"} checked={activeKey === PaymentMethod.VNPAY} />
                     <span className='font-bold'>Thanh toán cổng VNPay</span>
                 </div>,
             children: <p> Thực hiện thanh toán thanh toán qua cổng VNPay'</p>,
@@ -79,22 +76,27 @@ const Checkout = () => {
         return { product_id: item.id, quantity: item.quantity }
     })
     const dispatchAlert = useAlertDispatch()
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
 
     const onSubmit = async (data: any) => {
-        console.log(data)
         dispatchAlert({ loading: true })
         try {
-            const createBillDto = { ...data, shortCartItems, user_id: user.id }
-            console.log(createBillDto)
-            const res = await BillService.createBill(createBillDto)
-            console.log(res)
-            dispatchAlert({ loading: false })
+            setTimeout(async () => {
+                const createBillDto = { ...data, shortCartItems, user_id: user.id, payment_method: activeKey }
+                console.log(createBillDto)
+                const res = await BillService.createBill(createBillDto)
+                console.log(res)
+                dispatchAlert({ loading: false })
+                // dispatch(resetCart())
+                navigate(RoutePath.OrderComplete)
+            }, 2000)
         } catch (error: any) {
             dispatchAlert({ errors: error.message })
         }
     };
 
-    const onChange = (key: string) => {
+    const onChange = (key: string | string[]) => {
         if (key.length > 0)
             setActiveKey(key[0])
     };
@@ -117,7 +119,6 @@ const Checkout = () => {
                     <div className='grid grid-cols-12 gap-7 px-5'>
                         <div className='col-span-7 border-t-2 border-border-color'>
                             <div>
-
                                 <h1 className='mt-8 text-category-title text-lg '>
                                     THÔNG TIN THANH TOÁN
                                 </h1>
@@ -145,7 +146,7 @@ const Checkout = () => {
                                     THÔNG TIN BỔ SUNG
                                 </h1>
                                 <div className="my-2">
-                                    <div className="tracking-wide leading-6">Ghi chú đơn hàng (tuỳ chọn)</div>
+                                    <div className="tracking-wide leading-6 font-semibold">Ghi chú đơn hàng (tuỳ chọn)</div>
                                     <textarea className="w-full h-[80px] border-[1px] border-[#adadad] rounded-sm" title='abc' {...register('note')} />
                                 </div>
                                 <div className='mt-5'>
@@ -153,7 +154,6 @@ const Checkout = () => {
                                         <span className='text-white font-semibold tracking-wide' onSubmit={handleSubmit(onSubmit)}>Đặt hàng</span>
                                     </button>
                                 </div>
-
                             </div>
                         </div>
                         <div className='col-span-5'>

@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsString, IsEmail, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsString, IsEmail, IsNumber, IsEnum } from 'class-validator';
+import { PaymentMethod } from '@prisma/client';
 
 class ShortCartItem {
     @IsNumber()
@@ -30,8 +31,11 @@ export class CreateBillDto {
     @IsString()
     note: string
 
-    @IsNumber()
-    user_id: number
+    user_id?: any
+
+    @IsEnum(PaymentMethod)
+    @IsNotEmpty()
+    payment_method: PaymentMethod
 
     shortCartItems: ShortCartItem[]
 }

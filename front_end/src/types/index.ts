@@ -35,3 +35,8 @@ export enum Role {
     ADMIN = 'ADMIN',
 }
 
+export enum PaymentMethod {
+    SHIPCOD = "SHIPCOD",
+    BANK_TRANSFER = "BANK_TRANSFER",
+    VNPAY = "VNPAY"
+}

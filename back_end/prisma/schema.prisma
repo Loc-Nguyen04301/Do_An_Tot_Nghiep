@@ -58,8 +58,8 @@ model Review {
   star        Int       @default(3)
   user_id     Int
   product_id  Int
-  images      String[]
   created_at  DateTime  @default(now())
+  images      String[]
   update_at   DateTime? @updatedAt
   product     Product   @relation(fields: [product_id], references: [id])
   user        User      @relation(fields: [user_id], references: [id])
@@ -68,19 +68,20 @@ model Review {
 }
 
 model Bill {
-  id             Int          @id @default(autoincrement())
+  id             Int           @id @default(autoincrement())
   customer_name  String
   address        String
   phone_number   String
   email          String
   note           String?
   user_id        Int?
-  user           User?        @relation(fields: [user_id], references: [id])
-  order_status   OrderStatus  @default(PROCESSING)
-  payment_status Boolean      @default(false)
-  return_status  ReturnStatus @default(NONE)
-  created_at     DateTime     @default(now())
-  update_at      DateTime?    @updatedAt
+  created_at     DateTime      @default(now())
+  order_status   OrderStatus   @default(PROCESSING)
+  payment_status Boolean       @default(false)
+  return_status  ReturnStatus  @default(NONE)
+  update_at      DateTime?     @updatedAt
+  payment_method PaymentMethod
+  user           User?         @relation(fields: [user_id], references: [id])
   items          Item[]
 }
 
@@ -110,4 +111,10 @@ enum ReturnStatus {
   REQUESTED
   PROCESSING
   RETURNED
+}
+
+enum PaymentMethod {
+  SHIPCOD
+  BANK_TRANSFER
+  VNPAY
 }

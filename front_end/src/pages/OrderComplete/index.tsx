@@ -1,13 +1,95 @@
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { NavLink } from 'react-router-dom'
 import { RoutePath } from '../../routes'
 import clsx from 'clsx'
 import { RightOutlined } from '@ant-design/icons';
-import { convertNumbertoMoney } from '../../utils'
+import { convertNumbertoMoney, formatDate, getBillId } from '../../utils'
+import { useAppDispatch } from '../../redux-toolkit/hook'
+import { resetCart } from '../../redux-toolkit/cartSlice'
+import BillService from '../../services/BillService'
+import { PaymentMethod } from '../../types'
+
+interface IBill {
+    id: number;
+    customer_name: string;
+    address: string;
+    phone_number: string;
+    email: string;
+    note: string;
+    user_id: number | null;
+    created_at: string; // Consider using Date type if date manipulation is needed
+    order_status: string;
+    payment_status: boolean;
+    return_status: string;
+    update_at: string; // Consider using Date type if date manipulation is needed
+    payment_method: string;
+    items: IItem[];
+}
+
+interface IItem {
+    product: { name: string, new_price: number };
+    quantity: number;
+}
 
 const OrderComplete = () => {
-    const payment_method = 2
+    const [bill, setBill] = useState<IBill>()
+    const [billMethod, setBillMethod] = useState<string>("")
+    const [totalPrice, setTotalPrice] = useState<number>(0)
+
+    const billId = getBillId()
+
+    const dispatch = useAppDispatch()
+
+    const getProductById = async (id: string) => {
+        try {
+            if (id) {
+                const res = await BillService.getBillDetailById(id)
+                setBill(res.data.data)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        dispatch(resetCart())
+    }, [dispatch])
+
+    useEffect(() => {
+        if (billId) getProductById(billId)
+    }, [billId])
+
+    useEffect(() => {
+        if (bill) {
+            switch (bill.payment_method) {
+                case PaymentMethod.BANK_TRANSFER:
+                    setBillMethod("Chuyển khoản ngân hàng")
+                    break;
+                case PaymentMethod.SHIPCOD:
+                    setBillMethod("Trả tiền sau khi nhận hàng")
+                    break;
+                case PaymentMethod.VNPAY:
+                    setBillMethod("Thanh toán cổng VNPay")
+                    break;
+            }
+        }
+    }, [bill])
+
+    useEffect(() => {
+        if (bill) {
+            const totalPrice: number = bill.items.reduce((accumulator: number, currentItem: IItem) => {
+                const { product, quantity } = currentItem;
+                const { new_price } = product;
+
+                const subtotal: number = new_price * quantity;
+
+                return accumulator + subtotal;
+            }, 0);
+            setTotalPrice(totalPrice)
+        }
+    }, [bill])
+
     return (
         <>
             <Helmet>
@@ -28,7 +110,7 @@ const OrderComplete = () => {
                 </div>
                 <div className='grid grid-cols-12 gap-7 px-5'>
                     <div className='max-md:col-span-12 col-span-7 text-category-title'>
-                        {payment_method === 2
+                        {bill && bill.payment_method === PaymentMethod.BANK_TRANSFER
                             ?
                             <div className='mb-4'>
                                 <h2 className="font-bold text-2xl mb-4">Thông tin chuyển khoản ngân hàng</h2>
@@ -54,27 +136,18 @@ const OrderComplete = () => {
                                 <strong className='tracking-wider'>SẢN PHẨM</strong>
                                 <strong className='tracking-wider'>TỔNG</strong>
                             </li>
-                            <ul>
-                                <li className='flex justify-between py-2 border-b'>
-                                    <span>HYDRO WHEY - 100% Hydrolyzed Isolate Tinh Khiết<strong className='ml-1'>× 3</strong> </span>
-                                    <strong>{convertNumbertoMoney(6900000)}</strong>
-                                </li>
-                                <li className='flex justify-between py-2 border-b'>
-                                    <span>HYDRO WHEY - 100% Hydrolyzed Isolate Tinh Khiết<strong className='ml-1'>× 3</strong> </span>
-                                    <strong>{convertNumbertoMoney(6900000)}</strong>
-                                </li>
-                                <li className='flex justify-between py-2 border-b'>
-                                    <span>HYDRO WHEY - 100% Hydrolyzed Isolate Tinh Khiết<strong className='ml-1'>× 3</strong> </span>
-                                    <strong>{convertNumbertoMoney(6900000)}</strong>
-                                </li>
-                                <li className='flex justify-between py-2 border-b'>
-                                    <span>HYDRO WHEY - 100% Hydrolyzed Isolate Tinh Khiết<strong className='ml-1'>× 3</strong> </span>
-                                    <strong>{convertNumbertoMoney(6900000)}</strong>
-                                </li>
-                            </ul>
+                            {bill && bill.items &&
+                                <ul>
+                                    {bill.items.map(item =>
+                                        <li className='flex justify-between gap-3 py-2 border-b' key={item.product.name}>
+                                            <span>{item.product.name} <strong className='ml-1'>× {item.quantity}</strong> </span>
+                                            <strong>{convertNumbertoMoney(item.quantity * item.product.new_price)}</strong>
+                                        </li>
+                                    )}
+                                </ul>}
                             <li className='flex justify-between py-2 border-b'>
                                 <strong>Tổng số phụ:</strong>
-                                <strong>{convertNumbertoMoney(6900000)}</strong>
+                                <strong>{convertNumbertoMoney(totalPrice)}</strong>
                             </li>
                             <li className='flex justify-between py-2 border-b'>
                                 <strong>Phương thức thanh toán</strong>
@@ -82,50 +155,51 @@ const OrderComplete = () => {
                             </li>
                             <li className='flex justify-between py-2'>
                                 <strong>Tổng cộng:</strong>
-                                <strong>{convertNumbertoMoney(6900000)}</strong>
+                                <strong>{convertNumbertoMoney(totalPrice)}</strong>
                             </li>
                         </ul>
 
                     </div>
-                    <div className='max-md:col-span-12 col-span-5'>
-                        <div className="px-7 py-6 bg-[rgba(0,0,0,0.02)]">
-                            <p className="mb-5 text-[#7a9c59] text-lg font-bold">
-                                Cảm ơn bạn. Đơn hàng của bạn đã được nhận.
-                            </p>
-                            <ul className="list-disc text-category-title text-lg">
-                                <li className="ml-5 mb-2">
-                                    Người nhận:
-                                    <strong className='ml-1'>Nguyen Van A</strong>
-                                </li>
-                                <li className="ml-5 mb-2">
-                                    Số điện thoại:
-                                    <strong className='ml-1'>0915677049</strong>
-                                </li>
-                                <li className="ml-5 mb-2">
-                                    Địa chỉ:
-                                    <strong className='ml-1'>Xã Đồng Tâm, huyện Hiệp Lực, TP.Hà Nội </strong>
-                                </li>
-                                <li className="ml-5 mb-2">
-                                    Mã đơn hàng:
-                                    <strong className='ml-1'>3436</strong>
-                                </li>
-                                <li className="ml-5 mb-2">
-                                    Ngày:
-                                    <strong className='ml-1'>15 Tháng Tư, 2024</strong>
-                                </li>
-                                <li className="ml-5 mb-2">
-                                    Tổng cộng:
-                                    <strong className='ml-1'>
-                                        <span className="">{convertNumbertoMoney(5250000)} </span>
-                                    </strong>
-                                </li>
-                                <li className="ml-5 mb-2">
-                                    Phương thức thanh toán:
-                                    <strong className='ml-1'>Chuyển khoản ngân hàng</strong>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    {bill &&
+                        <div className='max-md:col-span-12 col-span-5'>
+                            <div className="px-7 py-6 bg-[rgba(0,0,0,0.02)]">
+                                <p className="mb-5 text-[#7a9c59] text-lg font-bold">
+                                    Cảm ơn bạn. Đơn hàng của bạn đã được nhận.
+                                </p>
+                                <ul className="list-disc text-category-title text-lg">
+                                    <li className="ml-5 mb-2">
+                                        Người nhận:
+                                        <strong className='ml-1'>{bill.customer_name}</strong>
+                                    </li>
+                                    <li className="ml-5 mb-2">
+                                        Số điện thoại:
+                                        <strong className='ml-1'>{bill.phone_number}</strong>
+                                    </li>
+                                    <li className="ml-5 mb-2">
+                                        Địa chỉ:
+                                        <strong className='ml-1'>{bill.address}</strong>
+                                    </li>
+                                    <li className="ml-5 mb-2">
+                                        Mã đơn hàng:
+                                        <strong className='ml-1'>{bill.id}</strong>
+                                    </li>
+                                    <li className="ml-5 mb-2">
+                                        Ngày:
+                                        <strong className='ml-1'>{formatDate(bill.created_at)}</strong>
+                                    </li>
+                                    <li className="ml-5 mb-2">
+                                        Tổng cộng:
+                                        <strong className='ml-1'>
+                                            <span className="">{convertNumbertoMoney(totalPrice)} </span>
+                                        </strong>
+                                    </li>
+                                    <li className="ml-5 mb-2">
+                                        Phương thức thanh toán:
+                                        <strong className='ml-1'>{billMethod}</strong>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>}
                 </div>
             </div>
         </>

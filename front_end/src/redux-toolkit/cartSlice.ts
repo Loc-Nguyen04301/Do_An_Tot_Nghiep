@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IProduct } from '../types/index';
 
 export interface IProductItem {
     id: number;
@@ -136,7 +135,9 @@ export const cartSlice = createSlice({
         },
 
         resetCart: (state) => {
-            state = initialState
+            state.cartItems = initialState.cartItems
+            state.totalAmount = initialState.totalAmount
+            state.totalQuantity = initialState.totalQuantity
         }
     }
 })

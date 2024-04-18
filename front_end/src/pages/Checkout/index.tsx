@@ -4,9 +4,9 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { RoutePath } from '../../routes'
 import { RightOutlined } from '@ant-design/icons';
 
-import { convertNumbertoMoney } from '../../utils';
+import { convertNumbertoMoney, setBillId } from '../../utils';
 import clsx from 'clsx';
-import { useAppDispatch, useAppSelector } from '../../redux-toolkit/hook';
+import { useAppSelector } from '../../redux-toolkit/hook';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -14,7 +14,6 @@ import { useAlertDispatch } from '../../contexts/AlertContext';
 import BillService from '../../services/BillService';
 import { Collapse, CollapseProps } from 'antd';
 import { PaymentMethod } from '../../types';
-import { resetCart } from '../../redux-toolkit/cartSlice';
 
 import "../Login/Login.scss"
 import "./Checkout.scss"
@@ -36,7 +35,7 @@ const Checkout = () => {
             key: PaymentMethod.SHIPCOD,
             label:
                 <div className='flex gap-3 items-center'>
-                    <input type={"radio"} checked={activeKey === PaymentMethod.SHIPCOD} />
+                    <input type={"radio"} checked={activeKey === PaymentMethod.SHIPCOD} readOnly />
                     <span className='font-bold'>Chuyển khoản ngân hàng</span>
                 </div>,
             children:
@@ -49,7 +48,7 @@ const Checkout = () => {
             key: PaymentMethod.BANK_TRANSFER,
             label:
                 <div className='flex gap-3 items-center'>
-                    <input type={"radio"} checked={activeKey === PaymentMethod.BANK_TRANSFER} />
+                    <input type={"radio"} checked={activeKey === PaymentMethod.BANK_TRANSFER} readOnly />
                     <span className='font-bold'>Trả tiền mặt khi nhận hàng</span>
                 </div>,
             children: <p>Trả tiền mặt khi nhận hàng</p>,
@@ -59,7 +58,7 @@ const Checkout = () => {
             key: PaymentMethod.VNPAY,
             label:
                 <div className='flex gap-3 items-center'>
-                    <input type={"radio"} checked={activeKey === PaymentMethod.VNPAY} />
+                    <input type={"radio"} checked={activeKey === PaymentMethod.VNPAY} readOnly />
                     <span className='font-bold'>Thanh toán cổng VNPay</span>
                 </div>,
             children: <p> Thực hiện thanh toán thanh toán qua cổng VNPay'</p>,
@@ -76,7 +75,6 @@ const Checkout = () => {
         return { product_id: item.id, quantity: item.quantity }
     })
     const dispatchAlert = useAlertDispatch()
-    const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
     const onSubmit = async (data: any) => {
@@ -84,11 +82,9 @@ const Checkout = () => {
         try {
             setTimeout(async () => {
                 const createBillDto = { ...data, shortCartItems, user_id: user.id, payment_method: activeKey }
-                console.log(createBillDto)
-                const res = await BillService.createBill(createBillDto)
-                console.log(res)
+                const response = await BillService.createBill(createBillDto)
+                setBillId(response.data.data.billId)
                 dispatchAlert({ loading: false })
-                // dispatch(resetCart())
                 navigate(RoutePath.OrderComplete)
             }, 2000)
         } catch (error: any) {

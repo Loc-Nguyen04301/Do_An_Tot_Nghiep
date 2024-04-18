@@ -8,12 +8,20 @@ export const getRefreshToken = () => {
     return localStorage.getItem('refreshToken')
 }
 
+export const getBillId = () => {
+    return localStorage.getItem('billId')
+}
+
 export const setAccessToken = (accessToken: string) => {
     localStorage.setItem('accessToken', accessToken)
 }
 
 export const setRefreshToken = (refreshToken: string) => {
     localStorage.setItem('refreshToken', refreshToken)
+}
+
+export const setBillId = (billId: string) => {
+    localStorage.setItem('billId', billId)
 }
 
 export const removeAccessToken = () => {
@@ -35,3 +43,22 @@ export const isTokenExpiration = (token: string) => {
     }
     return true;
 }
+
+export const formatDate = (inputDate: string): string => {
+    const date = new Date(inputDate);
+
+    // Define month names in Vietnamese
+    const monthNames: string[] = [
+        "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
+        "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"
+    ];
+
+    // Extract day, month, and year from the date object
+    const day: number = date.getUTCDate();
+    const monthIndex: number = date.getUTCMonth();
+    const year: number = date.getUTCFullYear();
+
+    // Create the formatted date string
+    const formattedDate: string = `${day} ${monthNames[monthIndex]}, ${year}`;
+    return formattedDate;
+};

@@ -69,6 +69,10 @@ const Router: React.FC = () => {
           element: <BankAccount />,
         },
         {
+          path: `${RoutePath.ListByCategory}/:category`,
+          element: <ListProductByCategory />,
+        },
+        {
           path: `${RoutePath.DetailProduct}/:label`,
           element: <DetailProduct />,
         },
@@ -89,9 +93,7 @@ const Router: React.FC = () => {
           path: RoutePath.OrderComplete,
           element:
             <AuthGuard>
-              <HavingCart>
-                <OrderComplete />
-              </HavingCart>
+              <OrderComplete />
             </AuthGuard>
         },
         {

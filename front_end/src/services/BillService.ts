@@ -4,6 +4,10 @@ const createBill = (data: any) => {
     return http.post(`/bills`, data)
 }
 
-const BillService = { createBill }
+const getBillDetailById = (id: string) => {
+    return http.get(`/bills/${id}`,)
+}
+
+const BillService = { createBill, getBillDetailById }
 
 export default BillService

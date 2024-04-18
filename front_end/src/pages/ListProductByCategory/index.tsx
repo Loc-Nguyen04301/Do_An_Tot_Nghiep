@@ -29,7 +29,8 @@ const ListProductByCategory = () => {
       <div className="bg-[url('https://www.thol.com.vn/wp-content/uploads/2015/11/nang-luong-suc-khoe-scaled.jpg')] bg-no-repeat bg-center bg-cover">
         <div className="container max-w-[1140px] mx-auto max-md:text-center">
           {categoryList.map((categoryItem) =>
-            categoryItem.path === category ? (
+            categoryItem.path === category &&
+            (
               <div>
                 <>
                   <Helmet>
@@ -46,8 +47,6 @@ const ListProductByCategory = () => {
                   <span> {categoryItem.title}</span>
                 </div>
               </div>
-            ) : (
-              <></>
             )
           )}
         </div>

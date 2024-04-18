@@ -46,7 +46,7 @@ export class BillsService {
         include: {
           items: {
             select: {
-              product: { select: { name: true } },
+              product: { select: { name: true, new_price: true } },
               quantity: true
             }
           }

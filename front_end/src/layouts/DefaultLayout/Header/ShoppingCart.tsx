@@ -14,7 +14,11 @@ const ShoppingCart = () => {
         <div className="pt-5 pb-8 px-5">
           <div className="min-w-[260px] max-h-[250px] overflow-y-auto">
             {cartItems.map((item) =>
-              <Link to={`${RoutePath.DetailProduct}/${item.id}`} className="flex pb-3 border-b border-border-color category-item my-4" key={item.id}>
+              <Link
+                key={item.id}
+                to={`${RoutePath.DetailProduct}/${item.id}`}
+                className="flex pb-3 border-b border-border-color category-item my-4"
+              >
                 <img
                   src={item.image}
                   className="w-[60px] h-[60px]"

@@ -52,9 +52,9 @@ const ListProductByCategory = () => {
         </div>
       </div>
       <div className="max-w-[1170px] mx-auto">
-        <div className="grid grid-cols-6 pt-8 pb-16 px-4 gap-y-5">
+        <div className="grid grid-cols-6 max-md:grid-cols-4 max-xs:grid-cols-3 pt-8 pb-16 px-4 gap-3">
           {products && products.map((product) =>
-            <div className={`px-[10px] ${styles.containerProduct}`} key={product.id}>
+            <div className={`${styles.containerProduct}`} key={product.id}>
               <div className="relative">
                 {product.old_price != 0 &&
                   <div className="absolute top-6 left-0 bg-[#fe0000] rounded-full py-3 px-1">

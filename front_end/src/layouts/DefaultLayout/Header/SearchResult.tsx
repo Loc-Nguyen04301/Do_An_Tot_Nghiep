@@ -46,7 +46,11 @@ const SearchResult = ({ setLoading }: SearchResultProps) => {
             <div className="max-h-[80vh] bg-white shadow-search-box overflow-y-auto">
                 <ul className="h-full">
                     {products.map((product) =>
-                        <Link to={`${RoutePath.DetailProduct}/${product.id}`} className="p-3 flex items-center justify-between hover:bg-[#f7f7f7] hover:cursor-pointer border-b-[1px]" key={product.id}>
+                        <Link
+                            key={product.id}
+                            to={`${RoutePath.DetailProduct}/${product.id}`}
+                            className="p-3 flex items-center justify-between hover:bg-[#f7f7f7] hover:cursor-pointer border-b-[1px]"
+                        >
                             <div className="flex items-center gap-5">
                                 <img src={product.image} width={50} />
                                 <span>{product.name}</span >

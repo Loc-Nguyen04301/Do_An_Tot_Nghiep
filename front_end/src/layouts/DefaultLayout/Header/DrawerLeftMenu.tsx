@@ -65,8 +65,8 @@ const DrawerLeftMenu = ({
         <div className="font-bold uppercase flex flex-col text-text-gray text-sm font-['Open_Sans']">
           {categoryList.map((category) => (
             <Link
-              to={`${RoutePath.ListByCategory}/${category.path}`}
               key={category.path}
+              to={`${RoutePath.ListByCategory}/${category.path}`}
               className={clsx("category-item block py-4 border-b-[1px] border-border-color", currentPath.includes(category.path) && "text-main-orange-color")}
             >
               {category.title}

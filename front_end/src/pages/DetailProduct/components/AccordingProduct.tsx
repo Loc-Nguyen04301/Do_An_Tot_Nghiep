@@ -105,8 +105,9 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
                   {review.description}
                 </p>
                 <div className="image-lists flex gap-2 mt-3">
-                  {review.images.map((image) =>
+                  {review.images.map((image, index) =>
                     <img
+                      key={index}
                       src={image}
                       className="max-h-16 cursor-pointer hover:opacity-70"
                       onClick={() => handlePreviewImage(image)}

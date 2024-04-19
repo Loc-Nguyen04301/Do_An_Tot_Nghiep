@@ -37,7 +37,7 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                 </span>
             </div>
             <div className="mt-8">
-                <div className="grid grid-cols-6 max-md:hidden">
+                <div className="grid grid-cols-6 max-md:hidden gap-3">
                     {products && products.map((product) =>
                         <div className={`px-[10px] ${styles.containerProduct}`} key={product.id}>
                             <div className="relative">
@@ -50,10 +50,12 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                                     to={`${RoutePath.DetailProduct}/${product.id}`}
                                     className="text-center block mx-auto"
                                 >
-                                    <img
-                                        src={product.image}
-                                        width={247}
-                                    />
+                                    <div className='h-[200px]'>
+                                        <img
+                                            src={product.image}
+                                        />
+                                    </div>
+
                                 </Link>
                                 <div
                                     className={`hidden absolute bottom-0 w-full bg-main-orange-color text-center py-1 opacity-95 duration-500 ${styles.showView}`}
@@ -65,7 +67,7 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                             </div>
                             <Link
                                 to={`${RoutePath.DetailProduct}/${product.id}`}
-                                className="text-base block leading-5 mt-2"
+                                className="text-base block leading-5 mt-2 mb-1"
                             >
                                 {product.name}
                             </Link>

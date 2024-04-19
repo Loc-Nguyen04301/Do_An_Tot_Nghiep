@@ -21,7 +21,10 @@ const DropDown = () => {
       </div>
       <div className="dropdown-content text-text-gray text-base bg-white">
         {categoryList.map((category) => (
-          <Link to={`${RoutePath.ListByCategory}/${category.path}`} key={category.path} className={clsx("px-4 py-3 block w-[244px] border-b border-border-color", currentPath.includes(category.path) && "text-main-orange-color")}>
+          <Link
+            key={category.path}
+            to={`${RoutePath.ListByCategory}/${category.path}`}
+            className={clsx("px-4 py-3 block w-[244px] border-b border-border-color", currentPath.includes(category.path) && "text-main-orange-color")}>
             {category.title}
           </Link>
         ))}

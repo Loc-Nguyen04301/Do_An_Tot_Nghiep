@@ -174,62 +174,6 @@ const Cart = () => {
                                     </Link>
                                 </div>
                             </div>
-                            <div className='recommend-product pt-12 col-span-12 max-md:mt-14'>
-                                <h1 className='font-bold text-2xl text-category-title'>Bạn có thể thích ...</h1>
-                                <div className="pt-3 pb-16">
-                                    <Swiper
-                                        navigation={true}
-                                        modules={[Navigation]}
-                                        loop={true}
-                                        breakpoints={{
-                                            850: {
-                                                slidesPerView: 6,
-                                            },
-                                            680: {
-                                                slidesPerView: 4,
-                                            },
-                                            530: {
-                                                slidesPerView: 3,
-                                            },
-                                            300: {
-                                                slidesPerView: 2,
-                                            },
-                                        }}
-                                    >
-                                        {Array.from({ length: 7 }, (_i, index) => (
-                                            <SwiperSlide key={index}>
-                                                <div className="px-[10px] containerProduct">
-                                                    <div className="relative">
-                                                        <a
-                                                            href={`/san-pham/${index}`}
-                                                            className="text-center block mx-auto"
-                                                        >
-                                                            <img
-                                                                src="https://www.thol.com.vn/wp-content/uploads/2019/07/Superhugemockcholateshake-300x300.jpg"
-                                                                width={274}
-                                                            />
-                                                        </a>
-                                                        <div className="hidden absolute bottom-0 w-full bg-main-orange-color text-center py-1 duration-500 showView">
-                                                            <span className="text-white font-semibold uppercase text-sm">
-                                                                Quick View
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <Link
-                                                        to={`/san-pham/${index}`}
-                                                        className="text-base block leading-5 mt-2"
-                                                    >
-                                                        Super Huge Gain – MASS Evogen tăng cân đẳng cấp nhất
-                                                    </Link>
-                                                    <div>
-                                                        <span className="font-semibold">1.750.000₫</span>
-                                                    </div>
-                                                </div>
-                                            </SwiperSlide>
-                                        ))}
-                                    </Swiper>
-                                </div>
-                            </div>
                         </div>
                     </>
                 }

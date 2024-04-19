@@ -11,18 +11,10 @@ interface HavingCartProps {
 
 const HavingCart = ({ children }: HavingCartProps) => {
     const { cartItems } = useAppSelector(state => state.cart)
-    const dispatchAlert = useAlertDispatch()
 
-    useEffect(() => {
-        dispatchAlert({ loading: true })
-        const timer = setTimeout(() => {
-            dispatchAlert({ loading: false })
-        }, 1000)
-
-        return () => clearTimeout(timer);
-    }, [])
-
-    if (cartItems.length === 0) return <Navigate to={RoutePath.CartPage} replace />
+    if (cartItems.length === 0) {
+        return <Navigate to={RoutePath.CartPage} replace />
+    }
     return <>{children}</>
 }
 

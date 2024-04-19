@@ -20,7 +20,6 @@ import { RoutePath } from "../../../routes"
 import { getAccessToken } from "../../../utils"
 import { useAppDispatch, useAppSelector } from '../../../redux-toolkit/hook';
 import { logOut } from "../../../redux-toolkit/authSlice"
-import { isTokenExpiration } from "../../../utils"
 
 const Header = () => {
   const [openLeftModal, setOpenLeftModal] = useState(false)
@@ -152,7 +151,7 @@ const Header = () => {
                 </li>
                 <li className="divider border-l-[1px] h-[2rem] border-white opacity-40"></li>
                 <li>
-                  <Link to={RoutePath.CheckoutPage}>
+                  <Link to={RoutePath.CartPage}>
                     <div className="bg-button-red-color rounded-full hover:bg-red-800 duration-300 cursor-pointer">
                       <div className="px-3 block h-[2rem]">
                         <span className="uppercase text-white font-semibold tracking-wide block leading-[2rem]">

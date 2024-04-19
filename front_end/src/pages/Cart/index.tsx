@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { RoutePath } from '../../routes'
 import { RightOutlined, DeleteOutlined } from '@ant-design/icons';
 import { ConfigProvider, Modal, Table, TableProps } from 'antd';
@@ -9,7 +9,6 @@ import { useAppDispatch, useAppSelector } from '../../redux-toolkit/hook';
 import { addItemToCart, IProductItem, removeItemToCart, deleteItemToCart } from '../../redux-toolkit/cartSlice';
 import { useAlertDispatch } from '../../contexts/AlertContext';
 import clsx from 'clsx';
-
 
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation } from 'swiper/modules';
@@ -25,6 +24,7 @@ const Cart = () => {
     const dispatch = useAppDispatch()
     const dispatchAlert = useAlertDispatch()
 
+    const navigate = useNavigate()
 
     const removeItem = (product: any) => {
         dispatchAlert({ loading: true })
@@ -55,6 +55,17 @@ const Cart = () => {
         setIsModalOpen(false);
     };
 
+    const handleNavigateCheckout = () => {
+        if (cartItems.length === 0) {
+            dispatchAlert({ loading: true })
+            setTimeout(() => {
+                dispatchAlert({ loading: false })
+            }, 5000)
+        }
+        else {
+            navigate(RoutePath.CheckoutPage)
+        }
+    }
 
     const columns: TableProps<IProductItem>['columns'] = [
         {
@@ -130,12 +141,12 @@ const Cart = () => {
                 <meta name='description' content='Beginner friendly page for learning React Helmet.' />
             </Helmet>
             <div className="max-w-[1140px] container mx-auto py-12" id="cart-page">
-                <div className='mb-12 text-center'>
+                <div className='mb-12 flex justify-center items-baseline w-3/4 mx-auto'>
                     <NavLink to={RoutePath.CartPage} className={({ isActive }) => clsx("mx-5 text-3xl hover:text-main-orange-color", isActive && "text-main-orange-color")}>SHOPPING CART</NavLink>
                     <span className='relative bottom-[5px] max-[475px]:hidden'>
                         <RightOutlined className='text-text-gray' />
                     </span>
-                    <NavLink to={RoutePath.CheckoutPage} className={({ isActive }) => clsx("mx-5 text-3xl hover:text-main-orange-color max-[475px]:hidden", isActive && "text-main-orange-color")}>CHECKOUT DETAILS</NavLink>
+                    <div onClick={handleNavigateCheckout} className={clsx("mx-5 text-3xl hover:text-main-orange-color max-[475px]:hidden cursor-pointer")}>CHECKOUT DETAILS</div>
                 </div>
                 {data.length > 0 &&
                     <>

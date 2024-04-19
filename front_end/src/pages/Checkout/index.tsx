@@ -105,7 +105,7 @@ const Checkout = () => {
             </Helmet>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="max-w-[1140px] container mx-auto py-12">
-                    <div className='mb-12 text-center'>
+                    <div className='mb-12 flex justify-center items-baseline w-3/4 mx-auto'>
                         <NavLink to={RoutePath.CartPage} className={({ isActive }) => clsx("mx-5 text-3xl hover:text-main-orange-color max-[475px]:hidden", isActive && "text-main-orange-color")}>SHOPPING CART</NavLink>
                         <span className='relative bottom-[5px] max-[475px]:hidden'>
                             <RightOutlined className='text-text-gray' />

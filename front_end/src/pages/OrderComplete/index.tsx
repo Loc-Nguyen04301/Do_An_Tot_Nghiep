@@ -9,6 +9,7 @@ import { useAppDispatch } from '../../redux-toolkit/hook'
 import { resetCart } from '../../redux-toolkit/cartSlice'
 import BillService from '../../services/BillService'
 import { PaymentMethod } from '../../types'
+import { useAlertDispatch } from '../../contexts/AlertContext'
 
 interface IBill {
     id: number;
@@ -40,6 +41,7 @@ const OrderComplete = () => {
     const billId = getBillId()
 
     const dispatch = useAppDispatch()
+    const dispatchAlert = useAlertDispatch()
 
     const getProductById = async (id: string) => {
         try {
@@ -59,6 +61,11 @@ const OrderComplete = () => {
     useEffect(() => {
         if (billId) getProductById(billId)
     }, [billId])
+
+    useEffect(() => {
+        if (!bill) dispatchAlert({ loading: true })
+        else dispatchAlert({ loading: false })
+    }, [bill])
 
     useEffect(() => {
         if (bill) {

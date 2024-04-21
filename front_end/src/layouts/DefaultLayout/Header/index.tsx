@@ -46,7 +46,7 @@ const Header = () => {
 
   return (
     <header>
-      <div className="bg-[#f2f2f2]">
+      <div className="header-top bg-[#f2f2f2]">
         {
           accessToken && user.username.length > 0
             ?
@@ -69,7 +69,7 @@ const Header = () => {
             </>
         }
       </div>
-      <div className="mx-auto px-1 max-w-[1140px] mb-1">
+      <div className="header-middle mx-auto px-1 max-w-[1140px] mb-1">
         <div className="flex justify-between items-center flex-1 pt-2 px-3">
           {/* Left Element mobile */}
           <div className="md:hidden">
@@ -102,7 +102,7 @@ const Header = () => {
               >
                 <FontAwesomeIcon icon={faCartShopping} size="lg" />
                 <div className="absolute -top-2 -right-1 bg-button-red-color text-white w-4 h-4 rounded-full text-center">
-                  <span className="text-xs font-semibold block">11</span>
+                  <span className="text-xs font-semibold block">{totalQuantity}</span>
                 </div>
               </li>
               <DrawerRightCart
@@ -119,7 +119,7 @@ const Header = () => {
           <CompanyInfomation />
         </div>
       </div>
-      <div className="bg-main-orange-color max-[950px]:text-xs text-sm max-md:hidden">
+      <div className="header-bottom bg-main-orange-color max-[950px]:text-xs text-sm max-md:hidden">
         <div className="max-w-[1140px] mx-auto container px-4 flex items-center justify-between">
           <div className="max-h-full">
             <div className="flex">
@@ -146,8 +146,8 @@ const Header = () => {
                     <div className="absolute -top-2 -right-1 bg-button-red-color text-white w-4 h-4 rounded-full text-center">
                       <span className="text-xs font-semibold block">{totalQuantity}</span>
                     </div>
-                    <ShoppingCart />
                   </Link>
+                  <ShoppingCart />
                 </li>
                 <li className="divider border-l-[1px] h-[2rem] border-white opacity-40"></li>
                 <li>

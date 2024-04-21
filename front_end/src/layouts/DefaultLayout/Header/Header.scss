@@ -28,12 +28,13 @@
 .cart.dropdown-content:after {
   position: absolute;
   bottom: 100%;
-  left: 20%;
+  left: 17%;
   border: solid transparent;
   content: " ";
   height: 0;
   width: 0;
   border-bottom-color: white;
-  border-width: 8px;
+  border-width: 11px;
   margin-left: 10px;
+  margin-right: 10px;
 }

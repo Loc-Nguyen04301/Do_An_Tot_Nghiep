@@ -47,6 +47,7 @@ const Cart = () => {
     };
 
     const handleOk = (product: any) => {
+        dispatchAlert({ success: "Xóa sản phẩm thành công" })
         dispatch(deleteItemToCart(product))
         setIsModalOpen(false);
     };

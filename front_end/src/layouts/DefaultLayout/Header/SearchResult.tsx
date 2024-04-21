@@ -49,7 +49,7 @@ const SearchResult = ({ setLoading }: SearchResultProps) => {
                         <Link
                             key={product.id}
                             to={`${RoutePath.DetailProduct}/${product.id}`}
-                            className="p-3 flex items-center justify-between hover:bg-[#f7f7f7] hover:cursor-pointer border-b-[1px]"
+                            className="p-3 flex items-center justify-between hover:bg-[#f7f7f7] hover:cursor-pointer border-b-[1px] gap-2"
                         >
                             <div className="flex items-center gap-5">
                                 <img src={product.image} width={50} />

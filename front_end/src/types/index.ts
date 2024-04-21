@@ -5,10 +5,9 @@ export interface LoginInterface {
     password: string;
 }
 
-export interface RegisterInterface {
-    name: string;
-    email: string;
-    password: string;
+export interface RegisterInterface extends LoginInterface {
+    username: string;
+    confirmPassword: string;
 }
 
 export interface IUser {

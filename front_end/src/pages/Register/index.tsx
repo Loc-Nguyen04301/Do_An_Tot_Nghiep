@@ -2,8 +2,43 @@ import React from "react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { RoutePath } from "../../routes";
+import * as yup from 'yup';
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+import "../Login/Login.scss"
+import { RegisterInterface } from "../../types";
+import { useAlertDispatch } from "../../contexts/AlertContext";
+import { useAppDispatch } from "../../redux-toolkit/hook";
+import AuthService from "../../services/AuthService";
+
+const schema = yup
+  .object().shape({
+    username: yup.string().required('Username is required'),
+    email: yup.string().required('Email is required').email('Must be a valid email'),
+    password: yup.string().required('Password is required').min(6, 'Password must be at least 6 characters'),
+    confirmPassword: yup.string().required('Please confirm your password')
+  })
 
 const Register = () => {
+  const dispatch = useAppDispatch()
+  const dispatchAlert = useAlertDispatch()
+  const { register, handleSubmit, formState: { errors }, watch, getValues } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = async (data: RegisterInterface) => {
+    console.log(data)
+    dispatchAlert({ loading: true })
+    try {
+      const response = await AuthService.register(data)
+      console.log(response)
+      dispatchAlert({ loading: false, success: response.data.message })
+    } catch (error: any) {
+      dispatchAlert({ errors: error.message })
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -19,22 +54,30 @@ const Register = () => {
               Nếu bạn có một tài khoản, hãy đăng nhập bằng địa chỉ email của
               bạn.
             </p>
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="my-2">
                 <div className="label-email font-semibold tracking-wide">Tên người dùng</div>
-                <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} />
+                <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('username')} />
+                {errors.email && <p className="text-red-500">{errors.username?.message}</p>}
               </div>
               <div className="my-2">
                 <div className="label-email font-semibold tracking-wide">Email</div>
-                <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"email"} />
+                <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"email"} {...register('email')} />
+                {errors.email && <p className="text-red-500">{errors.email.message}</p>}
               </div>
               <div className="my-2">
                 <div className="label-password font-semibold tracking-wide">Mật khẩu</div>
-                <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"password"} />
+                <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"password"} {...register('password')} />
+                {errors.password && <p className="text-red-500">{errors.password.message}</p>}
               </div>
               <div className="my-2">
                 <div className="label-email font-semibold tracking-wide">Xác nhận mật khẩu</div>
-                <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"password"} />
+                <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"password"} {...register('confirmPassword')} />
+                {errors.password && <p className="text-red-500">{errors.confirmPassword?.message}</p>}
+                {watch("password") !== watch("confirmPassword") &&
+                  getValues("confirmPassword") ? (
+                  <p className="text-red-500">Password not match</p>
+                ) : null}
               </div>
               <div className="flex justify-between">
                 <button type="submit" className="bg-main-orange-color text-white px-5 py-2 rounded-sm hover:bg-bold-main-orange-color">

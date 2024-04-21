@@ -64,7 +64,7 @@ const DetailProduct = () => {
     try {
       setTimeout(() => {
         dispatch(addItemToCartWithQuantity({ ...product, quantityAdded: quantity }))
-        dispatchAlert({ loading: false })
+        dispatchAlert({ loading: false, success: "Thêm vào giỏ hàng thành công" })
       }, 1000)
     } catch (error) {
       console.log(error)

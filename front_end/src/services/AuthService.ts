@@ -1,7 +1,12 @@
 import axios from "axios";
-import { LoginInterface } from "../types";
-import { getAccessToken, getRefreshToken } from "../utils";
+import { LoginInterface, RegisterInterface } from "../types";
+import { getRefreshToken } from "../utils";
 import http, { getBaseUrl } from "./axios";
+
+
+const register = (data: RegisterInterface) => {
+    return http.post("/auth/register", data)
+}
 
 const login = (data: LoginInterface) => {
     return http.post("/auth/login", data)
@@ -24,6 +29,6 @@ const refreshToken = () => {
     else return
 }
 
-const AuthService = { login, refreshToken, logout }
+const AuthService = { register, login, refreshToken, logout }
 
 export default AuthService

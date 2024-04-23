@@ -1,17 +1,17 @@
 import { useState } from "react"
 import type { CollapseProps } from "antd"
-import { Collapse } from "antd"
+import { Collapse, Rate } from "antd"
 import { IDetailProduct } from ".."
-import { convertNumbertoMoney } from "../../../utils"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { convertNumbertoMoney, getAccessToken } from "../../../utils"
 import clsx from "clsx"
+import ReviewContainer from "./ReviewContainer"
 
 interface AccordingProductProps {
   product: IDetailProduct
 }
 
 const AccordingProduct = ({ product }: AccordingProductProps) => {
+  const accessToken = getAccessToken()
   const [imagePreview, setImagePreview] = useState("")
 
   const handlePreviewImage = (src: string) => {
@@ -79,24 +79,14 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
             >
               <img
                 src={review.user.avatar}
-                className="max-h-10 pr-2"
+                className="max-h-10 pr-2 mt-1"
               />
               <div>
                 <span className="text-[#222] text-xs">
                   {review.user.username}
                 </span>
                 <div>
-                  {[...Array(review.star)].map((_i, index) => (
-                    <FontAwesomeIcon
-                      key={index}
-                      icon={faStar}
-                      className="text-main-orange-color"
-                    />
-                  ))}
-                  {5 - review.star > 0 &&
-                    [...Array(5 - review.star)].map((_i, index) => (
-                      <FontAwesomeIcon icon={faStar} key={index} className="text-main-grey-color" />
-                    ))}
+                  <Rate disabled defaultValue={review.star} />;
                 </div>
                 <p className="text-[#0000008a] text-xs">
                   {review.created_at.substring(0, 10)}
@@ -109,19 +99,26 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
                     <img
                       key={index}
                       src={image}
-                      className="max-h-16 cursor-pointer hover:opacity-70"
+                      className="max-h-[100px] cursor-zoom-in hover:opacity-70"
                       onClick={() => handlePreviewImage(image)}
                     />)}
                 </div>
               </div>
             </div>)}
           {product.reviews.length === 0 && <p className="text-[#777777] text-[16px]">Chưa có đánh giá nào.</p>}
-          <div className="mt-10 border-2 border-main-orange-color pt-3 pl-8 pb-10">
-            <span className="text-lg">
-              Chỉ những khách hàng đã đăng nhập và mua sản phẩm này mới có thể đưa ra đánh giá.
-            </span>
+          <div className="pt-9">
+            {accessToken
+              ?
+              <ReviewContainer product={product} handlePreviewImage={handlePreviewImage} />
+              :
+              <div className="border-2 border-main-orange-color pt-3 pl-8 pb-10">
+                <span className="text-lg">
+                  Chỉ những khách hàng đã đăng nhập và mua sản phẩm này mới có thể đưa ra đánh giá.
+                </span>
+              </div>
+            }
           </div>
-        </div>
+        </div >
       ),
       showArrow: true,
     },
@@ -133,7 +130,7 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
       <div id="myModal" className={clsx("modal", imagePreview.length > 0 ? "block" : "hidden")}>
         <span className="close" onClick={() => handlePreviewImage("")}>&times;</span>
         <img className="modal-content" src={imagePreview} />
-      </div >
+      </div>
     </>
   )
 }

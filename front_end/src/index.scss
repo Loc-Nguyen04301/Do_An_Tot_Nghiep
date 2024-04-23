@@ -155,7 +155,8 @@ body {
 .modal {
   position: fixed; /* Stay in place */
   z-index: 1000; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+  padding-top: 40px; /* Location of the box */
+  padding-bottom: 20px; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -169,8 +170,7 @@ body {
 .modal-content {
   margin: auto;
   display: block;
-  width: 20%;
-  max-width: 700px;
+  height: 80%;
 }
 
 /* Add Animation */

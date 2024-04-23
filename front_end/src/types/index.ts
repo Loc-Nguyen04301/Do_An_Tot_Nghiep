@@ -1,5 +1,3 @@
-import { string } from "yup";
-
 export interface LoginInterface {
     email: string;
     password: string;
@@ -38,4 +36,12 @@ export enum PaymentMethod {
     SHIPCOD = "SHIPCOD",
     BANK_TRANSFER = "BANK_TRANSFER",
     VNPAY = "VNPAY"
+}
+
+export interface ReviewInterface {
+    description: string;
+    star: number;
+    user_id: number;
+    product_id: number;
+    images?: string[];
 }

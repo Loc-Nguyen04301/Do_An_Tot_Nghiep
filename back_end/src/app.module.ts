@@ -4,9 +4,9 @@ import { AuthModule } from './auth/auth.module';
 import { APP_GUARD, APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { AtGuard } from './common/guards';
 import { ProductsModule } from './products/products.module';
-import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { ReviewsModule } from './reviews/reviews.module';
 import { BillsModule } from './bills/bills.module';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
 @Module({
   imports: [PrismaModule, AuthModule, ProductsModule, ReviewsModule, BillsModule],

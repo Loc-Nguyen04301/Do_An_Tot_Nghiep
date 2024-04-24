@@ -33,6 +33,7 @@ export class ProductsService {
             id: true,
             user: {
               select: {
+                id: true,
                 avatar: true,
                 username: true
               }

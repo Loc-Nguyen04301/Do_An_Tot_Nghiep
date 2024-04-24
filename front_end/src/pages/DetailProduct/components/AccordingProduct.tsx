@@ -5,6 +5,7 @@ import { IDetailProduct } from ".."
 import { convertNumbertoMoney, getAccessToken } from "../../../utils"
 import clsx from "clsx"
 import ReviewContainer from "./ReviewContainer"
+import { useAppSelector } from "../../../redux-toolkit/hook"
 
 interface AccordingProductProps {
   product: IDetailProduct
@@ -13,6 +14,10 @@ interface AccordingProductProps {
 const AccordingProduct = ({ product }: AccordingProductProps) => {
   const accessToken = getAccessToken()
   const [imagePreview, setImagePreview] = useState("")
+  const { user } = useAppSelector(state => state.auth)
+
+  const isReviewed = product.reviews.findIndex((review) => review.user.id === user.id)
+  console.log(isReviewed)
 
   const handlePreviewImage = (src: string) => {
     setImagePreview(src)
@@ -86,7 +91,7 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
                   {review.user.username}
                 </span>
                 <div>
-                  <Rate disabled defaultValue={review.star} />;
+                  <Rate disabled defaultValue={review.star} />
                 </div>
                 <p className="text-[#0000008a] text-xs">
                   {review.created_at.substring(0, 10)}
@@ -106,16 +111,19 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
               </div>
             </div>)}
           {product.reviews.length === 0 && <p className="text-[#777777] text-[16px]">Chưa có đánh giá nào.</p>}
-          <div className="pt-9">
-            {accessToken
+          <div className="pt-16">
+            {accessToken && isReviewed === -1
               ?
               <ReviewContainer product={product} handlePreviewImage={handlePreviewImage} />
-              :
-              <div className="border-2 border-main-orange-color pt-3 pl-8 pb-10">
-                <span className="text-lg">
-                  Chỉ những khách hàng đã đăng nhập và mua sản phẩm này mới có thể đưa ra đánh giá.
-                </span>
-              </div>
+              : accessToken && isReviewed !== -1
+                ?
+                <></>
+                :
+                <div className="border-2 border-main-orange-color pt-3 pl-8 pb-10">
+                  <span className="text-lg">
+                    Chỉ những khách hàng đã đăng nhập và mua sản phẩm này mới có thể đưa ra đánh giá.
+                  </span>
+                </div>
             }
           </div>
         </div >

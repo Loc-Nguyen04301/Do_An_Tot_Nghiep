@@ -23,7 +23,7 @@ interface Category {
 
 interface Review {
   id: number;
-  user: { avatar: string, username: string };
+  user: { id: number, avatar: string, username: string };
   images: string[],
   description: string;
   star: number;

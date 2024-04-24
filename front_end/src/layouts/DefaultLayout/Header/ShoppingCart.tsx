@@ -97,7 +97,6 @@ const ShoppingCart = () => {
             Chưa có sản phẩm trong giỏ hàng.
           </p>
         </div>}
-
     </div>
   )
 }

@@ -20,6 +20,7 @@ import { RoutePath } from "../../../routes"
 import { getAccessToken } from "../../../utils"
 import { useAppDispatch, useAppSelector } from '../../../redux-toolkit/hook';
 import { logOut } from "../../../redux-toolkit/authSlice"
+import { useAlertContext, useAlertDispatch } from "../../../contexts/AlertContext"
 
 const Header = () => {
   const [openLeftModal, setOpenLeftModal] = useState(false)
@@ -28,7 +29,10 @@ const Header = () => {
   const { user } = useAppSelector(state => state.auth)
   const { totalQuantity } = useAppSelector(state => state.cart)
   const accessToken = getAccessToken()
+
   const dispatch = useAppDispatch()
+  const dispatchAlert = useAlertDispatch()
+
   const location = useLocation()
   const currentPath = location.pathname
 
@@ -41,7 +45,15 @@ const Header = () => {
   }
 
   const handleLogout = () => {
-    dispatch(logOut())
+    dispatchAlert({ loading: true })
+    try {
+      setTimeout(() => {
+        dispatch(logOut())
+        dispatchAlert({ loading: false })
+      }, 2000)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -51,8 +63,19 @@ const Header = () => {
           accessToken && user.username.length > 0
             ?
             <div className="flex justify-end items-end pr-3 pt-3 pb-2 gap-4">
-              <p className="text-text-gray text-sm"> Hello, <span className="cursor-pointer hover:text-main-orange-color">{user.username}</span> </p>
-              <p className="cursor-pointer hover:text-red-500 font-medium" onClick={handleLogout}>Đăng xuất</p>
+              <p className="dropdown text-text-gray text-sm flex gap-1 mr-8">
+                <img src={user.avatar} width={20} />
+                <span className="cursor-pointer hover:text-main-orange-color">{user.username}</span>
+                <div className="dropdown-content profile top-[30px] right-0 bg-gray-200 rounded-md">
+                  <div className="py-2 px-4 min-w-[160px] rounded-lg">
+                    <div className="text-center text-[#666666] text-base flex flex-col gap-1">
+                      <div className="cursor-pointer hover:text-main-orange-color">Tài khoản của tôi</div>
+                      <div className="cursor-pointer hover:text-main-orange-color">Đơn mua</div>
+                      <div className="cursor-pointer hover:text-main-orange-color" onClick={handleLogout}>Đăng xuất</div>
+                    </div>
+                  </div>
+                </div>
+              </p>
             </div>
             :
             <>

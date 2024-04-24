@@ -28,13 +28,28 @@
 .cart.dropdown-content:after {
   position: absolute;
   bottom: 100%;
-  left: 17%;
+  left: 21%;
   border: solid transparent;
-  content: " ";
-  height: 0;
-  width: 0;
+  content: "";
   border-bottom-color: white;
-  border-width: 11px;
-  margin-left: 10px;
-  margin-right: 10px;
+  border-width: 10px;
+}
+
+.cart.dropdown-content::before {
+  position: absolute;
+  content: "";
+  width: 200px;
+  height: 20px;
+  top: -20px;
+  background: transparent;
+  left: 9%;
+}
+
+.profile.dropdown-content::before {
+  position: absolute;
+  content: "";
+  width: 160px;
+  height: 20px;
+  top: -20px;
+  background: transparent;
 }

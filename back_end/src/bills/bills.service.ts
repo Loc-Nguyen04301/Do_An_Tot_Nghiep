@@ -89,21 +89,20 @@ export class BillsService {
       whereClause = { ...whereClause, return_status };
     }
 
-    const records = await this.prisma.bill.count({
-      where: {
-        ...whereClause
-      },
-    });
+    const [bills, records] = await Promise.all([
+      this.prisma.bill.findMany({
+        where: {
+          ...whereClause
+        },
+        skip,
+        take,
+      }),
+      this.prisma.bill.count({
+        where: whereClause
+      })
+    ]);
 
     const total_pages = Math.ceil(records / page_size);
-
-    const bills = await this.prisma.bill.findMany({
-      where: {
-        ...whereClause
-      },
-      skip,
-      take,
-    });
 
     return { bills: bills, metadata: { page_index, page_size, total_pages, records } }
   }

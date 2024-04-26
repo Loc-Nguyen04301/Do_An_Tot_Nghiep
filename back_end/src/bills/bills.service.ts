@@ -1,8 +1,10 @@
-import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, Req } from '@nestjs/common';
 import { CreateBillDto } from './dto/create-bill.dto';
 import { UpdateBillDto } from './dto/update-bill.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
+import { Bill, ReturnStatus } from '@prisma/client';
+import { BillParams } from 'src/types';
 
 const saltOrRounds = 10;
 @Injectable()
@@ -53,5 +55,56 @@ export class BillsService {
         }
       })
     return bill
+  }
+
+  async findAll({
+    user_id,
+    order_status,
+    payment_status,
+    return_status,
+    page_index,
+    page_size
+  }: BillParams) {
+    user_id = user_id || null
+    page_index = page_index || 0;
+    page_size = page_size || 5;
+    order_status = order_status || null
+    payment_status = payment_status || null
+    return_status = return_status || ReturnStatus.NONE
+
+    const take = page_size as number
+    const skip = page_index * page_size as number
+
+    let whereClause = {}
+    if (user_id) {
+      whereClause = { ...whereClause, user_id };
+    }
+    if (order_status) {
+      whereClause = { ...whereClause, order_status };
+    }
+    if (payment_status) {
+      whereClause = { ...whereClause, payment_status };
+    }
+    if (return_status) {
+      whereClause = { ...whereClause, return_status };
+    }
+
+    const records = await this.prisma.bill.count({
+      where: {
+        ...whereClause
+      },
+    });
+
+    const total_pages = Math.ceil(records / page_size);
+
+    const bills = await this.prisma.bill.findMany({
+      where: {
+        ...whereClause
+      },
+      skip,
+      take,
+    });
+
+    return { bills: bills, metadata: { page_index, page_size, total_pages, records } }
   }
 }

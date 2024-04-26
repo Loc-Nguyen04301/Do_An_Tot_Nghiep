@@ -51,6 +51,10 @@ export const authSlice = createSlice({
             setRefreshToken(refresh_token)
             return { ...action.payload }
         },
+        updateAvatar: (state, action) => {
+            console.log(action.payload)
+            state.user.avatar = action.payload
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(getAccount.fulfilled, (state, action: PayloadAction<AuthState>) => {
@@ -83,5 +87,5 @@ export const authSlice = createSlice({
     }
 })
 
-export const { login } = authSlice.actions
+export const { login, updateAvatar } = authSlice.actions
 export default authSlice.reducer

@@ -10,6 +10,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { Role } from 'src/types';
+import { UpdateAuthDto } from './dto/update-auth.dto';
 
 const saltOrRounds = 10;
 
@@ -144,6 +145,13 @@ export class AuthService {
       },
       access_token: accessToken,
       refresh_token: refreshToken,
+    }
+  }
+
+  async updateProfile(id: number, updateAuthDto: UpdateAuthDto) {
+    if (id) {
+      const updateProfile = await this.prisma.user.update({ where: { id }, data: updateAuthDto })
+      return updateProfile
     }
   }
 }

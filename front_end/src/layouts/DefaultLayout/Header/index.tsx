@@ -69,8 +69,8 @@ const Header = () => {
                 <div className="dropdown-content profile top-[30px] right-0 bg-gray-200 rounded-md">
                   <div className="py-2 px-4 min-w-[160px] rounded-lg">
                     <div className="text-center text-[#666666] text-base flex flex-col gap-1">
-                      <div className="cursor-pointer hover:text-main-orange-color">Tài khoản của tôi</div>
-                      <div className="cursor-pointer hover:text-main-orange-color">Đơn mua</div>
+                      <Link to={RoutePath.Profile} className="cursor-pointer hover:text-main-orange-color">Tài khoản của tôi</Link>
+                      <Link to={RoutePath.Purchase} className="cursor-pointer hover:text-main-orange-color">Đơn mua</Link>
                       <div className="cursor-pointer hover:text-main-orange-color" onClick={handleLogout}>Đăng xuất</div>
                     </div>
                   </div>

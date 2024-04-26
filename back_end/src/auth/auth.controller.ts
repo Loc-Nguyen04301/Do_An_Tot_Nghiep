@@ -3,6 +3,9 @@ import {
   Controller,
   HttpCode,
   HttpStatus,
+  Param,
+  ParseIntPipe,
+  Patch,
   Post,
   Req,
   UseGuards,
@@ -16,6 +19,7 @@ import { AtGuard, RtGuard } from 'src/common/guards';
 import { Public } from 'src/common/decorators';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
+import { UpdateAuthDto } from './dto/update-auth.dto';
 
 @Controller('api/v1/auth')
 export class AuthController {
@@ -54,5 +58,13 @@ export class AuthController {
   refreshToken(@Req() req: Request) {
     const user = req.user as JwtRefreshPayload;
     return this.authService.refreshToken(user.id);
+  }
+
+  @UseGuards(AtGuard)
+  @Patch('update/:id')
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor('Update Profile Success'))
+  updateProfile(@Param('id', ParseIntPipe) id: number, @Body() updateAuthDto: UpdateAuthDto) {
+    return this.authService.updateProfile(id, updateAuthDto);
   }
 }

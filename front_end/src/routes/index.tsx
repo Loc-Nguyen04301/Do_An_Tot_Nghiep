@@ -18,11 +18,15 @@ const Cart = lazy(() => import("../pages/Cart"));
 const Checkout = lazy(() => import("../pages/Checkout"));
 const OrderComplete = lazy(() => import("../pages/OrderComplete"));
 const NotFound = lazy(() => import("../pages/NotFound"));
+const Profile = lazy(() => import("../pages/Profile"));
+const Purchase = lazy(() => import("../pages/Purchase"));
 
 export enum RoutePath {
   LoginPage = "/dang-nhap",
   RegisterPage = "/dang-ky",
   Home = "/",
+  Profile = "/user/profile",
+  Purchase = "/user/purchase",
   AboutUs = "/gioi-thieu",
   Contact = "/lien-he",
   BankAccount = "/tai-khoan-ngan-hang",
@@ -55,6 +59,20 @@ const Router: React.FC = () => {
             <GuestGuard>
               <Register />
             </GuestGuard>
+        },
+        {
+          path: RoutePath.Profile,
+          element:
+            <AuthGuard>
+              <Profile />
+            </AuthGuard>
+        },
+        {
+          path: RoutePath.Purchase,
+          element:
+            <AuthGuard>
+              <Purchase />
+            </AuthGuard>
         },
         {
           path: RoutePath.AboutUs,

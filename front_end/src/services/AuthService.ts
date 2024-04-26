@@ -13,8 +13,7 @@ const login = (data: LoginInterface) => {
 }
 
 const logout = () => {
-    const urlAPI = getBaseUrl()
-    return http.post(`${urlAPI}/auth/logout`)
+    return http.post(`/auth/logout`)
 }
 
 const refreshToken = () => {
@@ -29,6 +28,10 @@ const refreshToken = () => {
     else return
 }
 
-const AuthService = { register, login, refreshToken, logout }
+const updateProfile = (id: number, data: { username?: string, avatar?: string }) => {
+    return http.patch(`/auth/update/${id}`, data)
+}
+
+const AuthService = { register, login, refreshToken, logout, updateProfile }
 
 export default AuthService

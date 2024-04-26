@@ -1,17 +1,19 @@
-import React, { ChangeEvent, useRef, useState } from 'react'
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { RoutePath } from '../../routes'
 import { NavLink } from 'react-router-dom'
 import clsx from 'clsx'
-import { checkImage } from '../../utils'
+import { checkImage, imageUpload } from '../../utils'
 import { useAlertDispatch } from '../../contexts/AlertContext'
 import { ConfigProvider, Radio, RadioChangeEvent } from 'antd'
 import { useAppDispatch, useAppSelector } from '../../redux-toolkit/hook'
-import { updateAvatar } from '../../redux-toolkit/authSlice'
+import AuthService from '../../services/AuthService'
 
 const Profile = () => {
     const { user } = useAppSelector(state => state.auth)
     const [gender, setGender] = useState(1);
+    const [avatarTemp, setAvatarTemp] = useState<string>()
+    const [avatarTempFile, setAvatarTempFile] = useState<File>()
 
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const dispatchAlert = useAlertDispatch()
@@ -36,10 +38,29 @@ const Profile = () => {
                 return
             }
             else {
-                dispatch(updateAvatar(URL.createObjectURL(file)))
+                setAvatarTemp(URL.createObjectURL(file))
+                setAvatarTempFile(file)
             }
         }
     };
+
+    const handleUpdateProfile = async () => {
+        dispatchAlert({ loading: true })
+        try {
+            if (user.id && avatarTempFile) {
+                const res = await imageUpload(avatarTempFile)
+                const res2 = await AuthService.updateProfile(user.id, { avatar: res.url })
+                dispatchAlert({ loading: false })
+                window.location.reload()
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        setAvatarTemp(user.avatar)
+    }, [user.avatar])
 
     return (
         <>
@@ -92,14 +113,14 @@ const Profile = () => {
                                             </div>
                                         </div>
                                         <div>
-                                            <button className='w-full bg-button-red-color py-2 hover:shadow-checkout-btn'>
+                                            <button className='w-full bg-button-red-color py-2 hover:shadow-checkout-btn' onClick={handleUpdateProfile}>
                                                 <span className='text-white font-semibold tracking-wide'>Lưu</span>
                                             </button>
                                         </div>
                                     </div>
                                     <div className='flex flex-col items-center gap-3 mt-2'>
                                         <div className='w-[100px] h-[100px]'>
-                                            {user.avatar && <div className="bg-cover bg-center bg-no-repeat w-full h-full rounded-full" style={{ backgroundImage: `url(${user.avatar})` }}></div>}
+                                            {avatarTemp && <div className="bg-cover bg-center bg-no-repeat w-full h-full rounded-full" style={{ backgroundImage: `url(${avatarTemp})` }}></div>}
                                         </div>
                                         <label
                                             className="px-5 py-2 cursor-pointer text-black border border-[#e7e7e7] hover:bg-[#00000008]"

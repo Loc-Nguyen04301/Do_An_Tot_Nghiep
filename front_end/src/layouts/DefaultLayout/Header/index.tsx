@@ -63,8 +63,10 @@ const Header = () => {
           accessToken && user.username.length > 0
             ?
             <div className="flex justify-end items-end pr-3 pt-3 pb-2 gap-4">
-              <p className="dropdown text-text-gray text-sm flex gap-1 mr-8">
-                <img src={user.avatar} width={20} />
+              <p className="dropdown text-text-gray text-sm flex gap-1 mr-8 flex items-center">
+                <div className='w-[30px] h-[30px]'>
+                  {user.avatar && <div className="bg-cover bg-center bg-no-repeat w-full h-full rounded-full" style={{ backgroundImage: `url(${user.avatar})` }}></div>}
+                </div>
                 <span className="cursor-pointer hover:text-main-orange-color">{user.username}</span>
                 <div className="dropdown-content profile top-[30px] right-0 bg-gray-200 rounded-md">
                   <div className="py-2 px-4 min-w-[160px] rounded-lg">

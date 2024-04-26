@@ -8,6 +8,10 @@ export interface RegisterInterface extends LoginInterface {
     confirmPassword: string;
 }
 
+export interface IUpdateUser {
+
+}
+
 export interface IUser {
     id: number | null;
     username: string;

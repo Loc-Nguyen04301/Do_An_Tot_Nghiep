@@ -4,8 +4,6 @@ import { IUser } from '../types';
 import { removeAccessToken, removeRefreshToken, setAccessToken, setRefreshToken } from '../utils';
 import AuthService from '../services/AuthService';
 
-
-// Define a type for the slice state
 interface AuthState {
     access_token: string;
     refresh_token: string;
@@ -51,10 +49,6 @@ export const authSlice = createSlice({
             setRefreshToken(refresh_token)
             return { ...action.payload }
         },
-        updateAvatar: (state, action) => {
-            console.log(action.payload)
-            state.user.avatar = action.payload
-        }
     },
     extraReducers: (builder) => {
         builder.addCase(getAccount.fulfilled, (state, action: PayloadAction<AuthState>) => {
@@ -87,5 +81,5 @@ export const authSlice = createSlice({
     }
 })
 
-export const { login, updateAvatar } = authSlice.actions
+export const { login } = authSlice.actions
 export default authSlice.reducer

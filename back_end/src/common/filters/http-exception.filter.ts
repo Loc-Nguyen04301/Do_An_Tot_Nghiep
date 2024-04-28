@@ -9,14 +9,16 @@ export class HttpExceptionFilter implements ExceptionFilter {
         const request = ctx.getRequest<Request>();
         const statusCode = exception.getStatus();
         const message = exception.message
+        const error = exception.name
 
         response
             .status(statusCode)
             .json({
                 statusCode,
-                message,
                 timestamp: new Date().toISOString(),
                 path: request.url,
+                message,
+                error
             });
     }
 }

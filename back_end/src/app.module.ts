@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CacheModule } from '@nestjs/cache-manager';
-import * as redisStore from 'cache-manager-redis-store';
+import { redisStore } from 'cache-manager-redis-yet';
 import { APP_GUARD, APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 
 import { PrismaModule } from './prisma/prisma.module';
@@ -19,11 +19,16 @@ import { ConfigModule } from '@nestjs/config';
       cache: true,
       envFilePath: ['.env.development.local', '.env.development'],
     }),
-    CacheModule.register({
+    CacheModule.registerAsync({
       isGlobal: true,
-      store: redisStore,
-      host: process.env.REDIS_HOST,
-      port: process.env.REDIS_PORT,
+      useFactory: async () => ({
+        store: await redisStore({
+          socket: {
+            host: process.env.REDIS_HOST,
+            port: parseInt(process.env.REDIS_PORT),
+          },
+        }),
+      }),
     }),
     PrismaModule,
     AuthModule,
@@ -40,10 +45,6 @@ import { ConfigModule } from '@nestjs/config';
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
     },
-    // {
-    //   provide: APP_INTERCEPTOR,
-    //   useClass: SuccessInterceptor,
-    // }
   ],
 })
 export class AppModule { }

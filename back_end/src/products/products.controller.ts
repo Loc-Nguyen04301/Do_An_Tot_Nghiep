@@ -11,7 +11,11 @@ import {
   HttpCode,
   HttpStatus,
   UseInterceptors,
+  Inject,
+  CacheTTL,
 } from '@nestjs/common';
+import { CacheInterceptor } from '@nestjs/cache-manager';
+
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -23,15 +27,11 @@ import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor'
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) { }
 
-  // @Post()
-  // create(@Body() createProductDto: CreateProductDto) {
-  //   return this.productsService.create(createProductDto);
-  // }
-
   @Public()
   @Get()
   @HttpCode(HttpStatus.OK)
-  @UseInterceptors(new SuccessInterceptor())
+  @UseInterceptors(new SuccessInterceptor("Get Successfully"), CacheInterceptor)
+  @CacheTTL(5)
   findAll() {
     return this.productsService.findAll();
   }
@@ -39,7 +39,8 @@ export class ProductsController {
   @Public()
   @Get('/category/:category')
   @HttpCode(HttpStatus.OK)
-  @UseInterceptors(new SuccessInterceptor())
+  @UseInterceptors(new SuccessInterceptor(), CacheInterceptor)
+  @CacheTTL(5)
   findByCategory(@Param('category') category: string) {
     return this.productsService.findByCategory(category)
   }
@@ -60,13 +61,24 @@ export class ProductsController {
     return this.productsService.findByName(name);
   }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-  //   return this.productsService.update(+id, updateProductDto);
-  // }
+  @Public()
+  @Post()
+  @UseInterceptors(new SuccessInterceptor('Create Product Successfully'))
+  create(@Body() createProductDto: CreateProductDto) {
+    return this.productsService.create(createProductDto);
+  }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.productsService.remove(+id);
-  // }
+  @Public()
+  @Patch(':id')
+  @UseInterceptors(new SuccessInterceptor(`Update Product Successfully`))
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateProductDto: UpdateProductDto) {
+    return this.productsService.update(id, updateProductDto);
+  }
+
+  @Public()
+  @Delete(':id')
+  @UseInterceptors(new SuccessInterceptor())
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.productsService.remove(id);
+  }
 }

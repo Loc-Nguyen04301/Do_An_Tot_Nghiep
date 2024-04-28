@@ -46,8 +46,8 @@ model CategoriesOnProducts {
   product_id  Int
   category_id Int
   created_at  DateTime @default(now())
-  category    Category @relation(fields: [category_id], references: [id])
-  product     Product  @relation(fields: [product_id], references: [id])
+  category    Category @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  product     Product  @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@id([product_id, category_id])
 }

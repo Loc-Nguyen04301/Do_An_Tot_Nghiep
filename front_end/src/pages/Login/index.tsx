@@ -31,8 +31,8 @@ const Login = () => {
   const onSubmit = async (data: LoginInterface) => {
     dispatchAlert({ loading: true })
     try {
-      const response = await AuthService.login(data)
-      const { user, access_token, refresh_token } = response.data.data
+      const res = await AuthService.login(data)
+      const { user, access_token, refresh_token } = res.data.data
       dispatch(login({ user, access_token, refresh_token }))
       dispatchAlert({ loading: false })
       navigate(RoutePath.Home)

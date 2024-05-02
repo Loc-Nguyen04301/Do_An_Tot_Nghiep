@@ -31,9 +31,9 @@ const Register = () => {
     console.log(data)
     dispatchAlert({ loading: true })
     try {
-      const response = await AuthService.register(data)
-      console.log(response)
-      dispatchAlert({ loading: false, success: response.data.message })
+      const res = await AuthService.register(data)
+      console.log(res)
+      dispatchAlert({ loading: false, success: res.data.message })
     } catch (error: any) {
       dispatchAlert({ errors: error.message })
     }

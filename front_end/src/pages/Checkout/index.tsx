@@ -17,6 +17,7 @@ import { PaymentMethod } from '../../types';
 
 import "../Login/Login.scss"
 import "./Checkout.scss"
+import VNPayService from '../../services/VNPayService';
 
 const schema = yup
     .object({
@@ -36,6 +37,17 @@ const Checkout = () => {
             label:
                 <div className='flex gap-3 items-center'>
                     <input type={"radio"} checked={activeKey === PaymentMethod.SHIPCOD} readOnly />
+                    <span className='font-bold'>Trả tiền mặt khi nhận hàng</span>
+                </div>,
+            children:
+                <p>Trả tiền mặt khi nhận hàng</p>,
+            showArrow: false,
+        },
+        {
+            key: PaymentMethod.BANK_TRANSFER,
+            label:
+                <div className='flex gap-3 items-center'>
+                    <input type={"radio"} checked={activeKey === PaymentMethod.BANK_TRANSFER} readOnly />
                     <span className='font-bold'>Chuyển khoản ngân hàng</span>
                 </div>,
             children:
@@ -45,23 +57,13 @@ const Checkout = () => {
             showArrow: false,
         },
         {
-            key: PaymentMethod.BANK_TRANSFER,
-            label:
-                <div className='flex gap-3 items-center'>
-                    <input type={"radio"} checked={activeKey === PaymentMethod.BANK_TRANSFER} readOnly />
-                    <span className='font-bold'>Trả tiền mặt khi nhận hàng</span>
-                </div>,
-            children: <p>Trả tiền mặt khi nhận hàng</p>,
-            showArrow: false,
-        },
-        {
             key: PaymentMethod.VNPAY,
             label:
                 <div className='flex gap-3 items-center'>
                     <input type={"radio"} checked={activeKey === PaymentMethod.VNPAY} readOnly />
                     <span className='font-bold'>Thanh toán cổng VNPay</span>
                 </div>,
-            children: <p> Thực hiện thanh toán thanh toán qua cổng VNPay'</p>,
+            children: <p>Thực hiện thanh toán thanh toán qua cổng VNPay</p>,
             showArrow: false,
         },
     ];
@@ -79,13 +81,26 @@ const Checkout = () => {
 
     const onSubmit = async (data: any) => {
         dispatchAlert({ loading: true })
+        console.log(activeKey)
         try {
             setTimeout(async () => {
-                const createBillDto = { ...data, shortCartItems, user_id: user.id, payment_method: activeKey }
-                const response = await BillService.createBill(createBillDto)
-                setBillId(response.data.data.billId)
-                dispatchAlert({ loading: false })
-                navigate(RoutePath.OrderComplete)
+                if (activeKey === PaymentMethod.VNPAY) {
+                    const res = await VNPayService.navigateVNPay({
+                        amount: 10000,
+                        bankCode: "NCB",
+                        orderDescription: "Test Order",
+                        orderType: "billpayment"
+                    })
+                    console.log(res)
+                    return;
+                }
+                else {
+                    const createBillDto = { ...data, shortCartItems, user_id: user.id, payment_method: activeKey }
+                    const res = await BillService.createBill(createBillDto)
+                    setBillId(res.data.data.billId)
+                    dispatchAlert({ loading: false })
+                    navigate(RoutePath.OrderComplete)
+                }
             }, 2000)
         } catch (error: any) {
             dispatchAlert({ errors: error.message })

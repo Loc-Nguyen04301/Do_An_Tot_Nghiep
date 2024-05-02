@@ -43,7 +43,7 @@ const OrderComplete = () => {
     const dispatch = useAppDispatch()
     const dispatchAlert = useAlertDispatch()
 
-    const getProductById = async (id: string) => {
+    const getBillDetail = async (id: string) => {
         try {
             if (id) {
                 const res = await BillService.getBillDetailById(id)
@@ -59,7 +59,7 @@ const OrderComplete = () => {
     }, [dispatch])
 
     useEffect(() => {
-        if (billId) getProductById(billId)
+        if (billId) getBillDetail(billId)
     }, [billId])
 
     useEffect(() => {
@@ -117,7 +117,7 @@ const OrderComplete = () => {
                 </div>
                 <div className='grid grid-cols-12 gap-7 px-5'>
                     <div className='max-md:col-span-12 col-span-7 text-category-title'>
-                        {bill && bill.payment_method === PaymentMethod.BANK_TRANSFER
+                        {(bill && bill.payment_method === PaymentMethod.BANK_TRANSFER)
                             ?
                             <div className='mb-4'>
                                 <h2 className="font-bold text-2xl mb-4">Thông tin chuyển khoản ngân hàng</h2>
@@ -135,7 +135,11 @@ const OrderComplete = () => {
                                 </div>
                             </div>
                             :
-                            <p className='mb-4 text-lg'>Trả tiền sau khi nhận hàng </p>
+                            (bill && bill.payment_method === PaymentMethod.SHIPCOD)
+                                ?
+                                <p className='mb-4 text-lg'>Trả tiền sau khi nhận hàng </p>
+                                :
+                                <></>
                         }
                         <ul>
                             <h2 className="font-bold text-2xl mb-4">Chi tiết đơn hàng</h2>

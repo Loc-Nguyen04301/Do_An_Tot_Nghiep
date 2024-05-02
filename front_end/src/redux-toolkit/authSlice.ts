@@ -32,8 +32,8 @@ export const getAccount = createAsyncThunk('auth/getAccount', async () => {
 
 export const logOut = createAsyncThunk('auth/logOut', async () => {
     try {
-        const response = await AuthService.logout()
-        return response.data.data
+        const res = await AuthService.logout()
+        return res.data.data
     } catch (error) {
         console.log(error)
     }

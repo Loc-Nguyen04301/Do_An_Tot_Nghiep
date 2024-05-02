@@ -49,3 +49,10 @@ export interface ReviewInterface {
     product_id: number;
     images?: string[];
 }
+
+export interface CreatePaymentDto {
+    amount: number;
+    bankCode: string;
+    orderDescription: string;
+    orderType: string
+}

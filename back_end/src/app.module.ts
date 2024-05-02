@@ -11,6 +11,7 @@ import { ReviewsModule } from './reviews/reviews.module';
 import { BillsModule } from './bills/bills.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { ConfigModule } from '@nestjs/config';
+import { PaymentController } from './payment/payment.controller';
 
 @Module({
   imports: [
@@ -46,5 +47,6 @@ import { ConfigModule } from '@nestjs/config';
       useClass: HttpExceptionFilter,
     },
   ],
+  controllers: [PaymentController],
 })
 export class AppModule { }

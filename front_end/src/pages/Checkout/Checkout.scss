@@ -15,3 +15,15 @@
     padding: 0px 16px 8px !important;
   }
 }
+
+.label-name::after,
+.label-email::after,
+.label-password::after {
+  content: "*";
+  color: #e02b27;
+  font-size: 0.8rem;
+  margin: 0 0 0px 5px;
+  position: relative;
+  left: 0px;
+  bottom: 2px;
+}

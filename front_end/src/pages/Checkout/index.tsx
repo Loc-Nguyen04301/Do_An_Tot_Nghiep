@@ -15,7 +15,6 @@ import BillService from '../../services/BillService';
 import { Collapse, CollapseProps } from 'antd';
 import { PaymentMethod } from '../../types';
 
-import "../Login/Login.scss"
 import "./Checkout.scss"
 import VNPayService from '../../services/VNPayService';
 

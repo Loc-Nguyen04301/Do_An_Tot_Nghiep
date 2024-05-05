@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from "react";
 import { useRoutes } from "react-router-dom";
 import DefaultLayout from "../layouts/DefaultLayout";
+import AdminLayout from "../layouts/AdminLayout";
 import Loading from "../components/Alert/Loading";
 import GuestGuard from "../guards/GuestGuard";
 import AuthGuard from "../guards/AuthGuard";
@@ -21,7 +22,10 @@ const NotFound = lazy(() => import("../pages/NotFound"));
 const Profile = lazy(() => import("../pages/Profile"));
 const Purchase = lazy(() => import("../pages/Purchase"));
 
-const DashBoard = lazy(() => import("../pages/DashBoard"));
+const DashBoard = lazy(() => import("../pages/admin/Dashboard"));
+const Inventory = lazy(() => import("../pages/admin/Inventory"));
+const OrderAdmin = lazy(() => import("../pages/admin/OrderAdmin"));
+const Customer = lazy(() => import("../pages/admin/Customer"));
 
 export enum RoutePath {
   LoginPage = "/dang-nhap",
@@ -38,12 +42,38 @@ export enum RoutePath {
   CheckoutPage = "/thanh-toan",
   OrderComplete = "/order-complete",
 
-  DashBoard = "/admin/dashboard"
+  DashBoard = "/admin",
+  Inventory = "/admin/inventory",
+  OrderAdmin = "/admin/order",
+  Customer = "/admin/customer"
 }
 
 const Router: React.FC = () => {
   const routes = useRoutes([
     {
+      path: "/admin",
+      element: <AdminLayout />,
+      children: [
+        {
+          path: RoutePath.DashBoard,
+          element: <DashBoard />
+        },
+        {
+          path: RoutePath.Inventory,
+          element: <Inventory />
+        },
+        {
+          path: RoutePath.OrderAdmin,
+          element: <OrderAdmin />
+        },
+        {
+          path: RoutePath.Customer,
+          element: <Customer />
+        },
+      ]
+    },
+    {
+      path: "/",
       element: <DefaultLayout />,
       children: [
         {
@@ -123,10 +153,7 @@ const Router: React.FC = () => {
           element: <NotFound />,
         },
       ]
-    }, {
-      path: RoutePath.DashBoard,
-      element: <DashBoard />
-    }
+    },
   ])
 
   return <Suspense fallback={<Loading />}>{routes}</Suspense>;

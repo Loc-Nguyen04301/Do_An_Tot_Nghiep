@@ -52,7 +52,4 @@ export interface ReviewInterface {
 
 export interface CreatePaymentDto {
     amount: number;
-    bankCode: string;
-    orderDescription: string;
-    orderType: string
 }

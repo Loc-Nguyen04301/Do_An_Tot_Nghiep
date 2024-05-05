@@ -30,8 +30,11 @@ export class ProductsController {
   @Public()
   @Get()
   @HttpCode(HttpStatus.OK)
-  @UseInterceptors(new SuccessInterceptor("Get Successfully"), CacheInterceptor)
-  @CacheTTL(60000)
+  @UseInterceptors(
+    new SuccessInterceptor("Get Successfully"),
+    // CacheInterceptor
+  )
+  // @CacheTTL(60000)
   findAll() {
     return this.productsService.findAll();
   }
@@ -39,8 +42,11 @@ export class ProductsController {
   @Public()
   @Get('/category/:category')
   @HttpCode(HttpStatus.OK)
-  @UseInterceptors(new SuccessInterceptor(), CacheInterceptor)
-  @CacheTTL(60000)
+  @UseInterceptors(
+    new SuccessInterceptor(),
+    // CacheInterceptor
+  )
+  // @CacheTTL(60000)
   findByCategory(@Param('category') category: string) {
     return this.productsService.findByCategory(category)
   }

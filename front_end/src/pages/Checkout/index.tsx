@@ -81,23 +81,19 @@ const Checkout = () => {
 
     const onSubmit = async (data: any) => {
         dispatchAlert({ loading: true })
-        console.log(activeKey)
         try {
             setTimeout(async () => {
+                const createBillDto = { ...data, shortCartItems, user_id: user.id, payment_method: activeKey }
+                const res = await BillService.createBill(createBillDto)
+                setBillId(res.data.data.billId)
                 if (activeKey === PaymentMethod.VNPAY) {
                     const res = await VNPayService.navigateVNPay({
                         amount: 10000,
-                        bankCode: "NCB",
-                        orderDescription: "Test Order",
-                        orderType: "billpayment"
                     })
-                    console.log(res)
+                    window.location.replace(res.data.vnpUrl)
                     return;
                 }
                 else {
-                    const createBillDto = { ...data, shortCartItems, user_id: user.id, payment_method: activeKey }
-                    const res = await BillService.createBill(createBillDto)
-                    setBillId(res.data.data.billId)
                     dispatchAlert({ loading: false })
                     navigate(RoutePath.OrderComplete)
                 }
@@ -145,7 +141,7 @@ const Checkout = () => {
                                 </div>
                                 <div className="my-2">
                                     <div className="label-email tracking-wide leading-6 font-semibold">Số điện thoại</div>
-                                    <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"number"} {...register('phone_number')} />
+                                    <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('phone_number')} />
                                     {errors.email && <p className="text-red-500">{errors.phone_number?.message}</p>}
                                 </div>
                                 <div className="my-2">

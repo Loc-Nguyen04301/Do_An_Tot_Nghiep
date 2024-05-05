@@ -21,6 +21,8 @@ const NotFound = lazy(() => import("../pages/NotFound"));
 const Profile = lazy(() => import("../pages/Profile"));
 const Purchase = lazy(() => import("../pages/Purchase"));
 
+const DashBoard = lazy(() => import("../pages/DashBoard"));
+
 export enum RoutePath {
   LoginPage = "/dang-nhap",
   RegisterPage = "/dang-ky",
@@ -34,7 +36,9 @@ export enum RoutePath {
   ListByCategory = "/danh-muc",
   CartPage = "/gio-hang",
   CheckoutPage = "/thanh-toan",
-  OrderComplete = "/order-complete"
+  OrderComplete = "/order-complete",
+
+  DashBoard = "/admin/dashboard"
 }
 
 const Router: React.FC = () => {
@@ -119,6 +123,9 @@ const Router: React.FC = () => {
           element: <NotFound />,
         },
       ]
+    }, {
+      path: RoutePath.DashBoard,
+      element: <DashBoard />
     }
   ])
 

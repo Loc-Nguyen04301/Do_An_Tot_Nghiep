@@ -19,11 +19,11 @@ interface IBill {
     email: string;
     note: string;
     user_id: number | null;
-    created_at: string; // Consider using Date type if date manipulation is needed
+    created_at: string;
     order_status: string;
     payment_status: boolean;
     return_status: string;
-    update_at: string; // Consider using Date type if date manipulation is needed
+    update_at: string;
     payment_method: string;
     items: IItem[];
 }

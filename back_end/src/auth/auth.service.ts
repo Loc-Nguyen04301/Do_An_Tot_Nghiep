@@ -83,7 +83,7 @@ export class AuthService {
 
     // Check if account is active
     if (!matchingUser.active) {
-      throw new ForbiddenException('Account is not active. Please contact admin');
+      throw new ForbiddenException('Account is not active. Please contact Admin');
     }
 
     //Create access token and refresh token

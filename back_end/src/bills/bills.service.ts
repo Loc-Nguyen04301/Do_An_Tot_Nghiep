@@ -89,10 +89,23 @@ export class BillsService {
       whereClause = { ...whereClause, return_status };
     }
 
+    const notUndefined = 1
+
+    const fromDate = notUndefined ? new Date('2024-05-03 00:00:00') : undefined;
+    const toDate = notUndefined ? new Date('2024-05-04 23:59:59') : undefined;
+    const filtersDate: any[] = []
+    if (fromDate) {
+      filtersDate.push({ created_at: { gte: fromDate } });
+    }
+    if (toDate) {
+      filtersDate.push({ created_at: { lte: toDate } });
+    }
+    console.log(filtersDate)
     const [bills, records] = await Promise.all([
       this.prisma.bill.findMany({
         where: {
-          ...whereClause
+          ...whereClause,
+          AND: filtersDate
         },
         skip,
         take,

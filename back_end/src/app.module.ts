@@ -2,16 +2,19 @@ import { Module } from '@nestjs/common';
 // import { CacheModule } from '@nestjs/cache-manager';
 // import { redisStore } from 'cache-manager-redis-yet';
 import { APP_GUARD, APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { ConfigModule } from '@nestjs/config';
 
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
-import { AtGuard } from './common/guards';
 import { ProductsModule } from './products/products.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { BillsModule } from './bills/bills.module';
-import { HttpExceptionFilter } from './common/filters/http-exception.filter';
-import { ConfigModule } from '@nestjs/config';
+import { DashboardModule } from './dashboard/dashboard.module';
+
 import { PaymentController } from './payment/payment.controller';
+
+import { AtGuard } from './common/guards';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
 @Module({
   imports: [
@@ -36,6 +39,7 @@ import { PaymentController } from './payment/payment.controller';
     ProductsModule,
     ReviewsModule,
     BillsModule,
+    DashboardModule,
   ],
   providers: [
     {

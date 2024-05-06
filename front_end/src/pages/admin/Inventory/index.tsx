@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { getInventory } from '../../../API';
-import { Avatar, Rate, Space, Table, Typography } from 'antd';
+import { Avatar, Rate, Space, Table, TableProps, Typography } from 'antd';
 
 const Inventory = () => {
     const [loading, setLoading] = useState(false);
@@ -13,6 +13,9 @@ const Inventory = () => {
             setLoading(false);
         });
     }, []);
+    console.log(dataSource)
+
+    // const columns: TableProps<IProductItem>['columns'] = []
 
     return (
         <Space size={20} direction="vertical">
@@ -21,18 +24,28 @@ const Inventory = () => {
                 loading={loading}
                 columns={[
                     {
+                        title: "#",
+                        dataIndex: "thumbnail",
+                        render: (link, record, index) => {
+                            return index
+                        },
+                    },
+                    {
                         title: "Thumbnail",
                         dataIndex: "thumbnail",
-                        render: (link) => {
-                            return <Avatar src={link} />;
-                        },
+                        render: (link) => <Avatar src={link} />
                     },
                     {
                         title: "Title",
                         dataIndex: "title",
                     },
                     {
-                        title: "Price",
+                        title: "Old Price",
+                        dataIndex: "price",
+                        render: (value) => <span>${value}</span>,
+                    },
+                    {
+                        title: "New Price",
                         dataIndex: "price",
                         render: (value) => <span>${value}</span>,
                     },
@@ -47,7 +60,6 @@ const Inventory = () => {
                         title: "Stock",
                         dataIndex: "stock",
                     },
-
                     {
                         title: "Brand",
                         dataIndex: "brand",

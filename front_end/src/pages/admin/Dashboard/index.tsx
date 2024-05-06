@@ -18,6 +18,9 @@ import {
     Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import DashboardService from '../../../services/DashboardService';
+import { useAlertDispatch } from '../../../contexts/AlertContext';
+import { convertNumbertoMoney } from '../../../utils';
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -29,6 +32,23 @@ ChartJS.register(
 
 
 const DashBoard = () => {
+    const [count, setCount] = useState<{ billCount: number, productCount: number, userCount: number, revenueCount: number }>();
+    const dispatchAlert = useAlertDispatch()
+    const getCountDashboard = async () => {
+        dispatchAlert({ loading: true })
+        try {
+            const res = await DashboardService.countDashboard()
+            setCount(res.data.data)
+            dispatchAlert({ loading: false })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getCountDashboard()
+    }, [])
+
     return (
         <Space direction='vertical' size={20} className='w-full'>
             <Typography.Title level={4}>Dashboard</Typography.Title>
@@ -46,7 +66,7 @@ const DashBoard = () => {
                         />
                     }
                     title={"Orders"}
-                    value={123}
+                    value={count?.billCount}
                 />
                 <DashboardCard
                     icon={
@@ -61,7 +81,7 @@ const DashBoard = () => {
                         />
                     }
                     title={"Inventory"}
-                    value={456}
+                    value={count?.productCount}
                 />
                 <DashboardCard
                     icon={
@@ -76,7 +96,7 @@ const DashBoard = () => {
                         />
                     }
                     title={"Customer"}
-                    value={789}
+                    value={count?.userCount}
                 />
                 <DashboardCard
                     icon={
@@ -91,7 +111,7 @@ const DashBoard = () => {
                         />
                     }
                     title={"Revenue"}
-                    value={100}
+                    value={convertNumbertoMoney(count?.revenueCount)}
                 />
             </Space>
             <Space>

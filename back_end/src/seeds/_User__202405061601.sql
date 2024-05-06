@@ -1,0 +1,6 @@
+INSERT INTO public."User" (username,email,"password",refresh_token,avatar,"role",active,created_at,update_at) VALUES
+	 ('Nguyen Van A ','nguyenvana@gmail.com','$2b$10$3.GAnrXgyYFdBTJbFN1oNeFWSQJIucYzlcjufGnDMMwAxLzVLNwYW',NULL,'https://res.cloudinary.com/dr98sm712/image/upload/v1712373133/guest-user_it2nym.png','USER',false,'2024-05-05 01:56:08.361',NULL),
+	 ('loc','nguyengialoc@gmail.com','$2b$10$g8tP8a.efTfoP9A..N/q8u2zVMCq14UBwU7DT3oK.suCqwEif3LFq',NULL,'https://res.cloudinary.com/dr98sm712/image/upload/v1714101502/blog-mern-typescript/rvfnxuvrh1zshgjjpvd7.jpg','USER',true,'2024-04-17 09:20:25.378',NULL),
+	 ('admin.sapp','nguyengialocgsdfg7@gmail.com','$2b$10$2TWSCfk25Yfl3QJMVC3OZeHzAFWyRwsnay91ATn1lbSZ9zdMIjgqi',NULL,'https://res.cloudinary.com/dr98sm712/image/upload/v1712373133/guest-user_it2nym.png','USER',false,'2024-04-21 09:34:35.109',NULL),
+	 ('admin.sapp','nguyengialocgsjhdfg7@gmail.comhjj','$2b$10$6WyD7uJYjXCNAL0.UamA2ulo2Dnyyqfd2WLUwR9saenAVxTUQpX5i',NULL,'https://res.cloudinary.com/dr98sm712/image/upload/v1712373133/guest-user_it2nym.png','USER',false,'2024-04-21 09:34:56.841',NULL),
+	 ('admin.sapp','nguyengialoc1@gmail.com','$2b$10$dOsDu0QBMGao3bjfT5F69uH4fNtaYiMeeBtwdgkeNiUQspjTBqZMq','','https://res.cloudinary.com/dr98sm712/image/upload/v1712373133/guest-user_it2nym.png','USER',true,'2024-04-21 16:11:12.381',NULL);

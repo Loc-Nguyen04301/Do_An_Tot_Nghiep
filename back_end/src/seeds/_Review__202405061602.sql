@@ -1,0 +1,2 @@
+INSERT INTO public."Review" (description,star,user_id,product_id,created_at,images,update_at) VALUES
+	 ('toi la nguoi review',3,1,2,'2024-04-23 16:09:45.979','{https://res.cloudinary.com/dr98sm712/image/upload/v1713888585/blog-mern-typescript/qyd80uguun3n4mrajkzh.jpg,https://res.cloudinary.com/dr98sm712/image/upload/v1713888585/blog-mern-typescript/jlmf9lhjv2ntq9hjsh9w.jpg,https://res.cloudinary.com/dr98sm712/image/upload/v1713888585/blog-mern-typescript/w6a8g5rcknwifijohasu.jpg}','2024-04-23 16:09:45.979');

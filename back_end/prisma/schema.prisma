@@ -25,6 +25,7 @@ model User {
 model Product {
   id          Int                    @id @default(autoincrement())
   name        String                 @unique
+  brand       String
   description String
   old_price   Int
   new_price   Int

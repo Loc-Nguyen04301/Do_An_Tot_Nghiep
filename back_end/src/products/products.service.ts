@@ -12,7 +12,7 @@ export class ProductsService {
     private prisma: PrismaService,) { }
 
   async findAll() {
-    const products = await this.prisma.product.findMany({});
+    const products = await this.prisma.product.findMany();
     return products;
   }
 
@@ -22,6 +22,7 @@ export class ProductsService {
       select: {
         id: true,
         name: true,
+        brand: true,
         description: true,
         old_price: true,
         new_price: true,

@@ -82,7 +82,7 @@ export class ProductsService {
   }
 
   async create(createProductDto: CreateProductDto) {
-    const { category_ids, name, description, image, new_price, old_price, available } = createProductDto
+    const { category_ids, name, brand, description, image, new_price, old_price, available } = createProductDto
 
     const productExisted = await this.prisma.product.findMany({
       where: {
@@ -101,6 +101,7 @@ export class ProductsService {
 
     await this.prisma.product.create({
       data: {
+        brand,
         name,
         description,
         image,

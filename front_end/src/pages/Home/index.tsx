@@ -25,7 +25,6 @@ const Home = () => {
             <img src={homeImage2} />
           </div>
         </div>
-
         <div className="flex flex-col gap-14">
           <ProductsByCategory categoryPath={categoryList[0].path} categoryTitle={categoryList[0].title} />
           <ProductsByCategory categoryPath={categoryList[1].path} categoryTitle={categoryList[1].title} />

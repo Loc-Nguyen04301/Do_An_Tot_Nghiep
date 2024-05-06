@@ -63,7 +63,7 @@ const Header = () => {
           accessToken && user.username.length > 0
             ?
             <div className="flex justify-end items-end pr-3 pt-3 pb-2 gap-4">
-              <p className="dropdown text-text-gray text-sm flex gap-1 mr-8 flex items-center">
+              <div className="dropdown text-text-gray text-sm flex items-center gap-1 mr-8">
                 <div className='w-[30px] h-[30px]'>
                   {user.avatar && <div className="bg-cover bg-center bg-no-repeat w-full h-full rounded-full" style={{ backgroundImage: `url(${user.avatar})` }}></div>}
                 </div>
@@ -77,7 +77,7 @@ const Header = () => {
                     </div>
                   </div>
                 </div>
-              </p>
+              </div>
             </div>
             :
             <>

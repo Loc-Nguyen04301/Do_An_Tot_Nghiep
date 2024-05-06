@@ -3,6 +3,10 @@ import { ArrayNotEmpty, IsArray, IsInt, IsNotEmpty, IsOptional, IsString, } from
 export class CreateProductDto {
     @IsNotEmpty()
     @IsString()
+    brand: string
+
+    @IsNotEmpty()
+    @IsString()
     name: string
 
     @IsOptional()

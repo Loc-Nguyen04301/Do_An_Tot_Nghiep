@@ -1,9 +1,31 @@
+import { ArrayNotEmpty, IsArray, IsInt, IsNotEmpty, IsOptional, IsString, } from 'class-validator';
+
 export class CreateProductDto {
+    @IsNotEmpty()
+    @IsString()
     name: string
-    description: string
-    old_price: number
+
+    @IsOptional()
+    @IsString()
+    description?: string
+
+    @IsNotEmpty()
+    @IsInt()
+    old_price: number;
+
+    @IsNotEmpty()
+    @IsInt()
     new_price: number
+
+    @IsNotEmpty()
+    @IsString()
     image: string
+
+    @IsOptional()
     available?: number
+
+    @IsInt({ each: true })
+    @IsArray()
+    @ArrayNotEmpty()
     category_ids?: number[]
 }

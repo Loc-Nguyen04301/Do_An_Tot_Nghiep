@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -83,6 +83,17 @@ export class ProductsService {
   async create(createProductDto: CreateProductDto) {
     const { category_ids, name, description, image, new_price, old_price, available } = createProductDto
 
+    const productExisted = await this.prisma.product.findMany({
+      where: {
+        name: {
+          contains: name,
+          mode: "insensitive",
+        }
+      }
+    })
+
+    if (productExisted.length > 0) throw new ForbiddenException("Có sản phẩm trùng tên trong danh sách. Vui lòng điền tên khác")
+
     const categoryCreates = category_ids.map(category_id => ({
       category: { connect: { id: category_id } }
     }));
@@ -100,12 +111,11 @@ export class ProductsService {
         }
       }
     })
-
-    return
   }
 
   async update(id: number, updateProductDto: UpdateProductDto) {
     const { category_ids, name, description, image, new_price, old_price, available } = updateProductDto
+
     await this.prisma.categoriesOnProducts.deleteMany({ where: { product_id: id } })
     let product: any = null;
     if (category_ids.length > 0) {
@@ -124,20 +134,6 @@ export class ProductsService {
           categories: {
             create: categoryCreates
           }
-        }
-      })
-    }
-    else {
-      product = await this.prisma.product.update({
-        where: { id: id },
-        data: {
-          name,
-          description,
-          image,
-          new_price,
-          old_price,
-          available,
-
         }
       })
     }

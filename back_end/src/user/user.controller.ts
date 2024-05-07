@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, UseInterceptors, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, Delete, HttpCode, HttpStatus, UseInterceptors, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Public } from 'src/common/decorators';
+import { Public, Roles } from 'src/common/decorators';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
+import { Role } from 'src/types';
+import { AtGuard } from 'src/common/guards';
 
 @Controller('api/v1/user')
 export class UserController {
@@ -16,7 +18,8 @@ export class UserController {
     return this.userService.updateProfile(id, updateUserDto);
   }
 
-  @Public()
+  @UseGuards(AtGuard)
+  @Roles(Role.ADMIN)
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(new SuccessInterceptor())
   @Get()

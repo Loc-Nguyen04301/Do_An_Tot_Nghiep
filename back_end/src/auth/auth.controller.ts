@@ -16,7 +16,7 @@ import { AuthService } from './auth.service';
 import { Request } from 'express';
 import { JwtPayload, JwtRefreshPayload } from './strategies';
 import { AtGuard, RtGuard } from 'src/common/guards';
-import { Public } from 'src/common/decorators';
+import { Public, Roles } from 'src/common/decorators';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 import { CreateAuthDto } from './dto/create-auth.dto';

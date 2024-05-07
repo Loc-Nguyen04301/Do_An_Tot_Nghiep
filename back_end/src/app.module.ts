@@ -13,7 +13,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 
 import { PaymentController } from './payment/payment.controller';
 
-import { AtGuard } from './common/guards';
+import { AtGuard, RolesGuard } from './common/guards';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { UserModule } from './user/user.module';
 
@@ -47,6 +47,10 @@ import { UserModule } from './user/user.module';
     {
       provide: APP_GUARD,
       useClass: AtGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
     {
       provide: APP_FILTER,

@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) { }
-
 
   async updateProfile(id: number, updateUserDto: UpdateUserDto) {
     if (id) {
@@ -15,7 +15,24 @@ export class UserService {
   }
 
   async getListUser() {
-    const users = await this.prisma.user.findMany()
+    const users = await this.prisma.user.findMany({
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        avatar: true,
+        role: true,
+        active: true,
+        phone_number: true,
+        address: true,
+        created_at: true,
+        update_at: true
+      },
+      orderBy: {
+        role: "desc"
+      }
+    })
+
     return users
   }
   // create(createUserDto: CreateUserDto) {

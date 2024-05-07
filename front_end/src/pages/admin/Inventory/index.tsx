@@ -54,30 +54,25 @@ const Inventory = () => {
         {
             title: "Thumbnail",
             key: "thumbnail",
-            dataIndex: "thumbnail",
             render: (_, record) => <Avatar src={record.image} />
         },
         {
             title: "Name",
             key: "name",
-            dataIndex: "name",
             render: (_, record) => record.name
         },
         {
             title: "Old Price",
             key: "oldprice",
-            dataIndex: "oldprice",
-            render: (_, record) => <span>{convertNumbertoMoney(record.old_price)}</span>,
+            render: (_, record) => <span>{convertNumbertoMoney(record.old_price)}</span >,
         },
         {
             title: "New Price",
             key: "newprice",
-            dataIndex: "newprice",
-            render: (_, record) => <span>{convertNumbertoMoney(record.new_price)}</span>,
+            render: (_, record) => <span>{convertNumbertoMoney(record.new_price)}</span >,
         },
         {
             title: "Rating",
-            dataIndex: "rating",
             render: (_, record) => {
                 return <Rate value={record.averageRating} allowHalf disabled />;
             },
@@ -85,30 +80,26 @@ const Inventory = () => {
         {
             title: "Stock",
             key: "available",
-            dataIndex: "available",
             render: (_, record) => record.available
         },
         {
             title: "Brand",
             key: "brand",
-            dataIndex: "brand",
             render: (_, record) => record.brand
         },
         {
             title: "Category",
             key: "category",
-            dataIndex: "category",
             render: (_, record) =>
-                <Space direction='vertical'>
+                <Space direction='vertical' >
                     {record.categories.map((category) => <span>{category.category.name}</span>)}
-                </Space >
+                </Space>
         },
         {
             title: 'Action',
             key: 'deleteItem',
-            dataIndex: "deleteItem",
             render: (_, record) =>
-                <div className='flex items-center'>
+                <div className='flex items-center' >
                     <div className='flex gap-2'>
                         <BarsOutlined className='text-blue-500 text-2xl cursor-pointer transform hover:scale-125' onClick={() => handleUpdateProduct(record.id)} />
                         <DeleteOutlined className='text-red-500 text-2xl cursor-pointer transform hover:scale-125' onClick={showModal} />

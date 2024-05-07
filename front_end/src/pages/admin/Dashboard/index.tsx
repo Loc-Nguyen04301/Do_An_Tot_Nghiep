@@ -21,6 +21,7 @@ import { Bar } from "react-chartjs-2";
 import DashboardService from '../../../services/DashboardService';
 import { useAlertDispatch } from '../../../contexts/AlertContext';
 import { convertNumbertoMoney } from '../../../utils';
+import { Helmet } from 'react-helmet-async';
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -50,77 +51,83 @@ const DashBoard = () => {
     }, [])
 
     return (
-        <Space direction='vertical' size={20} className='w-full'>
-            <Typography.Title level={4}>Dashboard</Typography.Title>
-            <Space direction="horizontal" className='w-full justify-center'>
-                <DashboardCard
-                    icon={
-                        <ShoppingCartOutlined
-                            style={{
-                                color: "green",
-                                backgroundColor: "rgba(0,255,0,0.25)",
-                                borderRadius: 20,
-                                fontSize: 24,
-                                padding: 8,
-                            }}
-                        />
-                    }
-                    title={"Orders"}
-                    value={count?.billCount}
-                />
-                <DashboardCard
-                    icon={
-                        <ShoppingOutlined
-                            style={{
-                                color: "blue",
-                                backgroundColor: "rgba(0,0,255,0.25)",
-                                borderRadius: 20,
-                                fontSize: 24,
-                                padding: 8,
-                            }}
-                        />
-                    }
-                    title={"Inventory"}
-                    value={count?.productCount}
-                />
-                <DashboardCard
-                    icon={
-                        <UserOutlined
-                            style={{
-                                color: "purple",
-                                backgroundColor: "rgba(0,255,255,0.25)",
-                                borderRadius: 20,
-                                fontSize: 24,
-                                padding: 8,
-                            }}
-                        />
-                    }
-                    title={"Customer"}
-                    value={count?.userCount}
-                />
-                <DashboardCard
-                    icon={
-                        <DollarCircleOutlined
-                            style={{
-                                color: "red",
-                                backgroundColor: "rgba(255,0,0,0.25)",
-                                borderRadius: 20,
-                                fontSize: 24,
-                                padding: 8,
-                            }}
-                        />
-                    }
-                    title={"Revenue"}
-                    value={convertNumbertoMoney(count?.revenueCount)}
-                />
+        <>
+            <Helmet>
+                <title>Dashboard</title>
+                <meta name='description' content='Beginner friendly page for learning React Helmet.' />
+            </Helmet>
+            <Space direction='vertical' size={20} className='w-full'>
+                <Typography.Title level={4}>Dashboard</Typography.Title>
+                <Space direction="horizontal" className='w-full justify-center'>
+                    <DashboardCard
+                        icon={
+                            <ShoppingCartOutlined
+                                style={{
+                                    color: "green",
+                                    backgroundColor: "rgba(0,255,0,0.25)",
+                                    borderRadius: 20,
+                                    fontSize: 24,
+                                    padding: 8,
+                                }}
+                            />
+                        }
+                        title={"Orders"}
+                        value={count?.billCount}
+                    />
+                    <DashboardCard
+                        icon={
+                            <ShoppingOutlined
+                                style={{
+                                    color: "blue",
+                                    backgroundColor: "rgba(0,0,255,0.25)",
+                                    borderRadius: 20,
+                                    fontSize: 24,
+                                    padding: 8,
+                                }}
+                            />
+                        }
+                        title={"Inventory"}
+                        value={count?.productCount}
+                    />
+                    <DashboardCard
+                        icon={
+                            <UserOutlined
+                                style={{
+                                    color: "purple",
+                                    backgroundColor: "rgba(0,255,255,0.25)",
+                                    borderRadius: 20,
+                                    fontSize: 24,
+                                    padding: 8,
+                                }}
+                            />
+                        }
+                        title={"Customer"}
+                        value={count?.userCount}
+                    />
+                    <DashboardCard
+                        icon={
+                            <DollarCircleOutlined
+                                style={{
+                                    color: "red",
+                                    backgroundColor: "rgba(255,0,0,0.25)",
+                                    borderRadius: 20,
+                                    fontSize: 24,
+                                    padding: 8,
+                                }}
+                            />
+                        }
+                        title={"Revenue"}
+                        value={convertNumbertoMoney(count?.revenueCount)}
+                    />
+                </Space>
+                <Space>
+                    <RecentOrders />
+                </Space>
+                <Space>
+                    <DashboardChart />
+                </Space>
             </Space>
-            <Space>
-                <RecentOrders />
-            </Space>
-            <Space>
-                <DashboardChart />
-            </Space>
-        </Space>
+        </>
     )
 }
 export default DashBoard

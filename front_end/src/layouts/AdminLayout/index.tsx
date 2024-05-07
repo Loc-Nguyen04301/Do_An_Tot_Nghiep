@@ -74,7 +74,7 @@ const AdminLayout = ({ children }: AdminLayouttProps) => {
             </Sider>
             <Layout>
                 <Header style={{ background: colorBgContainer }}>
-                    <Typography.Title className='text-center pt-3'>THOL DASHBOARD</Typography.Title>
+                    <Typography.Title className='text-center pt-3'>DASHBOARD MANAGEMENT</Typography.Title>
                 </Header>
                 <Content >
                     <div className='p-6 min-h-[360px]'>

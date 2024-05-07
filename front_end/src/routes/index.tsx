@@ -26,6 +26,7 @@ const DashBoard = lazy(() => import("../pages/admin/Dashboard"));
 const Inventory = lazy(() => import("../pages/admin/Inventory"));
 const OrderAdmin = lazy(() => import("../pages/admin/OrderAdmin"));
 const Customer = lazy(() => import("../pages/admin/Customer"));
+const UpdateProduct = lazy(() => import("../pages/admin/UpdateProduct"));
 
 export enum RoutePath {
   LoginPage = "/dang-nhap",
@@ -45,7 +46,8 @@ export enum RoutePath {
   DashBoard = "/admin",
   Inventory = "/admin/inventory",
   OrderAdmin = "/admin/order",
-  Customer = "/admin/customer"
+  Customer = "/admin/customer",
+  UpdateProduct = "/admin/product/detail",
 }
 
 const Router: React.FC = () => {
@@ -57,6 +59,10 @@ const Router: React.FC = () => {
         {
           path: RoutePath.DashBoard,
           element: <DashBoard />
+        },
+        {
+          path: `${RoutePath.UpdateProduct}/:id`,
+          element: <UpdateProduct />
         },
         {
           path: RoutePath.Inventory,

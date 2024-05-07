@@ -6,6 +6,9 @@ import { convertNumbertoMoney } from '../../../utils';
 import { deleteProduct, IProductDetail, retrieveProducts } from '../../../redux-toolkit/productSlice';
 import { useAppDispatch, useAppSelector } from '../../../redux-toolkit/hook';
 import { useAlertDispatch } from '../../../contexts/AlertContext';
+import { useNavigate } from 'react-router-dom';
+import { RoutePath } from '../../../routes';
+import { Helmet } from 'react-helmet-async';
 
 const Inventory = () => {
     const [loading, setLoading] = useState(false);
@@ -15,12 +18,13 @@ const Inventory = () => {
     const dispatch = useAppDispatch()
     const dispatchAlert = useAlertDispatch()
 
+    const navigate = useNavigate()
+
     const showModal = () => {
         setIsModalOpen(true);
     };
 
     const handleDeleteProduct = (product: IProductDetail) => {
-        console.log(product)
         dispatch(deleteProduct({ id: product.id }))
             .then((res) => {
                 dispatchAlert({ success: "Xóa sản phẩm thành công" })
@@ -35,6 +39,7 @@ const Inventory = () => {
 
     const handleUpdateProduct = (id: number) => {
         //
+        navigate(`${RoutePath.UpdateProduct}/${id}`)
     }
 
     const getProducts = useCallback(() => {
@@ -44,7 +49,6 @@ const Inventory = () => {
     useEffect(() => {
         getProducts()
     }, [getProducts]);
-    console.log(products)
 
     const columns: TableProps<IProductDetail>['columns'] = [
         {
@@ -123,6 +127,10 @@ const Inventory = () => {
     ]
     return (
         <>
+            <Helmet>
+                <title>Inventory</title>
+                <meta name='description' content='Beginner friendly page for learning React Helmet.' />
+            </Helmet>
             <Typography.Title level={4}>Inventory</Typography.Title>
             <Space direction="horizontal" className='w-full justify-center !block'>
                 <Table

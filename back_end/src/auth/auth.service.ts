@@ -5,12 +5,10 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateAuthDto } from './dto/create-auth.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { LoginAuthDto } from './dto/login-auth.dto';
-import { Role } from 'src/types';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { CreateAuthDto } from './dto/create-auth.dto';
 
 const saltOrRounds = 10;
 
@@ -146,17 +144,5 @@ export class AuthService {
       access_token: accessToken,
       refresh_token: refreshToken,
     }
-  }
-
-  async updateProfile(id: number, updateAuthDto: UpdateAuthDto) {
-    if (id) {
-      const updateProfile = await this.prisma.user.update({ where: { id }, data: updateAuthDto })
-      return updateProfile
-    }
-  }
-
-  async getListUser() {
-    const users = await this.prisma.user.findMany()
-    return users
   }
 }

@@ -13,14 +13,13 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateAuthDto } from './dto/create-auth.dto';
 import { Request } from 'express';
 import { JwtPayload, JwtRefreshPayload } from './strategies';
 import { AtGuard, RtGuard } from 'src/common/guards';
 import { Public } from 'src/common/decorators';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { CreateAuthDto } from './dto/create-auth.dto';
 
 @Controller('api/v1/auth')
 export class AuthController {
@@ -61,19 +60,4 @@ export class AuthController {
     return this.authService.refreshToken(user.id);
   }
 
-  @UseGuards(AtGuard)
-  @HttpCode(HttpStatus.OK)
-  @UseInterceptors(new SuccessInterceptor('Update Profile Success'))
-  @Patch('update/:id')
-  updateProfile(@Param('id', ParseIntPipe) id: number, @Body() updateAuthDto: UpdateAuthDto) {
-    return this.authService.updateProfile(id, updateAuthDto);
-  }
-
-  @Public()
-  @HttpCode(HttpStatus.OK)
-  @UseInterceptors(new SuccessInterceptor())
-  @Get('listuser')
-  getUser() {
-    return this.authService.getListUser();
-  }
 }

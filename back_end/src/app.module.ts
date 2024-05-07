@@ -15,6 +15,7 @@ import { PaymentController } from './payment/payment.controller';
 
 import { AtGuard } from './common/guards';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { HttpExceptionFilter } from './common/filters/http-exception.filter';
     ReviewsModule,
     BillsModule,
     DashboardModule,
+    UserModule,
   ],
   providers: [
     {

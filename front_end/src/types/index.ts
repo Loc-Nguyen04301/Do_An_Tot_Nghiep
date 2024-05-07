@@ -30,7 +30,6 @@ export interface IProduct {
     created_at: string;
 }
 
-
 export enum Role {
     USER = 'USER',
     ADMIN = 'ADMIN',

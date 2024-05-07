@@ -12,8 +12,36 @@ export class ProductsService {
     private prisma: PrismaService,) { }
 
   async findAll() {
-    const products = await this.prisma.product.findMany();
-    return products;
+    const products = await this.prisma.product.findMany({
+      include: {
+        reviews: {
+          select: {
+            star: true
+          }
+        },
+        categories: {
+          select: {
+            category: {
+              select: {
+                name: true
+              }
+            }
+          }
+        }
+      }
+    });
+
+    const newProducts = products.map((product) => {
+      const totalStars = product.reviews.reduce((sum, review) => sum + review.star, 0);
+      const averageRating = totalStars / product.reviews.length || 0;
+      delete product.reviews
+      delete product.description
+      delete product.created_at
+      delete product.update_at
+      return { ...product, averageRating }
+    })
+
+    return newProducts;
   }
 
   async findOne(id: number) {

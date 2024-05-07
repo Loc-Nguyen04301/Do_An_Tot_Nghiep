@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Param,
@@ -26,25 +27,25 @@ export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
   @Public()
-  @Post('register')
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(new SuccessInterceptor('Register Success'))
+  @Post('register')
   register(@Body() createAuthDto: CreateAuthDto) {
     return this.authService.register(createAuthDto);
   }
 
   @Public()
-  @Post('login')
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(new SuccessInterceptor('Login Success'))
+  @Post('login')
   logIn(@Body() loginAuthDto: LoginAuthDto) {
     return this.authService.logIn(loginAuthDto);
   }
 
   @UseGuards(AtGuard)
-  @Post('logout')
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(new SuccessInterceptor('Logout Success'))
+  @Post('logout')
   logOut(@Req() req: Request) {
     const user = req.user as JwtPayload;
     return this.authService.logOut(user.id);
@@ -52,19 +53,27 @@ export class AuthController {
 
   @Public()
   @UseGuards(RtGuard)
-  @Post('refreshtoken')
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(new SuccessInterceptor())
+  @Post('refreshtoken')
   refreshToken(@Req() req: Request) {
     const user = req.user as JwtRefreshPayload;
     return this.authService.refreshToken(user.id);
   }
 
   @UseGuards(AtGuard)
-  @Patch('update/:id')
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(new SuccessInterceptor('Update Profile Success'))
+  @Patch('update/:id')
   updateProfile(@Param('id', ParseIntPipe) id: number, @Body() updateAuthDto: UpdateAuthDto) {
     return this.authService.updateProfile(id, updateAuthDto);
+  }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor())
+  @Get('listuser')
+  getUser() {
+    return this.authService.getListUser();
   }
 }

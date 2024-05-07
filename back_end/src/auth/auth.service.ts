@@ -154,4 +154,9 @@ export class AuthService {
       return updateProfile
     }
   }
+
+  async getListUser() {
+    const users = await this.prisma.user.findMany()
+    return users
+  }
 }

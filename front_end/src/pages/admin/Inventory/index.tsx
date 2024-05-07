@@ -11,7 +11,6 @@ import { RoutePath } from '../../../routes';
 import { Helmet } from 'react-helmet-async';
 
 const Inventory = () => {
-    const [loading, setLoading] = useState(false);
     const products = useAppSelector(state => state.product)
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -25,9 +24,10 @@ const Inventory = () => {
     };
 
     const handleDeleteProduct = (product: IProductDetail) => {
+        dispatchAlert({ loading: true })
         dispatch(deleteProduct({ id: product.id }))
             .then((res) => {
-                dispatchAlert({ success: "Xóa sản phẩm thành công" })
+                dispatchAlert({ success: "Xóa sản phẩm thành công", loading: false })
             })
             .catch(e => console.log(e))
         setIsModalOpen(false);
@@ -38,12 +38,12 @@ const Inventory = () => {
     };
 
     const handleUpdateProduct = (id: number) => {
-        //
         navigate(`${RoutePath.UpdateProduct}/${id}`)
     }
 
     const getProducts = useCallback(() => {
-        dispatch(retrieveProducts())
+        dispatchAlert({ loading: true })
+        dispatch(retrieveProducts()).then((res) => dispatchAlert({ loading: false }))
     }, [dispatch])
 
     useEffect(() => {
@@ -134,7 +134,6 @@ const Inventory = () => {
             <Typography.Title level={4}>Inventory</Typography.Title>
             <Space direction="horizontal" className='w-full justify-center !block'>
                 <Table
-                    loading={loading}
                     columns={columns}
                     dataSource={products}
                     pagination={{ position: ['bottomCenter'] }}

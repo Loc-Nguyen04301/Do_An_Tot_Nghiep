@@ -16,6 +16,8 @@ model User {
   avatar        String    @default("https://res.cloudinary.com/dr98sm712/image/upload/v1712373133/guest-user_it2nym.png")
   role          Role      @default(USER)
   active        Boolean   @default(false)
+  phone_number  String?
+  address       String?
   created_at    DateTime  @default(now())
   update_at     DateTime? @updatedAt
   bills         Bill[]

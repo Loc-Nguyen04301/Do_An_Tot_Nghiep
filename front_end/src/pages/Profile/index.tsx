@@ -7,7 +7,7 @@ import { checkImage, imageUpload } from '../../utils'
 import { useAlertDispatch } from '../../contexts/AlertContext'
 import { ConfigProvider, Radio, RadioChangeEvent } from 'antd'
 import { useAppDispatch, useAppSelector } from '../../redux-toolkit/hook'
-import AuthService from '../../services/AuthService'
+import UserService from '../../services/UserService'
 
 const Profile = () => {
     const { user } = useAppSelector(state => state.auth)
@@ -49,7 +49,7 @@ const Profile = () => {
         try {
             if (user.id && avatarTempFile) {
                 const res = await imageUpload(avatarTempFile)
-                const res2 = await AuthService.updateProfile(user.id, { avatar: res.url })
+                const res2 = await UserService.updateProfile(user.id, { avatar: res.url })
                 dispatchAlert({ loading: false })
                 window.location.reload()
             }

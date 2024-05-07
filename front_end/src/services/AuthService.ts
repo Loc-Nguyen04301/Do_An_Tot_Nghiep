@@ -28,14 +28,6 @@ const refreshToken = () => {
     else return
 }
 
-const updateProfile = (id: number, data: { username?: string, avatar?: string }) => {
-    return http.patch(`/auth/update/${id}`, data)
-}
-
-const listUser = () => {
-    return http.get(`/auth/listuser`)
-}
-
-const AuthService = { register, login, refreshToken, logout, updateProfile, listUser }
+const AuthService = { register, login, refreshToken, logout }
 
 export default AuthService

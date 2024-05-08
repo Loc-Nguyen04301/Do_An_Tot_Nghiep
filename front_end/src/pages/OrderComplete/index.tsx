@@ -32,6 +32,7 @@ interface IBill {
 interface IItem {
     product: { name: string, new_price: number };
     quantity: number;
+    total_price: number;
 }
 
 const OrderComplete = () => {
@@ -139,7 +140,7 @@ const OrderComplete = () => {
                                         {bill.items.map(item =>
                                             <li className='flex justify-between gap-3 py-2 border-b' key={item.product.name}>
                                                 <span>{item.product.name} <strong className='ml-1'>× {item.quantity}</strong> </span>
-                                                <strong>{convertNumbertoMoney(item.quantity * item.product.new_price)}</strong>
+                                                <strong>{convertNumbertoMoney(item.total_price)}</strong>
                                             </li>
                                         )}
                                     </ul>

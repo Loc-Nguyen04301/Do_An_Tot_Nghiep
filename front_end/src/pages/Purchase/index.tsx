@@ -10,6 +10,8 @@ import BillService from '../../services/BillService';
 import { useAppSelector } from '../../redux-toolkit/hook';
 import { useAlertDispatch } from '../../contexts/AlertContext';
 
+import { convertNumbertoMoney } from '../../utils';
+
 enum PurchaseStatus {
     ALL = "Tất cả",
     WAIT_FOR_PAY = "Chờ thanh toán",
@@ -25,11 +27,36 @@ enum OrderStatus {
     CANCELLED = 'CANCELLED'
 };
 
+interface IBill {
+    id: number;
+    customer_name: string;
+    address: string;
+    phone_number: string;
+    email: string;
+    note: string;
+    user_id: number | null;
+    order_status: string;
+    payment_status: boolean;
+    return_status: string;
+    payment_method: string;
+    total_amount: number;
+    created_at: string;
+    update_at: string;
+    items: IItem[];
+}
+
+interface IItem {
+    product: { name: string, new_price: number, old_price: number, image: string };
+    quantity: number;
+    total_price: number;
+}
+
+
 const Purchase = () => {
     const [purchaseStatus, setPurchaseStatus] = useState<PurchaseStatus>(PurchaseStatus.ALL)
     const [search, setSearch] = useState<string>()
     const [loading, setLoading] = useState(false)
-    const [listBill, setListBill] = useState()
+    const [listBill, setListBill] = useState<IBill[]>([])
 
     const { user } = useAppSelector(state => state.auth)
     const dispatchAlert = useAlertDispatch()
@@ -131,30 +158,29 @@ const Purchase = () => {
                             </div>
                         </section>
                         <section className='flex flex-col gap-3'>
-                            {Array.from({ length: 5 }, (item) =>
-                                <div className='p-6 bg-white'>
-                                    <div className='flex justify-between pb-2 border-b border-border-color'>
-                                        <span>2024-04-23</span>
-                                        <span className='text-[#ee4d2d] text-xl uppercase'>Đã hủy</span>
-                                    </div>
-                                    <div>
-                                        {Array.from({ length: 3 }, (item) =>
+                            {
+                                listBill.map((bill) =>
+                                    <div className='p-6 bg-white' key={bill.id}>
+                                        <div className='flex justify-between pb-2 border-b border-border-color'>
+                                            <span>{bill.created_at}</span>
+                                            <span className='text-[#ee4d2d] text-xl uppercase'>Đã hủy</span>
+                                        </div>
+                                        {bill.items.map((item) =>
                                             <div className='py-6 border-b border-border-color flex justify-between'>
                                                 <div className='flex gap-2'>
-                                                    <img src="https://down-vn.img.susercontent.com/file/26df63e39638fab257712b219ca2482a_tn" width={80} />
-                                                    <div>Lăn nách đá khoáng Nhật Bản Soft Stone Crystal x 1</div>
+                                                    <img src={item.product.image} width={80} />
+                                                    <div>{item.product.name} x {item.quantity}</div>
                                                 </div>
                                                 <div className='flex gap-2'>
-                                                    <span>207.000</span>
-                                                    <span>169.000</span>
+                                                    {item.product.old_price != 0 &&
+                                                        <del>{convertNumbertoMoney(item.product.old_price)}</del>
+                                                    }
+                                                    <span>{convertNumbertoMoney(item.product.new_price)}</span>
                                                 </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className=''>
+                                            </div>)}
                                         <div className='py-6 text-right'>
                                             <span className='px-2 text-category-title'>Thành tiền:</span>
-                                            <span className='px-2'>₫564.400</span>
+                                            <span className='px-2'>{convertNumbertoMoney(bill.total_amount)}</span>
                                         </div>
                                         <div className='group-button flex justify-between items-center'>
                                             <span className='text-category-title text-sm'>Đã hủy bởi bạn</span>
@@ -168,7 +194,8 @@ const Purchase = () => {
                                             </div>
                                         </div>
                                     </div>
-                                </div>)}
+                                )
+                            }
                         </section>
                     </div>
                 </div>

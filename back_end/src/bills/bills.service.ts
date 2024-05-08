@@ -60,7 +60,8 @@ export class BillsService {
           items: {
             select: {
               product: { select: { name: true, new_price: true } },
-              quantity: true
+              quantity: true,
+              total_price: true
             }
           }
         }
@@ -117,6 +118,15 @@ export class BillsService {
         where: {
           ...whereClause,
           AND: filtersDate
+        },
+        include: {
+          items: {
+            select: {
+              product: { select: { name: true, new_price: true, old_price: true, image: true } },
+              quantity: true,
+              total_price: true
+            }
+          }
         },
         skip,
         take,

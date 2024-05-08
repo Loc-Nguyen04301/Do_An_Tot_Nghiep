@@ -103,7 +103,7 @@ export class BillsService {
     const notUndefined = 1
 
     const fromDate = notUndefined ? new Date('2024-05-03 00:00:00') : undefined;
-    const toDate = notUndefined ? new Date('2024-05-04 23:59:59') : undefined;
+    const toDate = notUndefined ? new Date('2024-05-08 23:59:59') : undefined;
     const filtersDate: any[] = []
     if (fromDate) {
       filtersDate.push({ created_at: { gte: fromDate } });
@@ -122,7 +122,10 @@ export class BillsService {
         take,
       }),
       this.prisma.bill.count({
-        where: whereClause
+        where: {
+          ...whereClause,
+          AND: filtersDate
+        },
       })
     ]);
 

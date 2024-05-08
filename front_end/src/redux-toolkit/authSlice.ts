@@ -14,7 +14,7 @@ const initialState: AuthState = {
     access_token: "",
     refresh_token: "",
     user: {
-        id: null,
+        id: undefined,
         username: "",
         email: "",
         avatar: "",

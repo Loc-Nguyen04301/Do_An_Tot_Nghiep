@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { NavLink } from 'react-router-dom'
 import { RoutePath } from '../../routes'
@@ -6,6 +6,9 @@ import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { LoadingOutlined } from '@ant-design/icons';
+import BillService from '../../services/BillService';
+import { useAppSelector } from '../../redux-toolkit/hook';
+import { useAlertDispatch } from '../../contexts/AlertContext';
 
 enum PurchaseStatus {
     ALL = "Tất cả",
@@ -16,14 +19,64 @@ enum PurchaseStatus {
     RETURN = "Trả hàng/Hoàn tiền"
 }
 
+enum OrderStatus {
+    PROCESSING = 'PROCESSING',
+    SUCCESS = 'SUCCESS',
+    CANCELLED = 'CANCELLED'
+};
+
 const Purchase = () => {
     const [purchaseStatus, setPurchaseStatus] = useState<PurchaseStatus>(PurchaseStatus.ALL)
     const [search, setSearch] = useState<string>()
     const [loading, setLoading] = useState(false)
+    const [listBill, setListBill] = useState()
+
+    const { user } = useAppSelector(state => state.auth)
+    const dispatchAlert = useAlertDispatch()
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value)
     }
+
+    const fetchBill = async (purchaseStatus: PurchaseStatus, userId?: number) => {
+        dispatchAlert({ loading: true })
+        try {
+            let res
+            switch (purchaseStatus) {
+                case PurchaseStatus.ALL:
+                    res = await BillService.getBill({ params: { user_id: userId } })
+                    setListBill(res.data.data.bills)
+                    dispatchAlert({ loading: false })
+                    break;
+                case PurchaseStatus.WAIT_FOR_PAY:
+                    res = await BillService.getBill({ params: { user_id: userId, payment_status: false } })
+                    setListBill(res.data.data.bills)
+                    dispatchAlert({ loading: false })
+                    break;
+                case PurchaseStatus.WAIT_FOR_DELIVERY:
+                    res = await BillService.getBill({ params: { user_id: userId, payment_status: true } })
+                    setListBill(res.data.data.bills)
+                    dispatchAlert({ loading: false })
+                    break;
+                case PurchaseStatus.SUCCESS:
+                    res = await BillService.getBill({ params: { user_id: userId, order_status: OrderStatus.SUCCESS } })
+                    setListBill(res.data.data.bills)
+                    dispatchAlert({ loading: false })
+                    break;
+                case PurchaseStatus.CANCELLED:
+                    res = await BillService.getBill({ params: { user_id: userId, order_status: OrderStatus.CANCELLED } })
+                    setListBill(res.data.data.bills)
+                    dispatchAlert({ loading: false })
+                    break;
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        fetchBill(purchaseStatus, user.id)
+    }, [purchaseStatus, user.id])
 
     const handleSearchPurchase = () => {
 
@@ -63,7 +116,7 @@ const Purchase = () => {
                                     value={search}
                                     onChange={handleChange}
                                 />
-                                {
+                                {/* {
                                     loading
                                         ?
                                         <LoadingOutlined
@@ -74,11 +127,11 @@ const Purchase = () => {
                                                 icon={faMagnifyingGlass}
                                             />
                                         </div>
-                                }
+                                } */}
                             </div>
                         </section>
                         <section className='flex flex-col gap-3'>
-                            {Array.from({ length: 3 }, (item) =>
+                            {Array.from({ length: 5 }, (item) =>
                                 <div className='p-6 bg-white'>
                                     <div className='flex justify-between pb-2 border-b border-border-color'>
                                         <span>2024-04-23</span>

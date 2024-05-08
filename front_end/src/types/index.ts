@@ -13,7 +13,7 @@ export interface IUpdateUser {
 }
 
 export interface IUser {
-    id: number | null;
+    id?: number;
     username: string;
     email: string;
     avatar: string;

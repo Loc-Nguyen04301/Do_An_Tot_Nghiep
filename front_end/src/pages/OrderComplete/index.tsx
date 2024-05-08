@@ -19,12 +19,13 @@ interface IBill {
     email: string;
     note: string;
     user_id: number | null;
-    created_at: string;
     order_status: string;
     payment_status: boolean;
     return_status: string;
-    update_at: string;
     payment_method: string;
+    total_amount: number;
+    created_at: string;
+    update_at: string;
     items: IItem[];
 }
 
@@ -36,12 +37,15 @@ interface IItem {
 const OrderComplete = () => {
     const [bill, setBill] = useState<IBill>()
     const [billMethod, setBillMethod] = useState<string>("")
-    const [totalPrice, setTotalPrice] = useState<number>(0)
 
     const billId = getBillId()
 
     const dispatch = useAppDispatch()
     const dispatchAlert = useAlertDispatch()
+
+    useEffect(() => {
+        dispatch(resetCart())
+    }, [dispatch])
 
     const getBillDetail = async (id: string) => {
         try {
@@ -53,10 +57,6 @@ const OrderComplete = () => {
             console.log(error)
         }
     }
-
-    useEffect(() => {
-        dispatch(resetCart())
-    }, [dispatch])
 
     useEffect(() => {
         if (billId) getBillDetail(billId)
@@ -80,20 +80,6 @@ const OrderComplete = () => {
                     setBillMethod("Thanh toán cổng VNPay")
                     break;
             }
-        }
-    }, [bill])
-
-    useEffect(() => {
-        if (bill) {
-            const totalPrice: number = bill.items.reduce((accumulator: number, currentItem: IItem) => {
-                const { product, quantity } = currentItem;
-                const { new_price } = product;
-
-                const subtotal: number = new_price * quantity;
-
-                return accumulator + subtotal;
-            }, 0);
-            setTotalPrice(totalPrice)
         }
     }, [bill])
 
@@ -141,35 +127,37 @@ const OrderComplete = () => {
                                 :
                                 <></>
                         }
-                        <ul>
-                            <h2 className="font-bold text-2xl mb-4">Chi tiết đơn hàng</h2>
-                            <li className='flex justify-between py-2 border-b-2'>
-                                <strong className='tracking-wider'>SẢN PHẨM</strong>
-                                <strong className='tracking-wider'>TỔNG</strong>
-                            </li>
-                            {bill && bill.items &&
-                                <ul>
-                                    {bill.items.map(item =>
-                                        <li className='flex justify-between gap-3 py-2 border-b' key={item.product.name}>
-                                            <span>{item.product.name} <strong className='ml-1'>× {item.quantity}</strong> </span>
-                                            <strong>{convertNumbertoMoney(item.quantity * item.product.new_price)}</strong>
-                                        </li>
-                                    )}
-                                </ul>}
-                            <li className='flex justify-between py-2 border-b'>
-                                <strong>Tổng số phụ:</strong>
-                                <strong>{convertNumbertoMoney(totalPrice)}</strong>
-                            </li>
-                            <li className='flex justify-between py-2 border-b'>
-                                <strong>Phương thức thanh toán</strong>
-                                <span>Chuyển khoản ngân hàng</span>
-                            </li>
-                            <li className='flex justify-between py-2'>
-                                <strong>Tổng cộng:</strong>
-                                <strong>{convertNumbertoMoney(totalPrice)}</strong>
-                            </li>
-                        </ul>
-
+                        {bill &&
+                            <ul>
+                                <h2 className="font-bold text-2xl mb-4">Chi tiết đơn hàng</h2>
+                                <li className='flex justify-between py-2 border-b-2'>
+                                    <strong className='tracking-wider'>SẢN PHẨM</strong>
+                                    <strong className='tracking-wider'>TỔNG</strong>
+                                </li>
+                                {
+                                    <ul>
+                                        {bill.items.map(item =>
+                                            <li className='flex justify-between gap-3 py-2 border-b' key={item.product.name}>
+                                                <span>{item.product.name} <strong className='ml-1'>× {item.quantity}</strong> </span>
+                                                <strong>{convertNumbertoMoney(item.quantity * item.product.new_price)}</strong>
+                                            </li>
+                                        )}
+                                    </ul>
+                                }
+                                <li className='flex justify-between py-2 border-b'>
+                                    <strong>Tổng số phụ:</strong>
+                                    <strong>{convertNumbertoMoney(bill?.total_amount)}</strong>
+                                </li>
+                                <li className='flex justify-between py-2 border-b'>
+                                    <strong>Phương thức thanh toán</strong>
+                                    <span>Chuyển khoản ngân hàng</span>
+                                </li>
+                                <li className='flex justify-between py-2'>
+                                    <strong>Tổng cộng:</strong>
+                                    <strong>{convertNumbertoMoney(bill?.total_amount)}</strong>
+                                </li>
+                            </ul>
+                        }
                     </div>
                     {
                         bill &&
@@ -202,7 +190,7 @@ const OrderComplete = () => {
                                     <li className="ml-5 mb-2">
                                         Tổng cộng:
                                         <strong className='ml-1'>
-                                            <span className="">{convertNumbertoMoney(totalPrice)} </span>
+                                            <span className="">{convertNumbertoMoney(bill.total_amount)} </span>
                                         </strong>
                                     </li>
                                     <li className="ml-5 mb-2">

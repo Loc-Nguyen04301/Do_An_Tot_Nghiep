@@ -145,4 +145,19 @@ export class AuthService {
       refresh_token: refreshToken,
     }
   }
+
+  async getMeProfile(id: number) {
+    // delete refresh token in DB
+    const user = await this.prisma.user.findUnique({
+      where: { id: id },
+    });
+    return {
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        avatar: user.avatar,
+      },
+    }
+  }
 }

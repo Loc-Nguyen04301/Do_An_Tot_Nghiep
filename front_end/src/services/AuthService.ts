@@ -28,6 +28,9 @@ const refreshToken = () => {
     else return
 }
 
-const AuthService = { register, login, refreshToken, logout }
+const getMe = () => {
+    return http.post(`/auth/getMe`)
+}
+const AuthService = { register, login, refreshToken, logout, getMe }
 
 export default AuthService

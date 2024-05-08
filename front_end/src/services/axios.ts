@@ -8,14 +8,12 @@ import axios, {
 import { isTokenExpiration, getAccessToken, setAccessToken } from "../utils";
 import AuthService from "./AuthService";
 
-
 export const getBaseUrl = () => {
   if (import.meta.env.MODE === 'development') {
     return 'http://localhost:8000/api/v1';
   }
   return process.env.VITE_SERVER_URL || 'https://example.com';
 };
-
 
 const instance: AxiosInstance = axios.create({
   baseURL: getBaseUrl(),
@@ -34,6 +32,7 @@ instance.interceptors.request.use(
         ...request.headers,
         Authorization: "Bearer " + token,
       };
+      // create new access token when token is expired
       if (isTokenExpiration(token)) {
         const response = await AuthService.refreshToken()
         const new_token = response?.data.data.access_token

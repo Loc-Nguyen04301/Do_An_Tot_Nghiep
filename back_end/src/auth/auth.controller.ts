@@ -59,4 +59,13 @@ export class AuthController {
     const user = req.user as JwtRefreshPayload;
     return this.authService.refreshToken(user.id);
   }
+
+  @UseGuards(AtGuard)
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor())
+  @Post('getMe')
+  getMeProfile(@Req() req: Request) {
+    const user = req.user as JwtPayload;
+    return this.authService.getMeProfile(user.id);
+  }
 }

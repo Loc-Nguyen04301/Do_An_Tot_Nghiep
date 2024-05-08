@@ -1,6 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
-import aboutUsBanner from "../../assets/images/aboutus_banner.jpg"
+import aboutUsBanner from "@/assets/images/aboutus_banner.jpg"
 
 const BankAccount = () => {
   return <>

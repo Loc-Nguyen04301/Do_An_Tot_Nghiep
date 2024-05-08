@@ -1,15 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { NavLink } from 'react-router-dom'
-import { RoutePath } from '../../routes'
+import { RoutePath } from '@/routes'
 import clsx from 'clsx'
 import { RightOutlined } from '@ant-design/icons';
-import { convertNumbertoMoney, formatDate, getBillId } from '../../utils'
-import { useAppDispatch } from '../../redux-toolkit/hook'
-import { resetCart } from '../../redux-toolkit/cartSlice'
-import BillService from '../../services/BillService'
-import { PaymentMethod } from '../../types'
-import { useAlertDispatch } from '../../contexts/AlertContext'
+import { convertNumbertoMoney, formatDate, getBillId } from '@/utils'
+import { useAppDispatch } from '@/redux-toolkit/hook'
+import { resetCart } from '@/redux-toolkit/cartSlice'
+import BillService from '@/services/BillService'
+import { PaymentMethod } from '@/types'
+import { useAlertDispatch } from '@/contexts/AlertContext'
 
 interface IBill {
     id: number;

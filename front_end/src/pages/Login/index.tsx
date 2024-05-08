@@ -1,17 +1,17 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useNavigate } from "react-router-dom";
-import { RoutePath } from "../../routes";
-import "./Login.scss"
-
+import { RoutePath } from "@/routes";
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useAlertDispatch } from "../../contexts/AlertContext";
-import AuthService from "../../services/AuthService";
-import { LoginInterface } from "../../types";
-import { useAppDispatch } from "../../redux-toolkit/hook";
-import { login } from "../../redux-toolkit/authSlice";
+import { useAlertDispatch } from "@/contexts/AlertContext";
+import AuthService from "@/services/AuthService";
+import { LoginInterface } from "@/types";
+import { useAppDispatch } from "@/redux-toolkit/hook";
+import { login } from "@/redux-toolkit/authSlice";
+
+import "./Login.scss"
 
 const schema = yup
   .object({
@@ -63,20 +63,20 @@ const Login = () => {
             </div>
             <div className="my-2">
               <div className="label-password font-semibold tracking-wide">Mật khẩu</div>
-              <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"password"} {...register('password')} autoComplete="current-password"/>
+              <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"password"} {...register('password')} autoComplete="current-password" />
               {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+            </div>
+            <div className="flex justify-between">
+              <button type="submit" className="bg-main-orange-color text-white px-5 py-2 rounded-sm hover:bg-bold-main-orange-color">
+                <span>Đăng nhập</span>
+              </button>
+              <Link to={RoutePath.RegisterPage}>
+                <span className="underline">Bạn chưa có tài khoản ?</span>
+              </Link>
+            </div>
+          </form>
         </div>
-        <div className="flex justify-between">
-          <button type="submit" className="bg-main-orange-color text-white px-5 py-2 rounded-sm hover:bg-bold-main-orange-color">
-            <span>Đăng nhập</span>
-          </button>
-          <Link to={RoutePath.RegisterPage}>
-            <span className="underline">Bạn chưa có tài khoản ?</span>
-          </Link>
-        </div>
-      </form>
-    </div>
-  </div >
+      </div >
     </div >
   </>)
 };

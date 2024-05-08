@@ -1,6 +1,6 @@
 import React from "react"
-import aboutUsBanner from "../../assets/images/aboutus_banner.jpg"
-import aboutUsMain from "../../assets/images/aboutus_main.jpg"
+import aboutUsBanner from "@/assets/images/aboutus_banner.jpg"
+import aboutUsMain from "@/assets/images/aboutus_main.jpg"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCheck } from "@fortawesome/free-solid-svg-icons"
 import { Helmet } from 'react-helmet-async';

@@ -1,16 +1,16 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { NavLink } from 'react-router-dom'
-import { RoutePath } from '../../routes'
+import { RoutePath } from '@/routes'
 import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { LoadingOutlined } from '@ant-design/icons';
-import BillService from '../../services/BillService';
-import { useAppSelector } from '../../redux-toolkit/hook';
-import { useAlertDispatch } from '../../contexts/AlertContext';
+import BillService from '@/services/BillService';
+import { useAppSelector } from '@/redux-toolkit/hook';
+import { useAlertDispatch } from '@/contexts/AlertContext';
 
-import { convertNumbertoMoney } from '../../utils';
+import { convertNumbertoMoney } from '@/utils';
 
 enum PurchaseStatus {
     ALL = "Tất cả",

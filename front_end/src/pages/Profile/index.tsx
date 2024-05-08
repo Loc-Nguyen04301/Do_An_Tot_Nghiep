@@ -1,13 +1,13 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { RoutePath } from '../../routes'
+import { RoutePath } from '@/routes'
 import { NavLink } from 'react-router-dom'
 import clsx from 'clsx'
-import { checkImage, imageUpload } from '../../utils'
-import { useAlertDispatch } from '../../contexts/AlertContext'
-import { ConfigProvider, Radio, RadioChangeEvent } from 'antd'
-import { useAppDispatch, useAppSelector } from '../../redux-toolkit/hook'
-import UserService from '../../services/UserService'
+import { checkImage, imageUpload } from '@/utils'
+import { useAlertDispatch } from '@/contexts/AlertContext'
+import { ConfigProvider, RadioChangeEvent } from 'antd'
+import { useAppDispatch, useAppSelector } from '@/redux-toolkit/hook'
+import UserService from '@/services/UserService'
 
 const Profile = () => {
     const { user } = useAppSelector(state => state.auth)

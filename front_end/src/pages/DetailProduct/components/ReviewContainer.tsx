@@ -1,12 +1,12 @@
 import { ChangeEvent, useState } from 'react'
 import { IDetailProduct } from '..';
 import { Rate } from 'antd';
-import { checkImage, imageUpload } from '../../../utils';
-import { useAlertDispatch } from '../../../contexts/AlertContext';
+import { checkImage, imageUpload } from '@/utils';
+import { useAlertDispatch } from '@/contexts/AlertContext';
 import { DeleteOutlined } from '@ant-design/icons';
-import { useAppSelector } from '../../../redux-toolkit/hook';
-import ReviewService from '../../../services/ReviewService';
-import { ReviewInterface } from '../../../types';
+import { useAppSelector } from '@/redux-toolkit/hook';
+import ReviewService from '@/services/ReviewService';
+import { ReviewInterface } from '@/types';
 
 interface ReviewContainerProps {
     product: IDetailProduct

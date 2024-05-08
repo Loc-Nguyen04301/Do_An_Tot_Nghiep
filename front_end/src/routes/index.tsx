@@ -110,9 +110,7 @@ const Router: React.FC = () => {
         {
           path: RoutePath.Purchase,
           element:
-            <AuthGuard>
-              <Purchase />
-            </AuthGuard>
+            <Purchase />
         },
         {
           path: RoutePath.AboutUs,
@@ -141,18 +139,14 @@ const Router: React.FC = () => {
         {
           path: RoutePath.CheckoutPage,
           element:
-            <AuthGuard>
-              <HavingCart>
-                <Checkout />
-              </HavingCart>
-            </AuthGuard>
+            <HavingCart>
+              <Checkout />
+            </HavingCart>
         },
         {
           path: RoutePath.OrderComplete,
           element:
-            <AuthGuard>
-              <OrderComplete />
-            </AuthGuard>
+            <OrderComplete />
         },
         {
           path: `*`,

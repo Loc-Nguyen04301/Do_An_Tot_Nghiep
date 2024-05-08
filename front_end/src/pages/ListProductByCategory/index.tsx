@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
-import categoryList from "../../assets/data/categoryList"
-import { RoutePath } from "../../routes"
+import categoryList from "@/assets/data/categoryList"
+import { RoutePath } from "@/routes"
 import { Helmet } from "react-helmet-async"
 import { IDetailProduct } from "../DetailProduct"
-import ProductService from "../../services/ProductService"
-import { convertNumbertoMoney } from "../../utils"
+import ProductService from "@/services/ProductService"
+import { convertNumbertoMoney } from "@/utils"
 
 import styles from "./ListProductByCategory.module.scss"
 

@@ -1,16 +1,16 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
-import { RoutePath } from "../../routes";
+import { RoutePath } from "@/routes";
 import * as yup from 'yup';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { RegisterInterface } from "@/types";
+import { useAlertDispatch } from "@/contexts/AlertContext";
+import { useAppDispatch } from "@/redux-toolkit/hook";
+import AuthService from "@/services/AuthService";
 
 import "../Login/Login.scss"
-import { RegisterInterface } from "../../types";
-import { useAlertDispatch } from "../../contexts/AlertContext";
-import { useAppDispatch } from "../../redux-toolkit/hook";
-import AuthService from "../../services/AuthService";
 
 const schema = yup
   .object().shape({

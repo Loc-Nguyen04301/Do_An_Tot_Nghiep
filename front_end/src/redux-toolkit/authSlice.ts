@@ -54,7 +54,7 @@ export const authSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(getMe.fulfilled, (state, action: PayloadAction<AuthState>) => {
-            if (action.payload.user) {
+            if (action.payload?.user) {
                 state.user = action.payload.user
             }
         })

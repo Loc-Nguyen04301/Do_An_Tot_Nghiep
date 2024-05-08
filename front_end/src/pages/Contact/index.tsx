@@ -1,5 +1,5 @@
 import React from "react"
-import aboutUsBanner from "../../assets/images/aboutus_banner.jpg"
+import aboutUsBanner from "@/assets/images/aboutus_banner.jpg"
 import { Helmet } from "react-helmet-async"
 
 const Contact = () => {

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
-import { RoutePath } from '../../routes'
+import { RoutePath } from '@/routes'
 import { RightOutlined, DeleteOutlined } from '@ant-design/icons';
 import { ConfigProvider, Modal, Table, TableProps } from 'antd';
-import { convertNumbertoMoney } from '../../utils';
-import { useAppDispatch, useAppSelector } from '../../redux-toolkit/hook';
-import { addItemToCart, IProductItem, removeItemToCart, deleteItemToCart } from '../../redux-toolkit/cartSlice';
+import { convertNumbertoMoney } from '@/utils';
+import { useAppDispatch, useAppSelector } from '@/redux-toolkit/hook';
+import { addItemToCart, IProductItem, removeItemToCart, deleteItemToCart } from '@/redux-toolkit/cartSlice';
 import { useAlertDispatch } from '../../contexts/AlertContext';
 import clsx from 'clsx';
 

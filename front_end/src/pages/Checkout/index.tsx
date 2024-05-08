@@ -1,20 +1,19 @@
 import React, { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { RoutePath } from '../../routes'
+import { RoutePath } from '@/routes'
 import { RightOutlined } from '@ant-design/icons';
-
-import { convertNumbertoMoney, setBillId } from '../../utils';
+import { convertNumbertoMoney, setBillId } from '@/utils';
 import clsx from 'clsx';
-import { useAppSelector } from '../../redux-toolkit/hook';
+import { useAppSelector } from '@/redux-toolkit/hook';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { useAlertDispatch } from '../../contexts/AlertContext';
-import BillService from '../../services/BillService';
+import { useAlertDispatch } from '@/contexts/AlertContext';
+import BillService from '@/services/BillService';
 import { Collapse, CollapseProps } from 'antd';
-import { PaymentMethod } from '../../types';
-import VNPayService from '../../services/VNPayService';
+import { PaymentMethod } from '@/types';
+import VNPayService from '@/services/VNPayService';
 
 import "./Checkout.scss"
 

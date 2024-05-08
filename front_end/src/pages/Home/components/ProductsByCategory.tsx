@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { RoutePath } from '../../../routes'
+import { RoutePath } from '@/routes'
 import styles from "../Home.module.scss"
 import { SwiperSlide, Swiper } from 'swiper/react'
 import { Navigation } from 'swiper/modules'
-import ProductService from '../../../services/ProductService'
-import { IProduct } from '../../../types'
-import { convertNumbertoMoney } from '../../../utils'
+import ProductService from '@/services/ProductService'
+import { IProduct } from '@/types'
+import { convertNumbertoMoney } from '@/utils'
 
 interface ProductsByCategoryProps {
     categoryPath: string;

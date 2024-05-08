@@ -2,10 +2,10 @@ import { useState } from "react"
 import type { CollapseProps } from "antd"
 import { Collapse, Rate } from "antd"
 import { IDetailProduct } from ".."
-import { convertNumbertoMoney, getAccessToken } from "../../../utils"
+import { convertNumbertoMoney, getAccessToken } from "@/utils"
 import clsx from "clsx"
 import ReviewContainer from "./ReviewContainer"
-import { useAppSelector } from "../../../redux-toolkit/hook"
+import { useAppSelector } from "@/redux-toolkit/hook"
 
 interface AccordingProductProps {
   product: IDetailProduct

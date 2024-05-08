@@ -36,8 +36,8 @@ const Customer = () => {
             const res = await UserService.listUser()
             setDataSource(res.data.data)
             dispatchAlert({ loading: false })
-        } catch (error) {
-            console.log(error)
+        } catch (error: any) {
+            dispatchAlert({ loading: false, errors: error.message })
         }
     }, [dispatch])
 

@@ -19,7 +19,7 @@ const initialState: AuthState = {
         email: "",
         avatar: "",
         address: "",
-        phonenumber: ""
+        phone_number: ""
     }
 }
 

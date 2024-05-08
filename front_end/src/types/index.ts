@@ -18,7 +18,7 @@ export interface IUser {
     email: string;
     avatar: string;
     address: string,
-    phonenumber: string
+    phone_number: string
 }
 
 export interface IProduct {

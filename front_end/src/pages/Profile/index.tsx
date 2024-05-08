@@ -88,32 +88,25 @@ const Profile = () => {
                             </div>
                             <div className='pt-5'>
                                 <div className='flex gap-x-16'>
-                                    <div className='w-[70%] border-r border-border-color'>
-                                        <div className=''>
-                                            <div className='inline-block w-1/2 text-right text-text-gray'>Email</div>
-                                            <div className='inline-block pl-3 pb-5'>nguyengialoc123</div>
+                                    <div className='w-[70%] border-r border-border-color mt-7'>
+                                        <div className='pb-5'>
+                                            <div className='inline-block w-1/4 text-right text-text-gray'>Email</div>
+                                            <div className='inline-block pl-3'>{user.email}</div>
                                         </div>
-                                        <div className=''>
-                                            <div className='inline-block w-1/2 text-right text-text-gray'>Tên đăng nhập</div>
-                                            <div className='inline-block pl-3 pb-5'>nguyengialoc123</div>
+                                        <div className='pb-5'>
+                                            <div className='inline-block w-1/4 text-right text-text-gray'>Tên người dùng</div>
+                                            <div className='inline-block pl-3'>{user.username}</div>
                                         </div >
-                                        <div className=''>
-                                            <div className='inline-block w-1/2 text-right text-text-gray'>Số điện thoại</div>
-                                            <div className='inline-block pl-3 pb-5'>*********49</div>
+                                        <div className='pb-5'>
+                                            <div className='inline-block w-1/4 text-right text-text-gray'>Số điện thoại</div>
+                                            <div className='inline-block pl-3'>{user.phone_number}</div>
                                         </div>
-                                        <div className=''>
-                                            <div className='inline-block w-1/2 text-right text-text-gray'>Giới tính</div>
-                                            <div className='inline-block pl-3 pb-5'>
-                                                <Radio.Group onChange={onChange} value={gender}>
-                                                    <Radio value={1}>A</Radio>
-                                                    <Radio value={2}>B</Radio>
-                                                    <Radio value={3}>C</Radio>
-                                                    <Radio value={4}>D</Radio>
-                                                </Radio.Group>
-                                            </div>
+                                        <div className='pb-5'>
+                                            <div className='inline-block w-1/4 text-right text-text-gray'>Địa chỉ</div>
+                                            <div className='inline-block pl-3'>{user.address}</div>
                                         </div>
-                                        <div>
-                                            <button className='w-full bg-button-red-color py-2 hover:shadow-checkout-btn' onClick={handleUpdateProfile}>
+                                        <div className='text-center'>
+                                            <button className='w-[100px] rounded-md bg-main-orange-color py-2 hover:shadow-checkout-btn' onClick={handleUpdateProfile}>
                                                 <span className='text-white font-semibold tracking-wide'>Lưu</span>
                                             </button>
                                         </div>

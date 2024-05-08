@@ -5,7 +5,7 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
-import { isTokenExpiration, getAccessToken, setAccessToken } from "../utils";
+import { isTokenExpiration, getAccessToken, setAccessToken, setRefreshToken } from "../utils";
 import AuthService from "./AuthService";
 
 export const getBaseUrl = () => {
@@ -35,11 +35,13 @@ instance.interceptors.request.use(
       // create new access token when token is expired
       if (isTokenExpiration(token)) {
         const response = await AuthService.refreshToken()
-        const new_token = response?.data.data.access_token
-        setAccessToken(new_token);
+        const accessToken = response?.data.data.access_token
+        const refreshToken = response?.data.data.refresh_token
+        setAccessToken(accessToken);
+        setRefreshToken(refreshToken);
         newHeaders = {
           ...request.headers,
-          Authorization: "Bearer " + new_token,
+          Authorization: "Bearer " + accessToken,
         };
       }
     }

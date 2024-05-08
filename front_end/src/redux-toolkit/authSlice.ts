@@ -15,9 +15,11 @@ const initialState: AuthState = {
     refresh_token: "",
     user: {
         id: null,
-        avatar: "",
+        username: "",
         email: "",
-        username: ""
+        avatar: "",
+        address: "",
+        phonenumber: ""
     }
 }
 

@@ -6,7 +6,7 @@ import {
   faBars,
   faCartShopping,
 } from "@fortawesome/free-solid-svg-icons"
-import { Link, useLocation } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import "./Header.scss"
 import DropDown from "./DropDown"
 import NavigationBar from "./NavigationBar"
@@ -34,6 +34,7 @@ const Header = () => {
   const dispatchAlert = useAlertDispatch()
 
   const location = useLocation()
+  const navigate = useNavigate()
   const currentPath = location.pathname
 
   const showDrawerLeft = () => {
@@ -50,6 +51,7 @@ const Header = () => {
       setTimeout(() => {
         dispatch(logOut())
         dispatchAlert({ loading: false })
+        navigate("/")
       }, 2000)
     } catch (error) {
       console.log(error)

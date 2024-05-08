@@ -99,6 +99,8 @@ export class AuthService {
         username: matchingUser.username,
         email: matchingUser.email,
         avatar: matchingUser.avatar,
+        address: matchingUser.address,
+        phone_number: matchingUser.phone_number
       },
       access_token: accessToken,
       refresh_token: refreshToken,
@@ -135,12 +137,6 @@ export class AuthService {
     // create hashed refresh token saved in DB
     await this.updateRefreshTokenHash(matchingUser.id, refreshToken);
     return {
-      user: {
-        id: matchingUser.id,
-        username: matchingUser.username,
-        email: matchingUser.email,
-        avatar: matchingUser.avatar,
-      },
       access_token: accessToken,
       refresh_token: refreshToken,
     }
@@ -157,6 +153,8 @@ export class AuthService {
         username: user.username,
         email: user.email,
         avatar: user.avatar,
+        address: user.address,
+        phone_number: user.phone_number
       },
     }
   }

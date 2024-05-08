@@ -30,7 +30,7 @@ export const cartSlice = createSlice({
     initialState,
     reducers: {
         addItemToCartWithQuantity: (state, action: PayloadAction<IProductItemWithQuantity>) => {
-            // if quantityAdded=0 => delete item 
+            // if quantityAdded=0 => delete item from cartItemState
             if (action.payload.quantityAdded == 0) {
                 state.cartItems = state.cartItems.filter(
                     (item) => item.id !== action.payload.id

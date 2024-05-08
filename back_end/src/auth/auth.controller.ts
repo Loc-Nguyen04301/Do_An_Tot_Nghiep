@@ -59,5 +59,4 @@ export class AuthController {
     const user = req.user as JwtRefreshPayload;
     return this.authService.refreshToken(user.id);
   }
-
 }

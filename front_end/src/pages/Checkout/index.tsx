@@ -14,9 +14,23 @@ import { useAlertDispatch } from '../../contexts/AlertContext';
 import BillService from '../../services/BillService';
 import { Collapse, CollapseProps } from 'antd';
 import { PaymentMethod } from '../../types';
+import VNPayService from '../../services/VNPayService';
 
 import "./Checkout.scss"
-import VNPayService from '../../services/VNPayService';
+
+interface FormData {
+    customer_name: string;
+    address: string;
+    phone_number: string;
+    email: string;
+    note?: string;
+}
+
+export interface CreateBillDto extends FormData {
+    user_id?: number;
+    payment_method: string;
+    total_amount?: number;
+}
 
 const schema = yup
     .object({
@@ -28,14 +42,14 @@ const schema = yup
     })
 
 const Checkout = () => {
-    const [activeKey, setActiveKey] = useState<string>(PaymentMethod.SHIPCOD)
+    const [paymentMethod, setPaymentMethod] = useState<string>(PaymentMethod.SHIPCOD)
 
     const items: CollapseProps['items'] = [
         {
             key: PaymentMethod.SHIPCOD,
             label:
                 <div className='flex gap-3 items-center'>
-                    <input type={"radio"} checked={activeKey === PaymentMethod.SHIPCOD} readOnly />
+                    <input type={"radio"} checked={paymentMethod === PaymentMethod.SHIPCOD} readOnly />
                     <span className='font-bold'>Trả tiền mặt khi nhận hàng</span>
                 </div>,
             children:
@@ -46,7 +60,7 @@ const Checkout = () => {
             key: PaymentMethod.BANK_TRANSFER,
             label:
                 <div className='flex gap-3 items-center'>
-                    <input type={"radio"} checked={activeKey === PaymentMethod.BANK_TRANSFER} readOnly />
+                    <input type={"radio"} checked={paymentMethod === PaymentMethod.BANK_TRANSFER} readOnly />
                     <span className='font-bold'>Chuyển khoản ngân hàng</span>
                 </div>,
             children:
@@ -59,7 +73,7 @@ const Checkout = () => {
             key: PaymentMethod.VNPAY,
             label:
                 <div className='flex gap-3 items-center'>
-                    <input type={"radio"} checked={activeKey === PaymentMethod.VNPAY} readOnly />
+                    <input type={"radio"} checked={paymentMethod === PaymentMethod.VNPAY} readOnly />
                     <span className='font-bold'>Thanh toán cổng VNPay</span>
                 </div>,
             children: <p>Thực hiện thanh toán thanh toán qua cổng VNPay</p>,
@@ -72,20 +86,21 @@ const Checkout = () => {
     });
     const { totalAmount, cartItems } = useAppSelector(state => state.cart)
     const { user } = useAppSelector(state => state.auth)
-    const shortCartItems = cartItems.map((item) => {
-        return { product_id: item.id, quantity: item.quantity }
-    })
     const dispatchAlert = useAlertDispatch()
     const navigate = useNavigate()
 
-    const onSubmit = async (data: any) => {
+    const shortCartItems = cartItems.map((item) => {
+        return { product_id: item.id, quantity: item.quantity, total_price: item.totalPrice }
+    })
+
+    const onSubmit = async (data: FormData) => {
         dispatchAlert({ loading: true })
         try {
             setTimeout(async () => {
-                const createBillDto = { ...data, shortCartItems, user_id: user.id, payment_method: activeKey }
+                const createBillDto = { ...data, shortCartItems, user_id: user.id, payment_method: paymentMethod, total_amount: totalAmount } as CreateBillDto
                 const res = await BillService.createBill(createBillDto)
                 setBillId(res.data.data.billId)
-                if (activeKey === PaymentMethod.VNPAY) {
+                if (paymentMethod === PaymentMethod.VNPAY) {
                     const res = await VNPayService.navigateVNPay({
                         amount: 10000,
                     })
@@ -104,7 +119,7 @@ const Checkout = () => {
 
     const onChange = (key: string | string[]) => {
         if (key.length > 0)
-            setActiveKey(key[0])
+            setPaymentMethod(key[0])
     };
 
     return (
@@ -175,7 +190,7 @@ const Checkout = () => {
                                         <span className='font-extrabold text-black'>{convertNumbertoMoney(totalAmount)}</span>
                                     </div>
                                 </div>
-                                <Collapse className='mt-7 payment-accordion' activeKey={activeKey} ghost items={items} accordion onChange={onChange} />
+                                <Collapse className='mt-7 payment-accordion' activeKey={paymentMethod} ghost items={items} accordion onChange={onChange} />
                                 <div className='my-5'>
                                     <p className='text-[#777777] text-sm'>Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our</p>
                                 </div>

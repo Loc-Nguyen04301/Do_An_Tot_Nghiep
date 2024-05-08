@@ -85,6 +85,7 @@ model Bill {
   payment_status Boolean       @default(false)
   return_status  ReturnStatus  @default(NONE)
   payment_method PaymentMethod
+  total_amount   Int?
   created_at     DateTime      @default(now())
   update_at      DateTime?     @updatedAt
   user           User?         @relation(fields: [user_id], references: [id])
@@ -92,13 +93,14 @@ model Bill {
 }
 
 model Item {
-  bill_id    Int
-  product_id Int
-  quantity   Int
-  created_at DateTime  @default(now())
-  update_at  DateTime? @updatedAt
-  bill       Bill      @relation(fields: [bill_id], references: [id])
-  product    Product   @relation(fields: [product_id], references: [id])
+  bill_id     Int
+  product_id  Int
+  quantity    Int
+  total_price Int?
+  created_at  DateTime  @default(now())
+  update_at   DateTime? @updatedAt
+  bill        Bill      @relation(fields: [bill_id], references: [id])
+  product     Product   @relation(fields: [product_id], references: [id])
 
   @@unique([bill_id, product_id])
 }

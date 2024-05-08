@@ -11,6 +11,7 @@ export class AtGuard extends AuthGuard(process.env.AT_STRATEGY_NAME) {
   }
 
   canActivate(context: ExecutionContext) {
+    // Nếu API có gắn decorator Public => next
     const isPublic = this.reflector.getAllAndOverride(IS_PUBLIC_KEY, [
       context.getHandler(),
       context.getClass(),

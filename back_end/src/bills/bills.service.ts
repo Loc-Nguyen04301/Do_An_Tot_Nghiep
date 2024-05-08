@@ -16,26 +16,37 @@ export class BillsService {
   }
 
   async create(createBillDto: CreateBillDto) {
-    const { address, customer_name, email, note, phone_number, user_id, payment_method, shortCartItems } = createBillDto
+    const { address, customer_name, email, note, phone_number, user_id, payment_method, total_amount, shortCartItems } = createBillDto
+    const billData = { customer_name, address, phone_number, email, payment_method, note, user_id, total_amount }
 
-    const data: any = { customer_name, address, phone_number, email, payment_method, note }
-    if (user_id !== null && user_id !== undefined) {
-      data.user_id = user_id;
-    }
-    const bill = await this.prisma.bill.create({ data: data })
-    if (!bill) throw new BadRequestException('Can not create a bill');
-
-    const shortCartItemsData = shortCartItems.map((item => { return { bill_id: bill.id, product_id: item.product_id, quantity: item.quantity } }))
-    shortCartItemsData.forEach(async (cartItem) => {
-      const item = await this.prisma.item.create({ data: cartItem })
-      if (!item) throw new BadRequestException('Can not create a item');
+    // check available item in database
+    await Promise.all(shortCartItems.map(async (cartItem) => {
       const product = await this.prisma.product.findUnique({
         where: { id: cartItem.product_id },
       });
-      if (product) {
-        const newAvailable = product.available - cartItem.quantity;
-        await this.prisma.product.update({ where: { id: cartItem.product_id }, data: { available: newAvailable } })
-      }
+      if (product.available < cartItem.quantity) throw new BadRequestException(`Số lượng ${product.name} không đủ`)
+    }))
+
+    const bill = await this.prisma.$transaction(async (tr) => {
+      // create bill
+      const bill = await tr.bill.create({ data: billData })
+      if (!bill) throw new BadRequestException('Không tạo được đơn hàng');
+
+      const shortCartItemsData = shortCartItems.map((item => { return { bill_id: bill.id, product_id: item.product_id, quantity: item.quantity, total_price: item.total_price } }))
+      await Promise.all(shortCartItemsData.map(async (cartItem) => {
+        // create each item in bill
+        const item = await tr.item.create({ data: cartItem })
+        if (!item) throw new BadRequestException('Không tạo được sản phẩm trong đơn hàng');
+        const product = await tr.product.findUnique({
+          where: { id: cartItem.product_id },
+        });
+        if (product) {
+          const newAvailable = product.available - cartItem.quantity;
+          await tr.product.update({ where: { id: cartItem.product_id }, data: { available: newAvailable } })
+        }
+      }))
+
+      return bill
     })
 
     return { billId: bill.id }

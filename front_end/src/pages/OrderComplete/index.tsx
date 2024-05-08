@@ -171,13 +171,18 @@ const OrderComplete = () => {
                         </ul>
 
                     </div>
-                    {bill &&
+                    {
+                        bill &&
                         <div className='max-md:col-span-12 col-span-5'>
                             <div className="px-7 py-6 bg-[rgba(0,0,0,0.02)]">
                                 <p className="mb-5 text-[#7a9c59] text-lg font-bold">
                                     Cảm ơn bạn. Đơn hàng của bạn đã được nhận.
                                 </p>
                                 <ul className="list-disc text-category-title text-lg">
+                                    <li className="ml-5 mb-2">
+                                        Mã đơn hàng:
+                                        <strong className='ml-1'>{bill.id}</strong>
+                                    </li>
                                     <li className="ml-5 mb-2">
                                         Người nhận:
                                         <strong className='ml-1'>{bill.customer_name}</strong>
@@ -189,10 +194,6 @@ const OrderComplete = () => {
                                     <li className="ml-5 mb-2">
                                         Địa chỉ:
                                         <strong className='ml-1'>{bill.address}</strong>
-                                    </li>
-                                    <li className="ml-5 mb-2">
-                                        Mã đơn hàng:
-                                        <strong className='ml-1'>{bill.id}</strong>
                                     </li>
                                     <li className="ml-5 mb-2">
                                         Ngày:
@@ -210,7 +211,8 @@ const OrderComplete = () => {
                                     </li>
                                 </ul>
                             </div>
-                        </div>}
+                        </div>
+                    }
                 </div>
             </div>
         </>

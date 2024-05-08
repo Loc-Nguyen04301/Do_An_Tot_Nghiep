@@ -9,6 +9,8 @@ class ShortCartItem {
     @IsNumber()
     @IsNotEmpty()
     quantity: number
+
+    total_price: number
 }
 
 export class CreateBillDto {
@@ -36,6 +38,8 @@ export class CreateBillDto {
     @IsEnum(PaymentMethod)
     @IsNotEmpty()
     payment_method: PaymentMethod
+
+    total_amount?: number
 
     shortCartItems: ShortCartItem[]
 }

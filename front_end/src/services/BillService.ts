@@ -1,6 +1,7 @@
 import http from "./axios";
+import { CreateBillDto } from "../pages/Checkout";
 
-const createBill = (data: any) => {
+const createBill = (data: CreateBillDto) => {
     return http.post(`/bills`, data)
 }
 

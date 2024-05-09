@@ -11,17 +11,12 @@ import UserService from '@/services/UserService'
 
 const Profile = () => {
     const { user } = useAppSelector(state => state.auth)
-    const [gender, setGender] = useState(1);
     const [avatarTemp, setAvatarTemp] = useState<string>()
     const [avatarTempFile, setAvatarTempFile] = useState<File>()
 
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const dispatchAlert = useAlertDispatch()
     const dispatch = useAppDispatch()
-
-    const onChange = (e: RadioChangeEvent) => {
-        setGender(e.target.value);
-    };
 
     const handleButtonClick = () => {
         if (fileInputRef.current) {

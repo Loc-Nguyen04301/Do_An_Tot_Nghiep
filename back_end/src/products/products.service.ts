@@ -55,6 +55,7 @@ export class ProductsService {
         old_price: true,
         new_price: true,
         image: true,
+        available: true,
         categories: { select: { category: { select: { name: true } } } },
         reviews: {
           select: {

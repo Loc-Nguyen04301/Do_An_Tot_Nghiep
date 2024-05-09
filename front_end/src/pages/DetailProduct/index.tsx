@@ -60,12 +60,21 @@ const DetailProduct = () => {
   }
 
   const addProductToCart = (product: any, quantity: number) => {
+    if (quantity === 0) return
     dispatchAlert({ loading: true })
     try {
-      setTimeout(() => {
-        dispatch(addItemToCartWithQuantity({ ...product, quantityAdded: quantity }))
-        dispatchAlert({ loading: false, success: "Thêm vào giỏ hàng thành công" })
-      }, 1000)
+      if (quantity > product.available) {
+        setTimeout(() => {
+          dispatchAlert({ loading: false, errors: `Số lượng sản phẩm không đủ để phục vụ. Vui lòng chọn lại` })
+        }, 1000)
+        return
+      }
+      else {
+        setTimeout(() => {
+          dispatch(addItemToCartWithQuantity({ ...product, quantityAdded: quantity }))
+          dispatchAlert({ loading: false, success: "Thêm vào giỏ hàng thành công" })
+        }, 2000)
+      }
     } catch (error) {
       console.log(error)
     }

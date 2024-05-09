@@ -169,18 +169,21 @@ const Purchase = () => {
                                             <div className='py-6 border-b border-border-color flex justify-between'>
                                                 <div className='flex gap-2'>
                                                     <img src={item.product.image} width={80} />
-                                                    <div>{item.product.name} x {item.quantity}</div>
+                                                    <div className='flex flex-col justify-center'>
+                                                        <span>{item.product.name} </span>
+                                                        <span className='text-sm font-semibold'>x {item.quantity}</span>
+                                                    </div>
                                                 </div>
                                                 <div className='flex gap-2'>
                                                     {item.product.old_price != 0 &&
-                                                        <del>{convertNumbertoMoney(item.product.old_price)}</del>
+                                                        <del className='text-category-title'>{convertNumbertoMoney(item.product.old_price)}</del>
                                                     }
-                                                    <span>{convertNumbertoMoney(item.product.new_price)}</span>
+                                                    <span className='text-main-orange-color'>{convertNumbertoMoney(item.product.new_price)}</span>
                                                 </div>
                                             </div>)}
                                         <div className='py-6 text-right'>
-                                            <span className='px-2 text-category-title'>Thành tiền:</span>
-                                            <span className='px-2'>{convertNumbertoMoney(bill.total_amount)}</span>
+                                            <span className='px-2'>Thành tiền:</span>
+                                            <span className='px-2 text-main-orange-color text-xl font-semibold'>{convertNumbertoMoney(bill.total_amount)}</span>
                                         </div>
                                         <div className='group-button flex justify-between items-center'>
                                             <span className='text-category-title text-sm'>Đã hủy bởi bạn</span>

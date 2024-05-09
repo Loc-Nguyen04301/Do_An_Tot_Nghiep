@@ -10,9 +10,10 @@ import AuthService from "./AuthService";
 
 export const getBaseUrl = () => {
   if (import.meta.env.MODE === 'development') {
-    return 'http://localhost:8000/api/v1';
+    return import.meta.env.VITE_SERVER_URL;
   }
-  return process.env.VITE_SERVER_URL || 'https://example.com';
+
+  return import.meta.env.VITE_SERVER_URL;
 };
 
 const instance: AxiosInstance = axios.create({

@@ -1,12 +1,10 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, Req, Res, UseInterceptors } from '@nestjs/common';
 import { Response } from 'express';
-import { stringify } from 'qs';
 import { createHmac } from 'crypto';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { Public } from 'src/common/decorators';
 import { format } from 'date-fns'
-import { resolveUrlString, sortObject } from 'src/utils';
-import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
+import { resolveUrlString } from 'src/utils';
 
 @Controller('api/v1/payment')
 export class PaymentController {

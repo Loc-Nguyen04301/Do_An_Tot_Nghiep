@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom'
 import { RoutePath } from '@/routes'
 import clsx from 'clsx'
 import { RightOutlined } from '@ant-design/icons';
-import { convertNumbertoMoney, formatDate, getBillId } from '@/utils'
+import { convertNumbertoMoney, formatDate, getBillId, getPaymentURL } from '@/utils'
 import { useAppDispatch } from '@/redux-toolkit/hook'
 import { resetCart } from '@/redux-toolkit/cartSlice'
 import BillService from '@/services/BillService'
@@ -84,6 +84,8 @@ const OrderComplete = () => {
         }
     }, [bill])
 
+    const paymentUrl = getPaymentURL()
+
     return (
         <>
             <Helmet>
@@ -118,7 +120,7 @@ const OrderComplete = () => {
                                     </li>
                                 </ul>
                                 <div className='mx-auto w-[400px]'>
-                                    <img src='https://img.vietqr.io/image/970415-103870480417-print.png?amount=10000&addInfo=MUA%20HANG%20TAI%20LOC%20NGUYEN&accountName=NGUYEN%20GIA%20LOC' />
+                                    {paymentUrl && <img src={paymentUrl} />}
                                 </div>
                             </div>
                             :
@@ -151,7 +153,7 @@ const OrderComplete = () => {
                                 </li>
                                 <li className='flex justify-between py-2 border-b'>
                                     <strong>Phương thức thanh toán</strong>
-                                    <span>Chuyển khoản ngân hàng</span>
+                                    <strong>{billMethod}</strong>
                                 </li>
                                 <li className='flex justify-between py-2'>
                                     <strong>Tổng cộng:</strong>
@@ -160,6 +162,7 @@ const OrderComplete = () => {
                             </ul>
                         }
                     </div>
+
                     {
                         bill &&
                         <div className='max-md:col-span-12 col-span-5'>

@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { RoutePath } from '@/routes'
 import { RightOutlined } from '@ant-design/icons';
-import { convertNumbertoMoney, setBillId } from '@/utils';
+import { convertNumbertoMoney, setBillId, setPaymentURL } from '@/utils';
 import clsx from 'clsx';
 import { useAppSelector } from '@/redux-toolkit/hook';
 import * as yup from 'yup';
@@ -14,8 +14,12 @@ import BillService from '@/services/BillService';
 import { Collapse, CollapseProps } from 'antd';
 import { PaymentMethod } from '@/types';
 import VNPayService from '@/services/VNPayService';
+import VietQRService from '@/services/VietQRService';
+import { format } from "date-fns"
 
 import "./Checkout.scss"
+
+var DATETIME_FORMAT = 'yyyyMMddHHmmss'
 
 interface FormData {
     customer_name: string;
@@ -101,12 +105,21 @@ const Checkout = () => {
                 setBillId(res.data.data.billId)
                 if (paymentMethod === PaymentMethod.VNPAY) {
                     const res = await VNPayService.navigateVNPay({
-                        amount: 10000,
+                        amount: totalAmount,
                     })
+                    // redirect đến cổng thanh toán VNPAY
                     window.location.replace(res.data.vnpUrl)
                     return;
                 }
-                else {
+                else if (paymentMethod === PaymentMethod.BANK_TRANSFER) {
+                    const now = new Date()
+                    const createdAt = format(now, DATETIME_FORMAT)
+                    const res = await VietQRService.createPaymentUrl({ amount: 10000, addInfo: `${data.customer_name} CHUYEN KHOAN MUA HANG ${createdAt}` })
+                    setPaymentURL(res.data.data.qrDataURL)
+                    dispatchAlert({ loading: false })
+                    navigate(RoutePath.OrderComplete)
+                }
+                else if (paymentMethod === PaymentMethod.SHIPCOD) {
                     dispatchAlert({ loading: false })
                     navigate(RoutePath.OrderComplete)
                 }

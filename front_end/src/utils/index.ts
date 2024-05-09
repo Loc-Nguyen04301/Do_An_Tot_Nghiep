@@ -12,6 +12,10 @@ export const getBillId = () => {
     return localStorage.getItem('billId')
 }
 
+export const getPaymentURL = () => {
+    return localStorage.getItem('paymentURL')
+}
+
 export const setAccessToken = (accessToken: string) => {
     localStorage.setItem('accessToken', accessToken)
 }
@@ -22,6 +26,10 @@ export const setRefreshToken = (refreshToken: string) => {
 
 export const setBillId = (billId: string) => {
     localStorage.setItem('billId', billId)
+}
+
+export const setPaymentURL = (paymentURL: string) => {
+    localStorage.setItem('paymentURL', paymentURL)
 }
 
 export const removeAccessToken = () => {

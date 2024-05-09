@@ -127,35 +127,12 @@ const Purchase = () => {
                         </div>
                     </div>
                     <div className='w-full'>
-                        <section className='grid grid-cols-5 bg-white'>
+                        <section className='grid grid-cols-5 bg-white mb-20'>
                             <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.ALL && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => setPurchaseStatus(PurchaseStatus.ALL)}>{PurchaseStatus.ALL}</div>
                             <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.WAIT_FOR_PAY && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => setPurchaseStatus(PurchaseStatus.WAIT_FOR_PAY)}>{PurchaseStatus.WAIT_FOR_PAY}</div>
                             <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.WAIT_FOR_DELIVERY && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => setPurchaseStatus(PurchaseStatus.WAIT_FOR_DELIVERY)}>{PurchaseStatus.WAIT_FOR_DELIVERY}</div>
                             <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.SUCCESS && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => setPurchaseStatus(PurchaseStatus.SUCCESS)}>{PurchaseStatus.SUCCESS}</div>
                             <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.CANCELLED && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => setPurchaseStatus(PurchaseStatus.CANCELLED)}>{PurchaseStatus.CANCELLED}</div>
-                        </section>
-                        <section className='my-6 marker:bg-[#eaeaea]'>
-                            <div className="h-[34px] w-full relative">
-                                <input
-                                    type="text"
-                                    placeholder="Tìm kiếm..."
-                                    className="px-2 text-placeholder-color w-full h-full"
-                                    value={search}
-                                    onChange={handleChange}
-                                />
-                                {/* {
-                                    loading
-                                        ?
-                                        <LoadingOutlined
-                                            className="absolute right-3 top-[8px]" />
-                                        :
-                                        <div className='absolute right-3 top-[8px] w-[30px] cursor-pointer text-center' onClick={handleSearchPurchase}>
-                                            <FontAwesomeIcon
-                                                icon={faMagnifyingGlass}
-                                            />
-                                        </div>
-                                } */}
-                            </div>
                         </section>
                         <section className='flex flex-col gap-3'>
                             {

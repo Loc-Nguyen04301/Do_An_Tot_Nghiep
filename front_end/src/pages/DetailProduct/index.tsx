@@ -16,6 +16,7 @@ import { useAlertDispatch } from "@/contexts/AlertContext"
 import "swiper/scss"
 import "swiper/scss/navigation"
 import styles from "./DetailProduct.module.scss"
+import useScrollToTop from "@/hooks/useScrollToTop"
 
 interface Category {
   name: string;
@@ -126,6 +127,8 @@ const DetailProduct = () => {
         }
       })
   }, [product])
+
+  useScrollToTop()
 
   if (product)
     return (

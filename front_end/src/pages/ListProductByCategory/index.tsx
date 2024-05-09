@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom"
 import categoryList from "@/assets/data/categoryList"
 import { RoutePath } from "@/routes"
 import { Helmet } from "react-helmet-async"
-import { IDetailProduct } from "../DetailProduct"
+import { IProduct } from "@/types"
 import ProductService from "@/services/ProductService"
 import { convertNumbertoMoney } from "@/utils"
 
@@ -11,7 +11,7 @@ import styles from "./ListProductByCategory.module.scss"
 
 const ListProductByCategory = () => {
   const { category } = useParams()
-  const [products, setProducts] = useState<IDetailProduct[]>([]);
+  const [products, setProducts] = useState<IProduct[]>([]);
 
   const getProductsByCategory = async (relatedCategory: string) => {
     if (relatedCategory) {

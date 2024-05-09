@@ -72,23 +72,31 @@ const DetailProduct = () => {
   }
 
   const getProductById = async () => {
+    dispatchAlert({ loading: true })
     try {
       const res = await ProductService.getProductById(Number(label))
       setProduct(res.data.data)
       // default = 0 
       const randomCategory = res.data.data.categories[0].category.name
       setRelatedCategory(randomCategory)
+      dispatchAlert({ loading: false })
     } catch (error) {
       console.log(error)
     }
   }
 
+  useEffect(() => {
+    getProductById()
+  }, [label])
+
   const getProductsByCategory = async (relatedCategory: string) => {
+    dispatchAlert({ loading: true })
     try {
       if (relatedCategory) {
         const res = await ProductService.getProductsByCategory(relatedCategory)
         // Show maximum 6 items in Related Products
         setRelatedProducts(res.data.data.slice(0, 6))
+        dispatchAlert({ loading: false })
       }
     } catch (error) {
       console.log(error)
@@ -96,6 +104,11 @@ const DetailProduct = () => {
   }
 
   useEffect(() => {
+    getProductsByCategory(relatedCategory)
+  }, [relatedCategory])
+
+  useEffect(() => {
+    setQuantity(0)
     if (product)
       cartItems.map((item) => {
         if (item.id === product.id) {
@@ -104,14 +117,6 @@ const DetailProduct = () => {
         }
       })
   }, [product])
-
-  useEffect(() => {
-    getProductById()
-  }, [label])
-
-  useEffect(() => {
-    getProductsByCategory(relatedCategory)
-  }, [relatedCategory])
 
   if (product)
     return (

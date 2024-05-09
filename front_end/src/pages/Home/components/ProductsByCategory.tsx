@@ -7,6 +7,7 @@ import { Navigation } from 'swiper/modules'
 import ProductService from '@/services/ProductService'
 import { IProduct } from '@/types'
 import { convertNumbertoMoney } from '@/utils'
+import { Tag } from 'antd'
 
 interface ProductsByCategoryProps {
     categoryPath: string;
@@ -41,13 +42,16 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                     {products && products.map((product) =>
                         <div className={`px-[10px] ${styles.containerProduct}`} key={product.id}>
                             <div className="relative">
-                                {product.old_price != 0 &&
+                                {
+                                    product.available !== 0 ? <Tag color="green">Còn hàng</Tag> : <Tag color="red">Hết hàng</Tag>}
+                                {
+                                    product.old_price != 0 &&
                                     <div className="absolute top-6 left-0 bg-[#fe0000] rounded-full py-3 px-1">
                                         <span className='text-white font-bold text-lg'>Giảm giá!</span>
                                     </div>
                                 }
                                 <Link
-                                    to={`${RoutePath.DetailProduct}/${product.id}`}
+                                    to={product.available !== 0 ? `${RoutePath.DetailProduct}/${product.id}` : ""}
                                     className="text-center block mx-auto"
                                 >
                                     <div className='h-[200px]'>

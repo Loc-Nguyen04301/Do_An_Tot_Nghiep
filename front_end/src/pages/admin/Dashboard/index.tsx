@@ -33,7 +33,7 @@ ChartJS.register(
 
 
 const DashBoard = () => {
-    const [count, setCount] = useState<{ billCount: number, productCount: number, userCount: number, revenueCount: number }>();
+    const [count, setCount] = useState<{ billCount: number, productCount: number, userCount: number, revenueCount: number }>({ billCount: 0, productCount: 0, userCount: 0, revenueCount: 0 });
     const dispatchAlert = useAlertDispatch()
     const getCountDashboard = async () => {
         dispatchAlert({ loading: true })
@@ -72,7 +72,7 @@ const DashBoard = () => {
                             />
                         }
                         title={"Orders"}
-                        value={count?.billCount}
+                        value={count.billCount}
                     />
                     <DashboardCard
                         icon={
@@ -87,7 +87,7 @@ const DashBoard = () => {
                             />
                         }
                         title={"Inventory"}
-                        value={count?.productCount}
+                        value={count.productCount}
                     />
                     <DashboardCard
                         icon={
@@ -102,7 +102,7 @@ const DashBoard = () => {
                             />
                         }
                         title={"Customer"}
-                        value={count?.userCount}
+                        value={count.userCount}
                     />
                     <DashboardCard
                         icon={
@@ -117,7 +117,7 @@ const DashBoard = () => {
                             />
                         }
                         title={"Revenue"}
-                        value={convertNumbertoMoney(count?.revenueCount)}
+                        value={convertNumbertoMoney(count.revenueCount)}
                     />
                 </Space>
                 <Space>
@@ -157,23 +157,26 @@ const RecentOrders = () => {
 
     return (
         <>
-            <Typography.Title level={5}>Recent Orders</Typography.Title>
+            <Typography.Title level={5}>Số lượng đã bán ra</Typography.Title>
             <Table
                 columns={[
                     {
-                        title: "Title",
+                        title: "Thumnail",
                         dataIndex: "title",
                     },
                     {
-                        title: "Quantity",
+                        title: "Tên sản phẩm",
                         dataIndex: "quantity",
                     },
                     {
-                        title: "Price",
+                        title: "Giá tiền",
+                        dataIndex: "discountedPrice",
+                    },
+                    {
+                        title: "Số lượng đã bán",
                         dataIndex: "discountedPrice",
                     },
                 ]}
-                loading={loading}
                 dataSource={dataSource}
                 pagination={false}
             ></Table>

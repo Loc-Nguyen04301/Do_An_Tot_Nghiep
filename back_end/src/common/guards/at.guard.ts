@@ -1,8 +1,7 @@
 import { ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
-import { IS_PUBLIC_KEY, ROLES_KEY } from '../decorators';
-import { Role } from 'src/types';
+import { IS_PUBLIC_KEY } from '../decorators';
 
 @Injectable()
 export class AtGuard extends AuthGuard(process.env.AT_STRATEGY_NAME) {
@@ -11,7 +10,7 @@ export class AtGuard extends AuthGuard(process.env.AT_STRATEGY_NAME) {
   }
 
   canActivate(context: ExecutionContext) {
-    // Nếu API có gắn decorator Public => next
+    // Nếu API có gắn decorator Public => không yêu cầu access token
     const isPublic = this.reflector.getAllAndOverride(IS_PUBLIC_KEY, [
       context.getHandler(),
       context.getClass(),

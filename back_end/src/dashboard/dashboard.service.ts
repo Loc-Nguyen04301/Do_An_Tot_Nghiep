@@ -9,21 +9,37 @@ export class DashboardService {
   constructor(private prisma: PrismaService) { }
 
   async countDashboard() {
-    const listItem = await this.prisma.item.findMany()
-    let revenueCount = 0
+    const listBill = await this.prisma.bill.findMany()
 
-    for (const item of listItem) {
-      const product = await this.prisma.product.findUnique({ where: { id: item.product_id } });
-      const subtotal = item.quantity * product.new_price;
-      revenueCount += subtotal;
-    }
+    const revenueCount = listBill.reduce((total, bill) => { return total + bill.total_amount }, 0)
+
+    let listProductSoldOut = await this.prisma.$queryRaw`
+    SELECT 
+        p.id,
+        p.name,
+        p.brand,
+        p.new_price,
+        p.image,
+        SUM(i.quantity) AS total_quantity_sold
+    FROM 
+        "Product"  p
+    JOIN 
+        "Item" i ON p.id = i.product_id
+    GROUP BY 
+        p.id;
+  ` as any
+
+    listProductSoldOut = listProductSoldOut.map((product: any) => ({
+      ...product,
+      total_quantity_sold: Number(product.total_quantity_sold),
+    }));
 
     const [billCount, productCount, userCount] = await Promise.all([
       this.prisma.bill.count(),
       this.prisma.product.count(),
       this.prisma.user.count()
     ]);
-    return { billCount, productCount, userCount, revenueCount }
+    return { billCount, productCount, userCount, revenueCount, listProductSoldOut }
   }
 
   // create(createDashboardDto: CreateDashboardDto) {

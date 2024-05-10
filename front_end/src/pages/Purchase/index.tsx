@@ -3,13 +3,9 @@ import { Helmet } from 'react-helmet-async'
 import { NavLink } from 'react-router-dom'
 import { RoutePath } from '@/routes'
 import clsx from 'clsx';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { LoadingOutlined } from '@ant-design/icons';
 import BillService from '@/services/BillService';
 import { useAppSelector } from '@/redux-toolkit/hook';
 import { useAlertDispatch } from '@/contexts/AlertContext';
-
 import { convertNumbertoMoney } from '@/utils';
 
 enum PurchaseStatus {
@@ -51,19 +47,12 @@ interface IItem {
     total_price: number;
 }
 
-
 const Purchase = () => {
     const [purchaseStatus, setPurchaseStatus] = useState<PurchaseStatus>(PurchaseStatus.ALL)
-    const [search, setSearch] = useState<string>()
-    const [loading, setLoading] = useState(false)
     const [listBill, setListBill] = useState<IBill[]>([])
-
     const { user } = useAppSelector(state => state.auth)
-    const dispatchAlert = useAlertDispatch()
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setSearch(e.target.value)
-    }
+    const dispatchAlert = useAlertDispatch()
 
     const fetchBill = async (purchaseStatus: PurchaseStatus, userId?: number) => {
         dispatchAlert({ loading: true })
@@ -95,6 +84,8 @@ const Purchase = () => {
                     setListBill(res.data.data.bills)
                     dispatchAlert({ loading: false })
                     break;
+                default:
+                    break;
             }
         } catch (error) {
             console.log(error)
@@ -105,9 +96,6 @@ const Purchase = () => {
         fetchBill(purchaseStatus, user.id)
     }, [purchaseStatus, user.id])
 
-    const handleSearchPurchase = () => {
-
-    }
     return (
         <>
             <Helmet>

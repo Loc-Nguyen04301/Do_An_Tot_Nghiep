@@ -5,6 +5,9 @@ import { useAlertDispatch } from "../../../contexts/AlertContext";
 import UserService from "../../../services/UserService";
 import { Helmet } from "react-helmet-async";
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import { format } from "date-fns"
+
+var DATETIME_FORMAT = 'dd-MM-yyyy HH:mm:ss'
 
 enum ROLE {
     USER = "USER",
@@ -106,6 +109,11 @@ const Customer = () => {
                             <CloseOutlined className="text-red-500" />
                     }
                 </>
+        },
+        {
+            title: "Created At",
+            key: "created_at",
+            render: (_, record) => format(record.created_at as string | Date, DATETIME_FORMAT)
         },
     ]
 

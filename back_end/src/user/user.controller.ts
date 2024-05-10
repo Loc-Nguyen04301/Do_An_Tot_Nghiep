@@ -19,7 +19,8 @@ export class UserController {
   }
 
   @UseGuards(AtGuard)
-  @Roles(Role.ADMIN)
+  // @Roles(Role.ADMIN)
+  @Roles()
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(new SuccessInterceptor())
   @Get()

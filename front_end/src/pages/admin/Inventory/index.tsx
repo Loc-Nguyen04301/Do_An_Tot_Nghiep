@@ -58,22 +58,22 @@ const Inventory = () => {
             render: (_, record) => <Avatar src={record.image} />
         },
         {
-            title: "Name",
+            title: "Tên sản phẩm",
             key: "name",
             render: (_, record) => record.name
         },
         {
-            title: "Old Price",
+            title: "Giá cũ",
             key: "oldprice",
-            render: (_, record) => <span>{convertNumbertoMoney(record.old_price)}</span >,
+            render: (_, record) => record.old_price !== 0 && <del>{convertNumbertoMoney(record.old_price)}</del>
         },
         {
-            title: "New Price",
+            title: "Giá mới",
             key: "newprice",
             render: (_, record) => <span>{convertNumbertoMoney(record.new_price)}</span >,
         },
         {
-            title: "Rating",
+            title: "Đánh giá",
             render: (_, record) => {
                 return <Rate value={record.averageRating} allowHalf disabled />;
             },
@@ -84,20 +84,20 @@ const Inventory = () => {
             render: (_, record) => record.available
         },
         {
-            title: "Brand",
+            title: "Thương hiệu",
             key: "brand",
-            render: (_, record) => record.brand
+            render: (_, record) => <strong>{record.brand}</strong>
         },
         {
-            title: "Category",
+            title: "Loại sản phẩm",
             key: "category",
             render: (_, record) =>
                 <Space direction='vertical' >
-                    {record.categories.map((category) => <span>{category.category.name}</span>)}
+                    {record.categories.map((category) => <strong>{category.category.name}</strong>)}
                 </Space>
         },
         {
-            title: 'Action',
+            title: '',
             key: 'deleteItem',
             render: (_, record) =>
                 <div className='flex items-center' >
@@ -120,15 +120,15 @@ const Inventory = () => {
     return (
         <>
             <Helmet>
-                <title>Inventory</title>
+                <title>Kho hàng</title>
                 <meta name='description' content='Beginner friendly page for learning React Helmet.' />
             </Helmet>
-            <Typography.Title level={4}>Inventory</Typography.Title>
+            <Typography.Title level={4}>Kho hàng</Typography.Title>
             <Space direction="horizontal" className='w-full justify-center !block'>
                 <Table
                     columns={columns}
                     dataSource={products}
-                    pagination={{ position: ['bottomCenter'] }}
+                    pagination={false}
                 ></Table>
             </Space>
         </>

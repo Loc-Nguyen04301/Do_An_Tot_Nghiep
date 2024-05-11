@@ -30,10 +30,9 @@ interface ICustomer {
 const Customer = () => {
     const [dataSource, setDataSource] = useState<ICustomer[]>([]);
 
-    const dispatch = useAppDispatch()
     const dispatchAlert = useAlertDispatch()
 
-    const getCustomers = useCallback(async () => {
+    const getCustomers = async () => {
         dispatchAlert({ loading: true })
         try {
             const res = await UserService.listUser()
@@ -42,11 +41,11 @@ const Customer = () => {
         } catch (error: any) {
             dispatchAlert({ loading: false, errors: error.message })
         }
-    }, [dispatch])
+    }
 
     useEffect(() => {
         getCustomers()
-    }, [getCustomers]);
+    }, []);
 
     const columns: TableProps<ICustomer>['columns'] = [
         {

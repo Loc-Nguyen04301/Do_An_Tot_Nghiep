@@ -43,7 +43,7 @@ export class DashboardService {
       total_quantity_sold: Number(product.total_quantity_sold),
     }));
 
-    return { listProductSoldOut }
+    return listProductSoldOut
   }
 
   // create(createDashboardDto: CreateDashboardDto) {

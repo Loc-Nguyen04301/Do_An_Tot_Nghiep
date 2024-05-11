@@ -7,7 +7,6 @@ import {
     UserOutlined,
 } from "@ant-design/icons";
 import { getRevenue } from '../../../API';
-
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -43,12 +42,16 @@ export interface IBestSoldOutProduct {
 
 const DashBoard = () => {
     const [count, setCount] = useState<{ billCount: number, productCount: number, userCount: number, revenueCount: number }>({ billCount: 0, productCount: 0, userCount: 0, revenueCount: 0 });
+    const [listProductSoldOut, setListProductSoldOut] = useState<IBestSoldOutProduct[]>([]);
     const dispatchAlert = useAlertDispatch()
-    const getCountDashboard = async () => {
+
+    const getDashboard = async () => {
         dispatchAlert({ loading: true })
         try {
-            const res = await DashboardService.countDashboard()
-            setCount(res.data.data)
+            const res1 = await DashboardService.countDashboard()
+            setCount(res1.data.data)
+            const res2 = await DashboardService.listSoldOut()
+            setListProductSoldOut(res2.data.data)
             dispatchAlert({ loading: false })
         } catch (error) {
             console.log(error)
@@ -56,7 +59,7 @@ const DashBoard = () => {
     }
 
     useEffect(() => {
-        getCountDashboard()
+        getDashboard()
     }, [])
 
     return (
@@ -130,11 +133,11 @@ const DashBoard = () => {
                     />
                 </Space>
                 <Space className='w-full justify-center !block'>
-                    <RecentOrders />
+                    <RecentOrders listProductSoldOut={listProductSoldOut} />
                 </Space>
-                <Space>
+                {/* <Space>
                     <DashboardChart />
-                </Space>
+                </Space> */}
             </Space>
         </>
     )
@@ -152,24 +155,7 @@ const DashboardCard = ({ icon, title, value }: { icon: any, title: any, value: a
     )
 }
 
-const RecentOrders = () => {
-    const [dataSource, setDataSource] = useState([]);
-    const dispatchAlert = useAlertDispatch()
-    const getListSoldOut = async () => {
-        dispatchAlert({ loading: true })
-        try {
-            const res = await DashboardService.listSoldOut()
-            setDataSource(res.data.data)
-            dispatchAlert({ loading: false })
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    useEffect(() => {
-        getListSoldOut()
-    }, [])
-
+const RecentOrders = ({ listProductSoldOut }: { listProductSoldOut: any }) => {
     const columns: TableProps<IBestSoldOutProduct>['columns'] = [
         {
             title: "Thumbnail",
@@ -177,17 +163,17 @@ const RecentOrders = () => {
             render: (_, record) => <Avatar src={record.image} />
         },
         {
-            title: "Name",
+            title: "Tên sản phẩm",
             key: "name",
             render: (_, record) => record.name
         },
         {
-            title: "Brand",
+            title: "Thương Hiệu",
             key: "brand",
             render: (_, record) => record.brand
         },
         {
-            title: "New Price",
+            title: "Giá tiền",
             key: "new_price",
             render: (_, record) => <span>{convertNumbertoMoney(record.new_price)}</span >,
         },
@@ -203,7 +189,7 @@ const RecentOrders = () => {
             <Typography.Title level={5}>Số lượng đã bán ra</Typography.Title>
             <Table
                 columns={columns}
-                dataSource={dataSource}
+                dataSource={listProductSoldOut}
                 pagination={false}
             ></Table>
         </>

@@ -5,7 +5,7 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
-import { isTokenExpiration, getAccessToken, setAccessToken, setRefreshToken } from "../utils";
+import { isTokenExpiration, getAccessToken, setAccessToken, setRefreshToken } from "@/utils";
 import AuthService from "./AuthService";
 
 export const getBaseUrl = () => {

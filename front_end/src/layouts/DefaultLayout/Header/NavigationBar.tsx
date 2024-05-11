@@ -1,5 +1,5 @@
 import React from "react"
-import { RoutePath } from "../../../routes"
+import { RoutePath } from "@/routes"
 import clsx from "clsx"
 import { Link } from "react-router-dom"
 

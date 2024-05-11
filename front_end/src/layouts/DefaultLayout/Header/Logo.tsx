@@ -1,4 +1,4 @@
-import logoImage from "../../../assets/images/thol-logo.jpg"
+import logoImage from "@/assets/images/thol-logo.jpg"
 
 const Logo = () => {
   return (

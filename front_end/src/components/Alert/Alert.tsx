@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
-import { useAlertContext } from '../../contexts/AlertContext'
+import { useAlertContext } from '@/contexts/AlertContext'
 import Loading from './Loading'
 import { Bounce, toast, ToastContainer } from 'react-toastify';
 
 const Alert = () => {
     const { loading, success, errors } = useAlertContext()
-    
+
     useEffect(() => {
         if (success) {
             toast.success(success);
@@ -14,7 +14,7 @@ const Alert = () => {
             toast.error(errors);
         }
     }, [success, errors]);
-    
+
     return (
         <>
             <ToastContainer

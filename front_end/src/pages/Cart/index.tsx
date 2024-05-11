@@ -7,7 +7,7 @@ import { ConfigProvider, Modal, Table, TableProps } from 'antd';
 import { convertNumbertoMoney } from '@/utils';
 import { useAppDispatch, useAppSelector } from '@/redux-toolkit/hook';
 import { addItemToCart, IProductItem, removeItemToCart, deleteItemToCart } from '@/redux-toolkit/cartSlice';
-import { useAlertDispatch } from '../../contexts/AlertContext';
+import { useAlertDispatch } from '@/contexts/AlertContext';
 import clsx from 'clsx';
 
 import { Swiper, SwiperSlide } from "swiper/react"

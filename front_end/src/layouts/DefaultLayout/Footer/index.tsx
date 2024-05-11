@@ -1,5 +1,8 @@
 import React from "react"
-import logoImage from "../../../assets/images/thol-logo.jpg"
+import logoImage from "@/assets/images/thol-logo.jpg"
+import MasterCard from "@/assets/svg/Mastercard"
+import Paypal from "@/assets/svg/Paypal"
+import Visa from "@/assets/svg/Visa"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons"
 import { faPhone } from "@fortawesome/free-solid-svg-icons"
@@ -9,9 +12,6 @@ import {
   faTiktok,
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons"
-import MasterCard from "../../../assets/svg/Mastercard"
-import Paypal from "../../../assets/svg/Paypal"
-import Visa from "../../../assets/svg/Visa"
 import { Link } from "react-router-dom"
 
 const Footer = () => {
@@ -26,15 +26,15 @@ const Footer = () => {
               </Link>
             </div>
             <p className="text-lg text-white mt-6">
-              Công ty TNHH Thương Mại BBT
+              Công ty TNHH Thương Mại Lộc Nguyễn
               <br />
-              107-109 Đường số 6, Bình Trị Đông B<br />
-              TpHCM
+              1 Đại Cồ Việt, Bách Khoa, Hai Bà Trưng<br />
+              Tp.Hà Nội
             </p>
             <ul className="flex text-sm h-fit mt-6 text-white flex-wrap max-[1150px]:gap-3">
               <li className="flex items-center gap-2 mr-7">
                 <FontAwesomeIcon icon={faPhone} />
-                <span className="font-semibold">1900 2050</span>
+                <span className="font-semibold">1900 8888</span>
               </li>
               <li className="flex items-center gap-2">
                 <FontAwesomeIcon icon={faEnvelope} />

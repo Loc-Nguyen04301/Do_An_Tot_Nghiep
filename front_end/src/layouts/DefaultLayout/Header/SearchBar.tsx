@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from "react"
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useSearchContext } from "../../../contexts/SearchContext"
+import { useSearchContext } from "@/contexts/SearchContext"
 import SearchResult from "./SearchResult"
 import { LoadingOutlined } from '@ant-design/icons';
 

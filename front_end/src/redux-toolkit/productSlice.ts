@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import ProductService from '../services/ProductService'
+import ProductService from '@/services/ProductService'
 
 interface Category {
     name: string;

@@ -1,4 +1,4 @@
-import { CreatePaymentDto } from "../types";
+import { CreatePaymentDto } from "@/types";
 import http from "./axios";
 
 const navigateVNPay = (data: CreatePaymentDto) => {

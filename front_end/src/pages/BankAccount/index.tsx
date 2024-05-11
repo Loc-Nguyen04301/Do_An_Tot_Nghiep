@@ -31,7 +31,7 @@ const BankAccount = () => {
               </strong>
               <p>Chủ tài khoản: NGUYEN GIA LOC
               </p>
-              <p>Số tài khoản: 12345678910
+              <p>Số tài khoản: 103870480417
               </p>
             </div>
           </div>

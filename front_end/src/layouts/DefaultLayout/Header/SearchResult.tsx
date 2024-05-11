@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import {
     useSearchContext
-} from '../../../contexts/SearchContext'
-import ProductService from '../../../services/ProductService'
-import { IProduct } from '../../../types';
-import { convertNumbertoMoney } from '../../../utils';
+} from '@/contexts/SearchContext'
+import ProductService from '@/services/ProductService'
+import { IProduct } from '@/types';
+import { convertNumbertoMoney } from '@/utils';
 import { Link } from 'react-router-dom';
-import { RoutePath } from '../../../routes';
+import { RoutePath } from '@/routes';
 
 interface SearchResultProps {
     loading?: boolean,

@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { ALERT, AlertAction, AlertState, alertReducer } from "../reducers/AlertReducer";
+import { ALERT, AlertAction, AlertState, alertReducer } from "@/reducers/AlertReducer";
 import React from "react";
 
 interface AlertContextProviderProps {

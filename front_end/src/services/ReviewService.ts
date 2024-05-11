@@ -1,4 +1,4 @@
-import { ReviewInterface } from "../types";
+import { ReviewInterface } from "@/types";
 import http from "./axios";
 
 const createReview = (data: ReviewInterface) => {

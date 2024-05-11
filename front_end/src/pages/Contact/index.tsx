@@ -29,24 +29,18 @@ const Contact = () => {
               </p>
               <ul className="list-disc text-[#777777] pl-6 leading-8 text-lg">
                 <li>
-                  1 Đại Cồ Việt, Bách Khoa, Hai Bà Trưng Tp Hà Nội Việt Nam.
+                  1 Đại Cồ Việt, Bách Khoa, Hai Bà Trưng, Tp.Hà Nội.
                 </li>
                 <li>
                   Email:
-                  <a title="Send Email" href="mailto:nguyengialoc7@gmail.com">
+                  <a title="Send Email" href="mailto:nguyengialoc7@gmail.com" className="ml-1">
                     nguyengialoc7@gmail.com
                   </a>
                 </li>
                 <li>
                   Tổng đài:
-                  <a title="Call" href="tel:19008888">
+                  <a title="Call" href="tel:19008888" className="ml-1">
                     1900 8888
-                  </a>
-                </li>
-                <li>
-                  Hotline:
-                  <a title="Call" href="tel:0908888888">
-                    0908 888 888
                   </a>
                 </li>
               </ul>

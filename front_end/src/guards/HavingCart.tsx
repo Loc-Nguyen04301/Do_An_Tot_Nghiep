@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react'
-import { getAccessToken } from '../utils'
 import { Navigate } from 'react-router-dom'
-import { RoutePath } from '../routes'
-import { useAppSelector } from '../redux-toolkit/hook'
-import { useAlertDispatch } from '../contexts/AlertContext'
+import { RoutePath } from '@/routes'
+import { useAppSelector } from '@/redux-toolkit/hook'
 
 interface HavingCartProps {
     children?: React.ReactElement

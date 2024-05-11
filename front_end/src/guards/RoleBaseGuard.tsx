@@ -1,9 +1,9 @@
 import React, { ReactNode } from "react";
-import { Role } from "../types";
-import { getAccessToken } from "../utils";
+import { Role } from "@/types";
+import { getAccessToken } from "@/utils";
 import { jwtDecode } from "jwt-decode";
 import { Navigate } from "react-router-dom";
-import { RoutePath } from "../routes";
+import { RoutePath } from "@/routes";
 
 
 export interface RoleBaseGuardProps {

@@ -1,8 +1,8 @@
 import { Avatar, Space, Table, TableProps, Tag, Typography } from "antd";
 import { useCallback, useEffect, useState } from "react";
-import { useAppDispatch } from "../../../redux-toolkit/hook";
-import { useAlertDispatch } from "../../../contexts/AlertContext";
-import UserService from "../../../services/UserService";
+import { useAppDispatch } from "@/redux-toolkit/hook";
+import { useAlertDispatch } from "@/contexts/AlertContext";
+import UserService from "@/services/UserService";
 import { Helmet } from "react-helmet-async";
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { format } from "date-fns"

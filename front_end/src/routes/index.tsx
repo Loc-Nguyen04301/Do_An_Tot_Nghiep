@@ -1,32 +1,32 @@
 import React, { Suspense, lazy } from "react";
 import { useRoutes } from "react-router-dom";
-import DefaultLayout from "../layouts/DefaultLayout";
-import AdminLayout from "../layouts/AdminLayout";
-import Loading from "../components/Alert/Loading";
-import GuestGuard from "../guards/GuestGuard";
-import AuthGuard from "../guards/AuthGuard";
-import HavingCart from "../guards/HavingCart";
+import DefaultLayout from "@/layouts/DefaultLayout";
+import AdminLayout from "@/layouts/AdminLayout";
+import Loading from "@/components/Alert/Loading";
+import GuestGuard from "@/guards/GuestGuard";
+import AuthGuard from "@/guards/AuthGuard";
+import HavingCart from "@/guards/HavingCart";
 
-const Home = lazy(() => import("../pages/Home"));
-const Login = lazy(() => import("../pages/Login"));
-const Register = lazy(() => import("../pages/Register"));
-const AboutUs = lazy(() => import("../pages/AboutUs"));
-const Contact = lazy(() => import("../pages/Contact"));
-const BankAccount = lazy(() => import("../pages/BankAccount"));
-const DetailProduct = lazy(() => import("../pages/DetailProduct"));
-const ListProductByCategory = lazy(() => import("../pages/ListProductByCategory"));
-const Cart = lazy(() => import("../pages/Cart"));
-const Checkout = lazy(() => import("../pages/Checkout"));
-const OrderComplete = lazy(() => import("../pages/OrderComplete"));
-const NotFound = lazy(() => import("../pages/NotFound"));
-const Profile = lazy(() => import("../pages/Profile"));
-const Purchase = lazy(() => import("../pages/Purchase"));
+const Home = lazy(() => import("@/pages/Home"));
+const Login = lazy(() => import("@/pages/Login"));
+const Register = lazy(() => import("@/pages/Register"));
+const AboutUs = lazy(() => import("@/pages/AboutUs"));
+const Contact = lazy(() => import("@/pages/Contact"));
+const BankAccount = lazy(() => import("@/pages/BankAccount"));
+const DetailProduct = lazy(() => import("@/pages/DetailProduct"));
+const ListProductByCategory = lazy(() => import("@/pages/ListProductByCategory"));
+const Cart = lazy(() => import("@/pages/Cart"));
+const Checkout = lazy(() => import("@/pages/Checkout"));
+const OrderComplete = lazy(() => import("@/pages/OrderComplete"));
+const NotFound = lazy(() => import("@/pages/NotFound"));
+const Profile = lazy(() => import("@/pages/Profile"));
+const Purchase = lazy(() => import("@/pages/Purchase"));
 
-const DashBoard = lazy(() => import("../pages/admin/Dashboard"));
-const Inventory = lazy(() => import("../pages/admin/Inventory"));
-const OrderAdmin = lazy(() => import("../pages/admin/OrderAdmin"));
-const Customer = lazy(() => import("../pages/admin/Customer"));
-const UpdateProduct = lazy(() => import("../pages/admin/UpdateProduct"));
+const DashBoard = lazy(() => import("@/pages/admin/Dashboard"));
+const Inventory = lazy(() => import("@/pages/admin/Inventory"));
+const OrderAdmin = lazy(() => import("@/pages/admin/OrderAdmin"));
+const Customer = lazy(() => import("@/pages/admin/Customer"));
+const UpdateProduct = lazy(() => import("@/pages/admin/UpdateProduct"));
 
 export enum RoutePath {
   LoginPage = "/dang-nhap",

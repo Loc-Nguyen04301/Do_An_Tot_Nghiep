@@ -1,8 +1,8 @@
 import React from "react"
 import { faBars, faChevronDown } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import categoryList from "../../../assets/data/categoryList"
-import { RoutePath } from "../../../routes"
+import categoryList from "@/assets/data/categoryList"
+import { RoutePath } from "@/routes"
 import { Link, useLocation } from "react-router-dom"
 import clsx from "clsx"
 

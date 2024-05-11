@@ -1,5 +1,5 @@
 import http from "./axios";
-import { CreateBillDto } from "../pages/Checkout";
+import { CreateBillDto } from "@/pages/Checkout";
 import { AxiosRequestConfig } from "axios";
 
 interface BillParams {

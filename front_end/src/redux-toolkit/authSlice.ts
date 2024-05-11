@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { IUser } from '../types';
-import { removeAccessToken, removeRefreshToken, setAccessToken, setRefreshToken } from '../utils';
-import AuthService from '../services/AuthService';
+import { IUser } from '@/types';
+import { removeAccessToken, removeRefreshToken, setAccessToken, setRefreshToken } from '@/utils';
+import AuthService from '@/services/AuthService';
 
 interface AuthState {
     access_token: string;

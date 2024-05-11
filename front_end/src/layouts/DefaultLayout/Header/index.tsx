@@ -16,11 +16,11 @@ import CompanyInfomation from "./CompanyInfomation"
 import Logo from "./Logo"
 import DrawerRightCart from "./DrawerRightCart"
 import SearchBar from "./SearchBar"
-import { RoutePath } from "../../../routes"
-import { getAccessToken } from "../../../utils"
-import { useAppDispatch, useAppSelector } from '../../../redux-toolkit/hook';
-import { logOut } from "../../../redux-toolkit/authSlice"
-import { useAlertContext, useAlertDispatch } from "../../../contexts/AlertContext"
+import { RoutePath } from "@/routes"
+import { getAccessToken } from "@/utils"
+import { useAppDispatch, useAppSelector } from '@/redux-toolkit/hook';
+import { logOut } from "@/redux-toolkit/authSlice"
+import { useAlertDispatch } from "@/contexts/AlertContext"
 
 const Header = () => {
   const [openLeftModal, setOpenLeftModal] = useState(false)

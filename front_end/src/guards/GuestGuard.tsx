@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { getAccessToken } from '../utils'
-import Loading from '../components/Alert/Loading'
+import { getAccessToken } from '@/utils'
+import Loading from '@/components/Alert/Loading'
 import { Navigate } from 'react-router-dom'
-import { RoutePath } from '../routes'
+import { RoutePath } from '@/routes'
 
 interface GuestGuardProps {
     children?: React.ReactElement

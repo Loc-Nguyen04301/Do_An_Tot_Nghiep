@@ -8,6 +8,7 @@ import ProductService from '@/services/ProductService'
 import { IProduct } from '@/types'
 import { convertNumbertoMoney } from '@/utils'
 import { Tag } from 'antd'
+import { useAlertDispatch } from '@/contexts/AlertContext'
 
 interface ProductsByCategoryProps {
     categoryPath: string;
@@ -17,10 +18,14 @@ interface ProductsByCategoryProps {
 const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryProps) => {
     const [products, setProducts] = useState<IProduct[]>([]);
 
+    const dispatchAlert = useAlertDispatch()
+
     const getProductsByCategory = async () => {
+        dispatchAlert({ loading: true })
         try {
             const res = await ProductService.getProductByCategory(categoryPath)
             setProducts(res.data.data)
+            dispatchAlert({ loading: false })
         } catch (error) {
             console.log(error)
         }

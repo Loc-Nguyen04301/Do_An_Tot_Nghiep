@@ -1,12 +1,12 @@
 import React, { useState } from "react"
-import { RoutePath } from "../../../routes"
+import { RoutePath } from "@/routes"
 import { Link, Route } from "react-router-dom"
-import { useAppDispatch, useAppSelector } from "../../../redux-toolkit/hook"
-import { convertNumbertoMoney } from "../../../utils"
+import { useAppDispatch, useAppSelector } from "@/redux-toolkit/hook"
+import { convertNumbertoMoney } from "@/utils"
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { ConfigProvider, Modal } from "antd"
-import { deleteItemToCart } from "../../../redux-toolkit/cartSlice"
-import { useAlertDispatch } from "../../../contexts/AlertContext"
+import { deleteItemToCart } from "@/redux-toolkit/cartSlice"
+import { useAlertDispatch } from "@/contexts/AlertContext"
 
 const ShoppingCart = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,7 +20,7 @@ const ShoppingCart = () => {
   };
 
   const handleOk = (product: any) => {
-    dispatchAlert({ success: "Xóa sản phẩm thành công"})
+    dispatchAlert({ success: "Xóa sản phẩm thành công" })
     dispatch(deleteItemToCart(product))
     setIsModalOpen(false);
   };

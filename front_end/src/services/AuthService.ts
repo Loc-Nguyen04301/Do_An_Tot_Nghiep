@@ -1,6 +1,6 @@
 import axios from "axios";
-import { LoginInterface, RegisterInterface } from "../types";
-import { getRefreshToken } from "../utils";
+import { LoginInterface, RegisterInterface } from "@/types";
+import { getRefreshToken } from "@/utils";
 import http, { getBaseUrl } from "./axios";
 
 

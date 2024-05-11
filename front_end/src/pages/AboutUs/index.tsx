@@ -58,12 +58,10 @@ const AboutUs = () => {
               <p className="text-[#777777]">
                 <FontAwesomeIcon icon={faCheck} className="text-[#099342] mr-1" />
                 Với nguồn hàng phong phú, đa dạng và sẵn có chúng tôi luôn có thể
-                giao hàng trong thời gian nhanh nhất. THOL Gym Center luôn mở cửa
-                hằng ngày từ 7h đến 22h hằng ngày. Trong nội thành Tp.HCM, chúng
+                giao hàng trong thời gian nhanh nhất. Trong nội thành Tp.Hà Nội, chúng
                 tôi miễn phí giao hàng trên địa bàn các quận:
-                1,3,5,6,7,8,10,11,12, Tân Bình, Phú Nhuận, Bình Tân, Gò Vấp, Bình
-                Thạnh. Các quận khác chúng tôi sẽ chuyển phát nhanh cho quý khách
-                hàng
+                <strong> Thanh Xuân, Hoàng Mai, Đống Đa, Hai Bà Trưng, Hoàn Kiếm.</strong>
+                Các quận khác chúng tôi sẽ chuyển phát nhanh cho quý khách hàng
                 <br />
                 <FontAwesomeIcon icon={faCheck} className="text-[#099342] mr-1" />
                 Còn đối với các địa phương khác chúng tôi sẽ chuyển phát nhanh
@@ -80,12 +78,12 @@ const AboutUs = () => {
               <p className="bg-[#d9edf7] text-[#31708f] p-4 rounded mb-6">
                 <FontAwesomeIcon icon={faCheck} className="text-[#099342] mr-1" />
                 Đội ngũ hỗ trợ và nhân viên tư vấn online( 7h AM – 22h PM), tư vấn
-                kỹ thuật thể hình và sản phẩm:<strong>19002050</strong> –
+                kỹ thuật thể hình và sản phẩm:<strong>19008888</strong> –
                 support@thehinhonline.com.vn.
                 <br />
                 <FontAwesomeIcon icon={faCheck} className="text-[#099342] mr-1" />
                 Tư vấn bán hàng và chuyển phát nhanh:{" "}
-                <strong>19002050 hoặc 0934111640 –</strong>
+                <strong>19008888 hoặc -</strong>
                 sales@thehinhonline.com.vn.
               </p>
               <p className="bg-[#fcf8e3] text-[#8a6d3b] p-4 rounded mb-6">

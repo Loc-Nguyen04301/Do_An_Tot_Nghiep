@@ -3,9 +3,9 @@ import { DrawerStyles } from "antd/es/drawer/DrawerPanel"
 import React from "react"
 import ShoppingCart from "./ShoppingCart"
 import { Link } from "react-router-dom"
-import { RoutePath } from "../../../routes"
-import { useAppSelector } from "../../../redux-toolkit/hook"
-import { convertNumbertoMoney } from "../../../utils"
+import { RoutePath } from "@/routes"
+import { useAppSelector } from "@/redux-toolkit/hook"
+import { convertNumbertoMoney } from "@/utils"
 
 interface DrawerRightCartProps {
   openRightModal: boolean

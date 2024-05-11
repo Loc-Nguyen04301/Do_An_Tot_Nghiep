@@ -4,8 +4,8 @@ import {
     ArrowLeftOutlined
 } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAppSelector } from '../../../redux-toolkit/hook';
-import { IProductDetail } from '../../../redux-toolkit/productSlice';
+import { useAppSelector } from '@/redux-toolkit/hook';
+import { IProductDetail } from '@/redux-toolkit/productSlice';
 
 const UpdateProduct = () => {
     const [selectedProduct, setSelectedProduct] = useState<IProductDetail>()

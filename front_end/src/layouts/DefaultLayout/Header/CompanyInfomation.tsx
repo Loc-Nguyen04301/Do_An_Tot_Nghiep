@@ -13,7 +13,7 @@ const CompanyInfomation = () => {
         <li className="divider border-l-[1px] h-[1rem] border-gray-500 opacity-40 relative top-[3px]"></li>
         <li className="flex items-center ml-2 gap-1 ">
           <FontAwesomeIcon icon={faPhone} />
-          <span className="text-main-grey-color font-semibold">1900 2050</span>
+          <span className="text-main-grey-color font-semibold">1900 8888</span>
         </li>
       </ul>
     </div>

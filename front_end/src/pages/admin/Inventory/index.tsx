@@ -1,14 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { DeleteOutlined, BarsOutlined } from '@ant-design/icons';
 import { Avatar, ConfigProvider, Modal, Rate, Space, Table, TableProps, Typography } from 'antd';
-import "./Inventory.scss"
-import { convertNumbertoMoney } from '../../../utils';
-import { deleteProduct, IProductDetail, retrieveProducts } from '../../../redux-toolkit/productSlice';
-import { useAppDispatch, useAppSelector } from '../../../redux-toolkit/hook';
-import { useAlertDispatch } from '../../../contexts/AlertContext';
+import { convertNumbertoMoney } from '@/utils';
+import { deleteProduct, IProductDetail, retrieveProducts } from '@/redux-toolkit/productSlice';
+import { useAppDispatch, useAppSelector } from '@/redux-toolkit/hook';
+import { useAlertDispatch } from '@/contexts/AlertContext';
 import { useNavigate } from 'react-router-dom';
-import { RoutePath } from '../../../routes';
+import { RoutePath } from '@/routes';
 import { Helmet } from 'react-helmet-async';
+
+import "./Inventory.scss"
 
 const Inventory = () => {
     const products = useAppSelector(state => state.product)

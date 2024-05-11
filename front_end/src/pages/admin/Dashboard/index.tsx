@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Card, Space, Statistic, Table, Typography } from 'antd'
+import { Avatar, Card, Space, Statistic, Table, TableProps, Typography } from 'antd'
 import {
     DollarCircleOutlined,
     ShoppingCartOutlined,
     ShoppingOutlined,
     UserOutlined,
 } from "@ant-design/icons";
-import { getOrders, getRevenue } from '../../../API';
+import { getRevenue } from '../../../API';
 
 import {
     Chart as ChartJS,
@@ -18,10 +18,11 @@ import {
     Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import DashboardService from '../../../services/DashboardService';
-import { useAlertDispatch } from '../../../contexts/AlertContext';
-import { convertNumbertoMoney } from '../../../utils';
+import DashboardService from '@/services/DashboardService';
+import { useAlertDispatch } from '@/contexts/AlertContext';
+import { convertNumbertoMoney } from '@/utils';
 import { Helmet } from 'react-helmet-async';
+
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -31,6 +32,14 @@ ChartJS.register(
     Legend
 );
 
+export interface IBestSoldOutProduct {
+    id: number
+    name: string
+    brand: string
+    new_price: number
+    image: string
+    total_quantity_sold: number
+}
 
 const DashBoard = () => {
     const [count, setCount] = useState<{ billCount: number, productCount: number, userCount: number, revenueCount: number }>({ billCount: 0, productCount: 0, userCount: 0, revenueCount: 0 });
@@ -120,7 +129,7 @@ const DashBoard = () => {
                         value={convertNumbertoMoney(count.revenueCount)}
                     />
                 </Space>
-                <Space>
+                <Space className='w-full justify-center !block'>
                     <RecentOrders />
                 </Space>
                 <Space>
@@ -145,38 +154,55 @@ const DashboardCard = ({ icon, title, value }: { icon: any, title: any, value: a
 
 const RecentOrders = () => {
     const [dataSource, setDataSource] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const dispatchAlert = useAlertDispatch()
+    const getListSoldOut = async () => {
+        dispatchAlert({ loading: true })
+        try {
+            const res = await DashboardService.listSoldOut()
+            setDataSource(res.data.data)
+            dispatchAlert({ loading: false })
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     useEffect(() => {
-        setLoading(true);
-        getOrders().then((res) => {
-            setDataSource(res.products.splice(0, 3));
-            setLoading(false);
-        });
-    }, []);
+        getListSoldOut()
+    }, [])
+
+    const columns: TableProps<IBestSoldOutProduct>['columns'] = [
+        {
+            title: "Thumbnail",
+            key: "thumbnail",
+            render: (_, record) => <Avatar src={record.image} />
+        },
+        {
+            title: "Name",
+            key: "name",
+            render: (_, record) => record.name
+        },
+        {
+            title: "Brand",
+            key: "brand",
+            render: (_, record) => record.brand
+        },
+        {
+            title: "New Price",
+            key: "new_price",
+            render: (_, record) => <span>{convertNumbertoMoney(record.new_price)}</span >,
+        },
+        {
+            title: "Số lượng đã bán ra",
+            key: "number_sold",
+            render: (_, record) => record.total_quantity_sold
+        },
+    ]
 
     return (
         <>
             <Typography.Title level={5}>Số lượng đã bán ra</Typography.Title>
             <Table
-                columns={[
-                    {
-                        title: "Thumnail",
-                        dataIndex: "title",
-                    },
-                    {
-                        title: "Tên sản phẩm",
-                        dataIndex: "quantity",
-                    },
-                    {
-                        title: "Giá tiền",
-                        dataIndex: "discountedPrice",
-                    },
-                    {
-                        title: "Số lượng đã bán",
-                        dataIndex: "discountedPrice",
-                    },
-                ]}
+                columns={columns}
                 dataSource={dataSource}
                 pagination={false}
             ></Table>

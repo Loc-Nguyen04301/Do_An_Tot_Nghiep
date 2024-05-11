@@ -16,6 +16,14 @@ export class DashboardController {
   countDashboard() {
     return this.dashboardService.countDashboard();
   }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor())
+  @Get('soldout')
+  listProductSoldOut() {
+    return this.dashboardService.listProductSoldOut();
+  }
   // @Post()
   // create(@Body() createDashboardDto: CreateDashboardDto) {
   //   return this.dashboardService.create(createDashboardDto);

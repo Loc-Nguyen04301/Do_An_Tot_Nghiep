@@ -10,23 +10,32 @@ export class DashboardService {
 
   async countDashboard() {
     const listBill = await this.prisma.bill.findMany()
-
     const revenueCount = listBill.reduce((total, bill) => { return total + bill.total_amount }, 0)
+    const [billCount, productCount, userCount] = await Promise.all([
+      this.prisma.bill.count(),
+      this.prisma.product.count(),
+      this.prisma.user.count()
+    ]);
 
+    return { billCount, productCount, userCount, revenueCount }
+  }
+
+  async listProductSoldOut() {
     let listProductSoldOut = await this.prisma.$queryRaw`
-    SELECT 
+     SELECT
         p.id,
         p.name,
         p.brand,
         p.new_price,
         p.image,
         SUM(i.quantity) AS total_quantity_sold
-    FROM 
+    FROM
         "Product"  p
-    JOIN 
+    JOIN
         "Item" i ON p.id = i.product_id
-    GROUP BY 
-        p.id;
+    GROUP BY
+        p.id
+    ORDER BY total_quantity_sold desc;
   ` as any
 
     listProductSoldOut = listProductSoldOut.map((product: any) => ({
@@ -34,12 +43,7 @@ export class DashboardService {
       total_quantity_sold: Number(product.total_quantity_sold),
     }));
 
-    const [billCount, productCount, userCount] = await Promise.all([
-      this.prisma.bill.count(),
-      this.prisma.product.count(),
-      this.prisma.user.count()
-    ]);
-    return { billCount, productCount, userCount, revenueCount, listProductSoldOut }
+    return { listProductSoldOut }
   }
 
   // create(createDashboardDto: CreateDashboardDto) {

@@ -4,6 +4,10 @@ const countDashboard = () => {
     return http.get(`/dashboard/count`)
 }
 
-const DashboardService = { countDashboard }
+const listSoldOut = () => {
+    return http.get(`/dashboard/soldout`)
+}
+
+const DashboardService = { countDashboard, listSoldOut }
 
 export default DashboardService

@@ -1,3 +1,4 @@
+import { CreateProductDto } from "@/types";
 import http from "./axios";
 
 const getAll = () => {
@@ -22,6 +23,10 @@ const getProductsByCategory = (category: string) => {
 
 const getProductsByName = (name: string) => {
     return http.get(`/products/name/${name}`)
+}
+
+const createProduct = (data: CreateProductDto) => {
+    return http.post(`/products`, data)
 }
 
 const ProductService = { getProductByCategory, getProductById, getProductsByCategory, getProductsByName, getAll, removeProduct }

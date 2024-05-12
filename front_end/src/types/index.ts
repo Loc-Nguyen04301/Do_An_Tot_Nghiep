@@ -1,3 +1,5 @@
+import { string } from "yup";
+
 export interface LoginInterface {
     email: string;
     password: string;
@@ -53,4 +55,22 @@ export interface ReviewInterface {
 
 export interface CreatePaymentDto {
     amount: number;
+}
+
+export interface ICategory {
+    id: number;
+    name: string;
+    created_at: string;
+    update_at: string;
+}
+
+export interface CreateProductDto {
+    brand: string
+    name: string
+    description?: string
+    old_price: number;
+    new_price: number
+    image: string
+    available: number
+    category_ids?: number[]
 }

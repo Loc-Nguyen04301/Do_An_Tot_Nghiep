@@ -10,6 +10,7 @@ import { ProductsModule } from './products/products.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { BillsModule } from './bills/bills.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { CategoryModule } from './category/category.module';
 
 import { PaymentController } from './payment/payment.controller';
 
@@ -42,6 +43,7 @@ import { UserModule } from './user/user.module';
     BillsModule,
     DashboardModule,
     UserModule,
+    CategoryModule,
   ],
   providers: [
     {

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { DeleteOutlined, BarsOutlined } from '@ant-design/icons';
-import { Avatar, ConfigProvider, Modal, Rate, Space, Table, TableProps, Typography } from 'antd';
+import { DeleteOutlined, BarsOutlined, SearchOutlined, EditOutlined } from '@ant-design/icons';
+import { Avatar, Button, ConfigProvider, Modal, Rate, Space, Table, TableProps, Typography } from 'antd';
 import { convertNumbertoMoney } from '@/utils';
 import { deleteProduct, IProductDetail, retrieveProducts } from '@/redux-toolkit/productSlice';
 import { useAppDispatch, useAppSelector } from '@/redux-toolkit/hook';
@@ -40,6 +40,10 @@ const Inventory = () => {
 
     const handleUpdateProduct = (id: number) => {
         navigate(`${RoutePath.UpdateProduct}/${id}`)
+    }
+
+    const handleCreateProduct = () => {
+        navigate(`${RoutePath.CreateProduct}`)
     }
 
     const getProducts = useCallback(() => {
@@ -124,11 +128,16 @@ const Inventory = () => {
                 <meta name='description' content='Beginner friendly page for learning React Helmet.' />
             </Helmet>
             <Typography.Title level={4}>Kho hàng</Typography.Title>
+            <div className='mb-4 flex justify-end'>
+                <Button icon={<EditOutlined />} onClick={handleCreateProduct}>
+                    Tạo sản phẩm
+                </Button>
+            </div>
             <Space direction="horizontal" className='w-full justify-center !block'>
                 <Table
                     columns={columns}
                     dataSource={products}
-                    pagination={false}
+                    pagination={{ position: ['bottomCenter'] }}
                 ></Table>
             </Space>
         </>

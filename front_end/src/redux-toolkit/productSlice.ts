@@ -3,12 +3,14 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import ProductService from '@/services/ProductService'
 
 interface Category {
+    id: number;
     name: string;
 }
 export interface IProductDetail {
     id: number
     name: string
     brand: string
+    description: string
     old_price: number
     new_price: number
     image: string

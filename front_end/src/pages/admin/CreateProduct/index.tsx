@@ -80,10 +80,8 @@ const CreateProduct = () => {
         }
         const newData = { ...data, image, category_ids: selectedCategories } as CreateProductDto
         try {
-            console.log(newData)
             const res = await ProductService.createProduct(newData)
-            console.log(res)
-            dispatchAlert({ loading: false, success: res.data.message })
+            dispatchAlert({ success: res.data.message })
         } catch (error: any) {
             dispatchAlert({ errors: error.message })
         }
@@ -111,7 +109,7 @@ const CreateProduct = () => {
 
                 <div className="my-2">
                     <div className="label-email font-semibold tracking-wide">Mô tả</div>
-                    <input className="w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"}{...register('description')} />
+                    <textarea className="w-1/2 min-h-[100px] border-[1px] border-[#adadad] rounded-sm" {...register('description')} />
                     {errors.description && <p className="text-red-500">{errors.description?.message}</p>}
                 </div>
 
@@ -128,7 +126,7 @@ const CreateProduct = () => {
                 </div>
 
                 <div className="my-2">
-                    <div className="label-email font-semibold tracking-wide">Số lượng hàng</div>
+                    <div className="label-email font-semibold tracking-wide">Số lượng sản phẩm</div>
                     <input className="w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"number"} {...register('available')} />
                     {errors.available && <p className="text-red-500">{errors.available?.message}</p>}
                 </div>
@@ -141,11 +139,12 @@ const CreateProduct = () => {
                         onChange={handleChangeImage}
                         className='mb-2'
                     />
-                    <img
-                        src={selectedImage && URL.createObjectURL(selectedImage)}
-                        alt={`Preview`}
-                        className="max-h-[100px] cursor-zoom-in hover:opacity-70"
-                    />
+                    {selectedImage &&
+                        <img
+                            src={URL.createObjectURL(selectedImage)}
+                            alt={`Preview`}
+                            className="max-h-[100px] cursor-zoom-in hover:opacity-70"
+                        />}
                 </div>
 
                 <div className="my-2">

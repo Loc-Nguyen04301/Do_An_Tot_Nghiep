@@ -1,4 +1,4 @@
-import { CreateProductDto } from "@/types";
+import { CreateProductDto, UpdateProductDto } from "@/types";
 import http from "./axios";
 
 const getAll = () => {
@@ -29,6 +29,10 @@ const createProduct = (data: CreateProductDto) => {
     return http.post(`/products`, data)
 }
 
-const ProductService = { getProductByCategory, getProductById, getProductsByCategory, getProductsByName, getAll, removeProduct, createProduct }
+const updateProduct = (id: number, data: UpdateProductDto) => {
+    return http.patch(`/products/${id}`, data)
+}
+
+const ProductService = { getProductByCategory, getProductById, getProductsByCategory, getProductsByName, getAll, removeProduct, createProduct, updateProduct }
 
 export default ProductService

@@ -19,6 +19,7 @@ import styles from "./DetailProduct.module.scss"
 import useScrollToTop from "@/hooks/useScrollToTop"
 
 interface Category {
+  id: number;
   name: string;
 }
 
@@ -66,14 +67,14 @@ const DetailProduct = () => {
     try {
       if (quantity > product.available) {
         setTimeout(() => {
-          dispatchAlert({ loading: false, errors: `Số lượng sản phẩm không đủ để phục vụ. Vui lòng chọn lại` })
+          dispatchAlert({ errors: `Số lượng sản phẩm không đủ để phục vụ. Vui lòng chọn lại` })
         }, 1000)
         return
       }
       else {
         setTimeout(() => {
           dispatch(addItemToCartWithQuantity({ ...product, quantityAdded: quantity }))
-          dispatchAlert({ loading: false, success: "Thêm vào giỏ hàng thành công" })
+          dispatchAlert({ success: "Thêm vào giỏ hàng thành công" })
         }, 2000)
       }
     } catch (error) {

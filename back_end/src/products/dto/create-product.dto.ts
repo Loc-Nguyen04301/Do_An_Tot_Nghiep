@@ -30,6 +30,5 @@ export class CreateProductDto {
 
     @IsInt({ each: true })
     @IsArray()
-    @ArrayNotEmpty()
     category_ids?: number[]
 }

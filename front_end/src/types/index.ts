@@ -74,3 +74,5 @@ export interface CreateProductDto {
     available: number
     category_ids?: number[]
 }
+
+export interface UpdateProductDto extends CreateProductDto { }

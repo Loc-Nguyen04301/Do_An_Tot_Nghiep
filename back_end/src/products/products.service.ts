@@ -23,6 +23,7 @@ export class ProductsService {
           select: {
             category: {
               select: {
+                id: true,
                 name: true
               }
             }
@@ -35,7 +36,6 @@ export class ProductsService {
       const totalStars = product.reviews.reduce((sum, review) => sum + review.star, 0);
       const averageRating = totalStars / product.reviews.length || 0;
       delete product.reviews
-      delete product.description
       delete product.created_at
       delete product.update_at
       return { ...product, averageRating }
@@ -46,7 +46,7 @@ export class ProductsService {
 
   async findOne(id: number) {
     const product = await this.prisma.product.findUnique({
-      where: { id: id, available: { gt: 0 } },
+      where: { id: id },
       select: {
         id: true,
         name: true,
@@ -56,7 +56,7 @@ export class ProductsService {
         new_price: true,
         image: true,
         available: true,
-        categories: { select: { category: { select: { name: true } } } },
+        categories: { select: { category: { select: { id: true, name: true } } } },
         reviews: {
           select: {
             id: true,
@@ -148,26 +148,25 @@ export class ProductsService {
     const { category_ids, name, description, image, new_price, old_price, available } = updateProductDto
 
     await this.prisma.categoriesOnProducts.deleteMany({ where: { product_id: id } })
-    let product: any = null;
-    if (category_ids.length > 0) {
-      const categoryCreates = category_ids.map(category_id => ({
-        category: { connect: { id: category_id } }
-      }))
-      product = await this.prisma.product.update({
-        where: { id: id },
-        data: {
-          name,
-          description,
-          image,
-          new_price,
-          old_price,
-          available,
-          categories: {
-            create: categoryCreates
-          }
+
+    const categoryCreates = category_ids.map(category_id => ({
+      category: { connect: { id: category_id } }
+    }))
+    const product = await this.prisma.product.update({
+      where: { id: id },
+      data: {
+        name,
+        description,
+        image,
+        new_price,
+        old_price,
+        available,
+        categories: {
+          create: categoryCreates
         }
-      })
-    }
+      }
+    })
+
 
     return product
   }

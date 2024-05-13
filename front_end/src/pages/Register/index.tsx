@@ -28,12 +28,11 @@ const Register = () => {
   });
 
   const onSubmit = async (data: RegisterInterface) => {
-    console.log(data)
     dispatchAlert({ loading: true })
     try {
       const res = await AuthService.register(data)
       console.log(res)
-      dispatchAlert({ loading: false, success: res.data.message })
+      dispatchAlert({ success: res.data.message })
     } catch (error: any) {
       dispatchAlert({ errors: error.message })
     }

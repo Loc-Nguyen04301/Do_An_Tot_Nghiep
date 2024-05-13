@@ -1,5 +1,5 @@
 import { Button, Checkbox, Col, Form, Input, Row, Typography } from 'antd'
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import {
     ArrowLeftOutlined
 } from '@ant-design/icons';
@@ -7,33 +7,43 @@ import type { FormProps } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '@/redux-toolkit/hook';
 import { IProductDetail } from '@/redux-toolkit/productSlice';
-
-import "./UpdateProduct.scss"
 import { useAlertDispatch } from '@/contexts/AlertContext';
 import CategoryService from '@/services/CategoryService';
-import { ICategory } from '@/types';
+import { UpdateProductDto, ICategory } from '@/types';
+import * as yup from 'yup';
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { checkImage, imageUpload } from '@/utils';
+import type { GetProp } from 'antd';
 
-type FieldType = {
-    name?: string;
-    brand?: string;
-    description?: string;
-    old_price?: number;
-    new_price?: number;
-    image?: string;
-    categoryIds?: number[];
-    available?: number;
-};
+import "./UpdateProduct.scss"
+import ProductService from '@/services/ProductService';
+
+const schema = yup
+    .object().shape({
+        name: yup.string().required('Yêu cầu nhập tên sản phẩm'),
+        brand: yup.string().required('Yêu cầu nhập tên thương hiệu'),
+        description: yup.string().required('Yêu cầu mô tả sản phẩm'),
+        old_price: yup.number(),
+        new_price: yup.number().required('Yêu cầu nhập giá mới'),
+        available: yup.number()
+    })
 
 const UpdateProduct = () => {
+    const [selectedImage, setSelectedImage] = useState<File>();
     const [selectedProduct, setSelectedProduct] = useState<IProductDetail>()
-    const products = useAppSelector(state => state.product)
     const [categoryList, setCategoryList] = useState<ICategory[]>([])
+    const [selectedCategories, setSelectedCategories] = useState<number[]>()
+
+    const products = useAppSelector(state => state.product)
+
+    const { register, handleSubmit, formState: { errors }, watch, getValues } = useForm({
+        resolver: yupResolver(schema),
+    });
 
     const dispatchAlert = useAlertDispatch()
-
     const navigate = useNavigate();
     const params = useParams()
-    console.log(params)
 
     useEffect(() => {
         if (products.length > 0) {
@@ -41,6 +51,21 @@ const UpdateProduct = () => {
             setSelectedProduct(selectedProduct)
         }
     }, [products])
+
+    useEffect(() => {
+        const getProductsById = async (id: number) => {
+            dispatchAlert({ loading: true })
+            try {
+                const res = await ProductService.getProductById(id)
+                setSelectedProduct(res.data.data)
+                dispatchAlert({ loading: false })
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        if (params.id) getProductsById(Number(params.id))
+    }, [params.id])
 
     const getCategoryList = async () => {
         dispatchAlert({ loading: true })
@@ -57,106 +82,140 @@ const UpdateProduct = () => {
         getCategoryList()
     }, [])
 
-    console.log({ selectedProduct, categoryList })
-
-    const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-        console.log('Success:', values);
-    };
-
-    const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-        console.log('Failed:', errorInfo);
+    const handleChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files
+        if (files && files.length > 0) {
+            const file = files[0];
+            if (checkImage(file).length > 0) {
+                dispatchAlert({ errors: checkImage(file) })
+                return
+            }
+            else {
+                setSelectedImage(file)
+            }
+        }
     }
 
+    const onChangeCheckbox: GetProp<typeof Checkbox.Group, 'onChange'> = (checkedValues: number[]) => {
+        setSelectedCategories(checkedValues)
+    };
+
+    const onSubmit = async (data: any) => {
+        if (selectedProduct) {
+            dispatchAlert({ loading: true })
+            var image: string = ""
+            if (selectedImage) {
+                const res = await imageUpload(selectedImage)
+                image = res.url
+            }
+            const newData = { ...data, image, category_ids: selectedCategories } as UpdateProductDto
+            try {
+                const res = await ProductService.updateProduct(selectedProduct.id, newData)
+                dispatchAlert({ success: res.data.message })
+            } catch (error: any) {
+                console.log(error)
+                dispatchAlert({ errors: error.message[0] })
+            }
+        }
+    };
+
     return (
+        selectedProduct &&
         <>
+            <Typography.Title level={3} className='text-center'>Cập nhật sản phẩm</Typography.Title>
             <Typography.Title level={4}>
                 <ArrowLeftOutlined className='cursor-pointer hover:text-main-orange-color' onClick={() => navigate(-1)} />
             </Typography.Title>
 
-            <Form
-                name="basic"
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 16 }}
-                style={{ maxWidth: 600 }}
-                initialValues={{}}
-                onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
-            >
-                <Form.Item<FieldType>
-                    label="Tên sản phẩm"
-                    name="name"
-                    rules={[{ required: true, message: 'Vui lòng nhập tên sản phẩm !' }]}
-                >
-                    <Input />
-                </Form.Item>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="my-2">
+                    <div className="label-email font-semibold tracking-wide">Tên sản phẩm</div>
+                    <input className="w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('name')} defaultValue={selectedProduct.name} />
+                    {errors.name && <p className="text-red-500">{errors.name?.message}</p>}
+                </div>
 
-                <Form.Item<FieldType>
-                    label="Thương hiệu"
-                    name="brand"
-                    rules={[{ required: true, message: 'Vui lòng nhập tên thương hiệu !' }]}
-                >
-                    <Input />
-                </Form.Item>
+                <div className="my-2">
+                    <div className="label-email font-semibold tracking-wide">Tên thương hiệu</div>
+                    <input className="w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('brand')} defaultValue={selectedProduct.brand} />
+                    {errors.brand && <p className="text-red-500">{errors.brand?.message}</p>}
+                </div>
 
-                <Form.Item<FieldType>
-                    label="Mô tả"
-                    name="description"
-                    rules={[{ required: true, message: 'Vui lòng nhập tên mô tả sản phẩm !' }]}
-                >
-                    <Input />
-                </Form.Item>
+                <div className="my-2">
+                    <div className="label-email font-semibold tracking-wide">Mô tả</div>
+                    <textarea className="w-1/2 min-h-[100px] border-[1px] border-[#adadad] rounded-sm" {...register('description')} defaultValue={selectedProduct.description} />
+                    {errors.description && <p className="text-red-500">{errors.description?.message}</p>}
+                </div>
 
-                <Form.Item<FieldType>
-                    label="Giá cũ"
-                    name="old_price"
-                    rules={[{ required: true, message: 'Vui lòng nhập giá cũ !' }]}
-                >
-                    <Input />
-                </Form.Item>
+                <div className="my-2">
+                    <div className="label-email font-semibold tracking-wide">Giá cũ sản phẩm</div>
+                    <input className="w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"number"} {...register('old_price')} defaultValue={selectedProduct.old_price} />
+                    {errors.old_price && <p className="text-red-500">{errors.old_price?.message}</p>}
+                </div>
 
-                <Form.Item<FieldType>
-                    label="Giá mới"
-                    name="new_price"
-                    rules={[{ required: true, message: 'Vui lòng nhập giá mới !' }]}
-                >
-                    <Input />
-                </Form.Item>
+                <div className="my-2">
+                    <div className="label-email font-semibold tracking-wide">Giá mới sản phẩm</div>
+                    <input className="w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"number"} {...register('new_price')} defaultValue={selectedProduct.new_price} />
+                    {errors.new_price && <p className="text-red-500">{errors.new_price?.message}</p>}
+                </div>
 
-                <Form.Item<FieldType>
-                    label="Số lượng"
-                    name="available"
-                    rules={[{ required: true, message: 'Vui lòng nhập số lượng tồn kho!' }]}
-                >
-                    <Input />
-                </Form.Item>
+                <div className="my-2">
+                    <div className="label-email font-semibold tracking-wide">Số lượng sản phẩm</div>
+                    <input className="w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"number"} {...register('available')} defaultValue={selectedProduct.available} />
+                    {errors.available && <p className="text-red-500">{errors.available?.message}</p>}
+                </div>
 
-                <Form.Item
-                    name="categoryIds"
-                    label="Checkbox.Group"
-                >
-                    <Checkbox.Group>
+                <div className="my-2">
+                    <div className="label-email font-semibold tracking-wide">Ảnh sản phẩm</div>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleChangeImage}
+                        className='mb-2'
+                    />
+                    {selectedProduct && !selectedImage && <img
+                        src={selectedProduct.image}
+                        alt={`Preview`}
+                        className="max-h-[100px] cursor-zoom-in hover:opacity-70"
+                    />}
+                    {selectedImage &&
+                        <img
+                            src={URL.createObjectURL(selectedImage) || selectedProduct?.image}
+                            alt={`Preview`}
+                            className="max-h-[100px] cursor-zoom-in hover:opacity-70"
+                        />}
+                </div>
+
+                <div className="my-2">
+                    <div className="label-email font-semibold tracking-wide">Loại sản phẩm</div>
+                    <Checkbox.Group onChange={onChangeCheckbox}>
                         <Row>
                             {
-                                categoryList && categoryList.map((category) =>
-                                    <Col span={8} key={category.id}>
-                                        <Checkbox value={category.id} style={{ lineHeight: '32px' }}>
-                                            {category.name}
-                                        </Checkbox>
-                                    </Col>
-                                )
+                                categoryList && categoryList.map((category) => {
+                                    const isChecked = selectedProduct.categories.find((item) => item.category.id === category.id) ? true : false
+                                    console.log(isChecked)
+                                    return (
+                                        <Col span={8} key={category.id}>
+                                            <Checkbox
+                                                value={category.id}
+                                                style={{ lineHeight: '32px' }}
+                                                checked={true}
+                                            >
+                                                {category.name}
+                                            </Checkbox>
+                                        </Col>
+                                    )
+                                })
                             }
                         </Row>
                     </Checkbox.Group>
-                </Form.Item>
-
-                <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                    <Button type="primary" htmlType="submit">
-                        Submit
-                    </Button>
-                </Form.Item>
-            </Form>
+                </div>
+                <Button type="primary" htmlType="submit">
+                    Submit
+                </Button>
+            </form >
         </>
     )
+
 }
 
 export default UpdateProduct

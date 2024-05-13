@@ -47,7 +47,6 @@ instance.interceptors.request.use(
       }
     }
     request = { ...request, headers: newHeaders as AxiosRequestHeaders };
-    console.log(request)
     return request;
   },
   (error) => {

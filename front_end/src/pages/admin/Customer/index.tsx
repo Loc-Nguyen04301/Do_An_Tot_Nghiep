@@ -39,7 +39,7 @@ const Customer = () => {
             setDataSource(res.data.data)
             dispatchAlert({ loading: false })
         } catch (error: any) {
-            dispatchAlert({ loading: false, errors: error.message })
+            dispatchAlert({ errors: error.message })
         }
     }
 

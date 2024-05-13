@@ -28,7 +28,7 @@ const Inventory = () => {
         dispatchAlert({ loading: true })
         dispatch(deleteProduct({ id: product.id }))
             .then((res) => {
-                dispatchAlert({ success: "Xóa sản phẩm thành công", loading: false })
+                dispatchAlert({ success: "Xóa sản phẩm thành công" })
             })
             .catch(e => console.log(e))
         setIsModalOpen(false);

@@ -29,6 +29,6 @@ const createProduct = (data: CreateProductDto) => {
     return http.post(`/products`, data)
 }
 
-const ProductService = { getProductByCategory, getProductById, getProductsByCategory, getProductsByName, getAll, removeProduct }
+const ProductService = { getProductByCategory, getProductById, getProductsByCategory, getProductsByName, getAll, removeProduct, createProduct }
 
 export default ProductService

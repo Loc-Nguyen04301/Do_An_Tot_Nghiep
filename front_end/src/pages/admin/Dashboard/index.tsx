@@ -178,7 +178,7 @@ const RecentOrders = ({ listProductSoldOut }: { listProductSoldOut: any }) => {
             render: (_, record) => <span>{convertNumbertoMoney(record.new_price)}</span >,
         },
         {
-            title: "Số lượng đã bán ra",
+            title: "Số lượng đã bán",
             key: "number_sold",
             render: (_, record) => record.total_quantity_sold
         },
@@ -186,7 +186,7 @@ const RecentOrders = ({ listProductSoldOut }: { listProductSoldOut: any }) => {
 
     return (
         <>
-            <Typography.Title level={5}>Số lượng đã bán ra</Typography.Title>
+            <Typography.Title level={5}>Sản phẩm đã bán ra</Typography.Title>
             <Table
                 columns={columns}
                 dataSource={listProductSoldOut}

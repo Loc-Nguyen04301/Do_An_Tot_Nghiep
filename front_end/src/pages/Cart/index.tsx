@@ -74,7 +74,7 @@ const Cart = () => {
             key: "name",
             dataIndex: "name",
             render: (_, record) => <div>
-                <Link to={"/"} className='hover:text-[#334862] text-base'>
+                <Link to={`${RoutePath.DetailProduct}/${record.id}`} className='hover:text-[#334862] text-base'>
                     <div className='flex items-center max-xs:flex-col max-xs:text-center gap-2'>
                         <img src={record.image} width={70} />
                         <div>{record.name}</div>

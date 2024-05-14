@@ -19,12 +19,9 @@ const CheckAvailable = ({ children }: CheckAvailableProps) => {
                 const res = await ProductService.getProductById(Number(label))
                 dispatchAlert({ loading: false })
                 const available = res.data.data.available
-                console.log(available)
                 if (available === 0) {
                     navigate(`${RoutePath.Home}`)
                 }
-
-
             } catch (error) {
                 console.log(error)
             }

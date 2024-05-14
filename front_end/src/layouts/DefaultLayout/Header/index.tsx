@@ -178,7 +178,7 @@ const Header = () => {
                 </li>
                 <li className="divider border-l-[1px] h-[2rem] border-white opacity-40"></li>
                 <li>
-                  <Link to={RoutePath.CartPage}>
+                  <Link to={RoutePath.CheckoutPage}>
                     <div className="bg-button-red-color rounded-full hover:bg-red-800 duration-300 cursor-pointer">
                       <div className="px-3 block h-[2rem]">
                         <span className="uppercase text-white font-semibold tracking-wide block leading-[2rem]">

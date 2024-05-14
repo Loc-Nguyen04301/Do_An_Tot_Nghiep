@@ -8,7 +8,7 @@ import { useAppSelector } from '@/redux-toolkit/hook';
 import { useAlertDispatch } from '@/contexts/AlertContext';
 import { convertNumbertoMoney } from '@/utils';
 import { format } from "date-fns"
-import { ConfigProvider, Pagination } from 'antd';
+import { ConfigProvider, Pagination, Tag } from 'antd';
 import type { PaginationProps } from 'antd';
 
 var DATETIME_FORMAT = 'dd/MM/yyyy HH:mm:ss'
@@ -156,7 +156,9 @@ const Purchase = () => {
                                                         <span>Mã đơn hàng: {bill.id}</span>
                                                         <span>Ngày mua: {format(bill.created_at, DATETIME_FORMAT)}</span>
                                                     </div>
-
+                                                    {bill.order_status === OrderStatus.PROCESSING && bill.payment_status === false && <Tag color="red" className='h-fit'>Chờ thanh toán</Tag>}
+                                                    {bill.order_status === OrderStatus.PROCESSING && bill.payment_status === true && <Tag color="cyan" className='h-fit'>Chờ giao hàng</Tag>}
+                                                    {bill.order_status === OrderStatus.SUCCESS && <span className='text-[#ee4d2d] text-xl uppercase'>Hoàn thành</span>}
                                                     {bill.order_status === OrderStatus.CANCELLED && <span className='text-[#ee4d2d] text-xl uppercase'>Đã hủy</span>}
                                                 </div>
                                                 {bill.items.map((item, index) =>

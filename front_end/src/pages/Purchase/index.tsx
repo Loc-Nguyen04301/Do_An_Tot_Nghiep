@@ -157,7 +157,7 @@ const Purchase = () => {
                                                     <span className='px-2'>Thành tiền:</span>
                                                     <span className='px-2 text-main-orange-color text-xl font-semibold'>{convertNumbertoMoney(bill.total_amount)}</span>
                                                 </div>
-                                                <div className={clsx('flex items-center', bill.order_status !== OrderStatus.CANCELLED ? 'justify-between' : 'justify-end')}>
+                                                <div className={clsx('flex items-center', bill.order_status !== OrderStatus.CANCELLED ? 'justify-end' : 'justify-between')}>
                                                     {bill.order_status === OrderStatus.CANCELLED && <span className='text-category-title text-sm'>Đã hủy bởi bạn</span>}
                                                     <div className='flex gap-5'>
                                                         <button className="min-w-[150px] bg-main-orange-color py-[10px] px-[8px] hover:shadow-checkout-btn rounded-md border border-border-color text-white">

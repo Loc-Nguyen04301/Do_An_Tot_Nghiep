@@ -16,8 +16,8 @@ export class BillsService {
   }
 
   async create(createBillDto: CreateBillDto) {
-    const { address, customer_name, email, note, phone_number, user_id, payment_method, total_amount, shortCartItems } = createBillDto
-    const billData = { customer_name, address, phone_number, email, payment_method, note, user_id, total_amount }
+    const { address, customer_name, email, note, phone_number, user_id, payment_method, total_amount, shortCartItems, order_status, payment_status } = createBillDto
+    const billData = { customer_name, address, phone_number, email, note, user_id, payment_method, order_status, payment_status, total_amount }
 
     // check available item in database
     await Promise.all(shortCartItems.map(async (cartItem) => {
@@ -81,7 +81,7 @@ export class BillsService {
     page_index = page_index || 0;
     page_size = page_size || 5;
     order_status = order_status || null
-    payment_status = payment_status || null
+    payment_status = payment_status
     return_status = return_status || ReturnStatus.NONE
 
     const take = page_size as number
@@ -94,7 +94,7 @@ export class BillsService {
     if (order_status) {
       whereClause = { ...whereClause, order_status };
     }
-    if (payment_status) {
+    if (typeof (payment_status) === 'boolean') {
       whereClause = { ...whereClause, payment_status };
     }
     if (return_status) {

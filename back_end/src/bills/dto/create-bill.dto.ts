@@ -1,5 +1,5 @@
-import { IsNotEmpty, IsString, IsEmail, IsNumber, IsEnum } from 'class-validator';
-import { PaymentMethod } from '@prisma/client';
+import { IsNotEmpty, IsString, IsEmail, IsNumber, IsEnum, IsBoolean } from 'class-validator';
+import { OrderStatus, PaymentMethod } from '@prisma/client';
 
 class ShortCartItem {
     @IsNumber()
@@ -38,6 +38,10 @@ export class CreateBillDto {
     @IsEnum(PaymentMethod)
     @IsNotEmpty()
     payment_method: PaymentMethod
+
+    order_status?: OrderStatus
+
+    payment_status?: boolean
 
     total_amount?: number
 

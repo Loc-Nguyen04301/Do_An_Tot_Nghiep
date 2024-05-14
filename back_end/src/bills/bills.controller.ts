@@ -40,7 +40,13 @@ export class BillsController {
   ) {
     const parsedUserId = parseInt(user_id, 10);
     const parsedOrderStatus = order_status as OrderStatus
-    const parsedPaymentStatus = payment_status === 'true';
+    let parsedPaymentStatus: boolean = undefined
+    if (payment_status === "true") {
+      parsedPaymentStatus = true
+    }
+    else if (payment_status === "false") {
+      parsedPaymentStatus = false
+    }
     const parsedReturnStatus = return_status as ReturnStatus
     const parsedPageIndex = parseInt(page_index, 10);
     const parsedPageSize = parseInt(page_size, 10);

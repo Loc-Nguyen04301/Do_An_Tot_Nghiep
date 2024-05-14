@@ -8,6 +8,8 @@ import { useAppSelector } from '@/redux-toolkit/hook';
 import { useAlertDispatch } from '@/contexts/AlertContext';
 import { convertNumbertoMoney } from '@/utils';
 import { format } from "date-fns"
+import { ConfigProvider, Pagination } from 'antd';
+import type { PaginationProps } from 'antd';
 
 var DATETIME_FORMAT = 'dd/MM/yyyy HH:mm:ss'
 
@@ -54,37 +56,49 @@ const Purchase = () => {
     const [purchaseStatus, setPurchaseStatus] = useState<PurchaseStatus>(PurchaseStatus.ALL)
     const [listBill, setListBill] = useState<IBill[]>([])
     const { user } = useAppSelector(state => state.auth)
+    const [current, setCurrent] = useState(1)
+    const [pageSize, setPageSize] = useState(5)
+    const [records, setRecords] = useState(0)
+
+    const onChangePage: PaginationProps['onChange'] = (page) => {
+        setCurrent(page);
+    };
 
     const dispatchAlert = useAlertDispatch()
 
-    const fetchBill = async (purchaseStatus: PurchaseStatus, userId?: number) => {
+    const fetchBill = async (purchaseStatus: PurchaseStatus, userId: number, current: number, pageSize: number) => {
         dispatchAlert({ loading: true })
         try {
             let res
             switch (purchaseStatus) {
                 case PurchaseStatus.ALL:
-                    res = await BillService.getBill({ params: { user_id: userId } })
+                    res = await BillService.getBill({ params: { user_id: userId, page_index: current - 1, page_size: pageSize } })
                     setListBill(res.data.data.bills)
+                    setRecords(res.data.data.metadata.records)
                     dispatchAlert({ loading: false })
                     break;
                 case PurchaseStatus.WAIT_FOR_PAY:
-                    res = await BillService.getBill({ params: { user_id: userId, payment_status: false } })
+                    res = await BillService.getBill({ params: { user_id: userId, payment_status: false, order_status: OrderStatus.PROCESSING, page_index: current - 1, page_size: pageSize } })
                     setListBill(res.data.data.bills)
+                    setRecords(res.data.data.metadata.records)
                     dispatchAlert({ loading: false })
                     break;
                 case PurchaseStatus.WAIT_FOR_DELIVERY:
-                    res = await BillService.getBill({ params: { user_id: userId, payment_status: true } })
+                    res = await BillService.getBill({ params: { user_id: userId, payment_status: true, order_status: OrderStatus.PROCESSING, page_index: current - 1, page_size: pageSize } })
                     setListBill(res.data.data.bills)
+                    setRecords(res.data.data.metadata.records)
                     dispatchAlert({ loading: false })
                     break;
                 case PurchaseStatus.SUCCESS:
-                    res = await BillService.getBill({ params: { user_id: userId, order_status: OrderStatus.SUCCESS } })
+                    res = await BillService.getBill({ params: { user_id: userId, payment_status: true, order_status: OrderStatus.SUCCESS, page_index: current - 1, page_size: pageSize } })
                     setListBill(res.data.data.bills)
+                    setRecords(res.data.data.metadata.records)
                     dispatchAlert({ loading: false })
                     break;
                 case PurchaseStatus.CANCELLED:
-                    res = await BillService.getBill({ params: { user_id: userId, order_status: OrderStatus.CANCELLED } })
+                    res = await BillService.getBill({ params: { user_id: userId, order_status: OrderStatus.CANCELLED, page_index: current - 1, page_size: pageSize } })
                     setListBill(res.data.data.bills)
+                    setRecords(res.data.data.metadata.records)
                     dispatchAlert({ loading: false })
                     break;
                 default:
@@ -95,9 +109,14 @@ const Purchase = () => {
         }
     }
 
+    const handleChangeStatusPurchase = (status: PurchaseStatus) => {
+        setPurchaseStatus(status)
+        setCurrent(1)
+    }
+
     useEffect(() => {
-        fetchBill(purchaseStatus, user.id)
-    }, [purchaseStatus, user.id])
+        if (user.id) fetchBill(purchaseStatus, user.id, current, pageSize)
+    }, [purchaseStatus, user.id, current, pageSize])
 
     return (
         <>
@@ -119,11 +138,11 @@ const Purchase = () => {
                     </div>
                     <div className='w-full'>
                         <section className='grid grid-cols-5 bg-white mb-5'>
-                            <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.ALL && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => setPurchaseStatus(PurchaseStatus.ALL)}>{PurchaseStatus.ALL}</div>
-                            <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.WAIT_FOR_PAY && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => setPurchaseStatus(PurchaseStatus.WAIT_FOR_PAY)}>{PurchaseStatus.WAIT_FOR_PAY}</div>
-                            <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.WAIT_FOR_DELIVERY && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => setPurchaseStatus(PurchaseStatus.WAIT_FOR_DELIVERY)}>{PurchaseStatus.WAIT_FOR_DELIVERY}</div>
-                            <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.SUCCESS && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => setPurchaseStatus(PurchaseStatus.SUCCESS)}>{PurchaseStatus.SUCCESS}</div>
-                            <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.CANCELLED && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => setPurchaseStatus(PurchaseStatus.CANCELLED)}>{PurchaseStatus.CANCELLED}</div>
+                            <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.ALL && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => handleChangeStatusPurchase(PurchaseStatus.ALL)}>{PurchaseStatus.ALL}</div>
+                            <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.WAIT_FOR_PAY && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => handleChangeStatusPurchase(PurchaseStatus.WAIT_FOR_PAY)}>{PurchaseStatus.WAIT_FOR_PAY}</div>
+                            <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.WAIT_FOR_DELIVERY && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => handleChangeStatusPurchase(PurchaseStatus.WAIT_FOR_DELIVERY)}>{PurchaseStatus.WAIT_FOR_DELIVERY}</div>
+                            <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.SUCCESS && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => handleChangeStatusPurchase(PurchaseStatus.SUCCESS)}>{PurchaseStatus.SUCCESS}</div>
+                            <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.CANCELLED && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => handleChangeStatusPurchase(PurchaseStatus.CANCELLED)}>{PurchaseStatus.CANCELLED}</div>
                         </section>
                         {
                             listBill.length > 0
@@ -133,11 +152,15 @@ const Purchase = () => {
                                         listBill.map((bill) =>
                                             <div className='p-6 bg-white' key={bill.id}>
                                                 <div className='flex justify-between pb-2 border-b border-border-color'>
-                                                    <span>{format(bill.created_at, DATETIME_FORMAT)}</span>
+                                                    <div className='flex flex-col'>
+                                                        <span>Mã đơn hàng: {bill.id}</span>
+                                                        <span>Ngày mua: {format(bill.created_at, DATETIME_FORMAT)}</span>
+                                                    </div>
+
                                                     {bill.order_status === OrderStatus.CANCELLED && <span className='text-[#ee4d2d] text-xl uppercase'>Đã hủy</span>}
                                                 </div>
-                                                {bill.items.map((item) =>
-                                                    <div className='py-6 border-b border-border-color flex justify-between'>
+                                                {bill.items.map((item, index) =>
+                                                    <div className='py-6 border-b border-border-color flex justify-between' key={`${bill.id}-${index}`}>
                                                         <div className='flex gap-2'>
                                                             <img src={item.product.image} width={80} />
                                                             <div className='flex flex-col justify-center'>
@@ -178,6 +201,14 @@ const Purchase = () => {
                                     <span> {`Bạn hiện không có đơn hàng ${purchaseStatus} nào`}</span>
                                 </div>
                         }
+                        <ConfigProvider theme={{
+                            token: {
+                                colorPrimary: "#F48220",
+                                colorBgTextHover: "#ffffff"
+                            }
+                        }}>
+                            <Pagination current={current} pageSize={pageSize} total={records} onChange={onChangePage} className='text-center mt-5' />
+                        </ConfigProvider>
                     </div>
                 </div>
             </div>

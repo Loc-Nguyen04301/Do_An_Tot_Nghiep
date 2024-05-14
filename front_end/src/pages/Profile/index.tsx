@@ -6,7 +6,7 @@ import clsx from 'clsx'
 import { checkImage, imageUpload } from '@/utils'
 import { useAlertDispatch } from '@/contexts/AlertContext'
 import { ConfigProvider, RadioChangeEvent } from 'antd'
-import { useAppDispatch, useAppSelector } from '@/redux-toolkit/hook'
+import { useAppSelector } from '@/redux-toolkit/hook'
 import UserService from '@/services/UserService'
 
 const Profile = () => {
@@ -16,7 +16,6 @@ const Profile = () => {
 
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const dispatchAlert = useAlertDispatch()
-    const dispatch = useAppDispatch()
 
     const handleButtonClick = () => {
         if (fileInputRef.current) {
@@ -44,7 +43,7 @@ const Profile = () => {
         try {
             if (user.id && avatarTempFile) {
                 const res = await imageUpload(avatarTempFile)
-                const res2 = await UserService.updateProfile(user.id, { avatar: res.url })
+                await UserService.updateProfile(user.id, { avatar: res.url })
                 dispatchAlert({ loading: false })
                 window.location.reload()
             }

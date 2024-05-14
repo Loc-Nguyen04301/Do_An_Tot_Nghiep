@@ -7,6 +7,9 @@ import BillService from '@/services/BillService';
 import { useAppSelector } from '@/redux-toolkit/hook';
 import { useAlertDispatch } from '@/contexts/AlertContext';
 import { convertNumbertoMoney } from '@/utils';
+import { format } from "date-fns"
+
+var DATETIME_FORMAT = 'dd/MM/yyyy HH:mm:ss'
 
 enum PurchaseStatus {
     ALL = "Tất cả",
@@ -102,7 +105,7 @@ const Purchase = () => {
                 <title>Đơn hàng - THOL </title>
                 <meta name='description' content='Beginner friendly page for learning React Helmet.' />
             </Helmet>
-            <div className="mx-auto max-w-[1112px] py-8 px-4 bg-[#f5f5f5] my-8">
+            <div className="mx-auto max-w-[1112px] h-full py-8 px-4 bg-[#f5f5f5] my-8">
                 <div className='flex'>
                     <div className='w-[244px]'>
                         <div className='flex flex-col'>
@@ -115,56 +118,66 @@ const Purchase = () => {
                         </div>
                     </div>
                     <div className='w-full'>
-                        <section className='grid grid-cols-5 bg-white mb-20'>
+                        <section className='grid grid-cols-5 bg-white mb-5'>
                             <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.ALL && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => setPurchaseStatus(PurchaseStatus.ALL)}>{PurchaseStatus.ALL}</div>
                             <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.WAIT_FOR_PAY && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => setPurchaseStatus(PurchaseStatus.WAIT_FOR_PAY)}>{PurchaseStatus.WAIT_FOR_PAY}</div>
                             <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.WAIT_FOR_DELIVERY && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => setPurchaseStatus(PurchaseStatus.WAIT_FOR_DELIVERY)}>{PurchaseStatus.WAIT_FOR_DELIVERY}</div>
                             <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.SUCCESS && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => setPurchaseStatus(PurchaseStatus.SUCCESS)}>{PurchaseStatus.SUCCESS}</div>
                             <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.CANCELLED && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => setPurchaseStatus(PurchaseStatus.CANCELLED)}>{PurchaseStatus.CANCELLED}</div>
                         </section>
-                        <section className='flex flex-col gap-3'>
-                            {
-                                listBill.map((bill) =>
-                                    <div className='p-6 bg-white' key={bill.id}>
-                                        <div className='flex justify-between pb-2 border-b border-border-color'>
-                                            <span>{bill.created_at}</span>
-                                            <span className='text-[#ee4d2d] text-xl uppercase'>Đã hủy</span>
-                                        </div>
-                                        {bill.items.map((item) =>
-                                            <div className='py-6 border-b border-border-color flex justify-between'>
-                                                <div className='flex gap-2'>
-                                                    <img src={item.product.image} width={80} />
-                                                    <div className='flex flex-col justify-center'>
-                                                        <span>{item.product.name} </span>
-                                                        <span className='text-sm font-semibold'>x {item.quantity}</span>
+                        {
+                            listBill.length > 0
+                                ?
+                                <section className='flex flex-col gap-3'>
+                                    {
+                                        listBill.map((bill) =>
+                                            <div className='p-6 bg-white' key={bill.id}>
+                                                <div className='flex justify-between pb-2 border-b border-border-color'>
+                                                    <span>{format(bill.created_at, DATETIME_FORMAT)}</span>
+                                                    {bill.order_status === OrderStatus.CANCELLED && <span className='text-[#ee4d2d] text-xl uppercase'>Đã hủy</span>}
+                                                </div>
+                                                {bill.items.map((item) =>
+                                                    <div className='py-6 border-b border-border-color flex justify-between'>
+                                                        <div className='flex gap-2'>
+                                                            <img src={item.product.image} width={80} />
+                                                            <div className='flex flex-col justify-center'>
+                                                                <span>{item.product.name} </span>
+                                                                <span className='text-sm font-semibold'>x {item.quantity}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div className='flex gap-2'>
+                                                            {
+                                                                item.product.old_price != 0 &&
+                                                                <del className='text-category-title'>{convertNumbertoMoney(item.product.old_price)}</del>
+                                                            }
+                                                            <span className='text-main-orange-color'>{convertNumbertoMoney(item.product.new_price)}</span>
+                                                        </div>
+                                                    </div>)}
+                                                <div className='py-6 text-right'>
+                                                    <span className='px-2'>Thành tiền:</span>
+                                                    <span className='px-2 text-main-orange-color text-xl font-semibold'>{convertNumbertoMoney(bill.total_amount)}</span>
+                                                </div>
+                                                <div className={clsx('flex items-center', bill.order_status !== OrderStatus.CANCELLED ? 'justify-between' : 'justify-end')}>
+                                                    {bill.order_status === OrderStatus.CANCELLED && <span className='text-category-title text-sm'>Đã hủy bởi bạn</span>}
+                                                    <div className='flex gap-5'>
+                                                        <button className="min-w-[150px] bg-main-orange-color py-[10px] px-[8px] hover:shadow-checkout-btn rounded-md border border-border-color text-white">
+                                                            Mua lại
+                                                        </button>
+                                                        <button className="min-w-[150px] bg-[#ffffff] py-[10px] px-[8px] hover:shadow-checkout-btn rounded-md border border-border-color">
+                                                            Xem chi tiết đơn hàng
+                                                        </button>
                                                     </div>
                                                 </div>
-                                                <div className='flex gap-2'>
-                                                    {item.product.old_price != 0 &&
-                                                        <del className='text-category-title'>{convertNumbertoMoney(item.product.old_price)}</del>
-                                                    }
-                                                    <span className='text-main-orange-color'>{convertNumbertoMoney(item.product.new_price)}</span>
-                                                </div>
-                                            </div>)}
-                                        <div className='py-6 text-right'>
-                                            <span className='px-2'>Thành tiền:</span>
-                                            <span className='px-2 text-main-orange-color text-xl font-semibold'>{convertNumbertoMoney(bill.total_amount)}</span>
-                                        </div>
-                                        <div className='group-button flex justify-between items-center'>
-                                            <span className='text-category-title text-sm'>Đã hủy bởi bạn</span>
-                                            <div className='flex gap-5'>
-                                                <button className="min-w-[150px] bg-main-orange-color py-[10px] px-[8px] hover:shadow-checkout-btn rounded-md border border-border-color text-white">
-                                                    Mua lại
-                                                </button>
-                                                <button className="min-w-[150px] bg-[#ffffff] py-[10px] px-[8px] hover:shadow-checkout-btn rounded-md border border-border-color">
-                                                    Xem chi tiết đơn hàng
-                                                </button>
                                             </div>
-                                        </div>
-                                    </div>
-                                )
-                            }
-                        </section>
+                                        )
+                                    }
+                                </section>
+                                :
+                                <div className='bg-white h-[400px] flex justify-center items-center flex-col gap-3'>
+                                    <img src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/return/5fafbb923393b712b964.png' className='w-[100px] h-[100px]' />
+                                    <span> {`Bạn hiện không có đơn hàng ${purchaseStatus} nào`}</span>
+                                </div>
+                        }
                     </div>
                 </div>
             </div>

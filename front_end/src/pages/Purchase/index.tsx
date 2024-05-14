@@ -137,7 +137,7 @@ const Purchase = () => {
                         </div>
                     </div>
                     <div className='w-full'>
-                        <section className='grid grid-cols-5 bg-white mb-5'>
+                        <section className='grid grid-cols-5 bg-white mb-10'>
                             <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.ALL && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => handleChangeStatusPurchase(PurchaseStatus.ALL)}>{PurchaseStatus.ALL}</div>
                             <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.WAIT_FOR_PAY && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => handleChangeStatusPurchase(PurchaseStatus.WAIT_FOR_PAY)}>{PurchaseStatus.WAIT_FOR_PAY}</div>
                             <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.WAIT_FOR_DELIVERY && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => handleChangeStatusPurchase(PurchaseStatus.WAIT_FOR_DELIVERY)}>{PurchaseStatus.WAIT_FOR_DELIVERY}</div>

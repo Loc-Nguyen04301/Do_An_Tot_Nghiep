@@ -6,6 +6,7 @@ import Loading from "@/components/Alert/Loading";
 import GuestGuard from "@/guards/GuestGuard";
 import AuthGuard from "@/guards/AuthGuard";
 import HavingCart from "@/guards/HavingCart";
+import CheckAvailable from "@/guards/CheckAvailable";
 
 const Home = lazy(() => import("@/pages/Home"));
 const Login = lazy(() => import("@/pages/Login"));
@@ -136,7 +137,10 @@ const Router: React.FC = () => {
         },
         {
           path: `${RoutePath.DetailProduct}/:label`,
-          element: <DetailProduct />,
+          element:
+            <CheckAvailable>
+              <DetailProduct />
+            </CheckAvailable>
         },
         {
           path: RoutePath.CartPage,

@@ -105,7 +105,9 @@ const DetailProduct = () => {
       if (relatedCategory) {
         const res = await ProductService.getProductsByCategory(relatedCategory)
         // Show maximum 6 items in Related Products
-        setRelatedProducts(res.data.data.slice(0, 6))
+        var relatedProducts = res.data.data.slice(0, 6) as IDetailProduct[]
+        relatedProducts = relatedProducts.filter((item) => item.id !== product?.id)
+        setRelatedProducts(relatedProducts)
         dispatchAlert({ loading: false })
       }
     } catch (error) {
@@ -228,11 +230,12 @@ const DetailProduct = () => {
           </div>
           <div className="py-16 px-10 max-md:px-5">
             <AccordingProduct product={product} />
-            <div className="mt-8">
-              <h1 className="font-bold text-2xl text-category-title tracking-wider my-5">
-                Sản phẩm tương tự
-              </h1>
-              <div>
+            {
+              relatedProducts.length > 0 &&
+              <div className="mt-8">
+                <h1 className="font-bold text-2xl text-category-title tracking-wider my-5">
+                  Sản phẩm tương tự
+                </h1>
                 <Swiper
                   navigation={true}
                   modules={[Navigation]}
@@ -252,49 +255,51 @@ const DetailProduct = () => {
                     },
                   }}
                 >
-                  {relatedProducts && relatedProducts.map(product =>
-                    <SwiperSlide key={product.id}>
-                      <div className={`px-[10px] containerProduct`}>
-                        <div className="relative">
-                          {
-                            product.available !== 0 ? <Tag color="green">Còn hàng</Tag> : <Tag color="red">Hết hàng</Tag>
-                          }
-                          {
-                            product.old_price != 0 &&
-                            <div className="absolute top-6 left-0 bg-[#fe0000] rounded-full py-3 px-1">
-                              <span className='text-white font-bold text-lg'>Giảm giá!</span>
+                  {
+                    relatedProducts.map(product =>
+                      <SwiperSlide key={product.id}>
+                        <div className={`px-[10px] containerProduct`}>
+                          <div className="relative">
+                            {
+                              product.available !== 0 ? <Tag color="green">Còn hàng</Tag> : <Tag color="red">Hết hàng</Tag>
+                            }
+                            {
+                              product.old_price != 0 &&
+                              <div className="absolute top-6 left-0 bg-[#fe0000] rounded-full py-3 px-1">
+                                <span className='text-white font-bold text-lg'>Giảm giá!</span>
+                              </div>
+                            }
+                            <Link
+                              to={`${RoutePath.DetailProduct}/${product.id}`}
+                              className="text-center block mx-auto"
+                            >
+                              <img
+                                src={product.image}
+                                width={274}
+                              />
+                            </Link>
+                            <div className={`hidden absolute bottom-0 w-full bg-main-orange-color text-center py-1 duration-500 showView`}>
+                              <span className="text-white font-semibold uppercase text-sm">
+                                Quick View
+                              </span>
                             </div>
-                          }
+                          </div>
                           <Link
                             to={`${RoutePath.DetailProduct}/${product.id}`}
-                            className="text-center block mx-auto"
+                            className="text-base block leading-5 mt-2"
                           >
-                            <img
-                              src={product.image}
-                              width={274}
-                            />
+                            {product.name}
                           </Link>
-                          <div className={`hidden absolute bottom-0 w-full bg-main-orange-color text-center py-1 duration-500 showView`}>
-                            <span className="text-white font-semibold uppercase text-sm">
-                              Quick View
-                            </span>
+                          <div className='flex justify-start gap-2'>
+                            {product.old_price != 0 && <span className="font-medium line-through text-category-title">{convertNumbertoMoney(product.old_price)}</span>}
+                            <span className="font-semibold">{convertNumbertoMoney(product.new_price)}</span>
                           </div>
                         </div>
-                        <Link
-                          to={`${RoutePath.DetailProduct}/${product.id}`}
-                          className="text-base block leading-5 mt-2"
-                        >
-                          {product.name}
-                        </Link>
-                        <div className='flex justify-start gap-2'>
-                          {product.old_price != 0 && <span className="font-medium line-through text-category-title">{convertNumbertoMoney(product.old_price)}</span>}
-                          <span className="font-semibold">{convertNumbertoMoney(product.new_price)}</span>
-                        </div>
-                      </div>
-                    </SwiperSlide>)}
+                      </SwiperSlide>)
+                  }
                 </Swiper>
               </div>
-            </div>
+            }
           </div>
         </div >
       </>

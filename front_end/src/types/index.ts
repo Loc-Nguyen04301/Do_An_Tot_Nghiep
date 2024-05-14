@@ -26,6 +26,7 @@ export interface IUser {
 export interface IProduct {
     id: number;
     name: string;
+    brand: string;
     description: string;
     old_price: number;
     new_price: number;

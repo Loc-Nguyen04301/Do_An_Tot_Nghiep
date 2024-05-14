@@ -47,7 +47,8 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                         <div className={`px-[10px] containerProduct`} key={product.id}>
                             <div className="relative">
                                 {
-                                    product.available !== 0 ? <Tag color="green">Còn hàng</Tag> : <Tag color="red">Hết hàng</Tag>}
+                                    product.available !== 0 ? <Tag color="green">Còn hàng</Tag> : <Tag color="red">Hết hàng</Tag>
+                                }
                                 {
                                     product.old_price != 0 &&
                                     <div className="absolute top-6 left-0 bg-[#fe0000] rounded-full py-3 px-1">
@@ -109,7 +110,11 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                             <SwiperSlide key={product.id}>
                                 <div className={`px-[10px] containerProduct`}>
                                     <div className="relative">
-                                        {product.old_price != 0 &&
+                                        {
+                                            product.available !== 0 ? <Tag color="green">Còn hàng</Tag> : <Tag color="red">Hết hàng</Tag>
+                                        }
+                                        {
+                                            product.old_price != 0 &&
                                             <div className="absolute top-6 left-0 bg-[#fe0000] rounded-full py-3 px-1">
                                                 <span className='text-white font-bold text-lg'>Giảm giá!</span>
                                             </div>

@@ -6,6 +6,7 @@ import { Helmet } from "react-helmet-async"
 import { IProduct } from "@/types"
 import ProductService from "@/services/ProductService"
 import { convertNumbertoMoney } from "@/utils"
+import { Tag } from "antd"
 
 const ListProductByCategory = () => {
   const { category } = useParams()
@@ -46,9 +47,13 @@ const ListProductByCategory = () => {
       <div className="max-w-[1170px] mx-auto">
         <div className="grid grid-cols-6 max-md:grid-cols-4 max-xs:grid-cols-3 pt-8 pb-16 px-4 gap-3">
           {products && products.map((product) =>
-            <div className={`containerProduct`} key={product.id}>
+            <div className={`px-[10px] containerProduct`} key={product.id}>
               <div className="relative">
-                {product.old_price != 0 &&
+                {
+                  product.available !== 0 ? <Tag color="green">Còn hàng</Tag> : <Tag color="red">Hết hàng</Tag>
+                }
+                {
+                  product.old_price != 0 &&
                   <div className="absolute top-6 left-0 bg-[#fe0000] rounded-full py-3 px-1">
                     <span className='text-white font-bold text-lg'>Giảm giá!</span>
                   </div>

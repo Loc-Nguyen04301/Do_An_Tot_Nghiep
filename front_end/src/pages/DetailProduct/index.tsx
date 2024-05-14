@@ -129,7 +129,7 @@ const DetailProduct = () => {
       })
   }, [product])
 
-  useScrollToTop()
+  // useScrollToTop()
 
   if (product)
     return (

@@ -48,6 +48,7 @@ const DrawerRightCart = ({
                 key={item.id}
                 to={`${RoutePath.DetailProduct}/${item.id}`}
                 className="flex pb-3 border-b border-border-color category-item my-4"
+                onClick={onClose}
               >
                 <img
                   src={item.image}
@@ -57,16 +58,15 @@ const DrawerRightCart = ({
                   <h1 className="text-[#334862] font-semibold">
                     {item.name}
                   </h1>
-                  <div>
-                    <span className="text-[#777]">
-                      {item.quantity} *
-                      <span className="text-main-grey-color px-2 font-semibold">
-                        {convertNumbertoMoney(item.new_price)}
-                      </span>
+                  <span className="text-main-grey-color">
+                    {item.quantity} *
+                    <span className="text-main-grey-color px-2 font-semibold">
+                      {convertNumbertoMoney(item.new_price)}
                     </span>
-                  </div>
+                  </span>
                 </div>
-              </Link>)}
+              </Link>
+            )}
           </div>
           <p className="text-center text-lg text-main-grey-color py-3 border-b-[1px] border-border-color">
             <strong>Tổng số phụ:</strong>

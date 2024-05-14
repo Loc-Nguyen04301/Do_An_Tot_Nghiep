@@ -98,7 +98,7 @@ const Header = () => {
       </div>
       <div className="header-middle mx-auto px-1 max-w-[1140px] mb-1">
         <div className="flex justify-between items-center flex-1 pt-2 px-3">
-          {/* Left Element mobile */}
+          {/*Menu Drawer Mobile Screen*/}
           <div className="md:hidden">
             <div
               className="flex items-center gap-2 uppercase font-bold text-[#666666d9] h-full"
@@ -114,7 +114,7 @@ const Header = () => {
           </div>
           {/* Logo */}
           <Logo />
-          {/* Right Element mobile */}
+          {/*Cart Drawer Mobile Screen*/}
           <div className="md:hidden">
             <ul className="flex items-center gap-[15px] h-full">
               <li className="cursor-pointer">

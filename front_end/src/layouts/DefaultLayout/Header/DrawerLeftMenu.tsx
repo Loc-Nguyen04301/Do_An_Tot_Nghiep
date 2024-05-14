@@ -68,6 +68,7 @@ const DrawerLeftMenu = ({
               key={category.path}
               to={`${RoutePath.ListByCategory}/${category.path}`}
               className={clsx("category-item block py-4 border-b-[1px] border-border-color", currentPath.includes(category.path) && "text-main-orange-color")}
+              onClick={onClose}
             >
               {category.title}
             </Link>

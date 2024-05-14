@@ -15,7 +15,6 @@ import { useAlertDispatch } from "@/contexts/AlertContext"
 
 import "swiper/scss"
 import "swiper/scss/navigation"
-import styles from "./DetailProduct.module.scss"
 import useScrollToTop from "@/hooks/useScrollToTop"
 
 interface Category {
@@ -245,7 +244,7 @@ const DetailProduct = () => {
                 >
                   {relatedProducts && relatedProducts.map(product =>
                     <SwiperSlide key={product.id}>
-                      <div className={`px-[10px] ${styles.containerProduct}`}>
+                      <div className={`px-[10px] containerProduct`}>
                         <div className="relative">
                           {product.old_price != 0 &&
                             <div className="absolute top-6 left-0 bg-[#fe0000] rounded-full py-3 px-1">
@@ -261,7 +260,7 @@ const DetailProduct = () => {
                               width={274}
                             />
                           </Link>
-                          <div className={`hidden absolute bottom-0 w-full bg-main-orange-color text-center py-1 duration-500 ${styles.showView}`}>
+                          <div className={`hidden absolute bottom-0 w-full bg-main-orange-color text-center py-1 duration-500 showView`}>
                             <span className="text-white font-semibold uppercase text-sm">
                               Quick View
                             </span>

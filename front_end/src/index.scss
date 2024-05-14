@@ -224,3 +224,9 @@ body {
     width: 100%;
   }
 }
+
+.containerProduct:hover {
+  .showView {
+    display: block !important;
+  }
+}

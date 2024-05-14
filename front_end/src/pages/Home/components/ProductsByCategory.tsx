@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { RoutePath } from '@/routes'
-import styles from "../Home.module.scss"
 import { SwiperSlide, Swiper } from 'swiper/react'
 import { Navigation } from 'swiper/modules'
 import ProductService from '@/services/ProductService'
@@ -45,7 +44,7 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
             <div className="mt-8">
                 <div className="grid grid-cols-6 max-md:hidden gap-3">
                     {products && products.map((product) =>
-                        <div className={`px-[10px] ${styles.containerProduct}`} key={product.id}>
+                        <div className={`px-[10px] containerProduct`} key={product.id}>
                             <div className="relative">
                                 {
                                     product.available !== 0 ? <Tag color="green">Còn hàng</Tag> : <Tag color="red">Hết hàng</Tag>}
@@ -64,10 +63,9 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                                             src={product.image}
                                         />
                                     </div>
-
                                 </Link>
                                 <div
-                                    className={`hidden absolute bottom-0 w-full bg-main-orange-color text-center py-1 opacity-95 duration-500 ${styles.showView}`}
+                                    className={`hidden absolute bottom-0 w-full bg-main-orange-color text-center py-1 opacity-95 duration-500 showView`}
                                 >
                                     <span className="text-white font-semibold uppercase text-sm">
                                         Quick View
@@ -109,7 +107,7 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                     >
                         {products && products.map((product) =>
                             <SwiperSlide key={product.id}>
-                                <div className={`px-[10px] ${styles.containerProduct}`}>
+                                <div className={`px-[10px] containerProduct`}>
                                     <div className="relative">
                                         {product.old_price != 0 &&
                                             <div className="absolute top-6 left-0 bg-[#fe0000] rounded-full py-3 px-1">
@@ -126,7 +124,7 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                                             />
                                         </Link>
                                         <div
-                                            className={`hidden absolute bottom-0 w-full bg-main-orange-color text-center py-1 opacity-95 duration-500 ${styles.showView}`}
+                                            className={`hidden absolute bottom-0 w-full bg-main-orange-color text-center py-1 opacity-95 duration-500 showView`}
                                         >
                                             <span className="text-white font-semibold uppercase text-sm">
                                                 Quick View

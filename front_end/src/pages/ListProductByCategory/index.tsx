@@ -7,8 +7,6 @@ import { IProduct } from "@/types"
 import ProductService from "@/services/ProductService"
 import { convertNumbertoMoney } from "@/utils"
 
-import styles from "./ListProductByCategory.module.scss"
-
 const ListProductByCategory = () => {
   const { category } = useParams()
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -31,13 +29,7 @@ const ListProductByCategory = () => {
           {categoryList.map((categoryItem) =>
             categoryItem.path === category &&
             (
-              <div>
-                <>
-                  <Helmet>
-                    <title>{categoryItem.title} </title>
-                    <meta name='description' content={categoryItem.title} />
-                  </Helmet>
-                </>
+              <>
                 <h1 className="px-4 pt-4 text-white text-[24px] font-semibold">
                   {categoryItem.title}
                 </h1>
@@ -46,7 +38,7 @@ const ListProductByCategory = () => {
                   <span className="divider mx-2 opacity-50">/</span>
                   <span> {categoryItem.title}</span>
                 </div>
-              </div>
+              </>
             )
           )}
         </div>
@@ -54,7 +46,7 @@ const ListProductByCategory = () => {
       <div className="max-w-[1170px] mx-auto">
         <div className="grid grid-cols-6 max-md:grid-cols-4 max-xs:grid-cols-3 pt-8 pb-16 px-4 gap-3">
           {products && products.map((product) =>
-            <div className={`${styles.containerProduct}`} key={product.id}>
+            <div className={`containerProduct`} key={product.id}>
               <div className="relative">
                 {product.old_price != 0 &&
                   <div className="absolute top-6 left-0 bg-[#fe0000] rounded-full py-3 px-1">
@@ -71,7 +63,7 @@ const ListProductByCategory = () => {
                   />
                 </Link>
                 <div
-                  className={`hidden absolute bottom-0 w-full bg-main-orange-color text-center py-1 opacity-95 duration-500 ${styles.showView}`}
+                  className={`hidden absolute bottom-0 w-full bg-main-orange-color text-center py-1 opacity-95 duration-500 showView`}
                 >
                   <span className="text-white font-semibold uppercase text-sm">
                     Quick View

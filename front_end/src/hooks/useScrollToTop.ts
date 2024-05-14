@@ -10,7 +10,7 @@ const useScrollToTop = () => {
 
     useEffect(() => {
         scrollToTop()
-    });
+    }, []);
 };
 
 export default useScrollToTop;

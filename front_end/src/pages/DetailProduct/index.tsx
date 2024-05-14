@@ -15,7 +15,6 @@ import { useAlertDispatch } from "@/contexts/AlertContext"
 
 import "swiper/scss"
 import "swiper/scss/navigation"
-import useScrollToTop from "@/hooks/useScrollToTop"
 
 interface Category {
   id: number;
@@ -128,7 +127,17 @@ const DetailProduct = () => {
       })
   }, [product])
 
-  // useScrollToTop()
+
+  useEffect(() => {
+    const scrollToTop = () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "instant"
+      });
+    };
+
+    scrollToTop()
+  }, [product]);
 
   if (product)
     return (

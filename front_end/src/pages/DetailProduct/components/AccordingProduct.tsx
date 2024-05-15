@@ -74,8 +74,8 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
       ),
       children: (
         <div>
-          <h3 className="font-bold text-2xl text-category-title mb-3">
-            Đánh giá
+          <h3 className="font-semibold text-2xl text-category-title mb-3">
+            Đánh giá sản phẩm
           </h3>
           {product.reviews.map((review) =>
             <div
@@ -112,18 +112,19 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
             </div>)}
           {product.reviews.length === 0 && <p className="text-[#777777] text-[16px]">Chưa có đánh giá nào.</p>}
           <div className="pt-16">
-            {accessToken && isReviewed === -1
-              ?
-              <ReviewContainer product={product} handlePreviewImage={handlePreviewImage} />
-              : accessToken && isReviewed !== -1
+            {
+              accessToken && isReviewed === -1
                 ?
-                <></>
-                :
-                <div className="border-2 border-main-orange-color pt-3 pl-8 pb-10">
-                  <span className="text-lg">
-                    Chỉ những khách hàng đã đăng nhập và mua sản phẩm này mới có thể đưa ra đánh giá.
-                  </span>
-                </div>
+                <ReviewContainer product={product} handlePreviewImage={handlePreviewImage} />
+                : accessToken && isReviewed !== -1
+                  ?
+                  <></>
+                  :
+                  <div className="border-2 border-main-orange-color pt-3 pl-8 pb-10">
+                    <span className="text-lg">
+                      Chỉ những khách hàng đã đăng nhập và mua sản phẩm này mới có thể đưa ra đánh giá.
+                    </span>
+                  </div>
             }
           </div>
         </div >

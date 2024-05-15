@@ -14,10 +14,10 @@ import * as yup from 'yup';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { checkImage, imageUpload } from '@/utils';
-import type { GetProp } from 'antd';
-
-import "./UpdateProduct.scss"
 import ProductService from '@/services/ProductService';
+import { CheckboxValueType } from 'antd/es/checkbox/Group';
+import "./UpdateProduct.scss"
+
 
 const schema = yup
     .object().shape({
@@ -33,7 +33,7 @@ const UpdateProduct = () => {
     const [selectedProduct, setSelectedProduct] = useState<IProductDetail>()
     const [categoryList, setCategoryList] = useState<ICategory[]>([])
     const [selectedImage, setSelectedImage] = useState<File>();
-    const [selectedCategories, setSelectedCategories] = useState<number[]>()
+    const [selectedCategories, setSelectedCategories] = useState<CheckboxValueType[]>()
     const [disabled, setDisabled] = useState(false)
     const products = useAppSelector(state => state.product)
 
@@ -103,7 +103,7 @@ const UpdateProduct = () => {
         }
     }
 
-    const onChangeCheckbox: GetProp<typeof Checkbox.Group, 'onChange'> = (checkedValues: number[]) => {
+    const onChangeCheckbox = (checkedValues: CheckboxValueType[]) => {
         setSelectedCategories(checkedValues)
     };
 

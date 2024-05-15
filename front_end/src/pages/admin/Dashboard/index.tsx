@@ -35,6 +35,7 @@ export interface IBestSoldOutProduct {
     id: number
     name: string
     brand: string
+    old_price: number
     new_price: number
     image: string
     total_quantity_sold: number
@@ -173,7 +174,12 @@ const RecentOrders = ({ listProductSoldOut }: { listProductSoldOut: any }) => {
             render: (_, record) => record.brand
         },
         {
-            title: "Giá tiền",
+            title: "Giá cũ",
+            key: "new_price",
+            render: (_, record) => record.old_price !== 0 && <del>{convertNumbertoMoney(record.old_price)}</del>
+        },
+        {
+            title: "Giá mới",
             key: "new_price",
             render: (_, record) => <span>{convertNumbertoMoney(record.new_price)}</span >,
         },

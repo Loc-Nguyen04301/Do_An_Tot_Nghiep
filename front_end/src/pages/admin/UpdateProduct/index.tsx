@@ -30,11 +30,10 @@ const schema = yup
     })
 
 const UpdateProduct = () => {
-    const [selectedImage, setSelectedImage] = useState<File>();
     const [selectedProduct, setSelectedProduct] = useState<IProductDetail>()
     const [categoryList, setCategoryList] = useState<ICategory[]>([])
+    const [selectedImage, setSelectedImage] = useState<File>();
     const [selectedCategories, setSelectedCategories] = useState<number[]>()
-
     const products = useAppSelector(state => state.product)
 
     const { register, handleSubmit, formState: { errors }, watch, getValues } = useForm({
@@ -66,6 +65,13 @@ const UpdateProduct = () => {
 
         if (params.id) getProductsById(Number(params.id))
     }, [params.id])
+
+    useEffect(() => {
+        if (selectedProduct) {
+            const selectedCategories = selectedProduct.categories.map((category) => category.category.id)
+            setSelectedCategories(selectedCategories)
+        }
+    }, [selectedProduct])
 
     const getCategoryList = async () => {
         dispatchAlert({ loading: true })
@@ -103,13 +109,14 @@ const UpdateProduct = () => {
     const onSubmit = async (data: any) => {
         if (selectedProduct) {
             dispatchAlert({ loading: true })
-            var image: string = ""
+            var image
             if (selectedImage) {
                 const res = await imageUpload(selectedImage)
                 image = res.url
             }
-            const newData = { ...data, image, category_ids: selectedCategories } as UpdateProductDto
+            const newData = { ...data, image: image ? image : undefined, category_ids: selectedCategories } as UpdateProductDto
             try {
+                console.log({ newData })
                 const res = await ProductService.updateProduct(selectedProduct.id, newData)
                 dispatchAlert({ success: res.data.message })
             } catch (error: any) {
@@ -128,6 +135,11 @@ const UpdateProduct = () => {
             </Typography.Title>
 
             <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="my-2">
+                    <div className="font-semibold tracking-wide">Mã sản phẩm</div>
+                    <input className="w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedProduct.id} disabled />
+                </div>
+
                 <div className="my-2">
                     <div className="label-email font-semibold tracking-wide">Tên sản phẩm</div>
                     <input className="w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('name')} defaultValue={selectedProduct.name} />
@@ -179,7 +191,7 @@ const UpdateProduct = () => {
                     />}
                     {selectedImage &&
                         <img
-                            src={URL.createObjectURL(selectedImage) || selectedProduct?.image}
+                            src={URL.createObjectURL(selectedImage)}
                             alt={`Preview`}
                             className="max-h-[100px] cursor-zoom-in hover:opacity-70"
                         />}
@@ -187,18 +199,15 @@ const UpdateProduct = () => {
 
                 <div className="my-2">
                     <div className="label-email font-semibold tracking-wide">Loại sản phẩm</div>
-                    <Checkbox.Group onChange={onChangeCheckbox}>
+                    <Checkbox.Group onChange={onChangeCheckbox} value={selectedCategories}>
                         <Row>
                             {
                                 categoryList && categoryList.map((category) => {
-                                    const isChecked = selectedProduct.categories.find((item) => item.category.id === category.id) ? true : false
-                                    console.log(isChecked)
                                     return (
                                         <Col span={8} key={category.id}>
                                             <Checkbox
                                                 value={category.id}
                                                 style={{ lineHeight: '32px' }}
-                                                checked={true}
                                             >
                                                 {category.name}
                                             </Checkbox>

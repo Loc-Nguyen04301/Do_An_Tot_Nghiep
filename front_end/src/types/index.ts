@@ -66,13 +66,13 @@ export interface ICategory {
 }
 
 export interface CreateProductDto {
-    brand: string
-    name: string
+    brand?: string
+    name?: string
     description?: string
-    old_price: number;
-    new_price: number
-    image: string
-    available: number
+    old_price?: number
+    new_price?: number
+    image?: string
+    available?: number
     category_ids?: number[]
 }
 

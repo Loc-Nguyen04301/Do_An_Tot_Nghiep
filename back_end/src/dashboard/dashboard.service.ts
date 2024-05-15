@@ -26,6 +26,7 @@ export class DashboardService {
         p.id,
         p.name,
         p.brand,
+        p.old_price,
         p.new_price,
         p.image,
         SUM(i.quantity) AS total_quantity_sold

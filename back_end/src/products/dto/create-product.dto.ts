@@ -9,7 +9,7 @@ export class CreateProductDto {
     @IsString()
     name: string
 
-    @IsOptional()
+    @IsNotEmpty()
     @IsString()
     description?: string
 

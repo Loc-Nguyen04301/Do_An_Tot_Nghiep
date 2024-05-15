@@ -145,17 +145,19 @@ export class ProductsService {
   }
 
   async update(id: number, updateProductDto: UpdateProductDto) {
-    const { category_ids, name, description, image, new_price, old_price, available } = updateProductDto
-
+    const { category_ids, name, brand, description, image, new_price, old_price, available } = updateProductDto
+    
     await this.prisma.categoriesOnProducts.deleteMany({ where: { product_id: id } })
 
     const categoryCreates = category_ids.map(category_id => ({
       category: { connect: { id: category_id } }
     }))
+
     const product = await this.prisma.product.update({
       where: { id: id },
       data: {
         name,
+        brand,
         description,
         image,
         new_price,

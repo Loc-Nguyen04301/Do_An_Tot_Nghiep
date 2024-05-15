@@ -129,8 +129,8 @@ const Inventory = () => {
             </Helmet>
             <Typography.Title level={4}>Kho hàng</Typography.Title>
             <div className='mb-4 flex justify-end'>
-                <Button icon={<EditOutlined />} onClick={handleCreateProduct}>
-                    Tạo sản phẩm
+                <Button type='primary' icon={<EditOutlined />} onClick={handleCreateProduct}>
+                    Thêm mới sản phẩm
                 </Button>
             </div>
             <Space direction="horizontal" className='w-full justify-center !block'>

@@ -100,7 +100,7 @@ const CreateProduct = () => {
                 <title>Tạo sản phẩm</title>
                 <meta name='description' content='Beginner friendly page for learning React Helmet.' />
             </Helmet>
-            <Typography.Title level={3} className='text-center'>Tạo mới sản phẩm</Typography.Title>
+            <Typography.Title level={3} className='text-center'>Thêm mới sản phẩm</Typography.Title>
             <Typography.Title level={4}>
                 <ArrowLeftOutlined className='cursor-pointer hover:text-main-orange-color' onClick={() => navigate(-1)} />
             </Typography.Title>

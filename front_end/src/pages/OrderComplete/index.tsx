@@ -162,7 +162,6 @@ const OrderComplete = () => {
                             </ul>
                         }
                     </div>
-
                     {
                         bill &&
                         <div className='max-md:col-span-12 col-span-5'>

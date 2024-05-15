@@ -13,6 +13,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import type { GetProp } from 'antd';
 import ProductService from '@/services/ProductService';
+import { RoutePath } from '@/routes';
+import { Helmet } from 'react-helmet-async';
 
 import "../UpdateProduct/UpdateProduct.scss"
 
@@ -30,6 +32,7 @@ const CreateProduct = () => {
     const [selectedImage, setSelectedImage] = useState<File>();
     const [categoryList, setCategoryList] = useState<ICategory[]>([])
     const [selectedCategories, setSelectedCategories] = useState<number[]>()
+    const [disabled, setDisabled] = useState(false)
 
     const { register, handleSubmit, formState: { errors }, watch, getValues } = useForm({
         resolver: yupResolver(schema),
@@ -82,6 +85,10 @@ const CreateProduct = () => {
         try {
             const res = await ProductService.createProduct(newData)
             dispatchAlert({ success: res.data.message })
+            setDisabled(true)
+            setTimeout(() => {
+                navigate(RoutePath.Inventory)
+            }, 2000)
         } catch (error: any) {
             dispatchAlert({ errors: error.message })
         }
@@ -89,6 +96,10 @@ const CreateProduct = () => {
 
     return (
         <>
+            <Helmet>
+                <title>Tạo sản phẩm</title>
+                <meta name='description' content='Beginner friendly page for learning React Helmet.' />
+            </Helmet>
             <Typography.Title level={3} className='text-center'>Tạo mới sản phẩm</Typography.Title>
             <Typography.Title level={4}>
                 <ArrowLeftOutlined className='cursor-pointer hover:text-main-orange-color' onClick={() => navigate(-1)} />
@@ -163,9 +174,12 @@ const CreateProduct = () => {
                         </Row>
                     </Checkbox.Group>
                 </div>
-                <Button type="primary" htmlType="submit">
-                    Submit
-                </Button>
+                {
+                    !disabled &&
+                    <Button type="primary" htmlType="submit">
+                        Submit
+                    </Button>
+                }
             </form>
         </>
     )

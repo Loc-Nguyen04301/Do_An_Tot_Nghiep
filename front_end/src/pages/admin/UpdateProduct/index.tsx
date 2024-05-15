@@ -34,6 +34,7 @@ const UpdateProduct = () => {
     const [categoryList, setCategoryList] = useState<ICategory[]>([])
     const [selectedImage, setSelectedImage] = useState<File>();
     const [selectedCategories, setSelectedCategories] = useState<number[]>()
+    const [disabled, setDisabled] = useState(false)
     const products = useAppSelector(state => state.product)
 
     const { register, handleSubmit, formState: { errors }, watch, getValues } = useForm({
@@ -116,9 +117,12 @@ const UpdateProduct = () => {
             }
             const newData = { ...data, image: image ? image : undefined, category_ids: selectedCategories } as UpdateProductDto
             try {
-                console.log({ newData })
                 const res = await ProductService.updateProduct(selectedProduct.id, newData)
                 dispatchAlert({ success: res.data.message })
+                setDisabled(true)
+                setTimeout(() => {
+                    window.location.reload()
+                }, 2000)
             } catch (error: any) {
                 console.log(error)
                 dispatchAlert({ errors: error.message[0] })
@@ -218,9 +222,12 @@ const UpdateProduct = () => {
                         </Row>
                     </Checkbox.Group>
                 </div>
-                <Button type="primary" htmlType="submit">
-                    Submit
-                </Button>
+                {
+                    !disabled &&
+                    <Button type="primary" htmlType="submit">
+                        Submit
+                    </Button>
+                }
             </form >
         </>
     )

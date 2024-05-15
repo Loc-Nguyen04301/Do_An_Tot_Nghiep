@@ -61,27 +61,45 @@ const Router: React.FC = () => {
       children: [
         {
           path: RoutePath.DashBoard,
-          element: <DashBoard />
+          element:
+            <AuthGuard>
+              <DashBoard />
+            </AuthGuard>
         },
         {
           path: `${RoutePath.UpdateProduct}/:id`,
-          element: <UpdateProduct />
+          element:
+            <AuthGuard>
+              <UpdateProduct />
+            </AuthGuard>
         },
         {
           path: `${RoutePath.CreateProduct}`,
-          element: <CreateProduct />
+          element:
+            <AuthGuard>
+              <CreateProduct />
+            </AuthGuard>
         },
         {
           path: RoutePath.Inventory,
-          element: <Inventory />
+          element:
+            <AuthGuard>
+              <Inventory />
+            </AuthGuard>
         },
         {
           path: RoutePath.OrderAdmin,
-          element: <OrderAdmin />
+          element:
+            <AuthGuard>
+              <OrderAdmin />
+            </AuthGuard>
         },
         {
           path: RoutePath.Customer,
-          element: <Customer />
+          element:
+            <AuthGuard>
+              <Customer />
+            </AuthGuard>
         },
       ]
     },
@@ -117,7 +135,9 @@ const Router: React.FC = () => {
         {
           path: RoutePath.Purchase,
           element:
-            <Purchase />
+            <AuthGuard>
+              <Purchase />
+            </AuthGuard>
         },
         {
           path: RoutePath.AboutUs,

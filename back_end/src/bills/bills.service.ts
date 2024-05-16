@@ -201,7 +201,10 @@ export class BillsService {
     const bills = await this.prisma.bill.findMany({
       where: {
         ...whereClause,
-      }
+      },
+      orderBy: {
+        created_at: "desc"
+      },
     })
 
     return { bills }

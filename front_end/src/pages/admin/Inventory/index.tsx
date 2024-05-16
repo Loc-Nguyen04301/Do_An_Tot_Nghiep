@@ -98,26 +98,10 @@ const Inventory = () => {
             key: "category",
             render: (_, record) =>
                 <Space direction='vertical' >
-                    {
-                        record.categories.map((category) => {
-                            switch (category.category.name) {
-                                case categoryList[0].path:
-                                    return <strong className='truncate'>{categoryList[0].title}</strong>;
-                                case categoryList[1].path:
-                                    return <strong className='truncate'>{categoryList[1].title}</strong>;
-                                case categoryList[2].path:
-                                    return <strong className='truncate'>{categoryList[2].title}</strong>;
-                                case categoryList[3].path:
-                                    return <strong className='truncate'>{categoryList[3].title}</strong>;
-                                case categoryList[4].path:
-                                    return <strong className='truncate'>{categoryList[4].title}</strong>;
-                                case categoryList[5].path:
-                                    return <strong className='truncate'>{categoryList[5].title}</strong>;
-                                default:
-                                    return <></>
-                            }
-                        })
-                    }
+                    {record.categories.map((category) => {
+                        const foundCategory = categoryList.find(item => item.path === category.category.name);
+                        return foundCategory ? <strong className='truncate'>{foundCategory.title}</strong> : null;
+                    })}
                 </Space>
         },
         {

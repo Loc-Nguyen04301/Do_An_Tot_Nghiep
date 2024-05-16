@@ -261,7 +261,7 @@ const DetailProduct = () => {
                         <div className={`px-[10px] containerProduct`}>
                           <div className="relative">
                             {
-                              product.available !== 0 ? <Tag color="green">Còn hàng</Tag> : <Tag color="red">Hết hàng</Tag>
+                              product.available === 0 && <Tag color="red" className="absolute top-0 left-0">Hết hàng</Tag>
                             }
                             {
                               product.old_price != 0 &&
@@ -275,7 +275,7 @@ const DetailProduct = () => {
                             >
                               <img
                                 src={product.image}
-                                width={274}
+                                alt={product.name}
                               />
                             </Link>
                             <div className={`hidden absolute bottom-0 w-full bg-main-orange-color text-center py-1 duration-500 showView`}>

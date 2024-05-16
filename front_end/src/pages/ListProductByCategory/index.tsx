@@ -50,7 +50,7 @@ const ListProductByCategory = () => {
             <div className={`px-[10px] containerProduct`} key={product.id}>
               <div className="relative">
                 {
-                  product.available !== 0 ? <Tag color="green">Còn hàng</Tag> : <Tag color="red">Hết hàng</Tag>
+                  product.available === 0 && <Tag color="red" className="absolute top-0 left-0">Hết hàng</Tag>
                 }
                 {
                   product.old_price != 0 &&
@@ -64,7 +64,7 @@ const ListProductByCategory = () => {
                 >
                   <img
                     src={product.image}
-                    width={274}
+                    alt={product.name}
                   />
                 </Link>
                 <div

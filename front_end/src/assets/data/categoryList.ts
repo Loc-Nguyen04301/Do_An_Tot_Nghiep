@@ -5,6 +5,7 @@ const categoryList = [
   { path: "replacement", title: "WHEY & MEAL REPLACEMENT" },
   { path: "fashion", title: "Thời trang GYM" },
   { path: "gym-equipment", title: "Thiết bị phòng GYM" },
+  { path: "fitness-gear", title: "Phụ kiện GYM" },
 ]
 
 export default categoryList

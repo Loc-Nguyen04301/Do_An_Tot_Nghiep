@@ -47,7 +47,7 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                         <div className={`px-[10px] containerProduct`} key={product.id}>
                             <div className="relative">
                                 {
-                                    product.available !== 0 ? <Tag color="green">Còn hàng</Tag> : <Tag color="red">Hết hàng</Tag>
+                                    product.available === 0 && <Tag color="red" className="absolute top-0 left-0">Hết hàng</Tag>
                                 }
                                 {
                                     product.old_price != 0 &&
@@ -59,11 +59,10 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                                     to={product.available !== 0 ? `${RoutePath.DetailProduct}/${product.id}` : ""}
                                     className="text-center block mx-auto"
                                 >
-                                    <div className='h-[200px]'>
-                                        <img
-                                            src={product.image}
-                                        />
-                                    </div>
+                                    <img
+                                        src={product.image}
+                                        alt={product.name}
+                                    />
                                 </Link>
                                 <div
                                     className={`hidden absolute bottom-0 w-full bg-main-orange-color text-center py-1 opacity-95 duration-500 showView`}
@@ -111,7 +110,7 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                                 <div className={`px-[10px] containerProduct`}>
                                     <div className="relative">
                                         {
-                                            product.available !== 0 ? <Tag color="green">Còn hàng</Tag> : <Tag color="red">Hết hàng</Tag>
+                                            product.available === 0 && <Tag color="red" className="absolute top-0 left-0">Hết hàng</Tag>
                                         }
                                         {
                                             product.old_price != 0 &&
@@ -125,7 +124,7 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                                         >
                                             <img
                                                 src={product.image}
-                                                width={274}
+                                                alt={product.name}
                                             />
                                         </Link>
                                         <div

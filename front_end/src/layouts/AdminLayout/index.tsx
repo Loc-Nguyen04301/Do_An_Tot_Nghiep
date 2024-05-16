@@ -38,7 +38,7 @@ const items: MenuItem[] = [
     getItem('Dashboard', RoutePath.DashBoard, <AppstoreOutlined />),
     getItem('Kho hàng', RoutePath.Inventory, <ShopOutlined />),
     getItem('Đơn hàng', RoutePath.OrderAdmin, <ShoppingCartOutlined />),
-    getItem('User', RoutePath.Customer, <UserOutlined />),
+    getItem('Thành viên', RoutePath.Customer, <UserOutlined />),
 ];
 interface AdminLayouttProps {
     children?: React.ReactElement

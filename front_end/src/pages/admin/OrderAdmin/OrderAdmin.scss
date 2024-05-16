@@ -1,3 +1,11 @@
 :where(.css-dev-only-do-not-override-amq5gd).ant-btn-primary {
   background-color: #1677ff !important;
 }
+.ant-segmented {
+  background-color: white;
+}
+
+.ant-segmented-item.ant-segmented-item-selected {
+  background-color: #1677ff !important;
+  color: white !important;
+}

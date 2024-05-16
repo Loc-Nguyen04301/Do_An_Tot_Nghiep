@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, ConfigProvider, Input, InputRef, Pagination, PaginationProps, Space, Table, TableColumnType, TableProps, Tag, Typography } from 'antd';
+import { Button, ConfigProvider, Input, InputRef, Pagination, PaginationProps, Segmented, Space, Table, TableColumnType, TableProps, Tag, Typography } from 'antd';
 import BillService from '@/services/BillService';
 import { useAlertDispatch } from '@/contexts/AlertContext';
 import { CheckOutlined, CloseOutlined, SearchOutlined } from '@ant-design/icons';
@@ -15,6 +15,7 @@ import { convertNumbertoMoney } from '@/utils';
 import "./OrderAdmin.scss"
 import { FilterDropdownProps } from 'antd/es/table/interface';
 import Highlighter from 'react-highlight-words';
+import { SegmentedValue } from 'antd/es/segmented';
 
 var DATETIME_FORMAT = 'dd-MM-yyyy HH:mm:ss'
 interface IBill {
@@ -43,11 +44,67 @@ interface IItem {
 
 type DataIndex = keyof IBill;
 
+enum PurchaseStatus {
+    ALL = "Tất cả",
+    WAIT_FOR_PAY = "Chờ thanh toán",
+    WAIT_FOR_DELIVERY = "Chờ giao hàng",
+    SUCCESS = "Hoàn thành",
+    CANCELLED = "Đã hủy",
+}
+
+const purchaseStatusList = Object.values(PurchaseStatus);
+
 const OrderAdmin = () => {
+    const [purchaseStatus, setPurchaseStatus] = useState<string>(PurchaseStatus.ALL)
     const [listBill, setListBill] = useState<IBill[]>([])
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const searchInput = useRef<InputRef>(null);
+
+    const dispatchAlert = useAlertDispatch()
+
+    const fetchBill = async (purchaseStatus: string) => {
+        dispatchAlert({ loading: true })
+        try {
+            let res
+            switch (purchaseStatus) {
+                case PurchaseStatus.ALL:
+                    res = await BillService.getBillAdmin({})
+                    setListBill(res.data.data.bills)
+                    dispatchAlert({ loading: false })
+                    break;
+                case PurchaseStatus.WAIT_FOR_PAY:
+                    res = await BillService.getBillAdmin({ params: { payment_status: false, order_status: OrderStatus.PROCESSING } })
+                    setListBill(res.data.data.bills)
+                    dispatchAlert({ loading: false })
+                    break;
+                case PurchaseStatus.WAIT_FOR_DELIVERY:
+                    res = await BillService.getBillAdmin({ params: { payment_status: true, order_status: OrderStatus.PROCESSING } })
+                    setListBill(res.data.data.bills)
+                    dispatchAlert({ loading: false })
+                    break;
+                case PurchaseStatus.SUCCESS:
+                    res = await BillService.getBillAdmin({ params: { payment_status: true, order_status: OrderStatus.SUCCESS } })
+                    setListBill(res.data.data.bills)
+                    dispatchAlert({ loading: false })
+                    break;
+                case PurchaseStatus.CANCELLED:
+                    res = await BillService.getBillAdmin({ params: { order_status: OrderStatus.CANCELLED } })
+                    setListBill(res.data.data.bills)
+                    dispatchAlert({ loading: false })
+                    break;
+                default:
+                    break;
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        fetchBill(purchaseStatus)
+    }, [purchaseStatus])
+
 
     const handleSearch = (
         selectedKeys: string[],
@@ -142,26 +199,9 @@ const OrderAdmin = () => {
             ),
     });
 
-    const dispatchAlert = useAlertDispatch()
-
-    const fetchBill = async () => {
-        dispatchAlert({ loading: true })
-        try {
-            const res = await BillService.getBillAdmin({})
-            setListBill(res.data.data.bills)
-            dispatchAlert({ loading: false })
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    useEffect(() => {
-        fetchBill()
-    }, [])
-
-    const onChange: TableProps<IBill>['onChange'] = (pagination, filters, sorter, extra) => {
-        console.log({ pagination, filters, sorter, extra });
-    };
+    // const onChange: TableProps<IBill>['onChange'] = (pagination, filters, sorter, extra) => {
+    //     console.log({ pagination, filters, sorter, extra });
+    // };
 
     const columns: TableProps<IBill>['columns'] = [
         {
@@ -281,12 +321,13 @@ const OrderAdmin = () => {
                 <meta name='description' content='Beginner friendly page for learning React Helmet.' />
             </Helmet>
             <Space size={20} direction="vertical">
+                <Segmented options={purchaseStatusList} value={purchaseStatus} onChange={(value: SegmentedValue) => setPurchaseStatus(value as string)} />
                 <Typography.Title level={4}>Danh sách đơn hàng</Typography.Title>
                 <Table
                     dataSource={listBill}
                     columns={columns}
                     pagination={{ position: ["bottomCenter"] }}
-                    onChange={onChange}
+                    // onChange={onChange}
                 ></Table>
             </Space>
         </>

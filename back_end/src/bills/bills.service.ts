@@ -146,4 +146,64 @@ export class BillsService {
 
     return { bills: bills, metadata: { page_index, page_size, total_pages, records } }
   }
+
+  async findAllAdmin({
+    customer_name,
+    address,
+    phone_number,
+    order_status,
+    payment_status,
+    return_status,
+  }: BillParams) {
+    customer_name = customer_name || null
+    address = address || null
+    phone_number = phone_number || null
+    order_status = order_status || null
+    payment_status = payment_status
+    return_status = return_status || ReturnStatus.NONE
+
+    let whereClause = {}
+
+    if (customer_name) {
+      whereClause = {
+        ...whereClause, customer_name: {
+          contains: customer_name,
+          mode: "insensitive"
+        }
+      };
+    }
+    if (address) {
+      whereClause = {
+        ...whereClause, address: {
+          contains: address,
+          mode: "insensitive"
+        }
+      };
+    }
+    if (phone_number) {
+      whereClause = {
+        ...whereClause, phone_number: {
+          contains: phone_number,
+          mode: "insensitive"
+        }
+      };
+    }
+    if (order_status) {
+      whereClause = { ...whereClause, order_status };
+    }
+    if (typeof (payment_status) === 'boolean') {
+      whereClause = { ...whereClause, payment_status };
+    }
+    if (return_status) {
+      whereClause = { ...whereClause, return_status };
+    }
+
+    const bills = await this.prisma.bill.findMany({
+      where: {
+        ...whereClause,
+      }
+    })
+
+    return { bills }
+  }
 }

@@ -21,6 +21,38 @@ export class BillsController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(new SuccessInterceptor())
+  @Get("findAllAdmin")
+  findAllAdmin(
+    @Query('customer_name') customer_name: string,
+    @Query('address') address: string,
+    @Query('phone_number') phone_number: string,
+    @Query('order_status') order_status: string,
+    @Query('payment_status') payment_status: string,
+    @Query('return_status') return_status: string,
+  ) {
+    const parsedOrderStatus = order_status as OrderStatus
+    let parsedPaymentStatus: boolean = undefined
+    if (payment_status === "true") {
+      parsedPaymentStatus = true
+    }
+    else if (payment_status === "false") {
+      parsedPaymentStatus = false
+    }
+    const parsedReturnStatus = return_status as ReturnStatus
+
+    return this.billsService.findAllAdmin({
+      customer_name: customer_name,
+      address: address,
+      phone_number: phone_number,
+      order_status: parsedOrderStatus,
+      payment_status: parsedPaymentStatus,
+      return_status: parsedReturnStatus,
+    });
+  }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor())
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.billsService.findOne(id);

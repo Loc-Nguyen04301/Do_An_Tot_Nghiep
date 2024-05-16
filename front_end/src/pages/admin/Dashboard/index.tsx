@@ -226,11 +226,6 @@ const DashboardChart = () => {
                         data: data,
                         backgroundColor: "green",
                     },
-                    // {
-                    //     label: "HelloWord",
-                    //     data: data,
-                    //     backgroundColor: "red",
-                    // },
                 ],
             };
 

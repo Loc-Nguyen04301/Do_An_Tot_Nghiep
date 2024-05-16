@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { ConfigProvider, Pagination, PaginationProps, Space, Table, TableProps, Tag, Typography } from 'antd';
+import React, { useEffect, useRef, useState } from 'react'
+import { Button, ConfigProvider, Input, InputRef, Pagination, PaginationProps, Space, Table, TableColumnType, TableProps, Tag, Typography } from 'antd';
 import BillService from '@/services/BillService';
 import { useAlertDispatch } from '@/contexts/AlertContext';
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import { CheckOutlined, CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import { format } from "date-fns"
 import { Helmet } from 'react-helmet-async';
 import { OrderStatus, PaymentMethod } from '@/types';
@@ -12,6 +12,9 @@ import {
     QrcodeOutlined,
 } from '@ant-design/icons';
 import { convertNumbertoMoney } from '@/utils';
+import "./OrderAdmin.scss"
+import { FilterDropdownProps } from 'antd/es/table/interface';
+import Highlighter from 'react-highlight-words';
 
 var DATETIME_FORMAT = 'dd-MM-yyyy HH:mm:ss'
 interface IBill {
@@ -38,24 +41,114 @@ interface IItem {
     total_price: number;
 }
 
+type DataIndex = keyof IBill;
+
 const OrderAdmin = () => {
     const [listBill, setListBill] = useState<IBill[]>([])
-    const [current, setCurrent] = useState(1)
-    const [pageSize, setPageSize] = useState(10)
-    const [records, setRecords] = useState(0)
+    const [searchText, setSearchText] = useState('');
+    const [searchedColumn, setSearchedColumn] = useState('');
+    const searchInput = useRef<InputRef>(null);
+
+    const handleSearch = (
+        selectedKeys: string[],
+        confirm: FilterDropdownProps['confirm'],
+        dataIndex: DataIndex,
+    ) => {
+        confirm();
+        setSearchText(selectedKeys[0]);
+        setSearchedColumn(dataIndex);
+    };
+
+    const handleReset = (clearFilters: () => void) => {
+        clearFilters();
+        setSearchText('');
+    };
+
+    const getColumnSearchProps = (dataIndex: DataIndex): TableColumnType<IBill> => ({
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+            <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
+                <Input
+                    ref={searchInput}
+                    placeholder={`Search ${dataIndex}`}
+                    value={selectedKeys[0]}
+                    onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                    onPressEnter={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
+                    style={{ marginBottom: 8, display: 'block' }}
+                />
+                <Space>
+                    <Button
+                        type="primary"
+                        onClick={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
+                        icon={<SearchOutlined />}
+                        size="small"
+                        style={{ width: 90 }}
+                    >
+                        Search
+                    </Button>
+                    <Button
+                        onClick={() => clearFilters && handleReset(clearFilters)}
+                        size="small"
+                        style={{ width: 90 }}
+                    >
+                        Reset
+                    </Button>
+                    <Button
+                        type="link"
+                        size="small"
+                        onClick={() => {
+                            confirm({ closeDropdown: false });
+                            setSearchText((selectedKeys as string[])[0]);
+                            setSearchedColumn(dataIndex);
+                        }}
+                    >
+                        Filter
+                    </Button>
+                    <Button
+                        type="link"
+                        size="small"
+                        onClick={() => {
+                            close();
+                        }}
+                    >
+                        close
+                    </Button>
+                </Space>
+            </div>
+        ),
+        filterIcon: (filtered: boolean) => (
+            <SearchOutlined style={{ color: filtered ? '#1677ff' : undefined }} />
+        ),
+        onFilter: (value, record) =>
+            record[dataIndex]
+                .toString()
+                .toLowerCase()
+                .includes((value as string).toLowerCase()),
+        onFilterDropdownOpenChange: (visible) => {
+            if (visible) {
+                setTimeout(() => searchInput.current?.select(), 100);
+            }
+        },
+        render: (text) =>
+            searchedColumn === dataIndex ? (
+                <Highlighter
+                    highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+                    searchWords={[searchText]}
+                    autoEscape
+                    textToHighlight={text ? text.toString() : ''}
+                    className='truncate'
+                />
+            ) : (
+                <span className='truncate'>{text}</span>
+            ),
+    });
 
     const dispatchAlert = useAlertDispatch()
 
-    const onChangePage: PaginationProps['onChange'] = (page) => {
-        setCurrent(page);
-    };
-
-    const fetchBill = async (current: number, pageSize: number) => {
+    const fetchBill = async () => {
         dispatchAlert({ loading: true })
         try {
-            const res = await BillService.getBill({ params: { page_index: current - 1, page_size: pageSize } })
+            const res = await BillService.getBillAdmin({})
             setListBill(res.data.data.bills)
-            setRecords(res.data.data.metadata.records)
             dispatchAlert({ loading: false })
         } catch (error) {
             console.log(error)
@@ -63,35 +156,59 @@ const OrderAdmin = () => {
     }
 
     useEffect(() => {
-        fetchBill(current, pageSize)
-    }, [current, pageSize])
+        fetchBill()
+    }, [])
+
+    const onChange: TableProps<IBill>['onChange'] = (pagination, filters, sorter, extra) => {
+        console.log({ pagination, filters, sorter, extra });
+    };
 
     const columns: TableProps<IBill>['columns'] = [
         {
             title: "Mã đơn hàng",
             key: "id",
+            dataIndex: "id",
             sorter: (a, b) => a.id - b.id,
             render: (_, record) => record.id
         },
         {
             title: "Tên khách hàng",
             key: "customer_name",
-            render: (_, record) => record.customer_name
+            dataIndex: "customer_name",
+            width: '30%',
+            ...getColumnSearchProps('customer_name'),
         },
         {
             title: "Địa chỉ giao hàng",
             key: "address",
-            render: (_, record) => record.address
+            dataIndex: "address",
+            ...getColumnSearchProps('address'),
         },
         {
             title: "Số điện thoại",
             key: "phone_number",
-            render: (_, record) => record.phone_number
+            dataIndex: "phone_number",
+            ...getColumnSearchProps('phone_number'),
         },
         {
             title: "Trạng thái đơn hàng",
             key: "order_status",
-            sorter: (a, b) => a.order_status.localeCompare(b.order_status),
+            dataIndex: "order_status",
+            filters: [
+                {
+                    text: 'Đã Hủy',
+                    value: `${OrderStatus.CANCELLED}`,
+                },
+                {
+                    text: 'Đang xử lý',
+                    value: `${OrderStatus.PROCESSING}`,
+                },
+                {
+                    text: 'Hoàn thành',
+                    value: `${OrderStatus.SUCCESS}`,
+                },
+            ],
+            onFilter: (value, record) => record.order_status.indexOf(value as string) === 0,
             render: (_, record) =>
                 <>
                     {record.order_status === OrderStatus.CANCELLED && <Tag color={"error"}>Đã Hủy</Tag>}
@@ -117,7 +234,22 @@ const OrderAdmin = () => {
         {
             title: "Phương thức thanh toán",
             key: "payment_method",
-            sorter: (a, b) => a.payment_method.localeCompare(b.payment_method),
+            dataIndex: "payment_method",
+            filters: [
+                {
+                    text: 'Ship COD',
+                    value: `${PaymentMethod.SHIPCOD}`,
+                },
+                {
+                    text: 'Chuyển khoản',
+                    value: `${PaymentMethod.BANK_TRANSFER}`,
+                },
+                {
+                    text: 'Thanh toán cổng VNPay',
+                    value: `${PaymentMethod.VNPAY}`,
+                },
+            ],
+            onFilter: (value, record) => record.payment_method.indexOf(value as string) === 0,
             render: (_, record) =>
                 <>
                     {record.payment_method === PaymentMethod.SHIPCOD && <Tag icon={<CarOutlined />} color={"error"}>Ship COD</Tag>}
@@ -128,15 +260,17 @@ const OrderAdmin = () => {
         {
             title: "Tổng tiền",
             key: "total_amount",
+            dataIndex: "total_amount",
             sorter: (a, b) => a.total_amount - b.total_amount,
             render: (_, record) => <span className='font-medium'>{convertNumbertoMoney(record.total_amount)}</span>
         },
         {
             title: "Ngày mua",
             key: "created_at",
-            render: (_, record) => {
-                return format(record.created_at, DATETIME_FORMAT)
-            },
+            dataIndex: "created_at",
+            sorter: (a, b) => new Date(a.created_at) - new Date(b.created_at),
+            render: (_, record) => <span className='truncate'> {format(record.created_at, DATETIME_FORMAT)}</span>
+
         },
     ]
 
@@ -151,9 +285,9 @@ const OrderAdmin = () => {
                 <Table
                     dataSource={listBill}
                     columns={columns}
-                    pagination={false}
+                    pagination={{ position: ["bottomCenter"] }}
+                    onChange={onChange}
                 ></Table>
-                <Pagination current={current} pageSize={pageSize} total={records} onChange={onChangePage} className='text-center mt-5' />
             </Space>
         </>
     )

@@ -3,6 +3,9 @@ import { CreateBillDto } from "@/pages/Checkout";
 import { AxiosRequestConfig } from "axios";
 
 interface BillParams {
+    customer_name?: string,
+    address?: string,
+    phone_number?: string,
     user_id?: number,
     page_index?: number
     page_size?: number
@@ -23,6 +26,10 @@ const getBill = ({ params }: { params?: BillParams }) => {
     return http.get(`/bills`, { params } as AxiosRequestConfig)
 }
 
-const BillService = { createBill, getBillDetailById, getBill }
+const getBillAdmin = ({ params }: { params?: BillParams }) => {
+    return http.get(`/bills/findAllAdmin`, { params } as AxiosRequestConfig)
+}
+
+const BillService = { createBill, getBillDetailById, getBill, getBillAdmin }
 
 export default BillService

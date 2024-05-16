@@ -11,10 +11,13 @@ export enum SortBy {
 }
 
 export type BillParams = {
-    user_id: number,
-    order_status: OrderStatus,
-    payment_status: boolean,
-    return_status: ReturnStatus,
-    page_index: number,
-    page_size: number
+    customer_name?: string,
+    address?: string,
+    phone_number?: string,
+    user_id?: number,
+    order_status?: OrderStatus,
+    payment_status?: boolean,
+    return_status?: ReturnStatus,
+    page_index?: number,
+    page_size?: number
 }

@@ -119,7 +119,7 @@ const OrderAdmin = () => {
             <SearchOutlined style={{ color: filtered ? '#1677ff' : undefined }} />
         ),
         onFilter: (value, record) =>
-            record[dataIndex]
+            (record[dataIndex] ?? '')
                 .toString()
                 .toLowerCase()
                 .includes((value as string).toLowerCase()),
@@ -268,7 +268,7 @@ const OrderAdmin = () => {
             title: "Ngày mua",
             key: "created_at",
             dataIndex: "created_at",
-            sorter: (a, b) => new Date(a.created_at) - new Date(b.created_at),
+            sorter: (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
             render: (_, record) => <span className='truncate'> {format(record.created_at, DATETIME_FORMAT)}</span>
 
         },

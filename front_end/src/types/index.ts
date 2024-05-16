@@ -46,6 +46,11 @@ export enum PaymentMethod {
     VNPAY = "VNPAY"
 }
 
+export enum OrderStatus {
+    PROCESSING = 'PROCESSING',
+    SUCCESS = 'SUCCESS',
+    CANCELLED = 'CANCELLED'
+};
 export interface ReviewInterface {
     description: string;
     star: number;

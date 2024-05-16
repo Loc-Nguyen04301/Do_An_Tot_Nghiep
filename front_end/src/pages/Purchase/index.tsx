@@ -10,6 +10,7 @@ import { convertNumbertoMoney } from '@/utils';
 import { format } from "date-fns"
 import { ConfigProvider, Pagination, Tag } from 'antd';
 import type { PaginationProps } from 'antd';
+import { OrderStatus } from '@/types';
 
 var DATETIME_FORMAT = 'dd/MM/yyyy HH:mm:ss'
 
@@ -21,12 +22,6 @@ enum PurchaseStatus {
     CANCELLED = "Đã hủy",
     RETURN = "Trả hàng/Hoàn tiền"
 }
-
-enum OrderStatus {
-    PROCESSING = 'PROCESSING',
-    SUCCESS = 'SUCCESS',
-    CANCELLED = 'CANCELLED'
-};
 
 interface IBill {
     id: number;

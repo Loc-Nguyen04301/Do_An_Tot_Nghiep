@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { ConfigProvider, Pagination, PaginationProps, Space, Table, TableProps, Typography } from 'antd';
+import { ConfigProvider, Pagination, PaginationProps, Space, Table, TableProps, Tag, Typography } from 'antd';
 import BillService from '@/services/BillService';
 import { useAlertDispatch } from '@/contexts/AlertContext';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import { format } from "date-fns"
+import { Helmet } from 'react-helmet-async';
+import { OrderStatus, PaymentMethod } from '@/types';
+import {
+    CarOutlined,
+    CreditCardOutlined,
+    QrcodeOutlined,
+} from '@ant-design/icons';
 
+var DATETIME_FORMAT = 'dd-MM-yyyy HH:mm:ss'
 interface IBill {
     id: number;
     customer_name: string;
@@ -12,10 +21,10 @@ interface IBill {
     email: string;
     note: string;
     user_id: number | null;
-    order_status: string;
+    order_status: OrderStatus;
     payment_status: boolean;
     return_status: string;
-    payment_method: string;
+    payment_method: PaymentMethod;
     total_amount: number;
     created_at: string;
     update_at: string;
@@ -81,52 +90,65 @@ const OrderAdmin = () => {
         {
             title: "Trạng thái đơn hàng",
             key: "order_status",
-            render: (_, record) => record.order_status,
+            sorter: (a, b) => a.order_status.localeCompare(b.order_status),
+            render: (_, record) =>
+                <>
+                    {record.order_status === OrderStatus.CANCELLED && <Tag color={"error"}>Đã Hủy</Tag>}
+                    {record.order_status === OrderStatus.PROCESSING && <Tag color={"processing"}>Đang xử lý</Tag>}
+                    {record.order_status === OrderStatus.SUCCESS && <Tag color={"success"}>Hoàn thành</Tag>}
+                </>
         },
         {
             title: "Trạng thái thanh toán",
             key: "payment_status",
-            render: (_, record) => <>
-                {
-                    record.payment_status === true
-                        ?
-                        <CheckOutlined className="text-green-500" />
-                        :
-                        <CloseOutlined className="text-red-500" />
-                }
-            </>
+            sorter: (a, b) => Number(a.payment_status) - Number(b.payment_status),
+            render: (_, record) =>
+                <>
+                    {
+                        record.payment_status === true
+                            ?
+                            <CheckOutlined className="text-green-500" />
+                            :
+                            <CloseOutlined className="text-red-500" />
+                    }
+                </>
         },
         {
             title: "Phương thức thanh toán",
-            render: (_, record) => {
-                return record.payment_method
-            },
+            key: "payment_method",
+            sorter: (a, b) => a.payment_method.localeCompare(b.payment_method),
+            render: (_, record) =>
+                <>
+                    {record.payment_method === PaymentMethod.SHIPCOD && <Tag icon={<CarOutlined />} color={"error"}>Ship COD</Tag>}
+                    {record.payment_method === PaymentMethod.BANK_TRANSFER && <Tag icon={<QrcodeOutlined />} color={"blue"}>Chuyển khoản</Tag>}
+                    {record.payment_method === PaymentMethod.VNPAY && <Tag icon={<CreditCardOutlined />}>Thanh toán cổng VNPay</Tag>}
+                </>
         },
         {
             title: "Ngày mua",
-            key: "brand",
+            key: "created_at",
             render: (_, record) => {
-                return record.created_at
+                return format(record.created_at, DATETIME_FORMAT)
             },
         },
     ]
 
     return (
-        <Space size={20} direction="vertical">
-            <Typography.Title level={4}>Orders</Typography.Title>
-            <Table
-                dataSource={listBill}
-                columns={columns}
-            ></Table>
-            <ConfigProvider theme={{
-                token: {
-                    colorPrimary: "#F48220",
-                    colorBgTextHover: "#ffffff"
-                }
-            }}>
+        <>
+            <Helmet>
+                <title>Danh sách đơn hàng</title>
+                <meta name='description' content='Beginner friendly page for learning React Helmet.' />
+            </Helmet>
+            <Space size={20} direction="vertical">
+                <Typography.Title level={4}>Danh sách đơn hàng</Typography.Title>
+                <Table
+                    dataSource={listBill}
+                    columns={columns}
+                    pagination={false}
+                ></Table>
                 <Pagination current={current} pageSize={pageSize} total={records} onChange={onChangePage} className='text-center mt-5' />
-            </ConfigProvider>
-        </Space>
+            </Space>
+        </>
     )
 }
 

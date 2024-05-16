@@ -119,7 +119,7 @@ const Customer = () => {
     return (
         <>
             <Helmet>
-                <title>Customer</title>
+                <title>Khách hàng</title>
                 <meta name='description' content='Beginner friendly page for learning React Helmet.' />
             </Helmet>
             <Typography.Title level={4}>Customers</Typography.Title>

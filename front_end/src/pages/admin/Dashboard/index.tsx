@@ -84,7 +84,7 @@ const DashBoard = () => {
                                 }}
                             />
                         }
-                        title={"Orders"}
+                        title={"Đơn hàng"}
                         value={count.billCount}
                     />
                     <DashboardCard
@@ -99,7 +99,7 @@ const DashBoard = () => {
                                 }}
                             />
                         }
-                        title={"Inventory"}
+                        title={"Kho hàng"}
                         value={count.productCount}
                     />
                     <DashboardCard
@@ -114,7 +114,7 @@ const DashBoard = () => {
                                 }}
                             />
                         }
-                        title={"Customer"}
+                        title={"Khách hàng"}
                         value={count.userCount}
                     />
                     <DashboardCard
@@ -129,7 +129,7 @@ const DashBoard = () => {
                                 }}
                             />
                         }
-                        title={"Revenue"}
+                        title={"Tổng doanh thu"}
                         value={convertNumbertoMoney(count.revenueCount)}
                     />
                 </Space>

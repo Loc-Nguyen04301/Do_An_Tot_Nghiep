@@ -16,6 +16,7 @@ import { RoutePath } from '@/routes';
 import { Helmet } from 'react-helmet-async';
 import { CheckboxValueType } from 'antd/es/checkbox/Group';
 import "../UpdateProduct/UpdateProduct.scss"
+import categories from '@/assets/data/categoryList';
 
 
 const schema = yup
@@ -166,7 +167,12 @@ const CreateProduct = () => {
                                 categoryList && categoryList.map((category) =>
                                     <Col span={8} key={category.id}>
                                         <Checkbox value={category.id} style={{ lineHeight: '32px' }}>
-                                            {category.name}
+                                            {categories.map((cat) => {
+                                                if (cat.path === category.name) {
+                                                    return cat.title;
+                                                }
+                                                return null;
+                                            })}
                                         </Checkbox>
                                     </Col>
                                 )

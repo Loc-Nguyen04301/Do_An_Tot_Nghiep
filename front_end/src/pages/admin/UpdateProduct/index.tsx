@@ -16,6 +16,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { checkImage, imageUpload } from '@/utils';
 import ProductService from '@/services/ProductService';
 import { CheckboxValueType } from 'antd/es/checkbox/Group';
+import categories from '@/assets/data/categoryList';
+
 import "./UpdateProduct.scss"
 
 
@@ -213,7 +215,12 @@ const UpdateProduct = () => {
                                                 value={category.id}
                                                 style={{ lineHeight: '32px' }}
                                             >
-                                                {category.name}
+                                                {categories.map((cat) => {
+                                                    if (cat.path === category.name) {
+                                                        return cat.title;
+                                                    }
+                                                    return null;
+                                                })}
                                             </Checkbox>
                                         </Col>
                                     )

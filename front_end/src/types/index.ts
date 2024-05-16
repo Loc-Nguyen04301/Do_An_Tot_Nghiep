@@ -1,5 +1,3 @@
-import { string } from "yup";
-
 export interface LoginInterface {
     email: string;
     password: string;

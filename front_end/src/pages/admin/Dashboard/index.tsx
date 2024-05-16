@@ -114,7 +114,7 @@ const DashBoard = () => {
                                 }}
                             />
                         }
-                        title={"Khách hàng"}
+                        title={"Khách thành viên"}
                         value={count.userCount}
                     />
                     <DashboardCard
@@ -136,9 +136,9 @@ const DashBoard = () => {
                 <Space className='w-full justify-center !block'>
                     <RecentOrders listProductSoldOut={listProductSoldOut} />
                 </Space>
-                {/* <Space>
+                <Space>
                     <DashboardChart />
-                </Space> */}
+                </Space>
             </Space>
         </>
     )

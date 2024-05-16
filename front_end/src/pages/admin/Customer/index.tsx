@@ -49,7 +49,7 @@ const Customer = () => {
 
     const columns: TableProps<ICustomer>['columns'] = [
         {
-            title: "Photo",
+            title: "",
             key: "image",
             render: (_, record) => <Avatar src={record.avatar} />
         },

@@ -11,6 +11,7 @@ import {
     CreditCardOutlined,
     QrcodeOutlined,
 } from '@ant-design/icons';
+import { convertNumbertoMoney } from '@/utils';
 
 var DATETIME_FORMAT = 'dd-MM-yyyy HH:mm:ss'
 interface IBill {
@@ -123,6 +124,12 @@ const OrderAdmin = () => {
                     {record.payment_method === PaymentMethod.BANK_TRANSFER && <Tag icon={<QrcodeOutlined />} color={"blue"}>Chuyển khoản</Tag>}
                     {record.payment_method === PaymentMethod.VNPAY && <Tag icon={<CreditCardOutlined />}>Thanh toán cổng VNPay</Tag>}
                 </>
+        },
+        {
+            title: "Tổng tiền",
+            key: "total_amount",
+            sorter: (a, b) => a.total_amount - b.total_amount,
+            render: (_, record) => <span className='font-medium'>{convertNumbertoMoney(record.total_amount)}</span>
         },
         {
             title: "Ngày mua",

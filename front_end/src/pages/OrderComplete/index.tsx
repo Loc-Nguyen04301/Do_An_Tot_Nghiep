@@ -28,7 +28,7 @@ const OrderComplete = () => {
     const getBillDetail = async (id: string) => {
         try {
             if (id) {
-                const res = await BillService.getBillDetailById(id)
+                const res = await BillService.getBillDetailById(Number(id))
                 setBill(res.data.data)
             }
         } catch (error) {

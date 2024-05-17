@@ -89,7 +89,7 @@ const OrderAdmin = () => {
     }, [purchaseStatus])
 
     const handleUpdateBill = (id: number) => {
-        navigate(`${RoutePath.UpdateProduct}/${id}`)
+        navigate(`${RoutePath.UpdateBill}/${id}`)
     }
 
     const handleSearch = (

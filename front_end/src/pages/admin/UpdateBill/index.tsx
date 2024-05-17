@@ -1,29 +1,45 @@
+import React, { useEffect, useState } from 'react'
+import {
+    ArrowLeftOutlined
+} from '@ant-design/icons';
 import { useAlertDispatch } from '@/contexts/AlertContext'
-import React, { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import BillService from '@/services/BillService'
+import { IBill } from '@/types'
+import { useNavigate, useParams } from 'react-router-dom'
+import { Typography } from 'antd'
 
 const UpdateBill = () => {
-    nst[selectedBill, setSelectedBill] = useState<>()
-    const params = useParams()
+    const [selectedBill, setSelectedBill] = useState<IBill>()
 
     const dispatchAlert = useAlertDispatch()
+    const navigate = useNavigate()
+    const params = useParams()
 
     useEffect(() => {
-        const getProductsById = async (id: number) => {
+        const getBillDetail = async (id: number) => {
             dispatchAlert({ loading: true })
             try {
-                const res = await ProductService.getProductById(id)
-                setSelectedProduct(res.data.data)
+                const res = await BillService.getBillDetailById(id)
+                setSelectedBill(res.data.data)
                 dispatchAlert({ loading: false })
             } catch (error) {
                 console.log(error)
             }
         }
 
-        if (params.id) getProductsById(Number(params.id))
+        if (params.id) getBillDetail(Number(params.id))
     }, [params.id])
+
+    console.log({ selectedBill })
     return (
-        <div>UpdateBill</div>
+        selectedBill &&
+        <>
+            <Typography.Title level={3} className='text-center'>Cập nhật sản phẩm</Typography.Title>
+            <Typography.Title level={4}>
+                <ArrowLeftOutlined className='cursor-pointer hover:text-main-orange-color' onClick={() => navigate(-1)} />
+            </Typography.Title>
+
+        </>
     )
 }
 

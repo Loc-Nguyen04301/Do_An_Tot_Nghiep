@@ -20,7 +20,6 @@ import categories from '@/assets/data/categoryList';
 
 import "./UpdateProduct.scss"
 
-
 const schema = yup
     .object().shape({
         name: yup.string().required('Yêu cầu nhập tên sản phẩm'),
@@ -55,7 +54,7 @@ const UpdateProduct = () => {
     }, [products])
 
     useEffect(() => {
-        const getProductsById = async (id: number) => {
+        const getProductById = async (id: number) => {
             dispatchAlert({ loading: true })
             try {
                 const res = await ProductService.getProductById(id)
@@ -66,7 +65,7 @@ const UpdateProduct = () => {
             }
         }
 
-        if (params.id) getProductsById(Number(params.id))
+        if (params.id) getProductById(Number(params.id))
     }, [params.id])
 
     useEffect(() => {

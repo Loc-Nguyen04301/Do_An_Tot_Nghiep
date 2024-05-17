@@ -18,7 +18,7 @@ const createBill = (data: CreateBillDto) => {
     return http.post(`/bills`, data)
 }
 
-const getBillDetailById = (id: string) => {
+const getBillDetailById = (id: number) => {
     return http.get(`/bills/${id}`,)
 }
 

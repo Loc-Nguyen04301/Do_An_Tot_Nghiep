@@ -10,37 +10,18 @@ import {
     CarOutlined,
     CreditCardOutlined,
     QrcodeOutlined,
+    BarsOutlined,
 } from '@ant-design/icons';
 import { convertNumbertoMoney } from '@/utils';
 import "./OrderAdmin.scss"
 import { FilterDropdownProps } from 'antd/es/table/interface';
 import Highlighter from 'react-highlight-words';
 import { SegmentedValue } from 'antd/es/segmented';
+import { useNavigate } from 'react-router-dom';
+import { RoutePath } from '@/routes';
+import { IBill, IItem } from '@/types';
 
 var DATETIME_FORMAT = 'dd-MM-yyyy HH:mm:ss'
-interface IBill {
-    id: number;
-    customer_name: string;
-    address: string;
-    phone_number: string;
-    email: string;
-    note: string;
-    user_id: number | null;
-    order_status: OrderStatus;
-    payment_status: boolean;
-    return_status: string;
-    payment_method: PaymentMethod;
-    total_amount: number;
-    created_at: string;
-    update_at: string;
-    items: IItem[];
-}
-
-interface IItem {
-    product: { name: string, new_price: number };
-    quantity: number;
-    total_price: number;
-}
 
 type DataIndex = keyof IBill;
 
@@ -62,6 +43,8 @@ const OrderAdmin = () => {
     const searchInput = useRef<InputRef>(null);
 
     const dispatchAlert = useAlertDispatch()
+
+    const navigate = useNavigate()
 
     const fetchBill = async (purchaseStatus: string) => {
         dispatchAlert({ loading: true })
@@ -105,6 +88,9 @@ const OrderAdmin = () => {
         fetchBill(purchaseStatus)
     }, [purchaseStatus])
 
+    const handleUpdateBill = (id: number) => {
+        navigate(`${RoutePath.UpdateProduct}/${id}`)
+    }
 
     const handleSearch = (
         selectedKeys: string[],
@@ -312,6 +298,18 @@ const OrderAdmin = () => {
             render: (_, record) => <span className='truncate'> {format(record.created_at, DATETIME_FORMAT)}</span>
 
         },
+        {
+            title: "",
+            key: "delete_item",
+            render: (_, record) =>
+                <div className='flex items-center' >
+                    <div className='flex gap-2'>
+                        <BarsOutlined className='text-blue-500 text-2xl cursor-pointer transform hover:scale-125' onClick={() => handleUpdateBill(record.id)} />
+                        {/* <DeleteOutlined className='text-red-500 text-2xl cursor-pointer transform hover:scale-125' onClick={showModal} /> */}
+                    </div>
+                </div >
+
+        },
     ]
 
     return (
@@ -327,7 +325,7 @@ const OrderAdmin = () => {
                     dataSource={listBill}
                     columns={columns}
                     pagination={{ position: ["bottomCenter"] }}
-                    // onChange={onChange}
+                // onChange={onChange}
                 ></Table>
             </Space>
         </>

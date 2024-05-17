@@ -29,6 +29,7 @@ const OrderAdmin = lazy(() => import("@/pages/admin/OrderAdmin"));
 const Customer = lazy(() => import("@/pages/admin/Customer"));
 const UpdateProduct = lazy(() => import("@/pages/admin/UpdateProduct"));
 const CreateProduct = lazy(() => import("@/pages/admin/CreateProduct"));
+const UpdateBill = lazy(() => import("@/pages/admin/UpdateBill"));
 
 export enum RoutePath {
   LoginPage = "/dang-nhap",
@@ -51,6 +52,7 @@ export enum RoutePath {
   Customer = "/admin/customer",
   UpdateProduct = "/admin/product/detail",
   CreateProduct = "/admin/product/create",
+  UpdateBill = "/admin/bill/detail",
 }
 
 const Router: React.FC = () => {
@@ -78,6 +80,13 @@ const Router: React.FC = () => {
           element:
             <AuthGuard>
               <CreateProduct />
+            </AuthGuard>
+        },
+        {
+          path: `${RoutePath.UpdateBill}/:id`,
+          element:
+            <AuthGuard>
+              <UpdateBill />
             </AuthGuard>
         },
         {

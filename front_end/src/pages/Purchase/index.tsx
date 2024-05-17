@@ -11,6 +11,7 @@ import { format } from "date-fns"
 import { ConfigProvider, Pagination, Tag } from 'antd';
 import type { PaginationProps } from 'antd';
 import { OrderStatus } from '@/types';
+import { IBill, IItem } from '@/types';
 
 var DATETIME_FORMAT = 'dd/MM/yyyy HH:mm:ss'
 
@@ -21,30 +22,6 @@ enum PurchaseStatus {
     SUCCESS = "Hoàn thành",
     CANCELLED = "Đã hủy",
     RETURN = "Trả hàng/Hoàn tiền"
-}
-
-interface IBill {
-    id: number;
-    customer_name: string;
-    address: string;
-    phone_number: string;
-    email: string;
-    note: string;
-    user_id: number | null;
-    order_status: string;
-    payment_status: boolean;
-    return_status: string;
-    payment_method: string;
-    total_amount: number;
-    created_at: string;
-    update_at: string;
-    items: IItem[];
-}
-
-interface IItem {
-    product: { name: string, new_price: number, old_price: number, image: string };
-    quantity: number;
-    total_price: number;
 }
 
 const Purchase = () => {

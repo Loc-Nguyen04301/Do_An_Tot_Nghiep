@@ -10,30 +10,7 @@ import { resetCart } from '@/redux-toolkit/cartSlice'
 import BillService from '@/services/BillService'
 import { PaymentMethod } from '@/types'
 import { useAlertDispatch } from '@/contexts/AlertContext'
-
-interface IBill {
-    id: number;
-    customer_name: string;
-    address: string;
-    phone_number: string;
-    email: string;
-    note: string;
-    user_id: number | null;
-    order_status: string;
-    payment_status: boolean;
-    return_status: string;
-    payment_method: string;
-    total_amount: number;
-    created_at: string;
-    update_at: string;
-    items: IItem[];
-}
-
-interface IItem {
-    product: { name: string, new_price: number };
-    quantity: number;
-    total_price: number;
-}
+import { IBill, IItem } from '@/types'
 
 const OrderComplete = () => {
     const [bill, setBill] = useState<IBill>()

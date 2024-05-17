@@ -7,7 +7,7 @@ import { Helmet } from "react-helmet-async";
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { format } from "date-fns"
 
-var DATETIME_FORMAT = 'dd-MM-yyyy HH:mm:ss'
+var DATETIME_FORMAT = 'dd-MM-yyyy HH:mm'
 
 enum ROLE {
     USER = "USER",

@@ -34,7 +34,7 @@ const UpdateBill = () => {
     return (
         selectedBill &&
         <>
-            <Typography.Title level={3} className='text-center'>Cập nhật sản phẩm</Typography.Title>
+            <Typography.Title level={3} className='text-center'>Cập nhật đơn hàng</Typography.Title>
             <Typography.Title level={4}>
                 <ArrowLeftOutlined className='cursor-pointer hover:text-main-orange-color' onClick={() => navigate(-1)} />
             </Typography.Title>

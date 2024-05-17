@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, ConfigProvider, Input, InputRef, Pagination, PaginationProps, Segmented, Space, Table, TableColumnType, TableProps, Tag, Typography } from 'antd';
+import { Button, Input, InputRef, Segmented, Space, Table, TableColumnType, TableProps, Tag, Typography } from 'antd';
 import BillService from '@/services/BillService';
 import { useAlertDispatch } from '@/contexts/AlertContext';
-import { CheckOutlined, CloseOutlined, SearchOutlined } from '@ant-design/icons';
+import { CheckOutlined, CloseOutlined, SearchOutlined, DeleteOutlined } from '@ant-design/icons';
 import { format } from "date-fns"
 import { Helmet } from 'react-helmet-async';
 import { OrderStatus, PaymentMethod } from '@/types';
@@ -19,9 +19,9 @@ import Highlighter from 'react-highlight-words';
 import { SegmentedValue } from 'antd/es/segmented';
 import { useNavigate } from 'react-router-dom';
 import { RoutePath } from '@/routes';
-import { IBill, IItem } from '@/types';
+import { IBill } from '@/types';
 
-var DATETIME_FORMAT = 'dd-MM-yyyy HH:mm:ss'
+var DATETIME_FORMAT = 'dd-MM-yyyy HH:mm'
 
 type DataIndex = keyof IBill;
 
@@ -198,6 +198,14 @@ const OrderAdmin = () => {
             render: (_, record) => record.id
         },
         {
+            title: "Ngày mua",
+            key: "created_at",
+            dataIndex: "created_at",
+            sorter: (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
+            render: (_, record) => <span className='truncate'> {format(record.created_at, DATETIME_FORMAT)}</span>
+
+        },
+        {
             title: "Tên khách hàng",
             key: "customer_name",
             dataIndex: "customer_name",
@@ -226,11 +234,11 @@ const OrderAdmin = () => {
                     value: `${OrderStatus.CANCELLED}`,
                 },
                 {
-                    text: 'Đang xử lý',
+                    text: 'Chờ xử lý',
                     value: `${OrderStatus.PROCESSING}`,
                 },
                 {
-                    text: 'Hoàn thành',
+                    text: 'Đã xác thực',
                     value: `${OrderStatus.SUCCESS}`,
                 },
             ],
@@ -238,8 +246,8 @@ const OrderAdmin = () => {
             render: (_, record) =>
                 <>
                     {record.order_status === OrderStatus.CANCELLED && <Tag color={"error"}>Đã Hủy</Tag>}
-                    {record.order_status === OrderStatus.PROCESSING && <Tag color={"processing"}>Đang xử lý</Tag>}
-                    {record.order_status === OrderStatus.SUCCESS && <Tag color={"success"}>Hoàn thành</Tag>}
+                    {record.order_status === OrderStatus.PROCESSING && <Tag color={"warning"}>Chờ xử lý</Tag>}
+                    {record.order_status === OrderStatus.SUCCESS && <Tag color={"success"}>Đã xác thực</Tag>}
                 </>
         },
         {
@@ -291,21 +299,12 @@ const OrderAdmin = () => {
             render: (_, record) => <span className='font-medium'>{convertNumbertoMoney(record.total_amount)}</span>
         },
         {
-            title: "Ngày mua",
-            key: "created_at",
-            dataIndex: "created_at",
-            sorter: (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
-            render: (_, record) => <span className='truncate'> {format(record.created_at, DATETIME_FORMAT)}</span>
-
-        },
-        {
             title: "",
             key: "delete_item",
             render: (_, record) =>
                 <div className='flex items-center' >
                     <div className='flex gap-2'>
                         <BarsOutlined className='text-blue-500 text-2xl cursor-pointer transform hover:scale-125' onClick={() => handleUpdateBill(record.id)} />
-                        {/* <DeleteOutlined className='text-red-500 text-2xl cursor-pointer transform hover:scale-125' onClick={showModal} /> */}
                     </div>
                 </div >
 

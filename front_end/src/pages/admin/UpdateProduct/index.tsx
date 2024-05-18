@@ -1,8 +1,6 @@
 import { Button, Checkbox, Col, Form, Input, Row, Typography } from 'antd'
 import React, { ChangeEvent, useEffect, useState } from 'react'
-import {
-    ArrowLeftOutlined
-} from '@ant-design/icons';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import type { FormProps } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '@/redux-toolkit/hook';

@@ -1,35 +1,18 @@
-import { Avatar, Space, Table, TableProps, Tag, Typography } from "antd";
-import { useCallback, useEffect, useState } from "react";
-import { useAppDispatch } from "@/redux-toolkit/hook";
+import { Avatar, Button, Space, Table, TableProps, Tag, Typography } from "antd";
+import { useEffect, useState } from "react";
 import { useAlertDispatch } from "@/contexts/AlertContext";
 import UserService from "@/services/UserService";
 import { Helmet } from "react-helmet-async";
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import { CheckOutlined, CloseOutlined, BarsOutlined } from '@ant-design/icons';
 import { format } from "date-fns"
+import { ICustomer, ROLE } from "@/types";
+import clsx from "clsx";
 
 var DATETIME_FORMAT = 'dd-MM-yyyy HH:mm'
 
-enum ROLE {
-    USER = "USER",
-    ADMIN = "ADMIN"
-}
-
-interface ICustomer {
-    id: number
-    username: string
-    email: string
-    avatar: string
-    role: ROLE
-    active: boolean
-    phone_number?: string
-    address?: string
-    created_at?: string
-    update_at?: string
-}
-
 const Customer = () => {
     const [dataSource, setDataSource] = useState<ICustomer[]>([]);
-
+    const [isDisabled, setIsDisabled] = useState(false)
     const dispatchAlert = useAlertDispatch()
 
     const getCustomers = async () => {
@@ -45,16 +28,30 @@ const Customer = () => {
 
     useEffect(() => {
         getCustomers()
-    }, []);
+    }, [isDisabled]);
+
+    const handleActive = async (id: number) => {
+        dispatchAlert({ loading: true })
+        try {
+            const res = await UserService.activeUser(id)
+            setIsDisabled(true)
+            dispatchAlert({ success: res.data.message })
+            setTimeout(() => {
+                setIsDisabled(false)
+            }, 2000)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const columns: TableProps<ICustomer>['columns'] = [
         {
-            title: "",
+            title: "Ảnh đại diện",
             key: "image",
             render: (_, record) => <Avatar src={record.avatar} />
         },
         {
-            title: "User Name",
+            title: "Tên người dùng",
             key: "name",
             render: (_, record) => record.username
         },
@@ -64,12 +61,12 @@ const Customer = () => {
             render: (_, record) => record.email
         },
         {
-            title: "Phone",
-            key: "phone",
+            title: "Số điện thoại",
+            key: "phone_number",
             render: (_, record) => record.phone_number
         },
         {
-            title: "Address",
+            title: "Địa chỉ",
             key: "address",
             render: (_, record) => record.address
         },
@@ -110,19 +107,30 @@ const Customer = () => {
                 </>
         },
         {
-            title: "Created At",
+            title: "Ngày tạo",
             key: "created_at",
             render: (_, record) => format(record.created_at as string | Date, DATETIME_FORMAT)
+        },
+        {
+            title: '',
+            key: 'deleteItem',
+            render: (_, record) =>
+                <div className='flex items-center' >
+                    <div className='flex gap-2'>
+                        <Button className={clsx('cursor-pointer', record.active ? "text-red-500 hover:!border-red-500 hover:!text-red-500" : "text-blue-500 ")} onClick={() => handleActive(record.id)} disabled={isDisabled} >{record.active ? "Inactive" : "Active"}</Button>
+                        {/* <DeleteOutlined className='text-red-500 text-2xl cursor-pointer transform hover:scale-125' onClick={showModal} /> */}
+                    </div>
+                </div >
         },
     ]
 
     return (
         <>
             <Helmet>
-                <title>Khách hàng</title>
+                <title>Thành viên</title>
                 <meta name='description' content='Beginner friendly page for learning React Helmet.' />
             </Helmet>
-            <Typography.Title level={4}>Customers</Typography.Title>
+            <Typography.Title level={4}>Thành viên</Typography.Title>
             <Space direction="horizontal" className='w-full justify-center !block'>
                 <Table
                     columns={columns}

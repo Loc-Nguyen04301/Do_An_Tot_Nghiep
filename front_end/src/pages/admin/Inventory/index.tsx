@@ -8,9 +8,9 @@ import { useAlertDispatch } from '@/contexts/AlertContext';
 import { useNavigate } from 'react-router-dom';
 import { RoutePath } from '@/routes';
 import { Helmet } from 'react-helmet-async';
+import categoryList from '@/assets/data/categoryList';
 
 import "./Inventory.scss"
-import categoryList from '@/assets/data/categoryList';
 
 const Inventory = () => {
     const products = useAppSelector(state => state.product)

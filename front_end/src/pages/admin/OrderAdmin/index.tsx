@@ -25,18 +25,7 @@ var DATETIME_FORMAT = 'dd-MM-yyyy HH:mm'
 
 type DataIndex = keyof IBill;
 
-enum PurchaseStatus {
-    ALL = "Tất cả",
-    WAIT_FOR_PAY = "Chờ thanh toán",
-    WAIT_FOR_DELIVERY = "Chờ giao hàng",
-    SUCCESS = "Hoàn thành",
-    CANCELLED = "Đã hủy",
-}
-
-const purchaseStatusList = Object.values(PurchaseStatus);
-
 const OrderAdmin = () => {
-    const [purchaseStatus, setPurchaseStatus] = useState<string>(PurchaseStatus.ALL)
     const [listBill, setListBill] = useState<IBill[]>([])
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
@@ -46,47 +35,20 @@ const OrderAdmin = () => {
 
     const navigate = useNavigate()
 
-    const fetchBill = async (purchaseStatus: string) => {
+    const fetchBill = async () => {
         dispatchAlert({ loading: true })
         try {
-            let res
-            switch (purchaseStatus) {
-                case PurchaseStatus.ALL:
-                    res = await BillService.getBillAdmin({})
-                    setListBill(res.data.data.bills)
-                    dispatchAlert({ loading: false })
-                    break;
-                case PurchaseStatus.WAIT_FOR_PAY:
-                    res = await BillService.getBillAdmin({ params: { payment_status: false, order_status: OrderStatus.PROCESSING } })
-                    setListBill(res.data.data.bills)
-                    dispatchAlert({ loading: false })
-                    break;
-                case PurchaseStatus.WAIT_FOR_DELIVERY:
-                    res = await BillService.getBillAdmin({ params: { payment_status: true, order_status: OrderStatus.PROCESSING } })
-                    setListBill(res.data.data.bills)
-                    dispatchAlert({ loading: false })
-                    break;
-                case PurchaseStatus.SUCCESS:
-                    res = await BillService.getBillAdmin({ params: { payment_status: true, order_status: OrderStatus.SUCCESS } })
-                    setListBill(res.data.data.bills)
-                    dispatchAlert({ loading: false })
-                    break;
-                case PurchaseStatus.CANCELLED:
-                    res = await BillService.getBillAdmin({ params: { order_status: OrderStatus.CANCELLED } })
-                    setListBill(res.data.data.bills)
-                    dispatchAlert({ loading: false })
-                    break;
-                default:
-                    break;
-            }
+            const res = await BillService.getBillAdmin({})
+            setListBill(res.data.data.bills)
+            dispatchAlert({ loading: false })
         } catch (error) {
             console.log(error)
         }
     }
 
     useEffect(() => {
-        fetchBill(purchaseStatus)
-    }, [purchaseStatus])
+        fetchBill()
+    }, [])
 
     const handleUpdateBill = (id: number) => {
         navigate(`${RoutePath.UpdateBill}/${id}`)
@@ -238,7 +200,7 @@ const OrderAdmin = () => {
                     value: `${OrderStatus.PROCESSING}`,
                 },
                 {
-                    text: 'Đã xác thực',
+                    text: 'Đã hoàn thành',
                     value: `${OrderStatus.SUCCESS}`,
                 },
             ],
@@ -247,11 +209,11 @@ const OrderAdmin = () => {
                 <>
                     {record.order_status === OrderStatus.CANCELLED && <Tag color={"error"}>Đã Hủy</Tag>}
                     {record.order_status === OrderStatus.PROCESSING && <Tag color={"warning"}>Chờ xử lý</Tag>}
-                    {record.order_status === OrderStatus.SUCCESS && <Tag color={"success"}>Đã xác thực</Tag>}
+                    {record.order_status === OrderStatus.SUCCESS && <Tag color={"success"}>Đã hoàn thành</Tag>}
                 </>
         },
         {
-            title: "Trạng thái thanh toán",
+            title: "Thanh toán",
             key: "payment_status",
             sorter: (a, b) => Number(a.payment_status) - Number(b.payment_status),
             render: (_, record) =>
@@ -259,9 +221,9 @@ const OrderAdmin = () => {
                     {
                         record.payment_status === true
                             ?
-                            <CheckOutlined className="text-green-500" />
+                            <Tag color={"success"}>Đã thanh toán</Tag>
                             :
-                            <CloseOutlined className="text-red-500" />
+                            <Tag color={"error"}>Chưa thanh toán</Tag>
                     }
                 </>
         },
@@ -286,7 +248,7 @@ const OrderAdmin = () => {
             onFilter: (value, record) => record.payment_method.indexOf(value as string) === 0,
             render: (_, record) =>
                 <>
-                    {record.payment_method === PaymentMethod.SHIPCOD && <Tag icon={<CarOutlined />} color={"error"}>Ship COD</Tag>}
+                    {record.payment_method === PaymentMethod.SHIPCOD && <Tag icon={<CarOutlined />} color={"magenta"}>Ship COD</Tag>}
                     {record.payment_method === PaymentMethod.BANK_TRANSFER && <Tag icon={<QrcodeOutlined />} color={"blue"}>Chuyển khoản</Tag>}
                     {record.payment_method === PaymentMethod.VNPAY && <Tag icon={<CreditCardOutlined />}>Thanh toán cổng VNPay</Tag>}
                 </>
@@ -318,7 +280,6 @@ const OrderAdmin = () => {
                 <meta name='description' content='Beginner friendly page for learning React Helmet.' />
             </Helmet>
             <Space size={20} direction="vertical">
-                <Segmented options={purchaseStatusList} value={purchaseStatus} onChange={(value: SegmentedValue) => setPurchaseStatus(value as string)} />
                 <Typography.Title level={4}>Danh sách đơn hàng</Typography.Title>
                 <Table
                     dataSource={listBill}

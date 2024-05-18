@@ -8,10 +8,6 @@ export interface RegisterInterface extends LoginInterface {
     confirmPassword: string;
 }
 
-export interface IUpdateUser {
-
-}
-
 export interface IUser {
     id?: number;
     username: string;
@@ -103,4 +99,22 @@ export interface IItem {
     product: { name: string, new_price: number, old_price: number, image: string };
     quantity: number;
     total_price: number;
+}
+
+export interface ICustomer {
+    id: number
+    username: string
+    email: string
+    avatar: string
+    role: ROLE
+    active: boolean
+    phone_number?: string
+    address?: string
+    created_at?: string
+    update_at?: string
+}
+
+export enum ROLE {
+    USER = "USER",
+    ADMIN = "ADMIN"
 }

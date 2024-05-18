@@ -61,7 +61,7 @@ const Cart = () => {
             dispatchAlert({ loading: true })
             setTimeout(() => {
                 dispatchAlert({ loading: false })
-            }, 5000)
+            }, 3000)
         }
         else {
             navigate(RoutePath.CheckoutPage)

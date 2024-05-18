@@ -21,6 +21,7 @@ import DashboardService from '@/services/DashboardService';
 import { useAlertDispatch } from '@/contexts/AlertContext';
 import { convertNumbertoMoney } from '@/utils';
 import { Helmet } from 'react-helmet-async';
+import useAdminCheck from '@/hooks/useAdminCheck';
 
 ChartJS.register(
     CategoryScale,
@@ -62,6 +63,8 @@ const DashBoard = () => {
     useEffect(() => {
         getDashboard()
     }, [])
+
+    useAdminCheck()
 
     return (
         <>

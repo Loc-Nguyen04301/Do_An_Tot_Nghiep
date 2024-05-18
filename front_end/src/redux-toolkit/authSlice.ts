@@ -5,9 +5,10 @@ import { getAccessToken, removeAccessToken, removeRefreshToken, setAccessToken, 
 import AuthService from '@/services/AuthService';
 
 interface AuthState {
-    access_token: string;
-    refresh_token: string;
+    access_token: string
+    refresh_token: string
     user: IUser
+    loading: boolean
 }
 
 const initialState: AuthState = {
@@ -21,7 +22,8 @@ const initialState: AuthState = {
         address: "",
         phone_number: "",
         role: undefined
-    }
+    },
+    loading: false,
 }
 
 export const getMe = createAsyncThunk('auth/getMe', async () => {
@@ -61,14 +63,15 @@ export const authSlice = createSlice({
             if (action.payload?.user) {
                 state.user = action.payload.user
             }
+            state.loading = false
         })
-        builder.addCase(getMe.rejected, () => {
+        builder.addCase(getMe.rejected, (state) => {
             removeAccessToken()
             removeRefreshToken()
             return { ...initialState }
         })
-        builder.addCase(getMe.pending, () => {
-            return
+        builder.addCase(getMe.pending, (state) => {
+            state.loading = true
         })
         builder.addCase(logOut.fulfilled, (state) => {
             removeAccessToken()

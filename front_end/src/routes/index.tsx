@@ -7,6 +7,7 @@ import GuestGuard from "@/guards/GuestGuard";
 import AuthGuard from "@/guards/AuthGuard";
 import HavingCart from "@/guards/HavingCart";
 import CheckAvailable from "@/guards/CheckAvailable";
+import AdminGuard from "@/guards/AdminGuard";
 
 const Home = lazy(() => import("@/pages/Home"));
 const Login = lazy(() => import("@/pages/Login"));
@@ -65,49 +66,63 @@ const Router: React.FC = () => {
           path: RoutePath.DashBoard,
           element:
             <AuthGuard>
-              <DashBoard />
+              <AdminGuard>
+                <DashBoard />
+              </AdminGuard>
             </AuthGuard>
         },
         {
           path: `${RoutePath.UpdateProduct}/:id`,
           element:
             <AuthGuard>
-              <UpdateProduct />
+              <AdminGuard>
+                <UpdateProduct />
+              </AdminGuard>
             </AuthGuard>
         },
         {
           path: `${RoutePath.CreateProduct}`,
           element:
             <AuthGuard>
-              <CreateProduct />
+              <AdminGuard>
+                <CreateProduct />
+              </AdminGuard>
             </AuthGuard>
         },
         {
           path: `${RoutePath.UpdateBill}/:id`,
           element:
             <AuthGuard>
-              <UpdateBill />
+              <AdminGuard>
+                <UpdateBill />
+              </AdminGuard>
             </AuthGuard>
         },
         {
           path: RoutePath.Inventory,
           element:
             <AuthGuard>
-              <Inventory />
+              <AdminGuard>
+                <Inventory />
+              </AdminGuard>
             </AuthGuard>
         },
         {
           path: RoutePath.OrderAdmin,
           element:
             <AuthGuard>
-              <OrderAdmin />
+              <AdminGuard>
+                <OrderAdmin />
+              </AdminGuard>
             </AuthGuard>
         },
         {
           path: RoutePath.Customer,
           element:
             <AuthGuard>
-              <Customer />
+              <AdminGuard>
+                <Customer />
+              </AdminGuard>
             </AuthGuard>
         },
       ]

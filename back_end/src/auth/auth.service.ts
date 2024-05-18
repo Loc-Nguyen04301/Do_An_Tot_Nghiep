@@ -100,7 +100,8 @@ export class AuthService {
         email: matchingUser.email,
         avatar: matchingUser.avatar,
         address: matchingUser.address,
-        phone_number: matchingUser.phone_number
+        phone_number: matchingUser.phone_number,
+        role: matchingUser.role
       },
       access_token: accessToken,
       refresh_token: refreshToken,
@@ -154,7 +155,8 @@ export class AuthService {
         email: user.email,
         avatar: user.avatar,
         address: user.address,
-        phone_number: user.phone_number
+        phone_number: user.phone_number,
+        role: user.role
       },
     }
   }

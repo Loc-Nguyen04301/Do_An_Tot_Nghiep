@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { IUser } from '@/types';
-import { removeAccessToken, removeRefreshToken, setAccessToken, setRefreshToken } from '@/utils';
+import { getAccessToken, removeAccessToken, removeRefreshToken, setAccessToken, setRefreshToken } from '@/utils';
 import AuthService from '@/services/AuthService';
 
 interface AuthState {
@@ -19,14 +19,18 @@ const initialState: AuthState = {
         email: "",
         avatar: "",
         address: "",
-        phone_number: ""
+        phone_number: "",
+        role: undefined
     }
 }
 
 export const getMe = createAsyncThunk('auth/getMe', async () => {
     try {
-        const response = await AuthService.getMe()
-        return response.data.data
+        const token = getAccessToken()
+        if (token) {
+            const response = await AuthService.getMe()
+            return response.data.data
+        }
     } catch (error) {
         console.log(error)
     }

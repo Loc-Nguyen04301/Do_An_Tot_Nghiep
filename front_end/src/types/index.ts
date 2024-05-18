@@ -1,32 +1,33 @@
 export interface LoginInterface {
-    email: string;
-    password: string;
+    email: string
+    password: string
 }
 
 export interface RegisterInterface extends LoginInterface {
-    username: string;
-    confirmPassword: string;
+    username: string
+    confirmPassword: string
 }
 
 export interface IUser {
-    id?: number;
-    username: string;
-    email: string;
-    avatar: string;
-    address: string,
-    phone_number: string
+    id?: number
+    username?: string
+    email?: string
+    avatar?: string
+    address?: string
+    phone_number?: string
+    role?: Role
 }
 
 export interface IProduct {
-    id: number;
-    name: string;
-    brand: string;
-    description: string;
-    old_price: number;
-    new_price: number;
-    image: string;
-    available: number;
-    created_at: string;
+    id: number
+    name: string
+    brand: string
+    description: string
+    old_price: number
+    new_price: number
+    image: string
+    available: number
+    created_at: string
 }
 
 export enum Role {
@@ -44,24 +45,24 @@ export enum OrderStatus {
     PROCESSING = 'PROCESSING',
     SUCCESS = 'SUCCESS',
     CANCELLED = 'CANCELLED'
-};
+}
 export interface ReviewInterface {
-    description: string;
-    star: number;
-    user_id: number;
-    product_id: number;
-    images?: string[];
+    description: string
+    star: number
+    user_id: number
+    product_id: number
+    images?: string[]
 }
 
 export interface CreatePaymentDto {
-    amount: number;
+    amount: number
 }
 
 export interface ICategory {
-    id: number;
-    name: string;
-    created_at: string;
-    update_at: string;
+    id: number
+    name: string
+    created_at: string
+    update_at: string
 }
 
 export interface CreateProductDto {
@@ -78,27 +79,27 @@ export interface CreateProductDto {
 export interface UpdateProductDto extends CreateProductDto { }
 
 export interface IBill {
-    id: number;
-    customer_name: string;
-    address: string;
-    phone_number: string;
-    email: string;
-    note: string;
-    user_id: number | null;
-    order_status: string;
-    payment_status: boolean;
-    return_status: string;
-    payment_method: string;
-    total_amount: number;
-    created_at: string;
-    update_at: string;
-    items: IItem[];
+    id: number
+    customer_name: string
+    address: string
+    phone_number: string
+    email: string
+    note: string
+    user_id: number | null
+    order_status: string
+    payment_status: boolean
+    return_status: string
+    payment_method: string
+    total_amount: number
+    created_at: string
+    update_at: string
+    items: IItem[]
 }
 
 export interface IItem {
-    product: { name: string, new_price: number, old_price: number, image: string };
-    quantity: number;
-    total_price: number;
+    product: { name: string, new_price: number, old_price: number, image: string }
+    quantity: number
+    total_price: number
 }
 
 export interface ICustomer {

@@ -49,7 +49,7 @@ export class AuthService {
     const existUser = await this.prisma.user.findUnique({
       where: { email: createAuthDto.email },
     });
-    if (existUser) throw new BadRequestException('Email is exist');
+    if (existUser) throw new BadRequestException('Email đã tồn tại. Vui lòng thử lại');
     // Create new user
     const hashPassword = await this.hashData(createAuthDto.password);
 
@@ -58,6 +58,7 @@ export class AuthService {
         username: createAuthDto.username,
         email: createAuthDto.email,
         password: hashPassword,
+        active: true
       },
     });
     if (newUser) return;
@@ -69,7 +70,7 @@ export class AuthService {
       where: { email: loginAuthDto.email },
     });
     if (!matchingUser)
-      throw new ForbiddenException('Email is not matching',);
+      throw new ForbiddenException('Email không tồn tại. Vui lòng thử lại.',);
 
     // Check if password matching
     const isMatchingPassword = bcrypt.compareSync(
@@ -77,11 +78,11 @@ export class AuthService {
       matchingUser.password,
     );
     if (!isMatchingPassword)
-      throw new ForbiddenException('Password is not matching');
+      throw new ForbiddenException('Mật khẩu không đúng. Vui lòng thử lại.');
 
     // Check if account is active
     if (!matchingUser.active) {
-      throw new ForbiddenException('Account is not active. Please contact Admin');
+      throw new ForbiddenException('Tài khoản chưa được kích hoạt. Vui lòng liên lạc với nhà quản trị để được hỗ trợ.');
     }
 
     //Create access token and refresh token

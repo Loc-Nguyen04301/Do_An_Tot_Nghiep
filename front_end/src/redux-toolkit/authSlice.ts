@@ -51,7 +51,7 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        login: (state, action: PayloadAction<AuthState>) => {
+        login: (state, action: PayloadAction<any>) => {
             const { access_token, refresh_token } = action.payload
             setAccessToken(access_token)
             setRefreshToken(refresh_token)

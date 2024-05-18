@@ -23,7 +23,7 @@ const schema = yup
 const Register = () => {
   const dispatch = useAppDispatch()
   const dispatchAlert = useAlertDispatch()
-  const { register, handleSubmit, formState: { errors }, watch, getValues } = useForm({
+  const { register, handleSubmit, formState: { errors }, watch, getValues, reset } = useForm({
     resolver: yupResolver(schema),
   });
 
@@ -33,6 +33,7 @@ const Register = () => {
       const res = await AuthService.register(data)
       console.log(res)
       dispatchAlert({ success: res.data.message })
+      reset()
     } catch (error: any) {
       dispatchAlert({ errors: error.message })
     }

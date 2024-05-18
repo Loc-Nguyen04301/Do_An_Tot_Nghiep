@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faHeart, faUser } from "@fortawesome/free-regular-svg-icons"
 import {
@@ -21,6 +20,7 @@ import { getAccessToken } from "@/utils"
 import { useAppDispatch, useAppSelector } from '@/redux-toolkit/hook';
 import { logOut } from "@/redux-toolkit/authSlice"
 import { useAlertDispatch } from "@/contexts/AlertContext"
+import { Role } from "@/types"
 
 const Header = () => {
   const [openLeftModal, setOpenLeftModal] = useState(false)
@@ -62,7 +62,7 @@ const Header = () => {
     <header>
       <div className="header-top bg-[#f2f2f2]">
         {
-          accessToken && user.username.length > 0
+          accessToken && user
             ?
             <div className="flex justify-end items-end pr-3 pt-3 pb-2 gap-4">
               <div className="dropdown text-text-gray text-sm flex items-center gap-1 mr-8">
@@ -73,8 +73,9 @@ const Header = () => {
                 <div className="dropdown-content profile top-[30px] right-0 bg-gray-200 rounded-md">
                   <div className="py-2 px-4 min-w-[160px] rounded-lg">
                     <div className="text-center text-[#666666] text-base flex flex-col gap-1">
-                      <Link to={RoutePath.Profile} className="cursor-pointer hover:text-main-orange-color">Tài khoản của tôi</Link>
-                      <Link to={RoutePath.Purchase} className="cursor-pointer hover:text-main-orange-color">Đơn mua</Link>
+                      {user.role === Role.ADMIN && <Link to={RoutePath.DashBoard} className="cursor-pointer hover:text-main-orange-color">Quản lý</Link>}
+                      {user.role === Role.USER && <Link to={RoutePath.Profile} className="cursor-pointer hover:text-main-orange-color">Tài khoản của tôi</Link>}
+                      {user.role === Role.USER && <Link to={RoutePath.Purchase} className="cursor-pointer hover:text-main-orange-color">Đơn mua</Link>}
                       <div className="cursor-pointer hover:text-main-orange-color" onClick={handleLogout}>Đăng xuất</div>
                     </div>
                   </div>

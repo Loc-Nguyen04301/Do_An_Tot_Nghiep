@@ -10,11 +10,11 @@ export interface RegisterInterface extends LoginInterface {
 
 export interface IUser {
     id?: number
-    username?: string
-    email?: string
-    avatar?: string
-    address?: string
-    phone_number?: string
+    username: string
+    email: string
+    avatar: string
+    address: string
+    phone_number: string
     role?: Role
 }
 

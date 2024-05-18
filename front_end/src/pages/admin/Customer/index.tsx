@@ -5,8 +5,9 @@ import UserService from "@/services/UserService";
 import { Helmet } from "react-helmet-async";
 import { CheckOutlined, CloseOutlined, BarsOutlined } from '@ant-design/icons';
 import { format } from "date-fns"
-import { ICustomer, ROLE } from "@/types";
+import { ICustomer, Role } from "@/types";
 import clsx from "clsx";
+import { useAppSelector } from "@/redux-toolkit/hook";
 
 var DATETIME_FORMAT = 'dd-MM-yyyy HH:mm'
 
@@ -46,6 +47,11 @@ const Customer = () => {
 
     const columns: TableProps<ICustomer>['columns'] = [
         {
+            title: "Mã thành viên",
+            key: "id",
+            render: (_, record) => record.id
+        },
+        {
             title: "Ảnh đại diện",
             key: "image",
             render: (_, record) => <Avatar src={record.avatar} />
@@ -76,12 +82,12 @@ const Customer = () => {
             render: (_, record) =>
                 <>
                     {
-                        record.role === ROLE.ADMIN
+                        record.role === Role.ADMIN
                             ?
                             <Tag color={"red"}>
                                 {record.role}
                             </Tag>
-                            : record.role === ROLE.USER
+                            : record.role === Role.USER
                                 ?
                                 <Tag color={"blue"}>
                                     {record.role}
@@ -117,8 +123,13 @@ const Customer = () => {
             render: (_, record) =>
                 <div className='flex items-center' >
                     <div className='flex gap-2'>
-                        <Button className={clsx('cursor-pointer', record.active ? "text-red-500 hover:!border-red-500 hover:!text-red-500" : "text-blue-500 ")} onClick={() => handleActive(record.id)} disabled={isDisabled} >{record.active ? "Inactive" : "Active"}</Button>
-                        {/* <DeleteOutlined className='text-red-500 text-2xl cursor-pointer transform hover:scale-125' onClick={showModal} /> */}
+                        {record?.role !== Role.ADMIN &&
+                            <Button className={clsx('cursor-pointer', record.active ? "text-red-500 hover:!border-red-500 hover:!text-red-500" : "text-blue-500 ")}
+                                onClick={() => handleActive(record.id)}
+                                disabled={isDisabled}>
+                                {record.active ? "Inactive" : "Active"}
+                            </Button>
+                        }
                     </div>
                 </div >
         },

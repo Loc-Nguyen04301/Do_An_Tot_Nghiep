@@ -57,8 +57,13 @@ const Inventory = () => {
     }, [getProducts]);
 
     const columns: TableProps<IProductDetail>['columns'] = [
+        // {
+        //     title: "Mã sản phẩm",
+        //     key: "id",
+        //     render: (_, record) => record.id
+        // },
         {
-            title: "",
+            title: "Ảnh sản phẩm",
             key: "thumbnail",
             render: (_, record) => <Avatar src={record.image} />
         },

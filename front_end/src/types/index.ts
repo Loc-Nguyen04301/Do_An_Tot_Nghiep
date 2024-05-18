@@ -107,7 +107,7 @@ export interface ICustomer {
     username: string
     email: string
     avatar: string
-    role: ROLE
+    role: Role
     active: boolean
     phone_number?: string
     address?: string
@@ -115,7 +115,3 @@ export interface ICustomer {
     update_at?: string
 }
 
-export enum ROLE {
-    USER = "USER",
-    ADMIN = "ADMIN"
-}

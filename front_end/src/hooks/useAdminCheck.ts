@@ -11,7 +11,7 @@ const useAdminCheck = () => {
         if (user.role !== Role.ADMIN) {
             navigate("/")
         }
-    }, [])
+    }, [user])
 }
 
 export default useAdminCheck

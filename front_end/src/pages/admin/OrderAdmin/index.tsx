@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Button, Input, InputRef, Segmented, Space, Table, TableColumnType, TableProps, Tag, Typography } from 'antd';
 import BillService from '@/services/BillService';
 import { useAlertDispatch } from '@/contexts/AlertContext';
-import { CheckOutlined, CloseOutlined, SearchOutlined, DeleteOutlined } from '@ant-design/icons';
+import { SearchOutlined } from '@ant-design/icons';
 import { format } from "date-fns"
 import { Helmet } from 'react-helmet-async';
 import { OrderStatus, PaymentMethod } from '@/types';
@@ -16,7 +16,6 @@ import { convertNumbertoMoney } from '@/utils';
 import "./OrderAdmin.scss"
 import { FilterDropdownProps } from 'antd/es/table/interface';
 import Highlighter from 'react-highlight-words';
-import { SegmentedValue } from 'antd/es/segmented';
 import { useNavigate } from 'react-router-dom';
 import { RoutePath } from '@/routes';
 import { IBill } from '@/types';

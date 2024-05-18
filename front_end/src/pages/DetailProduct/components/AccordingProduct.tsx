@@ -1,6 +1,6 @@
 import { useState } from "react"
 import type { CollapseProps } from "antd"
-import { Collapse, Rate } from "antd"
+import { Avatar, Collapse, Rate } from "antd"
 import { IDetailProduct } from ".."
 import { convertNumbertoMoney, getAccessToken } from "@/utils"
 import clsx from "clsx"
@@ -74,17 +74,17 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
       ),
       children: (
         <div>
-          <h3 className="font-semibold text-2xl text-category-title mb-3">
+          <h3 className="font-semibold text-2xl text-category-title mb-1">
             Đánh giá sản phẩm
           </h3>
           {product.reviews.map((review) =>
             <div
               key={`${review.id}`}
-              className="flex border-b border-border-color py-4"
+              className="flex gap-4 border-b border-border-color py-4"
             >
-              <img
+              <Avatar
                 src={review.user.avatar}
-                className="max-h-10 pr-2 mt-1"
+                className="mt-1"
               />
               <div>
                 <span className="text-[#222] text-xs">
@@ -110,24 +110,22 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
                 </div>
               </div>
             </div>)}
-          {product.reviews.length === 0 && <p className="text-[#777777] text-[16px]">Chưa có đánh giá nào.</p>}
-          <div className="pt-16">
-            {
-              accessToken && isReviewed === -1
+          {/* {product.reviews.length === 0 && <p className="text-[#777777] text-[16px]">Chưa có đánh giá nào.</p>} */}
+          {
+            accessToken && isReviewed === -1
+              ?
+              <ReviewContainer product={product} handlePreviewImage={handlePreviewImage} />
+              : accessToken && isReviewed !== -1
                 ?
-                <ReviewContainer product={product} handlePreviewImage={handlePreviewImage} />
-                : accessToken && isReviewed !== -1
-                  ?
-                  <></>
-                  :
-                  <div className="border-2 border-main-orange-color pt-3 pl-8 pb-10">
-                    <span className="text-lg">
-                      Chỉ những khách hàng đã đăng nhập và mua sản phẩm này mới có thể đưa ra đánh giá.
-                    </span>
-                  </div>
-            }
-          </div>
-        </div >
+                <></>
+                :
+                <div className="border-2 border-main-orange-color pt-3 pl-8 pb-10">
+                  <span className="text-lg">
+                    Chỉ những khách hàng đã đăng nhập mới có thể đưa ra đánh giá.
+                  </span>
+                </div>
+          }
+        </div>
       ),
       showArrow: true,
     },

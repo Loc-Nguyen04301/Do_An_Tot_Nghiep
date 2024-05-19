@@ -63,7 +63,7 @@ const ReviewContainer = ({ product, handlePreviewImage }: ReviewContainerProps) 
     }
 
     return (
-        <>
+        <div className='border-2 border-border-color p-10 mt-10'>
             <div className="flex gap-5 pb-4">
                 <span className="text-black">Chọn đánh giá của bạn</span>
                 <Rate onChange={setStar} value={star} />
@@ -99,7 +99,7 @@ const ReviewContainer = ({ product, handlePreviewImage }: ReviewContainerProps) 
             <button className='mt-4 w-full bg-main-orange-color py-2 hover:shadow-checkout-btn' onClick={submitReview}>
                 <span className='text-white font-semibold tracking-wide'>Đánh giá</span>
             </button>
-        </>
+        </div>
     )
 }
 

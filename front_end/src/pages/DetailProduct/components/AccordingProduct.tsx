@@ -58,6 +58,10 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
             <p className="font-semibold text-lg uppercase">Giá</p>
             <p>{convertNumbertoMoney(product.new_price)}</p>
           </div>
+          <div className="flex justify-between text-category-title border-b-[1px] border-border-color py-3">
+            <p className="font-semibold text-lg uppercase">Thương hiệu</p>
+            <p>{product.brand}</p>
+          </div>
         </>
       ),
       showArrow: true,
@@ -110,7 +114,10 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
                 </div>
               </div>
             </div>)}
-          {/* {product.reviews.length === 0 && <p className="text-[#777777] text-[16px]">Chưa có đánh giá nào.</p>} */}
+          {
+            product.reviews.length === 0 && <p className="text-[#777777] text-[16px] text-center mt-2">
+              Hiện tại sản phẩm chưa có đánh giá nào, bạn hãy trở thành người đầu tiên đánh giá cho sản phẩm này.
+            </p>}
           {
             accessToken && isReviewed === -1
               ?

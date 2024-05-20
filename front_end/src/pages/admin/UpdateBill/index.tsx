@@ -59,48 +59,75 @@ const UpdateBill = () => {
             <Typography.Title level={4}>
                 <ArrowLeftOutlined className='cursor-pointer hover:text-main-orange-color' onClick={() => navigate(-1)} />
             </Typography.Title>
-            <form onSubmit={handleSubmit}>
-                <div className="my-2">
-                    <div className="font-semibold tracking-wide">Mã đơn hàng</div>
-                    <input className="w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.id} disabled />
+            <div className='grid grid-cols-2 gap-5'>
+                <form onSubmit={handleSubmit} className='col-span-1'>
+                    <div className='p-6 bg-white'>
+                        <h1 className='text-center font-semibold text-2xl'>Thông tin đơn hàng</h1>
+                        <div className="my-2">
+                            <div className="font-semibold tracking-wide">Mã đơn hàng</div>
+                            <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.id} disabled />
+                        </div>
+                        <div className="my-2">
+                            <div className="font-semibold tracking-wide">Ngày mua</div>
+                            <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={format(selectedBill.created_at, DATETIME_FORMAT)} disabled />
+                        </div>
+                        <div className="my-2">
+                            <div className="font-semibold tracking-wide">Tên khách hàng</div>
+                            <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.customer_name} disabled />
+                        </div>
+                        <div className="my-2">
+                            <div className="font-semibold tracking-wide">Địa chỉ giao hàng</div>
+                            <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.address} disabled />
+                        </div>
+                        <div className="my-2">
+                            <div className="font-semibold tracking-wide">Số điện thoại</div>
+                            <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.phone_number} disabled />
+                        </div>
+                        <div className="my-2">
+                            <div className="font-semibold tracking-wide">Trạng thái đơn hàng</div>
+                            <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.order_status} disabled />
+                        </div>
+                        <div className="my-2">
+                            <div className="font-semibold tracking-wide">Trạng thái thanh toán</div>
+                            <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.payment_status} disabled />
+                        </div>
+                        <div className="my-2">
+                            <div className="font-semibold tracking-wide">Phương thức thanh toán</div>
+                            <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.payment_method} disabled />
+                        </div>
+                        <div className="my-2">
+                            <div className="font-semibold tracking-wide">Ghi chú</div>
+                            <textarea className="w-full min-h-[100px] border-[1px] border-[#adadad] rounded-sm" defaultValue={selectedBill.note} disabled />
+                        </div>
+                    </div>
+                </form>
+                <div className='col-span-1'>
+                    <div className='p-6 border-2 border-border-color bg-white' key={selectedBill.id}>
+                        <h1 className='text-center font-semibold text-2xl'>Danh sách sản phẩm</h1>
+                        {selectedBill.items.map((item, index) =>
+                            <div className='py-6 border-b border-border-color flex justify-between items-center gap-2' key={`${selectedBill.id}-${index}`}>
+                                <div className='flex gap-2'>
+                                    <img src={item.product.image} width={80} />
+                                    <div className='flex flex-col justify-center'>
+                                        <span>{item.product.name} </span>
+                                        <span className='text-sm font-semibold'>x {item.quantity}</span>
+                                    </div>
+                                </div>
+                                <div className='flex gap-2'>
+                                    {
+                                        item.product.old_price != 0 &&
+                                        <del className='text-category-title'>{convertNumbertoMoney(item.product.old_price)}</del>
+                                    }
+                                    <span className='text-main-orange-color'>{convertNumbertoMoney(item.product.new_price)}</span>
+                                </div>
+                            </div>)}
+                        <div className='py-6 text-right'>
+                            <span className='px-2'>Thành tiền:</span>
+                            <span className='px-2 text-main-orange-color text-xl font-semibold'>{convertNumbertoMoney(selectedBill.total_amount)}</span>
+                        </div>
+                    </div>
                 </div>
-                <div className="my-2">
-                    <div className="font-semibold tracking-wide">Ngày mua</div>
-                    <input className="w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={format(selectedBill.created_at, DATETIME_FORMAT)} disabled />
-                </div>
-                <div className="my-2">
-                    <div className="font-semibold tracking-wide">Tên khách hàng</div>
-                    <input className="w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.customer_name} disabled />
-                </div>
-                <div className="my-2">
-                    <div className="font-semibold tracking-wide">Địa chỉ giao hàng</div>
-                    <input className="w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.address} disabled />
-                </div>
-                <div className="my-2">
-                    <div className="font-semibold tracking-wide">Số điện thoại</div>
-                    <input className="w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.phone_number} disabled />
-                </div>
-                <div className="my-2">
-                    <div className="font-semibold tracking-wide">Trạng thái đơn hàng</div>
-                    <input className="w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.order_status} disabled />
-                </div>
-                <div className="my-2">
-                    <div className="font-semibold tracking-wide">Trạng thái thanh toán</div>
-                    <input className="w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.payment_status} disabled />
-                </div>
-                <div className="my-2">
-                    <div className="font-semibold tracking-wide">Phương thức thanh toán</div>
-                    <input className="w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.payment_method} disabled />
-                </div>
-                <div className="my-2">
-                    <div className="font-semibold tracking-wide">Tổng tiền</div>
-                    <input className="w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={convertNumbertoMoney(selectedBill.total_amount)} disabled />
-                </div>
-                <div className="my-2">
-                    <div className="font-semibold tracking-wide">Ghi chú</div>
-                    <textarea className="w-1/2 min-h-[100px] border-[1px] border-[#adadad] rounded-sm" defaultValue={selectedBill.note} disabled />
-                </div>
-            </form>
+            </div>
         </>
     )
 }

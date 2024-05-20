@@ -59,7 +59,7 @@ export class BillsService {
         include: {
           items: {
             select: {
-              product: { select: { name: true, new_price: true } },
+              product: { select: { name: true, new_price: true, old_price: true, image: true } },
               quantity: true,
               total_price: true
             }

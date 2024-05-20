@@ -20,11 +20,11 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
     const dispatchAlert = useAlertDispatch()
 
     const getProductsByCategory = async () => {
-        dispatchAlert({ loading: true })
         try {
             const res = await ProductService.getProductByCategory(categoryPath)
+            // .then(res => console.log(res))
+            // .catch(e => console.log(e))
             setProducts(res.data.data)
-            dispatchAlert({ loading: false })
         } catch (error) {
             console.log(error)
         }

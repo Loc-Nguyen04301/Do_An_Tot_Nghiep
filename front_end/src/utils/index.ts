@@ -40,7 +40,7 @@ export const removeRefreshToken = () => {
     localStorage.removeItem('refreshToken')
 }
 
-export const convertNumbertoMoney = (number: number | undefined) => {
+export const convertNumbertoMoney = (number: number) => {
     return Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number)
 }
 

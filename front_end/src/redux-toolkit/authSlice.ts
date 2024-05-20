@@ -5,24 +5,16 @@ import { getAccessToken, removeAccessToken, removeRefreshToken, setAccessToken, 
 import AuthService from '@/services/AuthService';
 
 interface AuthState {
-    access_token: string
-    refresh_token: string
-    user: IUser
+    access_token: string | null
+    refresh_token: string | null
+    user: IUser | null
     loading: boolean
 }
 
 const initialState: AuthState = {
-    access_token: "",
-    refresh_token: "",
-    user: {
-        id: undefined,
-        username: "",
-        email: "",
-        avatar: "",
-        address: "",
-        phone_number: "",
-        role: undefined
-    },
+    access_token: null,
+    refresh_token: null,
+    user: null,
     loading: false,
 }
 

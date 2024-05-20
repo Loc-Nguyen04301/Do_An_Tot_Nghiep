@@ -1,6 +1,6 @@
 import axios from "axios";
 import { LoginInterface, RegisterInterface } from "@/types";
-import { getRefreshToken } from "@/utils";
+import { getRefreshToken, isTokenExpiration } from "@/utils";
 import http, { getBaseUrl } from "./axios";
 
 
@@ -19,13 +19,13 @@ const logout = () => {
 const refreshToken = () => {
     const refreshToken = getRefreshToken()
     const urlAPI = getBaseUrl()
-    if (refreshToken)
+    if (refreshToken && isTokenExpiration(refreshToken))
         return axios.post(`${urlAPI}/auth/refreshToken`, {}, {
             headers: {
                 Authorization: "Bearer " + refreshToken
             }
         })
-    else return
+    return
 }
 
 const getMe = () => {

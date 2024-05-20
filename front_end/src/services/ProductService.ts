@@ -2,6 +2,8 @@ import { CreateProductDto, UpdateProductDto } from "@/types";
 import http, { getBaseUrl } from "./axios";
 import axios from "axios";
 
+const urlAPI = getBaseUrl()
+
 const getAll = () => {
     return http.get(`/products`)
 }
@@ -11,7 +13,6 @@ const removeProduct = (id: number) => {
 };
 
 const getProductByCategory = (category: string) => {
-    const urlAPI = getBaseUrl()
     return axios.get(`${urlAPI}/products/category/${category}`)
 }
 

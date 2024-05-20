@@ -20,11 +20,8 @@ const initialState: AuthState = {
 
 export const getMe = createAsyncThunk('auth/getMe', async () => {
     try {
-        const token = getAccessToken()
-        if (token) {
-            const response = await AuthService.getMe()
-            return response.data.data
-        }
+        const response = await AuthService.getMe()
+        return response.data.data
     } catch (error) {
         console.log(error)
     }
@@ -52,6 +49,10 @@ export const authSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(getMe.fulfilled, (state, action: PayloadAction<AuthState>) => {
+            if (action?.payload?.refresh_token && action?.payload?.access_token) {
+                setRefreshToken(action.payload.refresh_token)
+                setAccessToken(action.payload.access_token)
+            }
             if (action.payload?.user) {
                 state.user = action.payload.user
             }

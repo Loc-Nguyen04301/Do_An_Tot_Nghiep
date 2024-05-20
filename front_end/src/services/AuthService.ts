@@ -19,12 +19,13 @@ const logout = () => {
 const refreshToken = () => {
     const refreshToken = getRefreshToken()
     const urlAPI = getBaseUrl()
-    if (refreshToken && isTokenExpiration(refreshToken))
+    if (refreshToken) {
         return axios.post(`${urlAPI}/auth/refreshToken`, {}, {
             headers: {
                 Authorization: "Bearer " + refreshToken
             }
         })
+    }
     return
 }
 

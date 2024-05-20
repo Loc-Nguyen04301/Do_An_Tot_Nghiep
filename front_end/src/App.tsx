@@ -11,7 +11,7 @@ function App() {
 
   useEffect(() => {
     dispatch(getMe())
-  }, [dispatch])
+  }, [])
 
   return (
     <HelmetProvider>

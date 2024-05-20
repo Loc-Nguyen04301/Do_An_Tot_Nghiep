@@ -36,14 +36,16 @@ instance.interceptors.request.use(
       // create new access token when token is expired
       if (isTokenExpiration(token)) {
         const response = await AuthService.refreshToken()
-        const accessToken = response?.data.data.access_token
-        const refreshToken = response?.data.data.refresh_token
-        setAccessToken(accessToken);
-        setRefreshToken(refreshToken);
-        newHeaders = {
-          ...request.headers,
-          Authorization: "Bearer " + accessToken,
-        };
+        if (response) {
+          const accessToken = response.data.data.access_token
+          const refreshToken = response.data.data.refresh_token
+          setAccessToken(accessToken);
+          setRefreshToken(refreshToken);
+          newHeaders = {
+            ...request.headers,
+            Authorization: "Bearer " + accessToken,
+          };
+        }
       }
     }
     request = { ...request, headers: newHeaders as AxiosRequestHeaders };

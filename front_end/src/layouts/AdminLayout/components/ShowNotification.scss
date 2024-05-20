@@ -1,0 +1,28 @@
+.dropdown {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.notification.dropdown-content::before {
+  position: absolute;
+  content: "";
+  width: 300px;
+  height: 20px;
+  top: -15px;
+  background: transparent;
+  left: 0;
+}

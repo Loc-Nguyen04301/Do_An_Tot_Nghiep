@@ -4,10 +4,12 @@ import {
     ShopOutlined,
     ShoppingCartOutlined,
     UserOutlined,
-    LogoutOutlined
+    LogoutOutlined,
+    BellOutlined,
+    SearchOutlined
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Layout, Menu, theme, Typography } from 'antd';
+import { Avatar, Layout, Menu, theme, Typography } from 'antd';
 import { Outlet } from 'react-router-dom';
 import { useLocation, useNavigate } from "react-router-dom";
 import logoImage from "@/assets/images/thol-logo.jpg"
@@ -15,6 +17,7 @@ import { useAppDispatch, useAppSelector } from '@/redux-toolkit/hook';
 import "./AdminLayout.scss"
 import { logOut } from '@/redux-toolkit/authSlice';
 import { useAlertDispatch } from '@/contexts/AlertContext';
+import ShowNotification from '@/layouts/AdminLayout/components/ShowNotification';
 
 const { Header, Content, Sider } = Layout;
 type MenuItem = Required<MenuProps>['items'][number];
@@ -54,6 +57,8 @@ interface AdminLayouttProps {
 const AdminLayout = ({ children }: AdminLayouttProps) => {
     const [collapsed, setCollapsed] = useState(false);
     const [selectedKeys, setSelectedKeys] = useState<string>(RoutePath.DashBoard);
+    const { user } = useAppSelector(state => state.auth)
+    const [isShowNoti, setIsShowNoti] = useState(false)
 
     const dispatch = useAppDispatch()
     const dispatchAlert = useAlertDispatch()
@@ -100,10 +105,21 @@ const AdminLayout = ({ children }: AdminLayouttProps) => {
                     }} />
             </Sider>
             <Layout>
-                <Header style={{ background: colorBgContainer }}>
-                    <Typography.Title className='text-center pt-3'>DASHBOARD MANAGEMENT</Typography.Title>
-                </Header>
-                <Content >
+                <header style={{ background: colorBgContainer }} className='flex justify-end items-center gap-5 h-[50px]'>
+                    <SearchOutlined className='text-2xl' />
+                    <div className='relative dropdown'>
+                        <div className="absolute -top-2 -right-1 bg-button-red-color text-white w-4 h-4 rounded-full text-center cursor-pointer">
+                            <span className="text-xs font-semibold block">0</span>
+                        </div>
+                        <BellOutlined className='text-2xl' onClick={() => setIsShowNoti(prev => !prev)} />
+                        <ShowNotification />
+                    </div>
+                    <div>
+                        <Avatar src={user?.avatar} />
+                        <Typography.Text type="secondary" strong className='ml-2'>{user?.username}</Typography.Text>
+                    </div>
+                </header>
+                <Content>
                     <div className='p-6 min-h-[360px]'>
                         {children ?? <Outlet />}
                     </div>

@@ -126,7 +126,7 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
                 ?
                 <></>
                 :
-                <div className="border-2 border-main-orange-color pt-3 pl-8 pb-10">
+                <div className="border-2 border-main-orange-color pt-3 pl-8 pb-10 mt-10">
                   <span className="text-lg">
                     Chỉ những khách hàng đã đăng nhập mới có thể đưa ra đánh giá.
                   </span>

@@ -8,7 +8,7 @@ const useAdminCheck = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (user.role !== Role.ADMIN) {
+        if (user && user.role !== Role.ADMIN) {
             navigate("/")
         }
     }, [user])

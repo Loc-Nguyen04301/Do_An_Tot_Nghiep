@@ -53,7 +53,7 @@ const ReviewContainer = ({ product, handlePreviewImage }: ReviewContainerProps) 
                 return res.url;
             });
             const uploadedImageUrls = await Promise.all(uploadPromises);
-            const data = { description, product_id: product.id, star, user_id: user.id, images: uploadedImageUrls } as ReviewInterface
+            const data = { description, product_id: product.id, star, user_id: user?.id, images: uploadedImageUrls } as ReviewInterface
             const res = await ReviewService.createReview(data)
             dispatchAlert({ loading: false })
             window.location.reload();

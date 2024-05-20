@@ -30,7 +30,7 @@ const ListProductByCategory = () => {
           {categoryList.map((categoryItem) =>
             categoryItem.path === category &&
             (
-              <>
+              <div key={categoryItem.path}>
                 <h1 className="px-4 pt-4 text-white text-[24px] font-semibold">
                   {categoryItem.title}
                 </h1>
@@ -39,7 +39,7 @@ const ListProductByCategory = () => {
                   <span className="divider mx-2 opacity-50">/</span>
                   <span> {categoryItem.title}</span>
                 </div>
-              </>
+              </div>
             )
           )}
         </div>

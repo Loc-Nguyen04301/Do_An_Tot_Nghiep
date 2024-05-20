@@ -38,7 +38,7 @@ const Purchase = () => {
 
     const dispatchAlert = useAlertDispatch()
 
-    const fetchBill = async (purchaseStatus: PurchaseStatus, userId: number, current: number, pageSize: number) => {
+    const fetchBill = async (purchaseStatus: PurchaseStatus, userId: number | undefined, current: number, pageSize: number) => {
         dispatchAlert({ loading: true })
         try {
             let res
@@ -87,8 +87,8 @@ const Purchase = () => {
     }
 
     useEffect(() => {
-        if (user.id) fetchBill(purchaseStatus, user.id, current, pageSize)
-    }, [purchaseStatus, user.id, current, pageSize])
+        if (user) fetchBill(purchaseStatus, user.id, current, pageSize)
+    }, [purchaseStatus, user, current, pageSize])
 
     return (
         <>

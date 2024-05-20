@@ -41,7 +41,7 @@ const Profile = () => {
     const handleUpdateProfile = async () => {
         dispatchAlert({ loading: true })
         try {
-            if (user.id && avatarTempFile) {
+            if (user?.id && avatarTempFile) {
                 const res = await imageUpload(avatarTempFile)
                 await UserService.updateProfile(user.id, { avatar: res.url })
                 dispatchAlert({ loading: false })
@@ -53,8 +53,8 @@ const Profile = () => {
     }
 
     useEffect(() => {
-        setAvatarTemp(user.avatar)
-    }, [user.avatar])
+        setAvatarTemp(user?.avatar)
+    }, [user?.avatar])
 
     return (
         <>
@@ -85,19 +85,19 @@ const Profile = () => {
                                     <div className='w-[70%] border-r border-border-color mt-7'>
                                         <div className='pb-5'>
                                             <div className='inline-block w-1/4 text-right text-text-gray'>Email</div>
-                                            <div className='inline-block pl-3'>{user.email}</div>
+                                            <div className='inline-block pl-3'>{user?.email}</div>
                                         </div>
                                         <div className='pb-5'>
                                             <div className='inline-block w-1/4 text-right text-text-gray'>Tên người dùng</div>
-                                            <div className='inline-block pl-3'>{user.username}</div>
+                                            <div className='inline-block pl-3'>{user?.username}</div>
                                         </div >
                                         <div className='pb-5'>
                                             <div className='inline-block w-1/4 text-right text-text-gray'>Số điện thoại</div>
-                                            <div className='inline-block pl-3'>{user.phone_number}</div>
+                                            <div className='inline-block pl-3'>{user?.phone_number}</div>
                                         </div>
                                         <div className='pb-5'>
                                             <div className='inline-block w-1/4 text-right text-text-gray'>Địa chỉ</div>
-                                            <div className='inline-block pl-3'>{user.address}</div>
+                                            <div className='inline-block pl-3'>{user?.address}</div>
                                         </div>
                                         <div className='text-center'>
                                             <button className='w-[100px] rounded-md bg-main-orange-color py-2 hover:shadow-checkout-btn' onClick={handleUpdateProfile}>

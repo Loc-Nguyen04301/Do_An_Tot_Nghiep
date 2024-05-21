@@ -21,6 +21,21 @@ export class BillsController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(new SuccessInterceptor())
+  @Get("notification")
+  findAllNotification(
+    // @Query('customer_name') customer_name: string,
+    // @Query('address') address: string,
+    // @Query('phone_number') phone_number: string,
+    // @Query('order_status') order_status: string,
+    // @Query('payment_status') payment_status: string,
+    // @Query('return_status') return_status: string,
+  ) {
+    return this.billsService.findAllNotification()
+  }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor())
   @Get("findAllAdmin")
   findAllAdmin(
     @Query('customer_name') customer_name: string,

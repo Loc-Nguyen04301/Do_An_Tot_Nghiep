@@ -209,4 +209,8 @@ export class BillsService {
 
     return { bills }
   }
+
+  async findAllNotification() {
+    // const [bills, records] = await Promise.all([])
+  }
 }

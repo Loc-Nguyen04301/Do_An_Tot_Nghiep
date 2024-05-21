@@ -19,7 +19,7 @@ import { logOut } from '@/redux-toolkit/authSlice';
 import { useAlertDispatch } from '@/contexts/AlertContext';
 import ShowNotification from '@/layouts/AdminLayout/components/ShowNotification';
 
-const { Header, Content, Sider } = Layout;
+const { Content, Sider } = Layout;
 type MenuItem = Required<MenuProps>['items'][number];
 function getItem(
     label: React.ReactNode,

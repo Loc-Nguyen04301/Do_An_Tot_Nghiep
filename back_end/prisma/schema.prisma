@@ -90,6 +90,13 @@ model Bill {
   update_at      DateTime?     @updatedAt
   user           User?         @relation(fields: [user_id], references: [id])
   items          Item[]
+  NotifiBill     NotifiBill?
+}
+
+model NotifiBill {
+  bill_id Int     @unique
+  is_read Boolean @default(false)
+  bill    Bill    @relation(fields: [bill_id], references: [id])
 }
 
 model Item {

@@ -30,6 +30,14 @@ const getBillAdmin = ({ params }: { params?: BillParams }) => {
     return http.get(`/bills/findAllAdmin`, { params } as AxiosRequestConfig)
 }
 
-const BillService = { createBill, getBillDetailById, getBill, getBillAdmin }
+const getBillNotification = () => {
+    return http.get(`/bills/notification`)
+}
+
+const isReadBill = (id: number) => {
+    return http.patch(`/bills/isread/${id}`)
+}
+
+const BillService = { createBill, getBillDetailById, getBill, getBillAdmin, getBillNotification, isReadBill }
 
 export default BillService

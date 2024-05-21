@@ -35,7 +35,7 @@ function getItem(
     } as MenuItem;
 }
 
-enum RoutePath {
+export enum RoutePathAdmin {
     DashBoard = "/admin",
     Inventory = "/admin/inventory",
     OrderAdmin = "/admin/order",
@@ -45,12 +45,12 @@ enum RoutePath {
 }
 
 const items: MenuItem[] = [
-    getItem('Dashboard', RoutePath.DashBoard, <AppstoreOutlined />),
-    getItem('Kho hàng', RoutePath.Inventory, <ShopOutlined />),
-    getItem('Đơn hàng', RoutePath.OrderAdmin, <ShoppingCartOutlined />),
-    getItem('Thành viên', RoutePath.Customer, <UserOutlined />),
-    getItem('Thông báo', RoutePath.Notification, <BellOutlined />),
-    getItem('Đăng xuất', RoutePath.Logout, <LogoutOutlined />),
+    getItem('Dashboard', RoutePathAdmin.DashBoard, <AppstoreOutlined />),
+    getItem('Kho hàng', RoutePathAdmin.Inventory, <ShopOutlined />),
+    getItem('Đơn hàng', RoutePathAdmin.OrderAdmin, <ShoppingCartOutlined />),
+    getItem('Thành viên', RoutePathAdmin.Customer, <UserOutlined />),
+    getItem('Thông báo', RoutePathAdmin.Notification, <BellOutlined />),
+    getItem('Đăng xuất', RoutePathAdmin.Logout, <LogoutOutlined />),
 ];
 interface AdminLayouttProps {
     children?: React.ReactElement
@@ -58,7 +58,7 @@ interface AdminLayouttProps {
 
 const AdminLayout = ({ children }: AdminLayouttProps) => {
     const [collapsed, setCollapsed] = useState(false);
-    const [selectedKeys, setSelectedKeys] = useState<string>(RoutePath.DashBoard);
+    const [selectedKeys, setSelectedKeys] = useState<string>(RoutePathAdmin.DashBoard);
     const { user } = useAppSelector(state => state.auth)
 
     const dispatch = useAppDispatch()
@@ -76,10 +76,6 @@ const AdminLayout = ({ children }: AdminLayouttProps) => {
         token: { colorBgContainer },
     } = theme.useToken();
 
-    const handleNavigateNotification = () => {
-        navigate(RoutePath.Notification)
-    }
-
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)} theme='dark'>
@@ -92,7 +88,7 @@ const AdminLayout = ({ children }: AdminLayouttProps) => {
                     selectedKeys={[selectedKeys]}
                     items={items}
                     onClick={(item) => {
-                        if (item.key === RoutePath.Logout) {
+                        if (item.key === RoutePathAdmin.Logout) {
                             dispatchAlert({ loading: true })
                             try {
                                 setTimeout(() => {
@@ -112,13 +108,7 @@ const AdminLayout = ({ children }: AdminLayouttProps) => {
             <Layout>
                 <header style={{ background: colorBgContainer }} className='flex justify-end items-center gap-5 h-[50px] px-10'>
                     <SearchOutlined className='text-2xl' />
-                    <div className='relative dropdown'>
-                        <div className="absolute -top-2 -right-1 bg-button-red-color text-white w-4 h-4 rounded-full text-center cursor-pointer">
-                            <span className="text-xs font-semibold block">0</span>
-                        </div>
-                        <BellOutlined className='text-2xl' onClick={handleNavigateNotification} />
-                        <ShowNotification />
-                    </div>
+                    <ShowNotification />
                     <div>
                         <Avatar src={user?.avatar} />
                         <Typography.Text type="secondary" strong className='ml-2'>{user?.username}</Typography.Text>

@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>Trang chủ - THOL </title>
+        <title>Trang chủ - THOL</title>
         <meta name='description' content='Beginner friendly page for learning React Helmet.' />
       </Helmet>
       <div className="mx-auto max-w-[1140px] py-8">

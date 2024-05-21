@@ -24,6 +24,7 @@ export class BillsService {
       const product = await this.prisma.product.findUnique({
         where: { id: cartItem.product_id },
       });
+      console.log({ product })
       if (product.available < cartItem.quantity) throw new BadRequestException(`Số lượng ${product.name} không đủ`)
     }))
 
@@ -31,6 +32,8 @@ export class BillsService {
       // create bill
       const bill = await tr.bill.create({ data: billData })
       if (!bill) throw new BadRequestException('Không tạo được đơn hàng');
+      // update notification bill state
+      if (bill.id) await tr.notifiBill.create({ data: { bill_id: bill.id } })
 
       const shortCartItemsData = shortCartItems.map((item => { return { bill_id: bill.id, product_id: item.product_id, quantity: item.quantity, total_price: item.total_price } }))
       await Promise.all(shortCartItemsData.map(async (cartItem) => {
@@ -211,6 +214,45 @@ export class BillsService {
   }
 
   async findAllNotification() {
-    // const [bills, records] = await Promise.all([])
+    let bills: any[] = [];
+    bills = await this.prisma.notifiBill.findMany({
+      select: {
+        bill: {
+          select: {
+            id: true,
+            user_id: true,
+            customer_name: true,
+            created_at: true
+          }
+        },
+        is_read: true
+      },
+      orderBy: {
+        bill: {
+          created_at: "desc"
+        }
+      }
+    })
+
+    const unread_records = await this.prisma.notifiBill.count({ where: { is_read: false } })
+
+    bills = bills.map(({ bill, is_read }) => ({
+      ...bill,
+      is_read
+    }));
+    return { bills, unread_records }
+  }
+
+  async isReadBill(billId: number) {
+    await this.prisma.notifiBill.update({
+      where: {
+        bill_id: billId
+      },
+      data: {
+        is_read: true
+      }
+    })
+
+    return
   }
 }

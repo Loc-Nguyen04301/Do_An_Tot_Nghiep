@@ -12,6 +12,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { format } from "date-fns"
 import { convertNumbertoMoney } from '@/utils';
+import { useAppDispatch } from '@/redux-toolkit/hook';
+import { markReadBill } from '@/redux-toolkit/billNotiSlice';
 
 var DATETIME_FORMAT = 'dd-MM-yyyy HH:mm'
 
@@ -28,6 +30,7 @@ const schema = yup
 const UpdateBill = () => {
     const [selectedBill, setSelectedBill] = useState<IBill>()
 
+    const dispatch = useAppDispatch()
     const dispatchAlert = useAlertDispatch()
     const navigate = useNavigate()
     const params = useParams()
@@ -37,6 +40,7 @@ const UpdateBill = () => {
             dispatchAlert({ loading: true })
             try {
                 const res = await BillService.getBillDetailById(id)
+                await BillService.isReadBill(id)
                 setSelectedBill(res.data.data)
                 dispatchAlert({ loading: false })
             } catch (error) {
@@ -44,14 +48,17 @@ const UpdateBill = () => {
             }
         }
 
-        if (params.id) getBillDetail(Number(params.id))
+        if (params.id) {
+            getBillDetail(Number(params.id)).then(() => {
+                dispatch(markReadBill({ id: Number(params.id) }))
+            })
+        }
     }, [params.id])
 
     const handleSubmit = () => {
 
     }
 
-    console.log({ selectedBill })
     return (
         selectedBill &&
         <>

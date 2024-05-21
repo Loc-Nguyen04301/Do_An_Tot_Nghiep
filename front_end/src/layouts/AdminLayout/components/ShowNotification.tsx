@@ -1,21 +1,50 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { BellOutlined } from '@ant-design/icons';
 import "./ShowNotification.scss"
+import { useNavigate } from 'react-router-dom';
+import { RoutePathAdmin } from '@/layouts/AdminLayout';
+import { useAppDispatch, useAppSelector } from '@/redux-toolkit/hook';
+import { fetchBillNoti, markReadBill } from '@/redux-toolkit/billNotiSlice';
+import { format } from 'date-fns';
+const DATETIME_FORMAT = 'dd-MM-yyyy HH:mm'
 
 const ShowNotification = () => {
     const [lengthNotis, setLengthNotis] = useState(4)
+    const { bills, unread_records } = useAppSelector(state => state.billNoti)
+
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(fetchBillNoti())
+    }, [])
+
+    const handleNavigateNotification = () => {
+        navigate(RoutePathAdmin.Notification)
+    }
+
+    const handleBillIsRead = (billId: number) => {
+        navigate(`/admin/bill/detail/${billId}`)
+    }
 
     return (
-        <div className="dropdown-content notification bg-[#f0f8ff] !min-w-[300px] right-0 top-[30px] p-4 shadow-search-box z-10">
-            <ul className='max-h-[335px] overflow-y-auto'>
-                {Array.from({ length: lengthNotis }, (_i, index) =>
-                    <div className='flex items-center hover:bg-[rgba(0,0,0,.2)] rounded-md px-2'>
-                        <li className='py-3 border-b border-border-color leading-6' key={index}>Mã đơn hàng 57 được mua vào lúc 14/05/2022 14:30</li>
-                        <div className='w-3 h-[9px] bg-blue-600 rounded-full contents:" "'></div>
-                    </div>
-                )}
-            </ul>
-            <div className='text-center text-sm text-category-title cursor-pointer hover:text-[#1677ff]'>
-                <span onClick={() => { setLengthNotis(prev => prev + 4) }}>click to expand</span>
+        <div className='relative dropdown'>
+            <div className="absolute -top-2 -right-1 bg-button-red-color text-white w-4 h-4 rounded-full text-center cursor-pointer">
+                <span className="text-xs font-semibold block">{unread_records}</span>
+            </div>
+            <BellOutlined className='text-2xl' onClick={handleNavigateNotification} />
+            <div className="dropdown-content notification bg-[#f0f8ff] !min-w-[300px] right-0 top-[30px] p-4 shadow-search-box z-10">
+                <ul className='max-h-[335px] overflow-y-auto'>
+                    {bills.map((item) =>
+                        <li className='flex items-center hover:bg-[rgba(0,0,0,.2)] rounded-md px-2' key={item.id} onClick={() => handleBillIsRead(item.id)}>
+                            <div className='py-3 border-b border-border-color leading-6'>Mã đơn hàng {item.id} được mua vào lúc {format(item.created_at, DATETIME_FORMAT)}</div>
+                            {!item.is_read && <div className='w-[12px] h-[12px] bg-blue-600 rounded-full contents:" "'></div>}
+                        </li>
+                    )}
+                </ul>
+                <div className='text-center text-sm text-category-title cursor-pointer hover:text-[#1677ff]'>
+                    <span onClick={() => { setLengthNotis(prev => prev + 4) }}>click to expand</span>
+                </div>
             </div>
         </div>
     )

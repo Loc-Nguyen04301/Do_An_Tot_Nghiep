@@ -100,7 +100,7 @@ const Checkout = () => {
         dispatchAlert({ loading: true })
         try {
             setTimeout(async () => {
-                const createBillDto = { ...data, shortCartItems, user_id: user.id, payment_method: paymentMethod, total_amount: totalAmount } as CreateBillDto
+                const createBillDto = { ...data, shortCartItems, user_id: user?.id, payment_method: paymentMethod, total_amount: totalAmount } as CreateBillDto
                 const res = await BillService.createBill(createBillDto)
                 setBillId(res.data.data.billId)
                 if (paymentMethod === PaymentMethod.VNPAY) {

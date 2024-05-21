@@ -33,7 +33,17 @@ export class ReviewsService {
       }
     })
 
-    return listReview
+    const [all_star, five_star, four_star, three_star, two_star, one_star] = await Promise.all([
+      this.prisma.review.count({ where: { product_id: productId } }),
+      this.prisma.review.count({ where: { product_id: productId, star: 5 } }),
+      this.prisma.review.count({ where: { product_id: productId, star: 4 } }),
+      this.prisma.review.count({ where: { product_id: productId, star: 3 } }),
+      this.prisma.review.count({ where: { product_id: productId, star: 2 } }),
+      this.prisma.review.count({ where: { product_id: productId, star: 1 } }),
+    ])
+
+
+    return { listReview, all_star, five_star, four_star, three_star, two_star, one_star }
   }
 
   // findOne(id: number) {

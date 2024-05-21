@@ -256,3 +256,11 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.ant-rate-star.ant-rate-star-full {
+  margin-inline-end: 0px !important;
+}
+
+.ant-rate-star.ant-rate-star-zero {
+  margin-inline-end: 0px !important;
+}

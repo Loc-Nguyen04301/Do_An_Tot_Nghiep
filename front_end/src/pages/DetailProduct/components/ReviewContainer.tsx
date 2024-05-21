@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, memo, useState } from 'react'
 import { IDetailProduct } from '..';
 import { Rate } from 'antd';
 import { checkImage, imageUpload } from '@/utils';
@@ -54,7 +54,7 @@ const ReviewContainer = ({ product, handlePreviewImage }: ReviewContainerProps) 
             });
             const uploadedImageUrls = await Promise.all(uploadPromises);
             const data = { description, product_id: product.id, star, user_id: user?.id, images: uploadedImageUrls } as ReviewInterface
-            const res = await ReviewService.createReview(data)
+            await ReviewService.createReview(data)
             dispatchAlert({ loading: false })
             window.location.reload();
         } catch (error) {
@@ -103,4 +103,4 @@ const ReviewContainer = ({ product, handlePreviewImage }: ReviewContainerProps) 
     )
 }
 
-export default ReviewContainer
+export default memo(ReviewContainer)

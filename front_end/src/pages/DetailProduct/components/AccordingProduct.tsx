@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, memo } from "react"
 import type { CollapseProps } from "antd"
 import { Avatar, Collapse, Rate } from "antd"
 import { IDetailProduct } from ".."
@@ -6,6 +6,7 @@ import { convertNumbertoMoney, getAccessToken } from "@/utils"
 import clsx from "clsx"
 import ReviewContainer from "./ReviewContainer"
 import { useAppSelector } from "@/redux-toolkit/hook"
+import ListReview from "@/pages/DetailProduct/components/ListReview"
 
 interface AccordingProductProps {
   product: IDetailProduct
@@ -16,8 +17,7 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
   const [imagePreview, setImagePreview] = useState("")
   const { user } = useAppSelector(state => state.auth)
 
-  const isReviewed = product.reviews.findIndex((review) => review.user.id === user.id)
-  console.log(isReviewed)
+  const isReviewed = product.reviews.findIndex((review) => review.user.id === user?.id)
 
   const handlePreviewImage = (src: string) => {
     setImagePreview(src)
@@ -81,39 +81,7 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
           <h3 className="font-semibold text-2xl text-category-title mb-1">
             Đánh giá sản phẩm
           </h3>
-          {product.reviews.map((review) =>
-            <div
-              key={`${review.id}`}
-              className="flex gap-4 border-b border-border-color py-4"
-            >
-              <Avatar
-                src={review.user.avatar}
-                className="mt-1"
-              />
-              <div>
-                <span className="text-[#222] text-xs">
-                  {review.user.username}
-                </span>
-                <div>
-                  <Rate disabled defaultValue={review.star} />
-                </div>
-                <p className="text-[#0000008a] text-xs">
-                  {review.created_at.substring(0, 10)}
-                </p>
-                <p className="text-black text-base">
-                  {review.description}
-                </p>
-                <div className="image-lists flex gap-2 mt-3">
-                  {review.images.map((image, index) =>
-                    <img
-                      key={index}
-                      src={image}
-                      className="max-h-[100px] cursor-zoom-in hover:opacity-70"
-                      onClick={() => handlePreviewImage(image)}
-                    />)}
-                </div>
-              </div>
-            </div>)}
+          <ListReview product={product} handlePreviewImage={handlePreviewImage} />
           {
             product.reviews.length === 0 && <p className="text-[#777777] text-[16px] text-center mt-2">
               Hiện tại sản phẩm chưa có đánh giá nào, bạn hãy trở thành người đầu tiên đánh giá cho sản phẩm này.
@@ -149,4 +117,4 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
   )
 }
 
-export default AccordingProduct
+export default memo(AccordingProduct)

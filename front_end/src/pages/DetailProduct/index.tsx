@@ -22,7 +22,7 @@ interface Category {
   name: string;
 }
 
-interface Review {
+export interface Review {
   id: number;
   user: { id: number, avatar: string, username: string };
   images: string[],
@@ -81,41 +81,40 @@ const DetailProduct = () => {
     }
   }
 
-  const getProductById = async () => {
-    dispatchAlert({ loading: true })
-    try {
-      const res = await ProductService.getProductById(Number(label))
-      setProduct(res.data.data)
-      // default = 0 
-      const randomCategory = res.data.data.categories[0].category.name
-      setRelatedCategory(randomCategory)
-      dispatchAlert({ loading: false })
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   useEffect(() => {
+    const getProductById = async () => {
+      dispatchAlert({ loading: true })
+      try {
+        const res = await ProductService.getProductById(Number(label))
+        setProduct(res.data.data)
+        const randomCategory = res.data.data.categories[0].category.name
+        setRelatedCategory(randomCategory)
+        dispatchAlert({ loading: false })
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
     getProductById()
   }, [label])
 
-  const getProductsByCategory = async (relatedCategory: string) => {
-    dispatchAlert({ loading: true })
-    try {
-      if (relatedCategory) {
-        const res = await ProductService.getProductsByCategory(relatedCategory)
-        // Show maximum 6 items in Related Products
-        var relatedProducts = res.data.data.slice(0, 6) as IDetailProduct[]
-        relatedProducts = relatedProducts.filter((item) => item.id !== product?.id)
-        setRelatedProducts(relatedProducts)
-        dispatchAlert({ loading: false })
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   useEffect(() => {
+    const getProductsByCategory = async (relatedCategory: string) => {
+      dispatchAlert({ loading: true })
+      try {
+        if (relatedCategory) {
+          const res = await ProductService.getProductsByCategory(relatedCategory)
+          // Show maximum 6 items in Related Products
+          var relatedProducts = res.data.data.slice(0, 6) as IDetailProduct[]
+          relatedProducts = relatedProducts.filter((item) => item.id !== product?.id)
+          setRelatedProducts(relatedProducts)
+          dispatchAlert({ loading: false })
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
     getProductsByCategory(relatedCategory)
   }, [relatedCategory])
 
@@ -145,12 +144,10 @@ const DetailProduct = () => {
   if (product)
     return (
       <>
-        <>
-          <Helmet>
-            <title> {product.name} - THOL</title>
-            <meta name='description' content='Beginner friendly page for learning React Helmet.' />
-          </Helmet>
-        </>
+        <Helmet>
+          <title> {product.name} - THOL</title>
+          <meta name='description' content='Beginner friendly page for learning React Helmet.' />
+        </Helmet>
         <div className=" bg-[url('https://www.thol.com.vn/wp-content/uploads/2015/11/nang-luong-suc-khoe-scaled.jpg')] bg-no-repeat bg-center bg-cover">
           <div className="container max-w-[1140px] mx-auto max-md:text-center">
             <div className="px-4 py-5 text-white text-[16px]">

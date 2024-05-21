@@ -40,6 +40,7 @@ enum RoutePath {
     Inventory = "/admin/inventory",
     OrderAdmin = "/admin/order",
     Customer = "/admin/customer",
+    Notification = "/admin/notification",
     Logout = "/"
 }
 
@@ -48,6 +49,7 @@ const items: MenuItem[] = [
     getItem('Kho hàng', RoutePath.Inventory, <ShopOutlined />),
     getItem('Đơn hàng', RoutePath.OrderAdmin, <ShoppingCartOutlined />),
     getItem('Thành viên', RoutePath.Customer, <UserOutlined />),
+    getItem('Thông báo', RoutePath.Notification, <BellOutlined />),
     getItem('Đăng xuất', RoutePath.Logout, <LogoutOutlined />),
 ];
 interface AdminLayouttProps {
@@ -58,7 +60,6 @@ const AdminLayout = ({ children }: AdminLayouttProps) => {
     const [collapsed, setCollapsed] = useState(false);
     const [selectedKeys, setSelectedKeys] = useState<string>(RoutePath.DashBoard);
     const { user } = useAppSelector(state => state.auth)
-    const [isShowNoti, setIsShowNoti] = useState(false)
 
     const dispatch = useAppDispatch()
     const dispatchAlert = useAlertDispatch()
@@ -74,6 +75,10 @@ const AdminLayout = ({ children }: AdminLayouttProps) => {
     const {
         token: { colorBgContainer },
     } = theme.useToken();
+
+    const handleNavigateNotification = () => {
+        navigate(RoutePath.Notification)
+    }
 
     return (
         <Layout style={{ minHeight: '100vh' }}>
@@ -105,13 +110,13 @@ const AdminLayout = ({ children }: AdminLayouttProps) => {
                     }} />
             </Sider>
             <Layout>
-                <header style={{ background: colorBgContainer }} className='flex justify-end items-center gap-5 h-[50px]'>
+                <header style={{ background: colorBgContainer }} className='flex justify-end items-center gap-5 h-[50px] px-10'>
                     <SearchOutlined className='text-2xl' />
                     <div className='relative dropdown'>
                         <div className="absolute -top-2 -right-1 bg-button-red-color text-white w-4 h-4 rounded-full text-center cursor-pointer">
                             <span className="text-xs font-semibold block">0</span>
                         </div>
-                        <BellOutlined className='text-2xl' onClick={() => setIsShowNoti(prev => !prev)} />
+                        <BellOutlined className='text-2xl' onClick={handleNavigateNotification} />
                         <ShowNotification />
                     </div>
                     <div>

@@ -5,6 +5,8 @@ import "./Notification.scss"
 import { useAppDispatch, useAppSelector } from '@/redux-toolkit/hook'
 import { useNavigate } from 'react-router-dom'
 import { IBillNoti } from '@/redux-toolkit/billNotiSlice'
+import { format } from 'date-fns';
+const DATETIME_FORMAT = 'dd-MM-yyyy HH:mm'
 
 const Notification = () => {
     const [stateNoti, setstateNoti] = useState<string | number>('All');
@@ -38,15 +40,18 @@ const Notification = () => {
             <Typography.Title level={4}>Thông báo</Typography.Title>
             <div className='container mx-auto w-[700px]'>
                 <Segmented size="large" options={['All', `Unread (${unread_records})`]} className='w-full bg-white !rounded-none p-2' value={stateNoti} onChange={setstateNoti} />
-                <ul className='border-t-2  bg-white'>
+                <ul className='border-t-2 bg-white'>
                     {filterBills && filterBills.map(item =>
-                        <li className='p-4 cursor-pointer' key={item.id} onClick={() => handleBillIsRead(item.id)}>
-                            {item.user_id ?
-                                <p className='text-lg'>Mã đơn hàng {item.id} được mua bởi khách thành viên {item.customer_name}</p>
-                                :
-                                <p className='text-lg'>Mã đơn hàng {item.id} được mua bởi khách truy cập</p>
-                            }
-                            <span className='text-category-title'>14/05/2022 14:30</span>
+                        <li className='p-4 cursor-pointer flex justify-between items-center' key={item.id} onClick={() => handleBillIsRead(item.id)}>
+                            <div>
+                                {item.user_id ?
+                                    <p className='text-lg'>Mã đơn hàng {item.id} được mua bởi khách thành viên {item.customer_name}</p>
+                                    :
+                                    <p className='text-lg'>Mã đơn hàng {item.id} được mua bởi khách truy cập</p>
+                                }
+                                <span className='text-category-title'>{format(item.created_at, DATETIME_FORMAT)}</span>
+                            </div>
+                            {!item.is_read && <div className='min-w-[12px] h-[12px] bg-blue-600 rounded-full contents:" "'></div>}
                         </li>
                     )}
                 </ul>

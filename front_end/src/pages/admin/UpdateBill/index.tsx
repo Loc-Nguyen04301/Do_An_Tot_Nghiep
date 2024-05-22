@@ -121,11 +121,13 @@ const UpdateBill = () => {
                                     </div>
                                 </div>
                                 <div className='flex flex-col gap-2'>
-                                    {
-                                        item.product.old_price != 0 &&
-                                        <del className='text-category-title'>{convertNumbertoMoney(item.product.old_price)}</del>
-                                    }
-                                    <span className='text-main-orange-color'>{convertNumbertoMoney(item.product.new_price)}</span>
+                                    <div>
+                                        {
+                                            item.product.old_price != 0 &&
+                                            <del className='text-category-title mr-2'>{convertNumbertoMoney(item.product.old_price)}</del>
+                                        }
+                                        <span className='text-main-orange-color'>{convertNumbertoMoney(item.product.new_price)}</span>
+                                    </div>
                                     <p className=''>
                                         <span className='mr-2 text-nowrap'>Thành tiền:</span>
                                         <span className='text-main-orange-color font-semibold'>{convertNumbertoMoney(item.total_price)}</span>

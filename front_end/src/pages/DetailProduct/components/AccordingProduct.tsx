@@ -81,11 +81,13 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
           <h3 className="font-semibold text-2xl text-category-title mb-1">
             Đánh giá sản phẩm
           </h3>
-          <ListReview product={product} handlePreviewImage={handlePreviewImage} />
           {
-            product.reviews.length === 0 && <p className="text-[#777777] text-[16px] text-center mt-2">
-              Hiện tại sản phẩm chưa có đánh giá nào, bạn hãy trở thành người đầu tiên đánh giá cho sản phẩm này.
-            </p>}
+            product.reviews.length !== 0
+              ? <ListReview product={product} handlePreviewImage={handlePreviewImage} />
+              : <p className="text-[#777777] text-[16px] text-center mt-2">
+                Hiện tại sản phẩm chưa có đánh giá nào, bạn hãy trở thành người đầu tiên đánh giá cho sản phẩm này.
+              </p>
+          }
           {
             accessToken && isReviewed === -1
               ?

@@ -118,47 +118,60 @@ const ListReview = ({ product, handlePreviewImage }: ListReviewProps) => {
                     <div className={clsx('bg-white px-2 h-8 w-[100px] text-center leading-8 border inline-block mr-4 cursor-pointer', star === RatingStar.one && 'text-main-orange-color border-main-orange-color')} onClick={() => handleChangeStarStatus(RatingStar.one)}>1 sao ({numberByStar.one_star})</div>
                 </div>
             </div>
-            <ul>
-                {currentFilterReviews && currentFilterReviews.map((review) => (
-                    <li key={`${review.id}`} className="flex gap-4 border-b border-border-color py-4 last:border-b-0">
-                        <Avatar
-                            src={review.user.avatar}
-                            className="mt-1"
-                        />
+            {
+                filterReviews && filterReviews.length === 0
+                    ?
+                    <div className='h-[400px] flex flex-col items-center justify-center'>
                         <div>
-                            <span className="text-[#222] text-xs">
-                                {review.user.username}
-                            </span>
-                            <div>
-                                <Rate disabled defaultValue={review.star} />
-                            </div>
-                            <p className="text-[#0000008a] text-xs">
-                                {review.created_at.substring(0, 10)}
-                            </p>
-                            <p className="text-black text-base">
-                                {review.description}
-                            </p>
-                            <div className="image-lists flex gap-2 mt-3">
-                                {review?.images.map((image, index) => (
-                                    <img
-                                        key={index}
-                                        src={image}
-                                        className="max-h-[100px] cursor-zoom-in hover:opacity-70"
-                                        onClick={() => handlePreviewImage(image)}
-                                    />
-                                ))}
-                            </div>
+                            <img src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/shoprating/7d900d4dc402db5304b2.png" />
                         </div>
-                    </li>
-                ))}
-            </ul>
-            {filterReviews && filterReviews.length > pageSize && <Pagination
-                current={currentPage}
-                pageSize={pageSize}
-                total={filterReviews?.length}
-                onChange={handlePageChange}
-                className='text-center'
-            />}
+                        <h1 className='text-lg'>Chưa có đánh giá </h1>
+                    </div>
+                    :
+                    <ul>
+                        {currentFilterReviews && currentFilterReviews.map((review) => (
+                            <li key={`${review.id}`} className="flex gap-4 border-b border-border-color py-4 last:border-b-0">
+                                <Avatar
+                                    src={review.user.avatar}
+                                    className="mt-1"
+                                />
+                                <div>
+                                    <span className="text-[#222] text-xs">
+                                        {review.user.username}
+                                    </span>
+                                    <div>
+                                        <Rate disabled defaultValue={review.star} />
+                                    </div>
+                                    <p className="text-[#0000008a] text-xs">
+                                        {review.created_at.substring(0, 10)}
+                                    </p>
+                                    <p className="text-black text-base">
+                                        {review.description}
+                                    </p>
+                                    <div className="image-lists flex gap-2 mt-3">
+                                        {review?.images.map((image, index) => (
+                                            <img
+                                                key={index}
+                                                src={image}
+                                                className="max-h-[100px] cursor-zoom-in hover:opacity-70"
+                                                onClick={() => handlePreviewImage(image)}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+            }
+            {filterReviews && filterReviews.length > pageSize &&
+                <Pagination
+                    current={currentPage}
+                    pageSize={pageSize}
+                    total={filterReviews?.length}
+                    onChange={handlePageChange}
+                    className='text-center'
+                />
+            }
         </>
     )
 }

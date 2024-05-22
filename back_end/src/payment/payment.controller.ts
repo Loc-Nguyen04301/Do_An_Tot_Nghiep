@@ -36,7 +36,7 @@ export class PaymentController {
         vnpParams['vnp_CurrCode'] = 'VND';
         vnpParams['vnp_IpAddr'] = '127.0.0.1';
         vnpParams['vnp_Locale'] = 'vn';
-        vnpParams['vnp_OrderInfo'] = "Thanhtoandonhang";
+        vnpParams['vnp_OrderInfo'] = "THANH TOAN DON HANG";
         vnpParams['vnp_OrderType'] = "other";
         vnpParams['vnp_ReturnUrl'] = returnUrl;
         vnpParams['vnp_TxnRef'] = orderId;

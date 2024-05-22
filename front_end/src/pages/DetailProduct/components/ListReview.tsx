@@ -107,7 +107,7 @@ const ListReview = ({ product, handlePreviewImage }: ListReviewProps) => {
                         <span className='text-[30px] mr-2'>{numberByStar.average_rating?.toFixed(1)}</span>
                         <span className='text-[18px]'>trên 5</span>
                     </div>
-                    <Rate disabled value={numberByStar?.average_rating} />
+                    <Rate value={numberByStar?.average_rating} disabled allowHalf />
                 </div>
                 <div>
                     <div className={clsx('bg-white px-2 h-8 w-[100px] text-center leading-8 border inline-block mr-4 cursor-pointer', star === RatingStar.all && 'text-main-orange-color border-main-orange-color')} onClick={() => handleChangeStarStatus(RatingStar.all)}>Tất cả ({numberByStar.all_star})</div>
@@ -140,7 +140,7 @@ const ListReview = ({ product, handlePreviewImage }: ListReviewProps) => {
                                         {review.user.username}
                                     </span>
                                     <div>
-                                        <Rate disabled defaultValue={review.star} />
+                                        <Rate defaultValue={review.star} disabled />
                                     </div>
                                     <p className="text-[#0000008a] text-xs">
                                         {review.created_at.substring(0, 10)}

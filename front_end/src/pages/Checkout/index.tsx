@@ -114,7 +114,7 @@ const Checkout = () => {
                 else if (paymentMethod === PaymentMethod.BANK_TRANSFER) {
                     const now = new Date()
                     const createdAt = format(now, DATETIME_FORMAT)
-                    const res = await VietQRService.createPaymentUrl({ amount: 10000, addInfo: `${data.customer_name} CHUYEN KHOAN MUA HANG ${createdAt}` })
+                    const res = await VietQRService.createPaymentQR({ amount: 10000, addInfo: `${data.customer_name} CHUYEN KHOAN MUA HANG ${createdAt}` })
                     setPaymentURL(res.data.data.qrDataURL)
                     dispatchAlert({ loading: false })
                     navigate(RoutePath.OrderComplete)

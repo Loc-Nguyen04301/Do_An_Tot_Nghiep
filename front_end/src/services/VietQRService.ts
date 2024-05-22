@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const createPaymentUrl = ({ addInfo, amount }: { addInfo: string, amount: number }) => {
+const createPaymentQR = ({ addInfo, amount }: { addInfo: string, amount: number }) => {
     return axios.post("https://api.vietqr.io/v2/generate", {
         "accountNo": 103870480417,
         "accountName": "NGUYEN GIA LOC",
@@ -19,6 +19,6 @@ const createPaymentUrl = ({ addInfo, amount }: { addInfo: string, amount: number
     )
 }
 
-const VietQRService = { createPaymentUrl }
+const VietQRService = { createPaymentQR }
 
 export default VietQRService

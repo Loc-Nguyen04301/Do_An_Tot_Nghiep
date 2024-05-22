@@ -41,9 +41,10 @@ export class ReviewsService {
       this.prisma.review.count({ where: { product_id: productId, star: 2 } }),
       this.prisma.review.count({ where: { product_id: productId, star: 1 } }),
     ])
+    const average_rating = (5 * five_star + 4 * four_star + 3 * three_star + 2 * two_star + 1 * one_star) / all_star
 
 
-    return { listReview, all_star, five_star, four_star, three_star, two_star, one_star }
+    return { listReview, all_star, five_star, four_star, three_star, two_star, one_star, average_rating }
   }
 
   // findOne(id: number) {

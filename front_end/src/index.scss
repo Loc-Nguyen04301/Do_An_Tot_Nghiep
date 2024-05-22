@@ -264,3 +264,11 @@ body {
 .ant-rate-star.ant-rate-star-zero {
   margin-inline-end: 0px !important;
 }
+
+//ListReview.tsx
+.ant-pagination-item-active {
+  border-color: var(--main-orange-color) !important;
+  a {
+    color: var(--main-orange-color) !important;
+  }
+}

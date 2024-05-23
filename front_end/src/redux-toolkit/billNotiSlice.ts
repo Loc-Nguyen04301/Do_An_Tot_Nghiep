@@ -33,7 +33,6 @@ export const billNotiSlice = createSlice({
    initialState,
    reducers: {
       markReadBill: (state, action: PayloadAction<{ id: number }>) => {
-         console.log(action.payload.id)
          const isReadBill = state.bills.find((item) => item.id === action.payload.id)
          if (isReadBill && isReadBill.is_read === false) {
             isReadBill.is_read = true

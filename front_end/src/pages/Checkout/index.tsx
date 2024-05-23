@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { RoutePath } from '@/routes'
@@ -22,10 +22,10 @@ import "./Checkout.scss"
 var DATETIME_FORMAT = 'yyyyMMddHHmmss'
 
 interface FormData {
-    customer_name: string;
-    address: string;
-    phone_number: string;
-    email: string;
+    customer_name?: string;
+    address?: string;
+    phone_number?: string;
+    email?: string;
     note?: string;
 }
 
@@ -45,6 +45,7 @@ const schema = yup
     })
 
 const Checkout = () => {
+    const { user } = useAppSelector(state => state.auth)
     const [paymentMethod, setPaymentMethod] = useState<string>(PaymentMethod.SHIPCOD)
 
     const items: CollapseProps['items'] = [
@@ -84,11 +85,16 @@ const Checkout = () => {
         },
     ];
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, formState: { errors }, getValues, watch } = useForm({
         resolver: yupResolver(schema),
+        defaultValues: {
+            customer_name: user?.username,
+            phone_number: user?.phone_number,
+            email: user?.email
+        }
     });
+
     const { totalAmount, cartItems } = useAppSelector(state => state.cart)
-    const { user } = useAppSelector(state => state.auth)
     const dispatchAlert = useAlertDispatch()
     const navigate = useNavigate()
 
@@ -156,23 +162,23 @@ const Checkout = () => {
                                     THÔNG TIN THANH TOÁN
                                 </h1>
                                 <div className="my-2">
-                                    <div className="label-email tracking-wide leading-6 font-semibold">Tên</div>
-                                    <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('customer_name')} />
+                                    <div className="label-email tracking-wide leading-6 font-semibold">Tên người nhận hàng</div>
+                                    <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('customer_name')} disabled={!!user?.username} />
                                     {errors.email && <p className="text-red-500">{errors.customer_name?.message}</p>}
                                 </div>
                                 <div className="my-2">
-                                    <div className="label-email tracking-wide leading-6 font-semibold">Địa chỉ</div>
+                                    <div className="label-email tracking-wide leading-6 font-semibold">Địa chỉ giao hàng</div>
                                     <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('address')} />
                                     {errors.email && <p className="text-red-500">{errors.address?.message}</p>}
                                 </div>
                                 <div className="my-2">
                                     <div className="label-email tracking-wide leading-6 font-semibold">Số điện thoại</div>
-                                    <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('phone_number')} />
+                                    <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('phone_number')} disabled={!!user?.phone_number} />
                                     {errors.email && <p className="text-red-500">{errors.phone_number?.message}</p>}
                                 </div>
                                 <div className="my-2">
                                     <div className="label-email tracking-wide leading-6 font-semibold">Địa chỉ email</div>
-                                    <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"email"} {...register('email')} />
+                                    <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"email"} {...register('email')} disabled={!!user?.email} />
                                     {errors.email && <p className="text-red-500">{errors.email?.message}</p>}
                                 </div>
                                 <h1 className='mt-12 text-category-title text-lg'>

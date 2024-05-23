@@ -35,7 +35,6 @@ const Profile = () => {
             username: user?.username || ''
         }
     });
-    console.log(getValues())
     const [avatarTemp, setAvatarTemp] = useState<string>()
     const [avatarTempFile, setAvatarTempFile] = useState<File>()
     const [disabled, setDisabled] = useState(false)

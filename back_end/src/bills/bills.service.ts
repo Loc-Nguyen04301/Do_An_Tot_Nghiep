@@ -24,7 +24,6 @@ export class BillsService {
       const product = await this.prisma.product.findUnique({
         where: { id: cartItem.product_id },
       });
-      console.log({ product })
       if (product.available < cartItem.quantity) throw new BadRequestException(`Số lượng ${product.name} không đủ`)
     }))
 

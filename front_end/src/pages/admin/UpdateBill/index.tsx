@@ -112,35 +112,38 @@ const UpdateBill = () => {
                     <div className='p-6 border-2 border-border-color bg-white' key={selectedBill.id}>
                         <h1 className='text-center font-semibold text-2xl'>Danh sách sản phẩm</h1>
                         {selectedBill.items.map((item, index) =>
-                            <div className='py-6 border-b border-border-color flex justify-between items-center gap-2' key={`${selectedBill.id}-${index}`}>
-                                <div className='flex gap-2'>
-                                    <img src={item.product.image} width={80} />
-                                    <div className='flex flex-col justify-center'>
-                                        <span>{item.product.name} </span>
-                                        <span className='text-sm font-semibold'>x {item.quantity}</span>
+                            <div className='py-6 border-b border-border-color' key={`${selectedBill.id}-${index}`} >
+                                <div className='flex justify-between items-center gap-2'>
+                                    <div className='flex gap-2'>
+                                        <img src={item.product.image} width={80} />
+                                        <div className='flex flex-col justify-center'>
+                                            <span>{item.product.name} </span>
+                                            <span className='text-sm font-semibold'>x {item.quantity}</span>
+                                        </div>
+                                    </div>
+                                    <div className='flex flex-col gap-2'>
+                                        <div>
+                                            {
+                                                item.product.old_price != 0 &&
+                                                <del className='text-category-title mr-2'>{convertNumbertoMoney(item.product.old_price)}</del>
+                                            }
+                                            <span className='text-main-orange-color'>{convertNumbertoMoney(item.product.new_price)}</span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className='flex flex-col gap-2'>
-                                    <div>
-                                        {
-                                            item.product.old_price != 0 &&
-                                            <del className='text-category-title mr-2'>{convertNumbertoMoney(item.product.old_price)}</del>
-                                        }
-                                        <span className='text-main-orange-color'>{convertNumbertoMoney(item.product.new_price)}</span>
-                                    </div>
-                                    <p className=''>
-                                        <span className='mr-2 text-nowrap'>Thành tiền:</span>
-                                        <span className='text-main-orange-color font-semibold'>{convertNumbertoMoney(item.total_price)}</span>
-                                    </p>
-                                </div>
-                            </div>)}
+                                <p className='text-right'>
+                                    <span className='mr-2 text-nowrap'>Thành tiền:</span>
+                                    <span className='text-main-orange-color font-semibold'>{convertNumbertoMoney(item.total_price)}</span>
+                                </p>
+                            </div>
+                        )}
                         <div className='py-6 text-right'>
                             <span className='px-2'>Tổng cộng:</span>
                             <span className='px-2 text-main-orange-color text-xl font-semibold'>{convertNumbertoMoney(selectedBill.total_amount)}</span>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     )
 }

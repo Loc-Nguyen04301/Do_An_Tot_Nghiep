@@ -10,18 +10,16 @@ import { convertNumbertoMoney } from '@/utils';
 import { format } from "date-fns"
 import { ConfigProvider, Pagination, Tag } from 'antd';
 import type { PaginationProps } from 'antd';
-import { OrderStatus } from '@/types';
 import { IBill, IItem } from '@/types';
+import { OrderStatus } from '@/types';
 
 var DATETIME_FORMAT = 'dd/MM/yyyy HH:mm:ss'
 
 enum PurchaseStatus {
     ALL = "Tất cả",
-    WAIT_FOR_PAY = "Chờ thanh toán",
-    WAIT_FOR_DELIVERY = "Chờ giao hàng",
-    SUCCESS = "Hoàn thành",
-    CANCELLED = "Đã hủy",
-    RETURN = "Trả hàng/Hoàn tiền"
+    PROCESSING = 'PROCESSING',
+    SUCCESS = 'SUCCESS',
+    CANCELLED = 'CANCELLED'
 }
 
 const Purchase = () => {
@@ -29,7 +27,7 @@ const Purchase = () => {
     const [listBill, setListBill] = useState<IBill[]>([])
     const { user } = useAppSelector(state => state.auth)
     const [current, setCurrent] = useState(1)
-    const [pageSize, setPageSize] = useState(5)
+    const [pageSize] = useState(5)
     const [records, setRecords] = useState(0)
 
     const onChangePage: PaginationProps['onChange'] = (page) => {
@@ -49,20 +47,14 @@ const Purchase = () => {
                     setRecords(res.data.data.metadata.records)
                     dispatchAlert({ loading: false })
                     break;
-                case PurchaseStatus.WAIT_FOR_PAY:
-                    res = await BillService.getBill({ params: { user_id: userId, payment_status: false, order_status: OrderStatus.PROCESSING, page_index: current - 1, page_size: pageSize } })
-                    setListBill(res.data.data.bills)
-                    setRecords(res.data.data.metadata.records)
-                    dispatchAlert({ loading: false })
-                    break;
-                case PurchaseStatus.WAIT_FOR_DELIVERY:
-                    res = await BillService.getBill({ params: { user_id: userId, payment_status: true, order_status: OrderStatus.PROCESSING, page_index: current - 1, page_size: pageSize } })
+                case PurchaseStatus.PROCESSING:
+                    res = await BillService.getBill({ params: { user_id: userId, order_status: OrderStatus.PROCESSING, page_index: current - 1, page_size: pageSize } })
                     setListBill(res.data.data.bills)
                     setRecords(res.data.data.metadata.records)
                     dispatchAlert({ loading: false })
                     break;
                 case PurchaseStatus.SUCCESS:
-                    res = await BillService.getBill({ params: { user_id: userId, payment_status: true, order_status: OrderStatus.SUCCESS, page_index: current - 1, page_size: pageSize } })
+                    res = await BillService.getBill({ params: { user_id: userId, order_status: OrderStatus.SUCCESS, page_index: current - 1, page_size: pageSize } })
                     setListBill(res.data.data.bills)
                     setRecords(res.data.data.metadata.records)
                     dispatchAlert({ loading: false })
@@ -109,12 +101,11 @@ const Purchase = () => {
                         </div>
                     </div>
                     <div className='w-full'>
-                        <section className='grid grid-cols-5 bg-white mb-10'>
+                        <section className='grid grid-cols-4 bg-white mb-10'>
                             <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.ALL && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => handleChangeStatusPurchase(PurchaseStatus.ALL)}>{PurchaseStatus.ALL}</div>
-                            <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.WAIT_FOR_PAY && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => handleChangeStatusPurchase(PurchaseStatus.WAIT_FOR_PAY)}>{PurchaseStatus.WAIT_FOR_PAY}</div>
-                            <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.WAIT_FOR_DELIVERY && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => handleChangeStatusPurchase(PurchaseStatus.WAIT_FOR_DELIVERY)}>{PurchaseStatus.WAIT_FOR_DELIVERY}</div>
-                            <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.SUCCESS && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => handleChangeStatusPurchase(PurchaseStatus.SUCCESS)}>{PurchaseStatus.SUCCESS}</div>
-                            <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.CANCELLED && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => handleChangeStatusPurchase(PurchaseStatus.CANCELLED)}>{PurchaseStatus.CANCELLED}</div>
+                            <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.PROCESSING && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => handleChangeStatusPurchase(PurchaseStatus.PROCESSING)}>Chờ xử lý</div>
+                            <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.SUCCESS && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => handleChangeStatusPurchase(PurchaseStatus.SUCCESS)}>Thành công</div>
+                            <div className={clsx('col-span1 px-3 py-4 text-center cursor-pointer hover:text-main-orange-color', purchaseStatus === PurchaseStatus.CANCELLED && 'border-b border-main-orange-color text-main-orange-color')} onClick={() => handleChangeStatusPurchase(PurchaseStatus.CANCELLED)}>Đã hủy</div>
                         </section>
                         {
                             listBill.length > 0
@@ -129,33 +120,37 @@ const Purchase = () => {
                                                         <span>Ngày mua: {format(bill.created_at, DATETIME_FORMAT)}</span>
                                                     </div>
                                                     {bill.order_status === OrderStatus.PROCESSING && bill.payment_status === false && <Tag color="red" className='h-fit'>Chờ thanh toán</Tag>}
-                                                    {bill.order_status === OrderStatus.PROCESSING && bill.payment_status === true && <Tag color="cyan" className='h-fit'>Chờ giao hàng</Tag>}
+                                                    {bill.order_status === OrderStatus.PROCESSING && bill.payment_status === true && <Tag color="red" className='h-fit'>Đã thanh toán</Tag>}
                                                     {bill.order_status === OrderStatus.SUCCESS && <span className='text-[#ee4d2d] text-xl uppercase'>Hoàn thành</span>}
                                                     {bill.order_status === OrderStatus.CANCELLED && <span className='text-[#ee4d2d] text-xl uppercase'>Đã hủy</span>}
                                                 </div>
                                                 {bill.items.map((item, index) =>
-                                                    <div className='py-6 border-b border-border-color flex justify-between' key={`${bill.id}-${index}`}>
-                                                        <div className='flex gap-2'>
-                                                            <img src={item.product.image} width={80} />
-                                                            <div className='flex flex-col justify-center'>
-                                                                <span>{item.product.name} </span>
-                                                                <span className='text-sm font-semibold'>x {item.quantity}</span>
+                                                    <div className='py-6 border-b border-border-color' key={`${bill.id}-${index}`}>
+                                                        <div className='flex justify-between items-center gap-2' >
+                                                            <div className='flex gap-2'>
+                                                                <img src={item.product.image} width={80} />
+                                                                <div className='flex flex-col justify-center'>
+                                                                    <span>{item.product.name} </span>
+                                                                    <span className='text-sm font-semibold'>x {item.quantity}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div className='flex flex-col gap-2'>
+                                                                <div>
+                                                                    {
+                                                                        item.product.old_price != 0 &&
+                                                                        <del className='text-category-title mr-2'>{convertNumbertoMoney(item.product.old_price)}</del>
+                                                                    }
+                                                                    <span className='text-main-orange-color'>{convertNumbertoMoney(item.product.new_price)}</span>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div className='flex flex-col gap-2'>
-                                                            <div>
-                                                                {
-                                                                    item.product.old_price != 0 &&
-                                                                    <del className='text-category-title mr-2'>{convertNumbertoMoney(item.product.old_price)}</del>
-                                                                }
-                                                                <span className='text-main-orange-color'>{convertNumbertoMoney(item.product.new_price)}</span>
-                                                            </div>
-                                                            <p className=''>
-                                                                <span className='mr-2 text-nowrap'>Thành tiền:</span>
-                                                                <span className='text-main-orange-color font-semibold'>{convertNumbertoMoney(item.total_price)}</span>
-                                                            </p>
-                                                        </div>
-                                                    </div>)}
+                                                        <p className='text-right'>
+                                                            <span className='mr-2 text-nowrap'>Thành tiền:</span>
+                                                            <span className='text-main-orange-color font-semibold'>{convertNumbertoMoney(item.total_price)}</span>
+                                                        </p>
+                                                    </div>
+
+                                                )}
                                                 <div className='py-6 text-right'>
                                                     <span className='px-2'>Tổng cộng:</span>
                                                     <span className='px-2 text-main-orange-color text-xl font-semibold'>{convertNumbertoMoney(bill.total_amount)}</span>

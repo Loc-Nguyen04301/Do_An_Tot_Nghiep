@@ -91,7 +91,7 @@ const Profile = () => {
 
     useEffect(() => {
         setAvatarTemp(user?.avatar)
-    }, [user?.avatar])
+    }, [user])
 
     return (
         <>

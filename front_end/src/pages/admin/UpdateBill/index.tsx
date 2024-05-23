@@ -31,13 +31,16 @@ const UpdateBill = () => {
     const [paymentStatus, setPaymentStatus] = useState<boolean>()
     const [paymentMethod, setPaymentMethod] = useState<string>()
 
-    const { register, handleSubmit, formState: { errors }, getValues } = useForm({
+    const { register, handleSubmit, formState: { errors }, setValue } = useForm({
         resolver: yupResolver(schema),
-        defaultValues: {
-            address: selectedBill?.address,
-            phone_number: selectedBill?.phone_number,
-        }
     });
+
+    useEffect(() => {
+        if (selectedBill) {
+            setValue("address", selectedBill.address)
+            setValue("phone_number", selectedBill.phone_number)
+        }
+    }, [selectedBill])
 
     const dispatch = useAppDispatch()
     const dispatchAlert = useAlertDispatch()
@@ -125,12 +128,12 @@ const UpdateBill = () => {
                         </div>
                         <div className="my-2">
                             <div className="font-semibold tracking-wide">Địa chỉ giao hàng</div>
-                            <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.address} {...register('address')} />
+                            <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.address} {...register('address')} disabled={disabled} />
                             {errors.address && <p className="text-red-500 text-center">{errors.address.message}</p>}
                         </div>
                         <div className="my-2">
                             <div className="font-semibold tracking-wide">Số điện thoại</div>
-                            <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.phone_number} {...register('phone_number')} />
+                            <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.phone_number} {...register('phone_number')} disabled={disabled} />
                             {errors.phone_number && <p className="text-red-500 text-center">{errors.phone_number.message}</p>}
                         </div>
                         <div className="my-2">
@@ -144,6 +147,7 @@ const UpdateBill = () => {
                                     { value: OrderStatus.SUCCESS, label: 'Hoàn thành' },
                                     { value: OrderStatus.CANCELLED, label: 'Hủy bỏ' },
                                 ]}
+                                disabled={disabled}
                             />
                         </div>
                         <div className="my-2">
@@ -156,6 +160,7 @@ const UpdateBill = () => {
                                     { value: true, label: 'Đã thanh toán' },
                                     { value: false, label: 'Chờ thanh toán' },
                                 ]}
+                                disabled={disabled}
                             />
                             <div className="my-2">
                                 <div className="font-semibold tracking-wide">Phương thức thanh toán</div>
@@ -168,6 +173,7 @@ const UpdateBill = () => {
                                         { value: PaymentMethod.BANK_TRANSFER, label: 'Chuyển khoản' },
                                         { value: PaymentMethod.VNPAY, label: 'Thanh toán cổng VNPay' },
                                     ]}
+                                    disabled={disabled}
                                 />
                             </div>
                             <div className="my-2">

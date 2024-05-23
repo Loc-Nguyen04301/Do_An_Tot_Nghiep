@@ -27,14 +27,16 @@ const schema = yup
 
 const Profile = () => {
     const { user } = useAppSelector(state => state.auth)
-    const { register, handleSubmit, formState: { errors }, getValues } = useForm({
+    const { register, handleSubmit, formState: { errors }, setValue } = useForm({
         resolver: yupResolver(schema),
-        defaultValues: {
-            address: user?.address,
-            phone_number: user?.phone_number,
-            username: user?.username
-        }
     });
+    useEffect(() => {
+        if (user) {
+            setValue("address", user.address)
+            setValue("phone_number", user.phone_number)
+            setValue("username", user.username)
+        }
+    }, [user])
     const [avatarTemp, setAvatarTemp] = useState<string>()
     const [avatarTempFile, setAvatarTempFile] = useState<File>()
     const [disabled, setDisabled] = useState(false)
@@ -64,6 +66,7 @@ const Profile = () => {
     };
 
     const onSubmit = async (data: UpdateUser) => {
+        console.log({ data })
         dispatchAlert({ loading: true })
         var image: string = ""
         if (avatarTempFile) {

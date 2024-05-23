@@ -30,9 +30,9 @@ const Profile = () => {
     const { register, handleSubmit, formState: { errors }, getValues } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
-            address: user?.address || '',
-            phone_number: user?.phone_number || '',
-            username: user?.username || ''
+            address: user?.address,
+            phone_number: user?.phone_number,
+            username: user?.username
         }
     });
     const [avatarTemp, setAvatarTemp] = useState<string>()

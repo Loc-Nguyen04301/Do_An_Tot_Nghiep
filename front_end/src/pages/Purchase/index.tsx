@@ -13,7 +13,7 @@ import type { PaginationProps } from 'antd';
 import { IBill, IItem } from '@/types';
 import { OrderStatus } from '@/types';
 
-var DATETIME_FORMAT = 'dd/MM/yyyy HH:mm:ss'
+var DATETIME_FORMAT = 'dd/MM/yyyy HH:mm'
 
 enum PurchaseStatus {
     ALL = "Tất cả",

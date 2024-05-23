@@ -6,16 +6,15 @@ import { useAppDispatch, useAppSelector } from '@/redux-toolkit/hook'
 import { useNavigate } from 'react-router-dom'
 import { IBillNoti } from '@/redux-toolkit/billNotiSlice'
 import { format } from 'date-fns';
+import { RoutePath } from '@/routes'
 const DATETIME_FORMAT = 'dd-MM-yyyy HH:mm'
 
 const Notification = () => {
     const [stateNoti, setstateNoti] = useState<string | number>('All');
     const { bills, unread_records } = useAppSelector(state => state.billNoti)
     const [filterBills, setFilterBills] = useState<IBillNoti[]>([])
-    console.log({ filterBills, bills })
 
     const navigate = useNavigate()
-    const dispatch = useAppDispatch()
 
     useEffect(() => {
         if (stateNoti !== 'All') {
@@ -28,7 +27,7 @@ const Notification = () => {
     }, [stateNoti, bills])
 
     const handleBillIsRead = (billId: number) => {
-        navigate(`/admin/bill/detail/${billId}`)
+        navigate(`${RoutePath.UpdateBill}/${billId}`)
     }
 
     return (

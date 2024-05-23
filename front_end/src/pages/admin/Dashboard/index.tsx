@@ -162,7 +162,7 @@ const DashboardCard = ({ icon, title, value }: { icon: any, title: any, value: a
 const RecentOrders = ({ listProductSoldOut }: { listProductSoldOut: any }) => {
     const columns: TableProps<IBestSoldOutProduct>['columns'] = [
         {
-            title: "Thumbnail",
+            title: "Ảnh sản phẩm",
             key: "thumbnail",
             render: (_, record) => <Avatar src={record.image} />
         },

@@ -18,6 +18,10 @@ const createBill = (data: CreateBillDto) => {
     return http.post(`/bills`, data)
 }
 
+const updateBill = (data: CreateBillDto, id: number) => {
+    return http.patch(`/bills/${id}`, data)
+}
+
 const getBillDetailById = (id: number) => {
     return http.get(`/bills/${id}`,)
 }
@@ -38,6 +42,6 @@ const isReadBill = (id: number) => {
     return http.patch(`/bills/isread/${id}`)
 }
 
-const BillService = { createBill, getBillDetailById, getBill, getBillAdmin, getBillNotification, isReadBill }
+const BillService = { createBill, getBillDetailById, getBill, getBillAdmin, getBillNotification, isReadBill, updateBill }
 
 export default BillService

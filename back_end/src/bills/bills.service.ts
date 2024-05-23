@@ -54,6 +54,18 @@ export class BillsService {
     return { billId: bill.id }
   }
 
+  async update(updateBillDto: UpdateBillDto, id: number) {
+
+    const bill = await this.prisma.bill.update({
+      where: { id: id },
+      data: {
+        ...updateBillDto
+      }
+    })
+
+    return bill
+  }
+
   async findOne(id: number) {
     const bill = await this.prisma.bill.findUnique(
       {

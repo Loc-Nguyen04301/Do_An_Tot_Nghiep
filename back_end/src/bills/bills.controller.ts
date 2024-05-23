@@ -21,6 +21,14 @@ export class BillsController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(new SuccessInterceptor())
+  @Patch(':id')
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateBillDto: UpdateBillDto) {
+    return this.billsService.update(updateBillDto, id);
+  }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor())
   @Get("notification")
   findAllNotification() {
     return this.billsService.findAllNotification()

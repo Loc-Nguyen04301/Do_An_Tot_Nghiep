@@ -6,10 +6,10 @@ import { RoutePathAdmin } from '@/layouts/AdminLayout';
 import { useAppDispatch, useAppSelector } from '@/redux-toolkit/hook';
 import { fetchBillNoti, markReadBill } from '@/redux-toolkit/billNotiSlice';
 import { format } from 'date-fns';
+import { RoutePath } from '@/routes';
 const DATETIME_FORMAT = 'dd-MM-yyyy HH:mm'
 
 const ShowNotification = () => {
-    const [lengthNotis, setLengthNotis] = useState(4)
     const { bills, unread_records } = useAppSelector(state => state.billNoti)
 
     const navigate = useNavigate();
@@ -24,7 +24,7 @@ const ShowNotification = () => {
     }
 
     const handleBillIsRead = (billId: number) => {
-        navigate(`/admin/bill/detail/${billId}`)
+        navigate(`${RoutePath.UpdateBill}/${billId}`)
     }
 
     return (
@@ -34,8 +34,8 @@ const ShowNotification = () => {
             </div>
             <BellOutlined className='text-2xl' onClick={handleNavigateNotification} />
             <div className="dropdown-content notification bg-[#f0f8ff] !min-w-[400px] right-0 top-[30px] p-4 shadow-search-box z-10">
-                <ul className='max-h-[335px] overflow-y-auto'>
-                    {bills.map((item) =>
+                <ul className='max-h-[315px] overflow-y-auto'>
+                    {bills.slice(0, 10).map((item) =>
                         <li className='flex justify-between items-center hover:bg-[rgba(0,0,0,.2)] rounded-md px-2' key={item.id} onClick={() => handleBillIsRead(item.id)}>
                             <div>
                                 {item.user_id ?
@@ -49,9 +49,6 @@ const ShowNotification = () => {
                         </li>
                     )}
                 </ul>
-                <div className='text-center text-sm text-category-title cursor-pointer hover:text-[#1677ff]'>
-                    <span onClick={() => { setLengthNotis(prev => prev + 4) }}>click to expand</span>
-                </div>
             </div>
         </div>
     )

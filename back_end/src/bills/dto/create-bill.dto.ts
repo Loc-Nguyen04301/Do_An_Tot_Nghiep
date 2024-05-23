@@ -39,8 +39,12 @@ export class CreateBillDto {
     @IsNotEmpty()
     payment_method: PaymentMethod
 
+    @IsEnum(OrderStatus)
+    @IsNotEmpty()
     order_status?: OrderStatus
 
+    @IsBoolean()
+    @IsNotEmpty()
     payment_status?: boolean
 
     total_amount?: number

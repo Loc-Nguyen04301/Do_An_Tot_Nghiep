@@ -13,24 +13,29 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 interface UpdateUser {
-    username: string
-    phone_number: string
-    address: string
+    username?: string
+    phone_number?: string
+    address?: string
 }
 
 const schema = yup
     .object({
         username: yup.string().required('Username is required'),
-        phone_number: yup.string().required('Phone number is required').matches(phoneRegExp, 'Phone number is not valid'),
+        phone_number: yup.string().required('Phone number is required').length(10, "Phone number is not valid").matches(phoneRegExp, 'Phone number is not valid'),
         address: yup.string().required('Address is required'),
     })
 
 const Profile = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm({
-        resolver: yupResolver(schema),
-    });
-
     const { user } = useAppSelector(state => state.auth)
+    const { register, handleSubmit, formState: { errors }, getValues } = useForm({
+        resolver: yupResolver(schema),
+        defaultValues: {
+            address: user?.address || '',
+            phone_number: user?.phone_number || '',
+            username: user?.username || ''
+        }
+    });
+    console.log(getValues())
     const [avatarTemp, setAvatarTemp] = useState<string>()
     const [avatarTempFile, setAvatarTempFile] = useState<File>()
     const [disabled, setDisabled] = useState(false)
@@ -66,7 +71,7 @@ const Profile = () => {
             const res = await imageUpload(avatarTempFile)
             image = res.url
         }
-        const newData = { ...data, avatar: image }
+        const newData = { ...data, avatar: image || user?.avatar }
         try {
             if (user?.id) {
                 const res = await UserService.updateProfile(user.id, newData)
@@ -121,18 +126,18 @@ const Profile = () => {
                                             <div className='pb-5 flex items-center'>
                                                 <div className='inline-block w-1/4 text-right text-text-gray'>Tên người dùng</div>
                                                 <input className='mx-3 w-3/4 h-[35px] border-[1px] border-[#adadad] rounded-sm' defaultValue={user?.username} {...register('username')} disabled={disabled} />
-                                                {errors.username && <p className="text-red-500">{errors.username.message}</p>}
                                             </div >
+                                            {errors.username && <p className="text-red-500 text-center">{errors.username.message}</p>}
                                             <div className='pb-5 flex items-center'>
                                                 <div className='inline-block w-1/4 text-right text-text-gray'>Số điện thoại</div>
                                                 <input className='mx-3 w-3/4 h-[35px] border-[1px] border-[#adadad] rounded-sm' defaultValue={user?.phone_number} {...register('phone_number')} disabled={disabled} />
-                                                {errors.phone_number && <p className="text-red-500">{errors.phone_number.message}</p>}
                                             </div>
+                                            {errors.phone_number && <p className="text-red-500 text-center">{errors.phone_number.message}</p>}
                                             <div className='pb-5 flex items-center'>
                                                 <div className='inline-block w-1/4 text-right text-text-gray'>Địa chỉ</div>
                                                 <input className='mx-3 w-3/4 h-[35px] border-[1px] border-[#adadad] rounded-sm' defaultValue={user?.address} {...register('address')} disabled={disabled} />
-                                                {errors.address && <p className="text-red-500">{errors.address.message}</p>}
                                             </div>
+                                            {errors.address && <p className="text-red-500 text-center">{errors.address.message}</p>}
                                             <div className='text-center'>
                                                 {!disabled &&
                                                     <button className='w-[100px] rounded-md bg-main-orange-color py-2 hover:shadow-checkout-btn' onClick={handleSubmit(onSubmit)}>

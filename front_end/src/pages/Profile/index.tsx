@@ -3,16 +3,37 @@ import { Helmet } from 'react-helmet-async'
 import { RoutePath } from '@/routes'
 import { NavLink } from 'react-router-dom'
 import clsx from 'clsx'
-import { checkImage, imageUpload } from '@/utils'
+import { checkImage, imageUpload, phoneRegExp } from '@/utils'
 import { useAlertDispatch } from '@/contexts/AlertContext'
 import { ConfigProvider, RadioChangeEvent } from 'antd'
 import { useAppSelector } from '@/redux-toolkit/hook'
 import UserService from '@/services/UserService'
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+interface UpdateUser {
+    username: string
+    phone_number: string
+    address: string
+}
+
+const schema = yup
+    .object({
+        username: yup.string().required('Username is required'),
+        phone_number: yup.string().required('Phone number is required').matches(phoneRegExp, 'Phone number is not valid'),
+        address: yup.string().required('Address is required'),
+    })
 
 const Profile = () => {
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(schema),
+    });
+
     const { user } = useAppSelector(state => state.auth)
     const [avatarTemp, setAvatarTemp] = useState<string>()
     const [avatarTempFile, setAvatarTempFile] = useState<File>()
+    const [disabled, setDisabled] = useState(false)
 
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const dispatchAlert = useAlertDispatch()
@@ -38,14 +59,23 @@ const Profile = () => {
         }
     };
 
-    const handleUpdateProfile = async () => {
+    const onSubmit = async (data: UpdateUser) => {
         dispatchAlert({ loading: true })
+        var image: string = ""
+        if (avatarTempFile) {
+            const res = await imageUpload(avatarTempFile)
+            image = res.url
+        }
+        const newData = { ...data, avatar: image }
         try {
-            if (user?.id && avatarTempFile) {
-                const res = await imageUpload(avatarTempFile)
-                await UserService.updateProfile(user.id, { avatar: res.url })
+            if (user?.id) {
+                const res = await UserService.updateProfile(user.id, newData)
                 dispatchAlert({ loading: false })
-                window.location.reload()
+                dispatchAlert({ success: res.data.message })
+                setDisabled(true)
+                setTimeout(() => {
+                    window.location.reload()
+                }, 2000)
             }
         } catch (error) {
             console.log(error)
@@ -83,27 +113,34 @@ const Profile = () => {
                             <div className='pt-5'>
                                 <div className='flex gap-x-16'>
                                     <div className='w-[70%] border-r border-border-color mt-7'>
-                                        <div className='pb-5'>
-                                            <div className='inline-block w-1/4 text-right text-text-gray'>Email</div>
-                                            <div className='inline-block pl-3'>{user?.email}</div>
-                                        </div>
-                                        <div className='pb-5'>
-                                            <div className='inline-block w-1/4 text-right text-text-gray'>Tên người dùng</div>
-                                            <div className='inline-block pl-3'>{user?.username}</div>
-                                        </div >
-                                        <div className='pb-5'>
-                                            <div className='inline-block w-1/4 text-right text-text-gray'>Số điện thoại</div>
-                                            <div className='inline-block pl-3'>{user?.phone_number}</div>
-                                        </div>
-                                        <div className='pb-5'>
-                                            <div className='inline-block w-1/4 text-right text-text-gray'>Địa chỉ</div>
-                                            <div className='inline-block pl-3'>{user?.address}</div>
-                                        </div>
-                                        <div className='text-center'>
-                                            <button className='w-[100px] rounded-md bg-main-orange-color py-2 hover:shadow-checkout-btn' onClick={handleUpdateProfile}>
-                                                <span className='text-white font-semibold tracking-wide'>Lưu</span>
-                                            </button>
-                                        </div>
+                                        <form>
+                                            <div className='pb-5 flex items-center'>
+                                                <div className='inline-block w-1/4 text-right text-text-gray'>Email</div>
+                                                <input className='mx-3 w-3/4 h-[35px] border-[1px] border-[#adadad] rounded-sm' defaultValue={user?.email} disabled />
+                                            </div>
+                                            <div className='pb-5 flex items-center'>
+                                                <div className='inline-block w-1/4 text-right text-text-gray'>Tên người dùng</div>
+                                                <input className='mx-3 w-3/4 h-[35px] border-[1px] border-[#adadad] rounded-sm' defaultValue={user?.username} {...register('username')} disabled={disabled} />
+                                                {errors.username && <p className="text-red-500">{errors.username.message}</p>}
+                                            </div >
+                                            <div className='pb-5 flex items-center'>
+                                                <div className='inline-block w-1/4 text-right text-text-gray'>Số điện thoại</div>
+                                                <input className='mx-3 w-3/4 h-[35px] border-[1px] border-[#adadad] rounded-sm' defaultValue={user?.phone_number} {...register('phone_number')} disabled={disabled} />
+                                                {errors.phone_number && <p className="text-red-500">{errors.phone_number.message}</p>}
+                                            </div>
+                                            <div className='pb-5 flex items-center'>
+                                                <div className='inline-block w-1/4 text-right text-text-gray'>Địa chỉ</div>
+                                                <input className='mx-3 w-3/4 h-[35px] border-[1px] border-[#adadad] rounded-sm' defaultValue={user?.address} {...register('address')} disabled={disabled} />
+                                                {errors.address && <p className="text-red-500">{errors.address.message}</p>}
+                                            </div>
+                                            <div className='text-center'>
+                                                {!disabled &&
+                                                    <button className='w-[100px] rounded-md bg-main-orange-color py-2 hover:shadow-checkout-btn' onClick={handleSubmit(onSubmit)}>
+                                                        <span className='text-white font-semibold tracking-wide'>Lưu</span>
+                                                    </button>
+                                                }
+                                            </div>
+                                        </form>
                                     </div>
                                     <div className='flex flex-col items-center gap-3 mt-2'>
                                         <div className='w-[100px] h-[100px]'>

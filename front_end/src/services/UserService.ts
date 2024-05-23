@@ -1,6 +1,6 @@
 import http from "./axios";
 
-const updateProfile = (id: number, data: { username?: string, avatar?: string }) => {
+const updateProfile = (id: number, data: { username?: string, avatar?: string, phone_number: string, address: string }) => {
     return http.patch(`/user/${id}`, data)
 }
 

@@ -98,3 +98,5 @@ export const imageUpload = async (file: File) => {
     const data = await res.json();
     return { data: data, public_id: data.public_id, url: data.secure_url };
 };
+
+export const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/

@@ -20,8 +20,11 @@ const initialState: AuthState = {
 
 export const getMe = createAsyncThunk('auth/getMe', async () => {
     try {
-        const response = await AuthService.getMe()
-        return response.data.data
+        const accessToken = getAccessToken()
+        if (accessToken) {
+            const response = await AuthService.getMe()
+            return response.data.data
+        }
     } catch (error) {
         console.log(error)
     }

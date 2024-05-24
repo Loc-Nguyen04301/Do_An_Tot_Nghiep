@@ -5,7 +5,7 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
-import { isTokenExpiration, getAccessToken, setAccessToken, setRefreshToken } from "@/utils";
+import { isTokenExpiration, getAccessToken, setAccessToken, setRefreshToken, removeAccessToken, removeRefreshToken } from "@/utils";
 import AuthService from "./AuthService";
 
 export const getBaseUrl = () => {
@@ -18,23 +18,29 @@ export const getBaseUrl = () => {
 
 const instance: AxiosInstance = axios.create({
   baseURL: getBaseUrl(),
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
-// Request interceptor
+instance.interceptors.request.use(
+  (request: InternalAxiosRequestConfig) => {
+    request.headers['Content-Type'] = 'application/json' // Change to your preferred content type
+    return request
+  },
+  (error) => {
+    return Promise.reject(error)
+  },
+)
+
 instance.interceptors.request.use(
   async (request: InternalAxiosRequestConfig) => {
-    const token = getAccessToken();
+    const accessToken = getAccessToken();
     let newHeaders = { ...request.headers }
-    if (token) {
+    if (accessToken) {
       newHeaders = {
         ...request.headers,
-        Authorization: "Bearer " + token,
+        Authorization: "Bearer " + accessToken,
       };
-      // create new access token when token is expired
-      if (isTokenExpiration(token)) {
+      // create new access token when expired
+      if (isTokenExpiration(accessToken)) {
         const response = await AuthService.refreshToken()
         if (response) {
           const accessToken = response.data.data.access_token
@@ -62,6 +68,9 @@ instance.interceptors.response.use(
     return response;
   },
   (error: AxiosError) => {
+    // remove token when invalid
+    removeAccessToken()
+    removeRefreshToken()
     // Handle errors or responses with non-2xx status codes
     if (error.response && error.response.data) {
       return Promise.reject(error.response.data);

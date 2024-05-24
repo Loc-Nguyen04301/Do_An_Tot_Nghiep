@@ -6,10 +6,11 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // Enable CORS
-  const allowedOrigins = ['http://127.0.0.1:3000', 'http://localhost:3000', 'https://do-an-tot-nghiep-7dr3.vercel.app'];
+  const allowedOriginsListTxt = process.env.ALLOWED_ORIGINS_LIST
+  const allowedOriginsList: string[] = allowedOriginsListTxt.split(',').map((text) => text.trim())
 
   app.enableCors({
-    origin: allowedOrigins, // Allow requests from this origin
+    origin: allowedOriginsList, // Allow requests from this origin
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'], // Specify the allowed headers if necessary

@@ -19,5 +19,7 @@ export type BillParams = {
     payment_status?: boolean,
     return_status?: ReturnStatus,
     page_index?: number,
-    page_size?: number
+    page_size?: number,
+    from_date?: Date,
+    to_date?: Date,
 }

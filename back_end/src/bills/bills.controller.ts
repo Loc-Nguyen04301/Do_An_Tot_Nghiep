@@ -53,6 +53,8 @@ export class BillsController {
     @Query('order_status') order_status: string,
     @Query('payment_status') payment_status: string,
     @Query('return_status') return_status: string,
+    @Query('from_date') from_date: string,
+    @Query('to_date') to_date: string,
   ) {
     const parsedOrderStatus = order_status as OrderStatus
     let parsedPaymentStatus: boolean = undefined
@@ -63,6 +65,9 @@ export class BillsController {
       parsedPaymentStatus = false
     }
     const parsedReturnStatus = return_status as ReturnStatus
+    const parsedFromDate = new Date(from_date)
+    const parsedToDate = new Date(to_date)
+    parsedToDate.setHours(23, 59, 59, 999)
 
     return this.billsService.findAllAdmin({
       customer_name: customer_name,
@@ -71,6 +76,8 @@ export class BillsController {
       order_status: parsedOrderStatus,
       payment_status: parsedPaymentStatus,
       return_status: parsedReturnStatus,
+      from_date: parsedFromDate,
+      to_date: parsedToDate
     });
   }
 
@@ -93,6 +100,8 @@ export class BillsController {
     @Query('return_status') return_status: string,
     @Query('page_index') page_index: string,
     @Query('page_size') page_size: string,
+    @Query('from_date') from_date: string,
+    @Query('to_date') to_date: string,
   ) {
     const parsedUserId = parseInt(user_id, 10);
     const parsedOrderStatus = order_status as OrderStatus
@@ -106,6 +115,9 @@ export class BillsController {
     const parsedReturnStatus = return_status as ReturnStatus
     const parsedPageIndex = parseInt(page_index, 10);
     const parsedPageSize = parseInt(page_size, 10);
+    const parsedFromDate = new Date(from_date)
+    const parsedToDate = new Date(to_date)
+    parsedToDate.setHours(23, 59, 59, 999)
 
     return this.billsService.findAll({
       user_id: parsedUserId,
@@ -113,7 +125,9 @@ export class BillsController {
       payment_status: parsedPaymentStatus,
       return_status: parsedReturnStatus,
       page_index: parsedPageIndex,
-      page_size: parsedPageSize
+      page_size: parsedPageSize,
+      from_date: parsedFromDate,
+      to_date: parsedToDate
     });
   }
 

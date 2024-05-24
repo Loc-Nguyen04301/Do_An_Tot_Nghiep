@@ -3,7 +3,7 @@ import { CreateBillDto } from './dto/create-bill.dto';
 import { UpdateBillDto } from './dto/update-bill.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { Bill, ReturnStatus } from '@prisma/client';
+import { ReturnStatus } from '@prisma/client';
 import { BillParams } from 'src/types';
 
 const saltOrRounds = 10;
@@ -55,7 +55,6 @@ export class BillsService {
   }
 
   async update(updateBillDto: UpdateBillDto, id: number) {
-
     const bill = await this.prisma.bill.update({
       where: { id: id },
       data: {
@@ -89,7 +88,9 @@ export class BillsService {
     payment_status,
     return_status,
     page_index,
-    page_size
+    page_size,
+    from_date,
+    to_date
   }: BillParams) {
     user_id = user_id || null
     page_index = page_index || 0;
@@ -97,6 +98,8 @@ export class BillsService {
     order_status = order_status || null
     payment_status = payment_status
     return_status = return_status || ReturnStatus.NONE
+    if (isNaN(from_date.getTime())) from_date = null
+    if (isNaN(to_date.getTime())) to_date = null
 
     const take = page_size as number
     const skip = page_index * page_size as number
@@ -114,48 +117,51 @@ export class BillsService {
     if (return_status) {
       whereClause = { ...whereClause, return_status };
     }
+    if (from_date && to_date) {
+      whereClause = {
+        ...whereClause,
+        created_at: {
+          gte: from_date,
+          lte: to_date
+        }
+      };
+    } else if (from_date) {
+      whereClause = {
+        ...whereClause,
+        created_at: {
+          gte: from_date
+        }
+      };
+    } else if (to_date) {
+      whereClause = {
+        ...whereClause,
+        created_at: {
+          lte: to_date
+        }
+      };
+    }
 
-    const filtersDate: any[] = []
-    // const notUndefined = 1
-    // const fromDate = notUndefined ? new Date('2024-05-03 00:00:00') : undefined;
-    // const toDate = notUndefined ? new Date('2024-05-08 23:59:59') : undefined;
-    // if (fromDate) {
-    //   filtersDate.push({ created_at: { gte: fromDate } });
-    // }
-    // if (toDate) {
-    //   filtersDate.push({ created_at: { lte: toDate } });
-    // }
-    // console.log(filtersDate)
-
-    const [bills, records] = await Promise.all([
-      this.prisma.bill.findMany({
-        where: {
-          ...whereClause,
-          AND: filtersDate,
-        },
-        include: {
-          items: {
-            select: {
-              product: { select: { name: true, new_price: true, old_price: true, image: true } },
-              quantity: true,
-              total_price: true
-            }
+    const bills = await this.prisma.bill.findMany({
+      where: {
+        ...whereClause,
+      },
+      include: {
+        items: {
+          select: {
+            product: { select: { name: true, new_price: true, old_price: true, image: true } },
+            quantity: true,
+            total_price: true
           }
-        },
-        orderBy: {
-          created_at: "desc"
-        },
-        skip,
-        take,
-      }),
-      this.prisma.bill.count({
-        where: {
-          ...whereClause,
-          AND: filtersDate
-        },
-      })
-    ]);
+        }
+      },
+      orderBy: {
+        created_at: "desc"
+      },
+      skip,
+      take,
+    })
 
+    const records = bills.length
     const total_pages = Math.ceil(records / page_size);
 
     return { bills: bills, metadata: { page_index, page_size, total_pages, records } }
@@ -168,6 +174,8 @@ export class BillsService {
     order_status,
     payment_status,
     return_status,
+    from_date,
+    to_date
   }: BillParams) {
     customer_name = customer_name || null
     address = address || null
@@ -175,7 +183,8 @@ export class BillsService {
     order_status = order_status || null
     payment_status = payment_status
     return_status = return_status || ReturnStatus.NONE
-
+    if (isNaN(from_date.getTime())) from_date = null
+    if (isNaN(to_date.getTime())) to_date = null
     let whereClause = {}
 
     if (customer_name) {
@@ -211,6 +220,29 @@ export class BillsService {
     if (return_status) {
       whereClause = { ...whereClause, return_status };
     }
+    if (from_date && to_date) {
+      whereClause = {
+        ...whereClause,
+        created_at: {
+          gte: from_date,
+          lte: to_date
+        }
+      };
+    } else if (from_date) {
+      whereClause = {
+        ...whereClause,
+        created_at: {
+          gte: from_date
+        }
+      };
+    } else if (to_date) {
+      whereClause = {
+        ...whereClause,
+        created_at: {
+          lte: to_date
+        }
+      };
+    }
 
     const bills = await this.prisma.bill.findMany({
       where: {
@@ -221,7 +253,7 @@ export class BillsService {
       },
     })
 
-    return { bills }
+    return { bills, total: bills.length }
   }
 
   async findAllNotification() {

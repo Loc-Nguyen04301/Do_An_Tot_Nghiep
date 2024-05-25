@@ -153,7 +153,7 @@ const Cart = () => {
                     <>
                         <div className='grid grid-cols-12 gap-6 px-5'>
                             <div className='col-span-7 max-lg:col-span-12'>
-                                <Table columns={columns} dataSource={data} pagination={false} />
+                                <Table columns={columns} dataSource={data} pagination={false} rowKey={(record) => record.id} />
                             </div>
                             <div className='col-span-5 max-lg:col-span-12'>
                                 <div className='text-category-title font-semibold text-lg tracking-wide border-b-[3px] pb-1'>Cộng giỏ hàng</div>

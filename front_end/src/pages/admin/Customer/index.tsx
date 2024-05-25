@@ -147,6 +147,7 @@ const Customer = () => {
                     columns={columns}
                     dataSource={dataSource}
                     pagination={{ position: ['bottomCenter'] }}
+                    rowKey={(record) => record.id}
                 ></Table>
             </Space>
         </>

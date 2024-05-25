@@ -284,8 +284,8 @@ const OrderAdmin = () => {
                     dataSource={listBill}
                     columns={columns}
                     pagination={{ position: ["bottomCenter"] }}
-                // onChange={onChange}
-                ></Table>
+                    rowKey={(record) => record.id}
+                />
             </Space>
         </>
     )

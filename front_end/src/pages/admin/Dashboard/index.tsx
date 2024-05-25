@@ -159,7 +159,7 @@ const DashboardCard = ({ icon, title, value }: { icon: any, title: any, value: a
     )
 }
 
-const RecentOrders = ({ listProductSoldOut }: { listProductSoldOut: any }) => {
+const RecentOrders = ({ listProductSoldOut }: { listProductSoldOut: IBestSoldOutProduct[] }) => {
     const columns: TableProps<IBestSoldOutProduct>['columns'] = [
         {
             title: "Ảnh sản phẩm",
@@ -200,6 +200,7 @@ const RecentOrders = ({ listProductSoldOut }: { listProductSoldOut: any }) => {
                 columns={columns}
                 dataSource={listProductSoldOut}
                 pagination={false}
+                rowKey={(record) => record.id}
             ></Table>
         </>
     );

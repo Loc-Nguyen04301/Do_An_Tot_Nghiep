@@ -57,11 +57,6 @@ const Inventory = () => {
     }, [getProducts]);
 
     const columns: TableProps<IProductDetail>['columns'] = [
-        // {
-        //     title: "Mã sản phẩm",
-        //     key: "id",
-        //     render: (_, record) => record.id
-        // },
         {
             title: "Ảnh sản phẩm",
             key: "thumbnail",
@@ -105,7 +100,7 @@ const Inventory = () => {
                 <Space direction='vertical' >
                     {record.categories.map((category) => {
                         const foundCategory = categoryList.find(item => item.path === category.category.name);
-                        return foundCategory ? <strong className='truncate'>{foundCategory.title}</strong> : null;
+                        return foundCategory ? <strong className='truncate' key={foundCategory.path} >{foundCategory.title}</strong> : null;
                     })}
                 </Space>
         },
@@ -147,6 +142,7 @@ const Inventory = () => {
                     columns={columns}
                     dataSource={products}
                     pagination={{ position: ['bottomCenter'] }}
+                    rowKey={(record) => record.id}
                 ></Table>
             </Space>
         </>

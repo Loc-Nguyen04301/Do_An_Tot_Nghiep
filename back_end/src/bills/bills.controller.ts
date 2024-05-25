@@ -130,14 +130,4 @@ export class BillsController {
       to_date: parsedToDate
     });
   }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateBillDto: UpdateBillDto) {
-  //   return this.billsService.update(+id, updateBillDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.billsService.remove(+id);
-  // }
 }

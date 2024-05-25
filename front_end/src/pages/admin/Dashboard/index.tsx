@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
-import { Avatar, Card, Space, Statistic, Table, TableProps, Typography } from 'antd'
+import { Avatar, Card, DatePicker, Flex, Space, Statistic, Table, TableProps, Typography } from 'antd'
 import {
     DollarCircleOutlined,
     ShoppingCartOutlined,
     ShoppingOutlined,
     UserOutlined,
 } from "@ant-design/icons";
-import { getRevenue } from '../../../API';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -22,6 +21,7 @@ import { useAlertDispatch } from '@/contexts/AlertContext';
 import { convertNumbertoMoney } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import useAdminCheck from '@/hooks/useAdminCheck';
+import dayjs from "dayjs"
 
 ChartJS.register(
     CategoryScale,
@@ -207,42 +207,77 @@ const RecentOrders = ({ listProductSoldOut }: { listProductSoldOut: IBestSoldOut
 }
 
 const DashboardChart = () => {
-    const [revenueData, setReveneuData] = useState({
+    const [data, setData] = useState({
         labels: [] as any[],
         datasets: [] as any[],
     });
+    const [data2, setData2] = useState({
+        labels: [] as any[],
+        datasets: [] as any[],
+    });
+    const [nowYear, setNowYear] = useState(dayjs().year());
+    const [totalRecords, setTotalRecords] = useState(0)
+    const [totalRevenue, setTotalRevenue] = useState(0)
+    const onChangeYear = (date: any, year: string) => {
+        setNowYear(Number(year))
+    }
 
-    useEffect(() => {
-        getRevenue().then((res) => {
-            const labels = res.carts.map((cart: any) => {
-                return `User-${cart.userId}`;
-            });
-            const data = res.carts.map((cart: any) => {
-                return cart.discountedTotal;
-            });
-            console.log(data)
-
+    const getRevenue = async (nowYear: number) => {
+        try {
+            const res = await DashboardService.getRevenue({ params: { year: nowYear } })
+            setTotalRecords(res.data.data.totalRecords)
+            setTotalRevenue(res.data.data.totalRevenue)
+            const labels = Array.from({ length: 12 }, (_, index) => {
+                return `Tháng ${index + 1}`
+            })
             const dataSource = {
                 labels,
                 datasets: [
                     {
-                        label: "Revenue",
-                        data: data,
+                        label: "Doanh thu",
+                        data: res.data.data.revenueArray,
                         backgroundColor: "green",
                     },
                 ],
             };
+            const dataSource2 = {
+                labels,
+                datasets: [
+                    {
+                        label: "Số đơn hàng",
+                        data: res.data.data.recordArray,
+                        backgroundColor: "red",
+                    },
+                ],
+            };
+            setData(dataSource);
+            setData2(dataSource2);
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
-            setReveneuData(dataSource);
-        });
-    }, []);
+    useEffect(() => {
+        getRevenue(nowYear)
+    }, [nowYear])
 
     return (
         <>
-            <Typography.Title level={5}>Recent Orders</Typography.Title>
-            <Card className='w-[1000px] h-[500px]'>
-                <Bar data={revenueData} />
-            </Card>
+            <Typography.Title level={5}>Thống kê doanh thu</Typography.Title>
+            <Space direction="vertical" className='mb-5'>
+                <DatePicker value={dayjs().year(nowYear)} onChange={onChangeYear} picker="year" />
+            </Space>
+            <Flex>
+                <Card className='w-[700px] h-[500px]'>
+                    <Typography.Title level={5}>Tổng doanh thu năm {nowYear}: {convertNumbertoMoney(totalRevenue)}</Typography.Title>
+                    <Bar data={data} />
+                </Card>
+                <Card className='w-[700px] h-[500px]'>
+                    <Typography.Title level={5}>Tổng số đơn hàng năm {nowYear}: {totalRecords}</Typography.Title>
+                    <Bar data={data2} />
+                </Card>
+            </Flex>
+
         </>
     );
 }

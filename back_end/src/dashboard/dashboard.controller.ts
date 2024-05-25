@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, UseInterceptors, Query } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
 import { CreateDashboardDto } from './dto/create-dashboard.dto';
 import { UpdateDashboardDto } from './dto/update-dashboard.dto';
@@ -24,6 +24,18 @@ export class DashboardController {
   listProductSoldOut() {
     return this.dashboardService.listProductSoldOut();
   }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor())
+  @Get('revenue')
+  getRevenue(
+    @Query('year') year: string,
+  ) {
+    const parsedYear = Number(year)
+    return this.dashboardService.getRevenue(parsedYear);
+  }
+
   // @Post()
   // create(@Body() createDashboardDto: CreateDashboardDto) {
   //   return this.dashboardService.create(createDashboardDto);

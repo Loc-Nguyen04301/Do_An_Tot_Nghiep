@@ -47,23 +47,33 @@ export class DashboardService {
     return listProductSoldOut
   }
 
-  // create(createDashboardDto: CreateDashboardDto) {
-  //   return 'This action adds a new dashboard';
-  // }
+  async getRevenue(year: number) {
+    const startDate = new Date(`${year}-01-01T00:00:00.000Z`);
+    const endDate = new Date(`${year + 1}-01-01T00:00:00.000Z`);
 
-  // findAll() {
-  //   return `This action returns all dashboard`;
-  // }
+    const bills = await this.prisma.bill.findMany({
+      where: {
+        created_at: {
+          gte: startDate,
+          lt: endDate,
+        },
+      },
+    })
 
-  // findOne(id: number) {
-  //   return `This action returns a #${id} dashboard`;
-  // }
+    const groupedBillsByMonth = Array.from({ length: 12 }, (_, index) => {
+      const month = index + 1
+      const billsByMonth = bills.filter(bill => new Date(bill.created_at).getMonth() === index)
+      const record = billsByMonth.length
+      const revenue = billsByMonth.reduce((sum, bill) => sum + bill.total_amount, 0)
+      return { month, record, revenue }
+    });
 
-  // update(id: number, updateDashboardDto: UpdateDashboardDto) {
-  //   return `This action updates a #${id} dashboard`;
-  // }
+    const recordArray = groupedBillsByMonth.map((item) => item.record)
+    const revenueArray = groupedBillsByMonth.map((item) => item.revenue)
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} dashboard`;
-  // }
+    const totalRecords = bills.length
+    const totalRevenue = bills.reduce((sum, bill) => sum + bill.total_amount, 0)
+
+    return { groupedBillsByMonth, recordArray, revenueArray, totalRecords, totalRevenue }
+  }
 }

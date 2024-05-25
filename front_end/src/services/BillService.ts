@@ -12,6 +12,8 @@ interface BillParams {
     order_status?: string
     payment_status?: boolean
     return_status?: string
+    from_date?: string,
+    to_date?: string,
 }
 
 const createBill = (data: CreateBillDto) => {

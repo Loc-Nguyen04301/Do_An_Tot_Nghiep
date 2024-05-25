@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, Input, InputRef, Segmented, Space, Table, TableColumnType, TableProps, Tag, Typography } from 'antd';
+import { Button, DatePicker, Input, InputRef, Segmented, Space, Table, TableColumnType, TableProps, Tag, Typography } from 'antd';
 import BillService from '@/services/BillService';
 import { useAlertDispatch } from '@/contexts/AlertContext';
 import { SearchOutlined } from '@ant-design/icons';
@@ -21,6 +21,8 @@ import { RoutePath } from '@/routes';
 import { IBill } from '@/types';
 
 var DATETIME_FORMAT = 'dd-MM-yyyy HH:mm'
+const DATETIME_FORMAT_FILTER = 'YYYY-MM-DD';
+const { RangePicker } = DatePicker;
 
 type DataIndex = keyof IBill;
 
@@ -28,16 +30,16 @@ const OrderAdmin = () => {
     const [listBill, setListBill] = useState<IBill[]>([])
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
+    const [filterDate, setFilterDate] = useState<[string | undefined, string | undefined]>([undefined, undefined]);
     const searchInput = useRef<InputRef>(null);
 
     const dispatchAlert = useAlertDispatch()
-
     const navigate = useNavigate()
 
-    const fetchBill = async () => {
+    const fetchBill = async (filterDate: [string | undefined, string | undefined]) => {
         dispatchAlert({ loading: true })
         try {
-            const res = await BillService.getBillAdmin({})
+            const res = await BillService.getBillAdmin({ params: { from_date: filterDate[0], to_date: filterDate[1] } })
             setListBill(res.data.data.bills)
             dispatchAlert({ loading: false })
         } catch (error) {
@@ -46,8 +48,8 @@ const OrderAdmin = () => {
     }
 
     useEffect(() => {
-        fetchBill()
-    }, [])
+        fetchBill(filterDate)
+    }, [filterDate])
 
     const handleUpdateBill = (id: number) => {
         navigate(`${RoutePath.UpdateBill}/${id}`)
@@ -149,6 +151,10 @@ const OrderAdmin = () => {
     // const onChange: TableProps<IBill>['onChange'] = (pagination, filters, sorter, extra) => {
     //     console.log({ pagination, filters, sorter, extra });
     // };
+
+    const onChangeDate = (date: any, dateString: [string, string]) => {
+        setFilterDate([...dateString])
+    }
 
     const columns: TableProps<IBill>['columns'] = [
         {
@@ -280,6 +286,9 @@ const OrderAdmin = () => {
             </Helmet>
             <Space size={20} direction="vertical">
                 <Typography.Title level={4}>Danh sách đơn hàng</Typography.Title>
+                <Space direction="vertical" size={12}>
+                    <RangePicker format={DATETIME_FORMAT_FILTER} onChange={onChangeDate} />
+                </Space>
                 <Table
                     dataSource={listBill}
                     columns={columns}

@@ -268,11 +268,11 @@ const DashboardChart = () => {
                 <DatePicker value={dayjs().year(nowYear)} onChange={onChangeYear} picker="year" />
             </Space>
             <Flex>
-                <Card className='w-[700px] h-[500px]'>
+                <Card className='w-[700px]'>
                     <Typography.Title level={5}>Tổng doanh thu năm {nowYear}: {convertNumbertoMoney(totalRevenue)}</Typography.Title>
                     <Bar data={data} />
                 </Card>
-                <Card className='w-[700px] h-[500px]'>
+                <Card className='w-[700px]'>
                     <Typography.Title level={5}>Tổng số đơn hàng năm {nowYear}: {totalRecords}</Typography.Title>
                     <Bar data={data2} />
                 </Card>

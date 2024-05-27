@@ -1,5 +1,5 @@
-import React, { Suspense, lazy } from "react";
-import { useRoutes } from "react-router-dom";
+import React, { Suspense, lazy, useEffect } from "react";
+import { useLocation, useRoutes } from "react-router-dom";
 import DefaultLayout from "@/layouts/DefaultLayout";
 import AdminLayout from "@/layouts/AdminLayout";
 import Loading from "@/components/Alert/Loading";
@@ -58,6 +58,8 @@ export enum RoutePath {
 }
 
 const Router: React.FC = () => {
+  const { pathname } = useLocation();
+
   const routes = useRoutes([
     {
       path: "/admin",
@@ -203,6 +205,19 @@ const Router: React.FC = () => {
       ]
     },
   ])
+
+
+  useEffect(() => {
+    const scrollToTop = () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "instant"
+      });
+    };
+
+    scrollToTop()
+  }, [pathname]);
+
 
   return <Suspense fallback={<Loading />}>{routes}</Suspense>;
 };

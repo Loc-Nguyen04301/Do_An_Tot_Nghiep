@@ -129,18 +129,6 @@ const DetailProduct = () => {
       })
   }, [product])
 
-
-  useEffect(() => {
-    const scrollToTop = () => {
-      window.scrollTo({
-        top: 0,
-        behavior: "instant"
-      });
-    };
-
-    scrollToTop()
-  }, [product]);
-
   if (product)
     return (
       <>

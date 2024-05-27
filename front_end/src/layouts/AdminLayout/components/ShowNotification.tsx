@@ -21,7 +21,7 @@ const ShowNotification = () => {
 
     return (
         <div className='relative dropdown'>
-            <div className="absolute -top-2 -right-1 bg-button-red-color text-white w-4 h-4 rounded-full text-center cursor-pointer">
+            <div className="absolute -top-2 -right-1 bg-button-red-color text-white w-[18px] h-[18px] leading-[18px] rounded-full text-center cursor-pointer">
                 <span className="text-xs font-semibold block">{unread_records}</span>
             </div>
             <BellOutlined className='text-2xl' onClick={handleNavigateNotification} />
@@ -41,7 +41,7 @@ const ShowNotification = () => {
                         </li>
                     )}
                     <div className='text-center mt-4'>
-                        <Link to={RoutePath.Notification}>Xem tất cả thông báo</Link>
+                        <span onClick={() => { window.location.href = RoutePath.Notification }} className='hover:text-blue-400'>Xem tất cả thông báo</span>
                     </div>
                 </ul>
             </div>

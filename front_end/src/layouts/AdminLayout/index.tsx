@@ -18,6 +18,7 @@ import { logOut } from '@/redux-toolkit/authSlice';
 import { useAlertDispatch } from '@/contexts/AlertContext';
 import ShowNotification from '@/layouts/AdminLayout/components/ShowNotification';
 import "./AdminLayout.scss"
+import useBillNotification from '@/hooks/useBillNotification';
 
 const { Content, Sider } = Layout;
 type MenuItem = Required<MenuProps>['items'][number];
@@ -75,6 +76,8 @@ const AdminLayout = ({ children }: AdminLayouttProps) => {
     const {
         token: { colorBgContainer },
     } = theme.useToken();
+
+    useBillNotification()
 
     return (
         <Layout style={{ minHeight: '100vh' }}>

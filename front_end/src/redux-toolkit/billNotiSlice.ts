@@ -38,6 +38,10 @@ export const billNotiSlice = createSlice({
             isReadBill.is_read = true
             state.unread_records -= 1
          }
+      },
+      createBillNoti: (state, action: PayloadAction<IBillNoti>) => {
+         state.bills = [action.payload, ...state.bills]
+         state.unread_records += 1
       }
    },
    extraReducers: (builder) => {
@@ -53,7 +57,7 @@ export const billNotiSlice = createSlice({
    }
 })
 
-export const { markReadBill } = billNotiSlice.actions
+export const { markReadBill, createBillNoti } = billNotiSlice.actions
 
 export default billNotiSlice.reducer
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { BellOutlined } from '@ant-design/icons';
 import "./ShowNotification.scss"
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { RoutePathAdmin } from '@/layouts/AdminLayout';
 import { useAppDispatch, useAppSelector } from '@/redux-toolkit/hook';
 import { fetchBillNoti, markReadBill } from '@/redux-toolkit/billNotiSlice';
@@ -33,21 +33,24 @@ const ShowNotification = () => {
                 <span className="text-xs font-semibold block">{unread_records}</span>
             </div>
             <BellOutlined className='text-2xl' onClick={handleNavigateNotification} />
-            <div className="dropdown-content notification bg-[#f0f8ff] !min-w-[400px] right-0 top-[30px] p-4 shadow-search-box z-10">
+            <div className="dropdown-content notification bg-[#f0f8ff] !min-w-[400px] right-0 top-[30px] p-6 shadow-search-box z-10">
                 <ul className='max-h-[315px] overflow-y-auto'>
-                    {bills.slice(0, 10).map((item) =>
-                        <li className='flex justify-between items-center hover:bg-[rgba(0,0,0,.2)] rounded-md px-2' key={item.id} onClick={() => handleBillIsRead(item.id)}>
+                    {bills.slice(0, 10).map((bill) =>
+                        <li className='flex justify-between items-center hover:bg-[rgba(0,0,0,.2)] rounded-md px-2 py-2' key={bill.id} onClick={() => handleBillIsRead(bill.id)}>
                             <div>
-                                {item.user_id ?
-                                    <p className=''>Mã đơn hàng {item.id} được mua bởi khách thành viên {item.customer_name}</p>
+                                {bill.user_id ?
+                                    <p className=''>Mã đơn hàng {bill.id} được mua bởi khách thành viên {bill.customer_name}</p>
                                     :
-                                    <p className=''>Mã đơn hàng {item.id} được mua bởi khách truy cập</p>
+                                    <p className=''>Mã đơn hàng {bill.id} được mua bởi khách truy cập</p>
                                 }
-                                <span className='text-category-title text-sm'>{format(item.created_at, DATETIME_FORMAT)}</span>
+                                <span className='text-category-title text-sm'>{format(bill.created_at, DATETIME_FORMAT)}</span>
                             </div>
-                            {!item.is_read && <div className='min-w-[12px] h-[12px] bg-blue-600 rounded-full contents:" "'></div>}
+                            {!bill.is_read && <div className='min-w-[12px] h-[12px] bg-blue-600 rounded-full contents:" "'></div>}
                         </li>
                     )}
+                    <div className='text-center mt-4'>
+                        <Link to={RoutePath.Notification}>Xem tất cả thông báo</Link>
+                    </div>
                 </ul>
             </div>
         </div>

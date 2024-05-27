@@ -2,12 +2,12 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+const allowedOriginsListTxt = process.env.ALLOWED_ORIGINS_LIST
+export const allowedOriginsList: string[] = allowedOriginsListTxt.split(',').map((text) => text.trim())
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // Enable CORS
-  const allowedOriginsListTxt = process.env.ALLOWED_ORIGINS_LIST
-  const allowedOriginsList: string[] = allowedOriginsListTxt.split(',').map((text) => text.trim())
 
   app.enableCors({
     origin: allowedOriginsList, // Allow requests from this origin

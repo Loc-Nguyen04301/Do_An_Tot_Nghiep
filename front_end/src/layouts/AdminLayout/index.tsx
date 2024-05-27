@@ -14,10 +14,10 @@ import { Outlet } from 'react-router-dom';
 import { useLocation, useNavigate } from "react-router-dom";
 import logoImage from "@/assets/images/thol-logo.jpg"
 import { useAppDispatch, useAppSelector } from '@/redux-toolkit/hook';
-import "./AdminLayout.scss"
 import { logOut } from '@/redux-toolkit/authSlice';
 import { useAlertDispatch } from '@/contexts/AlertContext';
 import ShowNotification from '@/layouts/AdminLayout/components/ShowNotification';
+import "./AdminLayout.scss"
 
 const { Content, Sider } = Layout;
 type MenuItem = Required<MenuProps>['items'][number];

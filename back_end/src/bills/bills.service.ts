@@ -5,11 +5,12 @@ import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { ReturnStatus } from '@prisma/client';
 import { BillParams } from 'src/types';
+import { AppGateway } from 'src/app.gateway';
 
 const saltOrRounds = 10;
 @Injectable()
 export class BillsService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService, private appGateway: AppGateway) { }
 
   hashData(data: string) {
     return bcrypt.hash(data, saltOrRounds);
@@ -33,6 +34,8 @@ export class BillsService {
       if (!bill) throw new BadRequestException('Không tạo được đơn hàng');
       // update notification bill state
       if (bill.id) await tr.notifiBill.create({ data: { bill_id: bill.id } })
+      // phát thông điệp đến client 
+      this.appGateway.sendBillNotification(bill)
 
       const shortCartItemsData = shortCartItems.map((item => { return { bill_id: bill.id, product_id: item.product_id, quantity: item.quantity, total_price: item.total_price } }))
       await Promise.all(shortCartItemsData.map(async (cartItem) => {

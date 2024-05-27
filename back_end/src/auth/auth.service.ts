@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
+  UnauthorizedException,
   UseInterceptors,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -125,7 +126,7 @@ export class AuthService {
     });
 
     if (!matchingUser.refresh_token)
-      throw new ForbiddenException(
+      throw new UnauthorizedException(
         'Logged in!, Refresh Token is null',
       );
 

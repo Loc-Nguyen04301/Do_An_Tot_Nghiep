@@ -104,8 +104,8 @@ const Checkout = () => {
 
     const onSubmit = async (data: FormData) => {
         dispatchAlert({ loading: true })
-        try {
-            setTimeout(async () => {
+        setTimeout(async () => {
+            try {
                 const createBillDto = { ...data, shortCartItems, user_id: user?.id, payment_method: paymentMethod, total_amount: totalAmount } as CreateBillDto
                 const res = await BillService.createBill(createBillDto)
                 setBillId(res.data.data.billId)
@@ -129,10 +129,10 @@ const Checkout = () => {
                     dispatchAlert({ loading: false })
                     navigate(RoutePath.OrderComplete)
                 }
-            }, 2000)
-        } catch (error: any) {
-            dispatchAlert({ errors: error.message })
-        }
+            } catch (error: any) {
+                dispatchAlert({ errors: error.message })
+            }
+        }, 2000)
     };
 
     const onChange = (key: string | string[]) => {

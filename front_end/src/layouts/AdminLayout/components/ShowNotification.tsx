@@ -1,23 +1,15 @@
-import React, { useEffect, useState } from 'react'
 import { BellOutlined } from '@ant-design/icons';
 import "./ShowNotification.scss"
 import { Link, useNavigate } from 'react-router-dom';
 import { RoutePathAdmin } from '@/layouts/AdminLayout';
-import { useAppDispatch, useAppSelector } from '@/redux-toolkit/hook';
-import { fetchBillNoti, markReadBill } from '@/redux-toolkit/billNotiSlice';
+import { useAppSelector } from '@/redux-toolkit/hook';
 import { format } from 'date-fns';
 import { RoutePath } from '@/routes';
 const DATETIME_FORMAT = 'dd-MM-yyyy HH:mm'
 
 const ShowNotification = () => {
     const { bills, unread_records } = useAppSelector(state => state.billNoti)
-
     const navigate = useNavigate();
-    const dispatch = useAppDispatch()
-
-    useEffect(() => {
-        dispatch(fetchBillNoti())
-    }, [])
 
     const handleNavigateNotification = () => {
         navigate(RoutePathAdmin.Notification)

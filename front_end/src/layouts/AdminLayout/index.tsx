@@ -19,6 +19,7 @@ import { useAlertDispatch } from '@/contexts/AlertContext';
 import ShowNotification from '@/layouts/AdminLayout/components/ShowNotification';
 import "./AdminLayout.scss"
 import useBillNotification from '@/hooks/useBillNotification';
+import { fetchBillNoti } from '@/redux-toolkit/billNotiSlice';
 
 const { Content, Sider } = Layout;
 type MenuItem = Required<MenuProps>['items'][number];
@@ -72,6 +73,10 @@ const AdminLayout = ({ children }: AdminLayouttProps) => {
         const pathName = location.pathname;
         setSelectedKeys(pathName);
     }, [location.pathname]);
+
+    useEffect(() => {
+        dispatch(fetchBillNoti())
+    }, [])
 
     const {
         token: { colorBgContainer },

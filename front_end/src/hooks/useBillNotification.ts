@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useState } from 'react';
 import { socket } from "@/socket";
 import { createBillNoti } from "@/redux-toolkit/billNotiSlice";
 import { useAppDispatch } from '@/redux-toolkit/hook';
@@ -6,39 +6,71 @@ import { notification } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { RoutePath } from '@/routes';
 import notificationSound from '@/assets/audios/notificationSound.mp3';
+import addNotification from 'react-push-notification';
 
 const audio = new Audio(notificationSound);
 
 const useBillNotification = () => {
-    const navigate = useNavigate()
-    const dispatch = useAppDispatch()
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const [userInteracted, setUserInteracted] = useState(false);
+
+    useEffect(() => {
+        const handleUserInteraction = () => {
+            setUserInteracted(true);
+            window.removeEventListener('click', handleUserInteraction);
+            window.removeEventListener('touchstart', handleUserInteraction);
+        };
+
+        window.addEventListener('click', handleUserInteraction);
+        window.addEventListener('touchstart', handleUserInteraction);
+
+        return () => {
+            window.removeEventListener('click', handleUserInteraction);
+            window.removeEventListener('touchstart', handleUserInteraction);
+        };
+    }, []);
 
     useEffect(() => {
         socket.on('BILL_NOTIFICATION', (bill) => {
-            dispatch(createBillNoti({ ...bill, is_read: false }))
+            dispatch(createBillNoti({ ...bill, is_read: false }));
 
+            // push notification UI
             notification.info({
                 message: `Thông báo mới`,
-                description: (
-                    bill.user_id
-                        ? `Mã đơn hàng ${bill.id} được mua bởi khách thành viên ${bill.customer_name}`
-                        : `Mã đơn hàng ${bill.id} được mua bởi khách truy cập`
-                ),
+                description: bill.user_id
+                    ? `Mã đơn hàng ${bill.id} được mua bởi khách thành viên ${bill.customer_name}`
+                    : `Mã đơn hàng ${bill.id} được mua bởi khách truy cập`,
                 onClick: () => {
-                    navigate(`${RoutePath.UpdateBill}/${bill.id}`)
+                    navigate(`${RoutePath.UpdateBill}/${bill.id}`);
                 },
                 placement: "bottomLeft",
                 duration: 5
             });
 
-            audio.play();
-        })
+            // push notification Desktop
+            addNotification({
+                title: 'Thông báo mới',
+                message: bill.user_id
+                    ? `Mã đơn hàng ${bill.id} được mua bởi khách thành viên ${bill.customer_name}`
+                    : `Mã đơn hàng ${bill.id} được mua bởi khách truy cập`,
+                theme: 'darkblue',
+                duration: 5000,
+                native: true 
+            });
+
+            if (userInteracted) {
+                audio.play().catch(error => {
+                    console.error("Failed to play audio:", error);
+                });
+            }
+        });
 
         return () => {
             socket.off('BILL_NOTIFICATION');
         };
-    }, [])
+    }, [dispatch, navigate, userInteracted]);
 
-}
+};
 
-export default useBillNotification
+export default useBillNotification;

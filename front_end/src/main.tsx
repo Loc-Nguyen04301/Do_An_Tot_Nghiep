@@ -6,6 +6,7 @@ import { SearchContextProvider } from "./contexts/SearchContext"
 import { Provider } from 'react-redux'
 import { persistor, store } from "./redux-toolkit/store";
 import { PersistGate } from 'redux-persist/integration/react'
+import { Notifications } from 'react-push-notification';
 
 import "./index.scss"
 import 'react-toastify/dist/ReactToastify.css';
@@ -16,6 +17,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <PersistGate loading={null} persistor={persistor}>
         <AlertContextProvider>
           <SearchContextProvider>
+            <Notifications />
             <App />
           </SearchContextProvider>
         </AlertContextProvider>

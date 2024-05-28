@@ -3,7 +3,6 @@ import {
   ForbiddenException,
   Injectable,
   UnauthorizedException,
-  UseInterceptors,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
@@ -21,14 +20,14 @@ export class AuthService {
     return bcrypt.hash(data, saltOrRounds);
   }
 
-  async generateToken(id: number, email: string, role: string) {
+  async generateToken(id: number, role: string) {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
-        { id: id, email: email, role: role },
+        { id: id, role: role },
         { secret: process.env.SECRET_AT, expiresIn: process.env.AT_EXPIRES },
       ),
       this.jwtService.signAsync(
-        { id: id, email: email, role: role },
+        { id: id, role: role },
         { secret: process.env.SECRET_RT, expiresIn: process.env.RT_EXPIRES },
       ),
     ]);
@@ -89,7 +88,6 @@ export class AuthService {
     //Create access token and refresh token
     const { accessToken, refreshToken } = await this.generateToken(
       matchingUser.id,
-      matchingUser.email,
       matchingUser.role
     );
     // create hashed refresh token saved in DB
@@ -133,7 +131,6 @@ export class AuthService {
     //create new access token and refresh token
     const { accessToken, refreshToken } = await this.generateToken(
       matchingUser.id,
-      matchingUser.email,
       matchingUser.role
     );
 

@@ -2,13 +2,44 @@ import React from 'react'
 import { Table, TableProps } from 'antd'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom';
-import { IProductItem } from '@/redux-toolkit/cartSlice';
 import { convertNumbertoMoney } from '@/utils';
 import { RoutePath } from '@/routes';
+import { CloseCircleOutlined } from '@ant-design/icons';
+import { IProductWishList, removeProductToWishList } from '@/redux-toolkit/wishListSlice';
+import { useAppDispatch, useAppSelector } from '@/redux-toolkit/hook';
+import { useAlertDispatch } from '@/contexts/AlertContext';
+import { addItemToCart } from '@/redux-toolkit/cartSlice';
 
 const WishList = () => {
+    const { wishList } = useAppSelector((state) => state.wishList)
 
-    const columns: TableProps<IProductItem>['columns'] = [
+    const dispatch = useAppDispatch()
+    const dispatchAlert = useAlertDispatch()
+
+    const addProductToCart = (product: any) => {
+        dispatchAlert({ loading: true })
+        setTimeout(() => {
+            dispatch(addItemToCart({ ...product }))
+            dispatch(removeProductToWishList({ id: product.id }))
+            dispatchAlert({ loading: false })
+        }, 1000)
+    }
+
+    const removeItemToWishList = (id: number) => {
+        dispatchAlert({ loading: true })
+        setTimeout(() => {
+            dispatch(removeProductToWishList({ id }))
+            dispatchAlert({ loading: false })
+        }, 1000)
+    }
+
+    const columns: TableProps<IProductWishList>['columns'] = [
+        {
+            title: '',
+            key: 'deleteItem',
+            render: (_, record) =>
+                <CloseCircleOutlined className='ml-4 cursor-pointer text-2xl hover:text-main-orange-color' onClick={() => { removeItemToWishList(record.id) }} />
+        },
         {
             title: "SẢN PHẨM",
             key: "name",
@@ -22,28 +53,30 @@ const WishList = () => {
             </div>
         },
         {
-            title: 'ĐƠN GIÁ',
+            title: 'GIÁ TIỀN',
             key: 'price',
             render: (_, record) => <div>
-                <div className='flex items-center'>
-                    <div className='font-bold'>{convertNumbertoMoney(record.new_price)}</div>
+                <div className='flex justify-start gap-2'>
+                    {record.old_price != 0 && <span className="line-through text-category-title">{convertNumbertoMoney(record.old_price)}</span>}
+                    <span className="font-semibold">{convertNumbertoMoney(record.new_price)}</span>
                 </div>
             </div>
         },
         {
-            title: 'Trạng thái',
+            title: 'TRẠNG THÁI',
             key: 'totalPrice',
-            render: (_, record) => <div className='flex items-center'>
-                <div className='font-bold'>{convertNumbertoMoney(record.totalPrice)}</div>
-            </div>
+            render: (_, record) =>
+                <div>
+                    Còn hàng
+                </div>
         },
         {
             title: '',
             key: 'deleteItem',
             render: (_, record) =>
-                <div className=''>
+                <span className='cursor-pointer' onClick={() => { addProductToCart(record) }}>
                     Add to cart
-                </div >
+                </span>
         },
     ];
     return (
@@ -54,11 +87,11 @@ const WishList = () => {
             </Helmet>
             <div className='mx-auto max-w-[1140px] py-8 px-2'>
                 <div className='px-2'>
-                    <h1 className="text-category-title text-2xl font-bold pb-2 w-fit tracking-wide">
+                    <h1 className="text-category-title text-2xl font-bold pb-5 w-fit tracking-wide">
                         My Wishlist
                     </h1>
                     <div>
-                        <Table columns={columns} dataSource={data} pagination={false} rowKey={(record) => record.id} />
+                        <Table columns={columns} dataSource={wishList} pagination={false} rowKey={(record) => record.id} />
                     </div>
                 </div>
             </div>

@@ -11,6 +11,9 @@ import { useAlertDispatch } from '@/contexts/AlertContext'
 import {
     HeartOutlined
 } from '@ant-design/icons';
+import { useAppDispatch } from '@/redux-toolkit/hook'
+import { addProductToWishList } from '@/redux-toolkit/wishListSlice'
+import { IProductWishList } from '@/redux-toolkit/wishListSlice';
 
 interface ProductsByCategoryProps {
     categoryPath: string;
@@ -19,7 +22,7 @@ interface ProductsByCategoryProps {
 
 const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryProps) => {
     const [products, setProducts] = useState<IProduct[]>([]);
-
+    const dispatch = useAppDispatch()
     const dispatchAlert = useAlertDispatch()
 
     const getProductsByCategory = async () => {
@@ -36,6 +39,14 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
     useEffect(() => {
         getProductsByCategory()
     }, [categoryPath])
+
+    const handleAddProductToWishList = (data: IProductWishList) => {
+        dispatchAlert({ loading: true })
+        setTimeout(() => {
+            dispatch(addProductToWishList({ ...data }))
+            dispatchAlert({ loading: false })
+        }, 1000)
+    }
 
     return (
         <div className="px-2">
@@ -74,12 +85,15 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                                         Quick View
                                     </span>
                                 </div>
-                                <div
-                                    className={`hidden absolute top-0 right-0 w-[32px] h-[32px] border-2 border-main-grey-color rounded-full text-center opacity-95 duration-500 showView hover:bg-[#b20000] hover:border-[#b20000] cursor-pointer`}
-                                    title='Add to wishlist'
-                                >
-                                    <HeartOutlined className='text-xl text-main-grey-color mt-[5px] show-heart' />
-                                </div>
+                                {product.available !== 0 &&
+                                    <div
+                                        className={`hidden absolute top-0 right-0 w-[32px] h-[32px] border-2 border-main-grey-color rounded-full text-center opacity-95 duration-500 showView hover:bg-[#b20000] hover:border-[#b20000] cursor-pointer`}
+                                        title='Add to wishlist'
+                                        onClick={() => { handleAddProductToWishList({ ...product }) }}
+                                    >
+                                        <HeartOutlined className='text-xl text-main-grey-color mt-[5px] show-heart' />
+                                    </div>
+                                }
                             </div>
                             <Link
                                 to={`${RoutePath.DetailProduct}/${product.id}`}

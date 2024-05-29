@@ -119,7 +119,6 @@ const DetailProduct = () => {
   }, [relatedCategory])
 
   useEffect(() => {
-    setQuantity(0)
     if (product)
       cartItems.map((item) => {
         if (item.id === product.id) {

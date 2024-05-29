@@ -7,10 +7,17 @@ import { IProduct } from "@/types"
 import ProductService from "@/services/ProductService"
 import { convertNumbertoMoney } from "@/utils"
 import { Tag } from "antd"
+import { HeartOutlined } from '@ant-design/icons';
+import { addProductToWishList, IProductWishList } from "@/redux-toolkit/wishListSlice"
+import { useAppDispatch } from "@/redux-toolkit/hook"
+import { useAlertDispatch } from "@/contexts/AlertContext"
 
 const ListProductByCategory = () => {
   const { category } = useParams()
   const [products, setProducts] = useState<IProduct[]>([]);
+
+  const dispatch = useAppDispatch()
+  const dispatchAlert = useAlertDispatch()
 
   const getProductsByCategory = async (relatedCategory: string) => {
     if (relatedCategory) {
@@ -22,6 +29,14 @@ const ListProductByCategory = () => {
   useEffect(() => {
     if (category) getProductsByCategory(category)
   }, [category])
+
+  const handleAddProductToWishList = (data: IProductWishList) => {
+    dispatchAlert({ loading: true })
+    setTimeout(() => {
+      dispatch(addProductToWishList({ ...data }))
+      dispatchAlert({ loading: false })
+    }, 1000)
+  }
 
   return (
     <div>
@@ -74,6 +89,15 @@ const ListProductByCategory = () => {
                     Quick View
                   </span>
                 </div>
+                {product.available !== 0 &&
+                  <div
+                    className={`hidden absolute top-0 right-0 w-[32px] h-[32px] border-2 border-main-grey-color rounded-full text-center opacity-95 duration-500 showView hover:bg-[#b20000] hover:border-[#b20000] cursor-pointer`}
+                    title='Add to wishlist'
+                    onClick={() => { handleAddProductToWishList({ ...product }) }}
+                  >
+                    <HeartOutlined className='text-xl text-main-grey-color mt-[5px] show-heart' />
+                  </div>
+                }
               </div>
               <Link
                 to={`${RoutePath.DetailProduct}/${product.id}`}

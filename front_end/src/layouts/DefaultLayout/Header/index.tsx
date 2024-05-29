@@ -28,6 +28,7 @@ const Header = () => {
 
   const { user } = useAppSelector(state => state.auth)
   const { totalQuantity } = useAppSelector(state => state.cart)
+  const { totalProduct } = useAppSelector(state => state.wishList)
   const accessToken = getAccessToken()
 
   const dispatch = useAppDispatch()
@@ -158,9 +159,14 @@ const Header = () => {
           <div className="max-h-full">
             <div className="3-icon">
               <ul className="flex items-center gap-[10px]">
-                <li className="cursor-pointer">
+                <li className="cursor-pointer relative">
                   <Link to={RoutePath.WishList}>
                     <FontAwesomeIcon icon={faHeart} size="xl" />
+                    {totalProduct !== 0 &&
+                      <div className="absolute -top-2 -right-1 bg-button-red-color text-white w-4 h-4 rounded-full text-center">
+                        <span className="text-xs font-semibold block">{totalProduct}</span>
+                      </div>
+                    }
                   </Link>
                 </li>
                 <li className="divider border-l-[1px] h-[2rem] border-white opacity-40"></li>

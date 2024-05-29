@@ -10,10 +10,6 @@ import { addItemToCart, IProductItem, removeItemToCart, deleteItemToCart } from 
 import { useAlertDispatch } from '@/contexts/AlertContext';
 import clsx from 'clsx';
 
-import { Swiper, SwiperSlide } from "swiper/react"
-import { Navigation } from 'swiper/modules';
-import "swiper/scss"
-import "swiper/scss/navigation"
 import "./Cart.scss"
 
 const Cart = () => {
@@ -72,7 +68,6 @@ const Cart = () => {
         {
             title: "SẢN PHẨM",
             key: "name",
-            dataIndex: "name",
             render: (_, record) => <div>
                 <Link to={`${RoutePath.DetailProduct}/${record.id}`} className='hover:text-[#334862] text-base'>
                     <div className='flex items-center max-xs:flex-col max-xs:text-center gap-2'>
@@ -85,7 +80,6 @@ const Cart = () => {
         {
             title: 'ĐƠN GIÁ',
             key: 'price',
-            dataIndex: "price",
             render: (_, record) => <div>
                 <div className='flex items-center'>
                     <div className='font-bold'>{convertNumbertoMoney(record.new_price)}</div>
@@ -95,7 +89,6 @@ const Cart = () => {
         {
             title: 'SỐ LƯỢNG',
             key: 'number',
-            dataIndex: "number",
             render: (_, record) =>
                 <div>
                     <form>
@@ -108,7 +101,6 @@ const Cart = () => {
         {
             title: 'TẠM TÍNH',
             key: 'totalPrice',
-            dataIndex: "totalPrice",
             render: (_, record) => <div className='flex items-center'>
                 <div className='font-bold'>{convertNumbertoMoney(record.totalPrice)}</div>
             </div>
@@ -116,7 +108,6 @@ const Cart = () => {
         {
             title: '',
             key: 'deleteItem',
-            dataIndex: "deleteItem",
             render: (_, record) =>
                 <div className='flex items-center'>
                     <div className='cursor-pointer transform hover:scale-125' onClick={showModal}>

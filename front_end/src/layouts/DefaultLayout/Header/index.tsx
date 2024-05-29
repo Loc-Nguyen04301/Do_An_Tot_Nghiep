@@ -159,7 +159,9 @@ const Header = () => {
             <div className="3-icon">
               <ul className="flex items-center gap-[10px]">
                 <li className="cursor-pointer">
-                  <FontAwesomeIcon icon={faHeart} size="xl" />
+                  <Link to={RoutePath.WishList}>
+                    <FontAwesomeIcon icon={faHeart} size="xl" />
+                  </Link>
                 </li>
                 <li className="divider border-l-[1px] h-[2rem] border-white opacity-40"></li>
                 <li className="cursor-pointer">

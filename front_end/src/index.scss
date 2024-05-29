@@ -237,6 +237,11 @@ body {
   .showView {
     display: block !important;
   }
+  .showView:hover {
+    .show-heart {
+      color: white !important;
+    }
+  }
 }
 
 // style scroll-bar

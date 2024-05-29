@@ -22,6 +22,7 @@ const OrderComplete = lazy(() => import("@/pages/OrderComplete"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 const Profile = lazy(() => import("@/pages/Profile"));
 const Purchase = lazy(() => import("@/pages/Purchase"));
+const WishList = lazy(() => import("@/pages/WishList"));
 
 const DashBoard = lazy(() => import("@/pages/admin/Dashboard"));
 const Inventory = lazy(() => import("@/pages/admin/Inventory"));
@@ -46,6 +47,7 @@ export enum RoutePath {
   CartPage = "/gio-hang",
   CheckoutPage = "/thanh-toan",
   OrderComplete = "/order-complete",
+  WishList = "/wishlist",
 
   DashBoard = "/admin",
   Inventory = "/admin/inventory",
@@ -197,6 +199,11 @@ const Router: React.FC = () => {
           path: RoutePath.OrderComplete,
           element:
             <OrderComplete />
+        },
+        {
+          path: RoutePath.WishList,
+          element:
+            <WishList />
         },
         {
           path: `*`,

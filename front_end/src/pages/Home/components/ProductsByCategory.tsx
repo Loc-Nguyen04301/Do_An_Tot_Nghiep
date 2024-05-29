@@ -8,6 +8,9 @@ import { IProduct } from '@/types'
 import { convertNumbertoMoney } from '@/utils'
 import { Tag } from 'antd'
 import { useAlertDispatch } from '@/contexts/AlertContext'
+import {
+    HeartOutlined
+} from '@ant-design/icons';
 
 interface ProductsByCategoryProps {
     categoryPath: string;
@@ -70,6 +73,12 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                                     <span className="text-white font-semibold uppercase text-sm">
                                         Quick View
                                     </span>
+                                </div>
+                                <div
+                                    className={`hidden absolute top-0 right-0 w-[32px] h-[32px] border-2 border-main-grey-color rounded-full text-center opacity-95 duration-500 showView hover:bg-[#b20000] hover:border-[#b20000] cursor-pointer`}
+                                    title='Add to wishlist'
+                                >
+                                    <HeartOutlined className='text-xl text-main-grey-color mt-[5px] show-heart' />
                                 </div>
                             </div>
                             <Link

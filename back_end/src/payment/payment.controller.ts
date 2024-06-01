@@ -6,6 +6,8 @@ import { Public } from 'src/common/decorators';
 import { format } from 'date-fns'
 import { resolveUrlString } from 'src/utils';
 
+const front_end_url = process.env['FRONT_END_URL']
+
 @Controller('api/v1/payment')
 export class PaymentController {
 
@@ -16,7 +18,7 @@ export class PaymentController {
         let tmnCode = 'SF01IC83';
         let secretKey = 'VWIZWAGNZBILVBUJNQJDFPLDHSUSUFYA'
         let vnpUrl = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html';
-        let returnUrl = "http://localhost:3000/order-complete"
+        let returnUrl = `${front_end_url}/order-complete`
         let now = new Date();
 
         let DATETIME_FORMAT = 'yyyyMMddHHmmss'

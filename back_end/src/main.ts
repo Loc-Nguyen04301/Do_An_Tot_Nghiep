@@ -2,6 +2,11 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import * as dotenv from 'dotenv';
+
+// Load environment variables from .env file
+dotenv.config();
+
 const allowedOriginsListTxt = process.env.ALLOWED_ORIGINS_LIST
 export const allowedOriginsList: string[] = allowedOriginsListTxt.split(',').map((text) => text.trim())
 
@@ -26,7 +31,6 @@ async function bootstrap() {
   SwaggerModule.setup('', app, document);
 
   const port = process.env.PORT || 8000
-  console.log(`${process.env.PORT}`)
   console.log(`Server is running at ${port}`)
   await app.listen(port);
 }

@@ -31,7 +31,6 @@ const Register = () => {
     dispatchAlert({ loading: true })
     try {
       const res = await AuthService.register(data)
-      console.log(res)
       dispatchAlert({ success: res.data.message })
       reset()
     } catch (error: any) {

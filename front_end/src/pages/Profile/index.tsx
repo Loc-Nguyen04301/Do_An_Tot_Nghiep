@@ -66,7 +66,6 @@ const Profile = () => {
     };
 
     const onSubmit = async (data: UpdateUser) => {
-        console.log({ data })
         dispatchAlert({ loading: true })
         var image: string = ""
         if (avatarTempFile) {

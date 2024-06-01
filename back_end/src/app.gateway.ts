@@ -1,10 +1,9 @@
 import { WebSocketGateway, WebSocketServer, OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { Bill } from '@prisma/client';
-import { allowedOriginsList } from './main';
 @WebSocketGateway({
     cors: {
-        origin: 'http://localhost:3000',
+        origin: '*',
         methods: ['GET', 'POST'],
         credentials: true,
     },

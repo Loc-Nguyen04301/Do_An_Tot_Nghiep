@@ -1,6 +1,6 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { Request } from 'express';
 
 export type JwtRefreshPayload = {
@@ -26,6 +26,9 @@ export class RtStrategy extends PassportStrategy(
 
   async validate(req: Request, payload: any) {
     const refresh_token = req.get('authorization').replace('Bearer', '').trim();
+
+    if (refresh_token) throw new ForbiddenException('Refresh token malformed')
+
     return { ...payload, refresh_token } as JwtRefreshPayload;
     // req.user = return value
   }

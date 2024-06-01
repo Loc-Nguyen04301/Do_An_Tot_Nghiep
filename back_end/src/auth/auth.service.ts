@@ -111,7 +111,7 @@ export class AuthService {
   async logOut(id: number) {
     // delete refresh token in DB
     await this.prisma.user.update({
-      where: { id: id },
+      where: { id: id, refresh_token: { not: null } },
       data: { refresh_token: null },
     });
     return;

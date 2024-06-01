@@ -7,13 +7,12 @@ export const allowedOriginsList: string[] = allowedOriginsListTxt.split(',').map
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  // Enable CORS
 
   app.enableCors({
-    origin: allowedOriginsList, // Allow requests from this origin
+    origin: allowedOriginsList,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
-    allowedHeaders: ['Content-Type', 'Authorization'], // Specify the allowed headers if necessary
+    allowedHeaders: ['Content-Type', 'Authorization'],
   });
 
   app.useGlobalPipes(new ValidationPipe());
@@ -29,6 +28,5 @@ async function bootstrap() {
   const port = process.env.PORT || 8000
 
   await app.listen(port);
-  console.log("Server is running on port " + port)
 }
 bootstrap();

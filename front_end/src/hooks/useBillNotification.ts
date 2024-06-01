@@ -12,27 +12,11 @@ const audio = new Audio(notificationSound);
 
 const useBillNotification = () => {
     const navigate = useNavigate();
-    const dispatch = useAppDispatch();
-    const [userInteracted, setUserInteracted] = useState(false);
-
-    useEffect(() => {
-        const handleUserInteraction = () => {
-            setUserInteracted(true);
-            window.removeEventListener('click', handleUserInteraction);
-            window.removeEventListener('touchstart', handleUserInteraction);
-        };
-
-        window.addEventListener('click', handleUserInteraction);
-        window.addEventListener('touchstart', handleUserInteraction);
-
-        return () => {
-            window.removeEventListener('click', handleUserInteraction);
-            window.removeEventListener('touchstart', handleUserInteraction);
-        };
-    }, []);
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
         socket.on('BILL_NOTIFICATION', (bill) => {
+            console.log("on notification")
             dispatch(createBillNoti({ ...bill, is_read: false }));
 
             // push notification UI
@@ -56,20 +40,16 @@ const useBillNotification = () => {
                     : `Mã đơn hàng ${bill.id} được mua bởi khách truy cập`,
                 theme: 'darkblue',
                 duration: 5000,
-                native: true 
+                native: true
             });
 
-            if (userInteracted) {
-                audio.play().catch(error => {
-                    console.error("Failed to play audio:", error);
-                });
-            }
+            audio.play()
         });
 
         return () => {
             socket.off('BILL_NOTIFICATION');
         };
-    }, [dispatch, navigate, userInteracted]);
+    }, [dispatch, navigate]);
 
 };
 

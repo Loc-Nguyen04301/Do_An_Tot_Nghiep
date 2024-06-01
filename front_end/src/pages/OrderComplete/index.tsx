@@ -21,9 +21,9 @@ const OrderComplete = () => {
     const dispatch = useAppDispatch()
     const dispatchAlert = useAlertDispatch()
 
-    // useEffect(() => {
-    //     dispatch(resetCart())
-    // }, [dispatch])
+    useEffect(() => {
+        dispatch(resetCart())
+    }, [dispatch])
 
     const getBillDetail = async (id: string) => {
         try {

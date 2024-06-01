@@ -119,11 +119,20 @@ const Header = () => {
           {/*Cart Drawer Mobile Screen*/}
           <div className="md:hidden">
             <ul className="flex items-center gap-[15px] h-full">
-              <li className="cursor-pointer">
-                <FontAwesomeIcon icon={faHeart} size="lg" />
+              <li className="cursor-pointer relative">
+                <Link to={RoutePath.WishList}>
+                  <FontAwesomeIcon icon={faHeart} size="lg" />
+                </Link>
+                {totalProduct !== 0 &&
+                  <div className="absolute -top-2 -right-1 bg-button-red-color text-white w-4 h-4 rounded-full text-center">
+                    <span className="text-xs font-semibold block">{totalProduct}</span>
+                  </div>
+                }
               </li>
               <li className="cursor-pointer">
-                <FontAwesomeIcon icon={faUser} size="lg" />
+                <Link to={RoutePath.LoginPage}>
+                  <FontAwesomeIcon icon={faUser} size="lg" />
+                </Link>
               </li>
               <li
                 className="cursor-pointer relative dropdown"

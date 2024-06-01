@@ -25,7 +25,7 @@ const WishList = () => {
         }, 1000)
     }
 
-    const removeItemToWishList = (id: number) => {
+    const handleRemoveItemToWishList = (id: number) => {
         dispatchAlert({ loading: true })
         setTimeout(() => {
             dispatch(removeProductToWishList({ id }))
@@ -38,7 +38,7 @@ const WishList = () => {
             title: '',
             key: 'deleteItem',
             render: (_, record) =>
-                <CloseCircleOutlined className='ml-4 cursor-pointer text-2xl hover:text-main-orange-color' onClick={() => { removeItemToWishList(record.id) }} />
+                <CloseCircleOutlined className='ml-4 cursor-pointer text-2xl hover:text-main-orange-color' onClick={() => { handleRemoveItemToWishList(record.id) }} />
         },
         {
             title: "SẢN PHẨM",

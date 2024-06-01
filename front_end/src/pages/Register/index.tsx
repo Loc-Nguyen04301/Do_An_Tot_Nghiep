@@ -45,8 +45,8 @@ const Register = () => {
         <meta name='description' content='Beginner friendly page for learning React Helmet.' />
       </Helmet>
       <div className="container mx-auto mb-10 mt-12 pl-4 max-w-[1140px]">
-        <div className="font-extrabold uppercase text-lg  mb-8 tracking-wide">KHÁCH HÀNG ĐĂNG KÝ</div>
-        <div className="bg-[#fafafa] p-8 border-[1px] border-[#ddd] text-text-gray w-1/2 text-sm">
+        <div className="font-extrabold uppercase text-lg  mb-8 tracking-wide max-md:text-center">KHÁCH HÀNG ĐĂNG KÝ</div>
+        <div className="bg-[#fafafa] p-8 border-[1px] border-[#ddd] text-text-gray w-1/2 text-sm max-md:w-full">
           <div>
             <p>Khách hàng đã đăng ký</p>
             <p>

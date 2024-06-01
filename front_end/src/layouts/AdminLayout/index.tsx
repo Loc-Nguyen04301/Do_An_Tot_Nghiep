@@ -20,6 +20,7 @@ import ShowNotification from '@/layouts/AdminLayout/components/ShowNotification'
 import "./AdminLayout.scss"
 import useBillNotification from '@/hooks/useBillNotification';
 import { fetchBillNoti } from '@/redux-toolkit/billNotiSlice';
+import { RoutePath } from '@/routes';
 
 const { Content, Sider } = Layout;
 type MenuItem = Required<MenuProps>['items'][number];
@@ -82,13 +83,16 @@ const AdminLayout = ({ children }: AdminLayouttProps) => {
         token: { colorBgContainer },
     } = theme.useToken();
 
+    const navigateHomePage = () => {
+        window.location.href = RoutePath.Home
+    }
     useBillNotification()
 
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)} theme='dark'>
-                <div className="demo-logo-vertical">
-                    <img src={logoImage} alt="logo" className='rounded-md' />
+                <div className="m-4 cursor-pointer">
+                    <img src={logoImage} alt="logo" className='rounded-md' onClick={navigateHomePage} />
                 </div>
                 <Menu
                     theme='dark'

@@ -27,7 +27,7 @@ export class RtStrategy extends PassportStrategy(
   async validate(req: Request, payload: any) {
     const refresh_token = req.get('authorization').replace('Bearer', '').trim();
 
-    if (refresh_token) throw new ForbiddenException('Refresh token malformed')
+    if (!refresh_token) throw new ForbiddenException('Refresh token malformed')
 
     return { ...payload, refresh_token } as JwtRefreshPayload;
     // req.user = return value

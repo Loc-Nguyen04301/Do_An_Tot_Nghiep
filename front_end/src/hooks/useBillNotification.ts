@@ -16,7 +16,6 @@ const useBillNotification = () => {
 
     useEffect(() => {
         socket.on('BILL_NOTIFICATION', (bill) => {
-            console.log("on notification")
             dispatch(createBillNoti({ ...bill, is_read: false }));
 
             // push notification UI

@@ -33,8 +33,9 @@ instance.interceptors.request.use(
 
 instance.interceptors.request.use(
   async (request: InternalAxiosRequestConfig) => {
-    const accessToken = getAccessToken();
     let newHeaders = { ...request.headers }
+
+    const accessToken = getAccessToken();
     if (accessToken) {
       newHeaders = {
         ...request.headers,
@@ -55,6 +56,7 @@ instance.interceptors.request.use(
         }
       }
     }
+
     request = { ...request, headers: newHeaders as AxiosRequestHeaders };
     return request;
   },

@@ -118,8 +118,9 @@ const Purchase = () => {
                                                     <div className='flex flex-col'>
                                                         <span>Mã đơn hàng: {bill.id}</span>
                                                         <span>Ngày mua: {format(bill.created_at, DATETIME_FORMAT)}</span>
+                                                        <span>Phương thức thanh toán: {bill.payment_method}</span>
                                                     </div>
-                                                    {bill.order_status === OrderStatus.PROCESSING && bill.payment_status === false && <Tag color="red" className='h-fit'>Chờ thanh toán</Tag>}
+                                                    {bill.order_status === OrderStatus.PROCESSING && bill.payment_status === false && <Tag color="red" className='h-fit'>Chưa thanh toán</Tag>}
                                                     {bill.order_status === OrderStatus.PROCESSING && bill.payment_status === true && <Tag color="green" className='h-fit'>Đã thanh toán</Tag>}
                                                     {bill.order_status === OrderStatus.SUCCESS && <span className='text-[#ee4d2d] text-xl uppercase'>Hoàn thành</span>}
                                                     {bill.order_status === OrderStatus.CANCELLED && <span className='text-[#ee4d2d] text-xl uppercase'>Đã hủy</span>}
@@ -158,12 +159,18 @@ const Purchase = () => {
                                                 <div className={clsx('flex items-center', bill.order_status !== OrderStatus.CANCELLED ? 'justify-end' : 'justify-between')}>
                                                     {bill.order_status === OrderStatus.CANCELLED && <span className='text-category-title text-sm'>Đã hủy bởi bạn</span>}
                                                     <div className='flex gap-5'>
-                                                        <button className="min-w-[150px] bg-main-orange-color py-[10px] px-[8px] hover:shadow-checkout-btn rounded-md border border-border-color text-white">
-                                                            Mua lại
-                                                        </button>
-                                                        <button className="min-w-[150px] bg-[#ffffff] py-[10px] px-[8px] hover:shadow-checkout-btn rounded-md border border-border-color">
-                                                            Xem chi tiết đơn hàng
-                                                        </button>
+                                                        {
+                                                            bill.order_status === OrderStatus.CANCELLED &&
+                                                            <button className="min-w-[150px] bg-main-orange-color py-[10px] px-[8px] hover:shadow-checkout-btn rounded-md border border-border-color text-white">
+                                                                Mua lại
+                                                            </button>
+                                                        }
+                                                        {
+                                                            bill.order_status === OrderStatus.PROCESSING &&
+                                                            <button className="min-w-[150px] bg-button-red-color py-[10px] px-[8px] hover:shadow-checkout-btn rounded-md border border-border-color text-white">
+                                                                Hủy đơn hàng
+                                                            </button>
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>
@@ -182,7 +189,10 @@ const Purchase = () => {
                                 colorBgTextHover: "#ffffff"
                             }
                         }}>
-                            <Pagination current={current} pageSize={pageSize} total={records} onChange={onChangePage} className='text-center mt-5' />
+                            {
+                                records > pageSize &&
+                                <Pagination current={current} pageSize={pageSize} total={records} onChange={onChangePage} className='text-center mt-5' showSizeChanger={false} />
+                            }
                         </ConfigProvider>
                     </div>
                 </div>

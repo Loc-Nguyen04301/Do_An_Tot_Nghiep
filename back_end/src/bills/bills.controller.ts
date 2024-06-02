@@ -115,9 +115,9 @@ export class BillsController {
     const parsedReturnStatus = return_status as ReturnStatus
     const parsedPageIndex = parseInt(page_index, 10);
     const parsedPageSize = parseInt(page_size, 10);
-    const parsedFromDate = new Date(from_date)
-    const parsedToDate = new Date(to_date)
-    parsedToDate.setHours(23, 59, 59, 999)
+    const parsedFromDate = from_date ? new Date(from_date) : undefined
+    const parsedToDate = to_date ? new Date(to_date) : undefined
+    parsedToDate && parsedToDate.setHours(23, 59, 59, 999)
 
     return this.billsService.findAll({
       user_id: parsedUserId,

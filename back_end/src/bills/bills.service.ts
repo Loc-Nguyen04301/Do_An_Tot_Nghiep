@@ -95,14 +95,9 @@ export class BillsService {
     from_date,
     to_date
   }: BillParams) {
-    user_id = user_id || null
     page_index = page_index || 0;
     page_size = page_size || 5;
-    order_status = order_status || null
-    payment_status = payment_status
     return_status = return_status || ReturnStatus.NONE
-    if (isNaN(from_date.getTime())) from_date = null
-    if (isNaN(to_date.getTime())) to_date = null
 
     const take = page_size as number
     const skip = page_index * page_size as number
@@ -144,6 +139,15 @@ export class BillsService {
       };
     }
 
+    const records = await this.prisma.bill.count({
+      where: {
+        ...whereClause,
+      },
+      orderBy: {
+        created_at: "desc"
+      },
+    })
+
     const bills = await this.prisma.bill.findMany({
       where: {
         ...whereClause,
@@ -164,7 +168,6 @@ export class BillsService {
       take,
     })
 
-    const records = bills.length
     const total_pages = Math.ceil(records / page_size);
 
     return { bills: bills, metadata: { page_index, page_size, total_pages, records } }
@@ -188,8 +191,8 @@ export class BillsService {
     return_status = return_status || ReturnStatus.NONE
     if (isNaN(from_date.getTime())) from_date = null
     if (isNaN(to_date.getTime())) to_date = null
-    let whereClause = {}
 
+    let whereClause = {}
     if (customer_name) {
       whereClause = {
         ...whereClause, customer_name: {

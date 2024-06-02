@@ -120,7 +120,7 @@ const Purchase = () => {
                                                         <span>Ngày mua: {format(bill.created_at, DATETIME_FORMAT)}</span>
                                                     </div>
                                                     {bill.order_status === OrderStatus.PROCESSING && bill.payment_status === false && <Tag color="red" className='h-fit'>Chờ thanh toán</Tag>}
-                                                    {bill.order_status === OrderStatus.PROCESSING && bill.payment_status === true && <Tag color="red" className='h-fit'>Đã thanh toán</Tag>}
+                                                    {bill.order_status === OrderStatus.PROCESSING && bill.payment_status === true && <Tag color="green" className='h-fit'>Đã thanh toán</Tag>}
                                                     {bill.order_status === OrderStatus.SUCCESS && <span className='text-[#ee4d2d] text-xl uppercase'>Hoàn thành</span>}
                                                     {bill.order_status === OrderStatus.CANCELLED && <span className='text-[#ee4d2d] text-xl uppercase'>Đã hủy</span>}
                                                 </div>
@@ -173,7 +173,7 @@ const Purchase = () => {
                                 :
                                 <div className='bg-white h-[400px] flex justify-center items-center flex-col gap-3'>
                                     <img src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/return/5fafbb923393b712b964.png' className='w-[100px] h-[100px]' />
-                                    <span> {`Bạn hiện không có đơn hàng ${purchaseStatus} nào`}</span>
+                                    <span> {`Bạn hiện không có đơn hàng nào`}</span>
                                 </div>
                         }
                         <ConfigProvider theme={{

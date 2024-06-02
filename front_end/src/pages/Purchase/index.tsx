@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { NavLink } from 'react-router-dom'
 import { RoutePath } from '@/routes'
@@ -8,9 +8,9 @@ import { useAppSelector } from '@/redux-toolkit/hook';
 import { useAlertDispatch } from '@/contexts/AlertContext';
 import { convertNumbertoMoney } from '@/utils';
 import { format } from "date-fns"
-import { ConfigProvider, Pagination, Tag } from 'antd';
+import { ConfigProvider, Pagination, Tag, Modal } from 'antd';
 import type { PaginationProps } from 'antd';
-import { IBill, IItem } from '@/types';
+import { IBill } from '@/types';
 import { OrderStatus } from '@/types';
 
 var DATETIME_FORMAT = 'dd/MM/yyyy HH:mm'
@@ -29,12 +29,35 @@ const Purchase = () => {
     const [current, setCurrent] = useState(1)
     const [pageSize] = useState(5)
     const [records, setRecords] = useState(0)
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const dispatchAlert = useAlertDispatch()
 
     const onChangePage: PaginationProps['onChange'] = (page) => {
         setCurrent(page);
     };
 
-    const dispatchAlert = useAlertDispatch()
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleOk = async (bill: IBill) => {
+        dispatchAlert({ loading: true })
+        try {
+            const res = await BillService.updateBill({ order_status: OrderStatus.CANCELLED }, bill.id)
+            setIsModalOpen(false);
+            dispatchAlert({ success: res.data.message })
+            setTimeout(() => {
+                window.location.reload()
+            }, 2000)
+        } catch (error: any) {
+            dispatchAlert({ errors: error.message })
+        }
+    }
 
     const fetchBill = async (purchaseStatus: PurchaseStatus, userId: number | undefined, current: number, pageSize: number) => {
         dispatchAlert({ loading: true })
@@ -166,11 +189,27 @@ const Purchase = () => {
                                                             </button>
                                                         }
                                                         {
-                                                            bill.order_status === OrderStatus.PROCESSING &&
-                                                            <button className="min-w-[150px] bg-button-red-color py-[10px] px-[8px] hover:shadow-checkout-btn rounded-md border border-border-color text-white">
+                                                            bill.order_status === OrderStatus.PROCESSING && bill.payment_status === false &&
+                                                            <button
+                                                                className="min-w-[150px] bg-button-red-color py-[10px] px-[8px] hover:shadow-checkout-btn rounded-md border border-border-color text-white"
+                                                                onClick={showModal}>
                                                                 Hủy đơn hàng
                                                             </button>
                                                         }
+                                                        <ConfigProvider theme={{
+                                                            token: {
+                                                                colorPrimary: "#F48220",
+                                                            }
+                                                        }}>
+                                                            <Modal
+                                                                centered
+                                                                title="Hủy đơn hàng"
+                                                                open={isModalOpen}
+                                                                onOk={() => handleOk(bill)}
+                                                                onCancel={handleCancel}>
+                                                                <p className='text-base'>Bạn muốn xóa hủy đơn hàng này ?</p>
+                                                            </Modal>
+                                                        </ConfigProvider>
                                                     </div>
                                                 </div>
                                             </div>
@@ -196,7 +235,7 @@ const Purchase = () => {
                         </ConfigProvider>
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     )
 }

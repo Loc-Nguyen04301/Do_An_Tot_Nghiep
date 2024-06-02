@@ -104,16 +104,14 @@ const UpdateBill = () => {
         try {
             if (selectedBill) {
                 const res = await BillService.updateBill(newData, selectedBill.id)
-                dispatchAlert({ loading: false })
                 dispatchAlert({ success: res.data.message })
                 setDisabled(true)
                 setTimeout(() => {
                     window.location.reload()
                 }, 2000)
             }
-        } catch (error) {
-            dispatchAlert({ loading: false })
-            console.log(error)
+        } catch (error: any) {
+            dispatchAlert({ errors: error.message })
         }
     }
 

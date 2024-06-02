@@ -10,7 +10,7 @@ import { useAlertDispatch } from "@/contexts/AlertContext"
 
 const ShoppingCart = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { cartItems, totalAmount, totalQuantity } = useAppSelector(state => state.cart)
+  const { cartItems, totalAmount } = useAppSelector(state => state.cart)
 
   const dispatch = useAppDispatch()
   const dispatchAlert = useAlertDispatch()
@@ -33,10 +33,10 @@ const ShoppingCart = () => {
     <div className="dropdown-content !min-w-[300px] cart left-[-60px] top-[30px] bg-white !cursor-text">
       {cartItems.length > 0
         ?
-        <div className="pt-5 pb-8 px-5">
+        <div className="pt-5 pb-8 px-3">
           <div className="min-w-[260px] max-h-[250px] overflow-y-auto">
             {cartItems.map((item) =>
-              <div key={item.id} className="flex pb-3 border-b border-border-color category-item my-4">
+              <div key={item.id} className="flex justify-between pb-3 pr-2 border-b border-border-color category-item my-4">
                 <Link
                   to={`${RoutePath.DetailProduct}/${item.id}`}
                   className="flex"

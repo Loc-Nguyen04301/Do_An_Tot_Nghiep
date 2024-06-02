@@ -16,11 +16,21 @@ interface BillParams {
     to_date?: string,
 }
 
+interface UpdateBillDto {
+    customer_name?: string,
+    address?: string,
+    phone_number?: string,
+    user_id?: number,
+    order_status?: string
+    payment_status?: boolean
+    return_status?: string
+}
+
 const createBill = (data: CreateBillDto) => {
     return http.post(`/bills`, data)
 }
 
-const updateBill = (data: CreateBillDto, id: number) => {
+const updateBill = (data: UpdateBillDto, id: number) => {
     return http.patch(`/bills/${id}`, data)
 }
 

@@ -10,7 +10,7 @@ import { convertNumbertoMoney } from '@/utils';
 import { format } from "date-fns"
 import { ConfigProvider, Pagination, Tag, Modal } from 'antd';
 import type { PaginationProps } from 'antd';
-import { IBill } from '@/types';
+import { IBill, PaymentMethod } from '@/types';
 import { OrderStatus } from '@/types';
 
 var DATETIME_FORMAT = 'dd/MM/yyyy HH:mm'
@@ -30,6 +30,7 @@ const Purchase = () => {
     const [pageSize] = useState(5)
     const [records, setRecords] = useState(0)
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedBill, setSelectedBill] = useState<IBill | null>(null);
 
     const dispatchAlert = useAlertDispatch()
 
@@ -37,7 +38,8 @@ const Purchase = () => {
         setCurrent(page);
     };
 
-    const showModal = () => {
+    const showModal = (bill: IBill) => {
+        setSelectedBill(bill)
         setIsModalOpen(true);
     };
 
@@ -45,10 +47,11 @@ const Purchase = () => {
         setIsModalOpen(false);
     };
 
-    const handleOk = async (bill: IBill) => {
+    const handleOk = async () => {
+        if (!selectedBill) return;
         dispatchAlert({ loading: true })
         try {
-            const res = await BillService.updateBill({ order_status: OrderStatus.CANCELLED }, bill.id)
+            const res = await BillService.updateBill({ order_status: OrderStatus.CANCELLED }, selectedBill.id)
             setIsModalOpen(false);
             dispatchAlert({ success: res.data.message })
             setTimeout(() => {
@@ -134,21 +137,23 @@ const Purchase = () => {
                             listBill.length > 0
                                 ?
                                 <section className='flex flex-col gap-3'>
-                                    {
-                                        listBill.map((bill) =>
-                                            <div className='p-6 bg-white' key={bill.id}>
-                                                <div className='flex justify-between pb-2 border-b border-border-color'>
-                                                    <div className='flex flex-col'>
-                                                        <span>Mã đơn hàng: {bill.id}</span>
-                                                        <span>Ngày mua: {format(bill.created_at, DATETIME_FORMAT)}</span>
-                                                        <span>Phương thức thanh toán: {bill.payment_method}</span>
-                                                    </div>
-                                                    {bill.order_status === OrderStatus.PROCESSING && bill.payment_status === false && <Tag color="red" className='h-fit'>Chưa thanh toán</Tag>}
-                                                    {bill.order_status === OrderStatus.PROCESSING && bill.payment_status === true && <Tag color="green" className='h-fit'>Đã thanh toán</Tag>}
-                                                    {bill.order_status === OrderStatus.SUCCESS && <span className='text-[#ee4d2d] text-xl uppercase'>Hoàn thành</span>}
-                                                    {bill.order_status === OrderStatus.CANCELLED && <span className='text-[#ee4d2d] text-xl uppercase'>Đã hủy</span>}
+                                    {listBill.map((bill) =>
+                                        <div className={`p-6 bg-white`} key={bill.id}>
+                                            <div className='flex justify-between pb-2 border-b border-border-color'>
+                                                <div className='flex flex-col'>
+                                                    <span>Mã đơn hàng: {bill.id}</span>
+                                                    <span>Ngày mua: {format(bill.created_at, DATETIME_FORMAT)}</span>
+                                                    {bill.payment_method === PaymentMethod.SHIPCOD && <span>Phương thức thanh toán: Ship COD</span>}
+                                                    {bill.payment_method === PaymentMethod.BANK_TRANSFER && <span>Phương thức thanh toán: Chuyển khoản ngân hàng</span>}
+                                                    {bill.payment_method === PaymentMethod.VNPAY && <span>Phương thức thanh toán: Thanh toán cổng VNPay</span>}
                                                 </div>
-                                                {bill.items.map((item, index) =>
+                                                {bill.order_status === OrderStatus.PROCESSING && bill.payment_status === false && <Tag color="red" className='h-fit'>Chưa thanh toán</Tag>}
+                                                {bill.order_status === OrderStatus.PROCESSING && bill.payment_status === true && <Tag color="green" className='h-fit'>Đã thanh toán</Tag>}
+                                                {bill.order_status === OrderStatus.SUCCESS && <span className='text-[#ee4d2d] text-xl uppercase'>Hoàn thành</span>}
+                                                {bill.order_status === OrderStatus.CANCELLED && <span className='text-[#ee4d2d] text-xl uppercase'>Đã hủy</span>}
+                                            </div>
+                                            {
+                                                bill.items.map((item, index) =>
                                                     <div className='py-6 border-b border-border-color' key={`${bill.id}-${index}`}>
                                                         <div className='flex justify-between items-center gap-2' >
                                                             <div className='flex gap-2'>
@@ -173,48 +178,33 @@ const Purchase = () => {
                                                             <span className='text-main-orange-color font-semibold'>{convertNumbertoMoney(item.total_price)}</span>
                                                         </p>
                                                     </div>
-
-                                                )}
-                                                <div className='py-6 text-right'>
-                                                    <span className='px-2'>Tổng cộng:</span>
-                                                    <span className='px-2 text-main-orange-color text-xl font-semibold'>{convertNumbertoMoney(bill.total_amount)}</span>
-                                                </div>
-                                                <div className={clsx('flex items-center', bill.order_status !== OrderStatus.CANCELLED ? 'justify-end' : 'justify-between')}>
-                                                    {bill.order_status === OrderStatus.CANCELLED && <span className='text-category-title text-sm'>Đã hủy bởi bạn</span>}
-                                                    <div className='flex gap-5'>
-                                                        {
-                                                            bill.order_status === OrderStatus.CANCELLED &&
-                                                            <button className="min-w-[150px] bg-main-orange-color py-[10px] px-[8px] hover:shadow-checkout-btn rounded-md border border-border-color text-white">
-                                                                Mua lại
-                                                            </button>
-                                                        }
-                                                        {
-                                                            bill.order_status === OrderStatus.PROCESSING && bill.payment_status === false &&
-                                                            <button
-                                                                className="min-w-[150px] bg-button-red-color py-[10px] px-[8px] hover:shadow-checkout-btn rounded-md border border-border-color text-white"
-                                                                onClick={showModal}>
-                                                                Hủy đơn hàng
-                                                            </button>
-                                                        }
-                                                        <ConfigProvider theme={{
-                                                            token: {
-                                                                colorPrimary: "#F48220",
-                                                            }
-                                                        }}>
-                                                            <Modal
-                                                                centered
-                                                                title="Hủy đơn hàng"
-                                                                open={isModalOpen}
-                                                                onOk={() => handleOk(bill)}
-                                                                onCancel={handleCancel}>
-                                                                <p className='text-base'>Bạn muốn xóa hủy đơn hàng này ?</p>
-                                                            </Modal>
-                                                        </ConfigProvider>
-                                                    </div>
+                                                )
+                                            }
+                                            <div className='py-6 text-right'>
+                                                <span className='px-2'>Tổng cộng:</span>
+                                                <span className='px-2 text-main-orange-color text-xl font-semibold'>{convertNumbertoMoney(bill.total_amount)}</span>
+                                            </div>
+                                            <div className={clsx('flex items-center', bill.order_status !== OrderStatus.CANCELLED ? 'justify-end' : 'justify-between')}>
+                                                {bill.order_status === OrderStatus.CANCELLED && <span className='text-category-title text-sm'>Đã hủy bởi bạn</span>}
+                                                <div className='flex gap-5'>
+                                                    {
+                                                        bill.order_status === OrderStatus.CANCELLED &&
+                                                        <button className="min-w-[150px] bg-main-orange-color py-[10px] px-[8px] hover:shadow-checkout-btn rounded-md border border-border-color text-white">
+                                                            Mua lại
+                                                        </button>
+                                                    }
+                                                    {
+                                                        bill.order_status === OrderStatus.PROCESSING && bill.payment_status === false &&
+                                                        <button
+                                                            className="min-w-[150px] bg-button-red-color py-[10px] px-[8px] hover:shadow-checkout-btn rounded-md border border-border-color text-white"
+                                                            onClick={() => { showModal(bill) }}>
+                                                            Hủy đơn hàng
+                                                        </button>
+                                                    }
                                                 </div>
                                             </div>
-                                        )
-                                    }
+                                        </div>
+                                    )}
                                 </section>
                                 :
                                 <div className='bg-white h-[400px] flex justify-center items-center flex-col gap-3'>
@@ -232,6 +222,14 @@ const Purchase = () => {
                                 records > pageSize &&
                                 <Pagination current={current} pageSize={pageSize} total={records} onChange={onChangePage} className='text-center mt-5' showSizeChanger={false} />
                             }
+                            <Modal
+                                centered
+                                title={`Hủy đơn hàng mã ${selectedBill?.id}`}
+                                open={isModalOpen}
+                                onOk={handleOk}
+                                onCancel={handleCancel}>
+                                <p className='text-base'>Bạn muốn hủy đơn hàng này ?</p>
+                            </Modal>
                         </ConfigProvider>
                     </div>
                 </div>

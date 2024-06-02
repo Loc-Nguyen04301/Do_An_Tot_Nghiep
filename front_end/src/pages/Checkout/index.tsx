@@ -54,10 +54,10 @@ const Checkout = () => {
             label:
                 <div className='flex gap-3 items-center'>
                     <input type={"radio"} checked={paymentMethod === PaymentMethod.SHIPCOD} readOnly />
-                    <span className='font-bold'>Trả tiền mặt khi nhận hàng</span>
+                    <span className='font-bold'>Ship COD</span>
                 </div>,
             children:
-                <p>Trả tiền mặt khi nhận hàng</p>,
+                <p>Thanh toán sau khi nhận hàng</p>,
             showArrow: false,
         },
         {

@@ -181,7 +181,7 @@ const Checkout = () => {
                                     <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"email"} {...register('email')} disabled={!!user?.email} />
                                     {errors.email && <p className="text-red-500">{errors.email?.message}</p>}
                                 </div>
-                                <h1 className='mt-12 text-category-title text-lg'>
+                                <h1 className='mt-8 text-category-title text-lg'>
                                     THÔNG TIN BỔ SUNG
                                 </h1>
                                 <div className="my-2">

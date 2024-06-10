@@ -1,12 +1,13 @@
 import { ReactNode } from "react";
 import { ALERT, AlertAction, AlertState, alertReducer } from "@/reducers/AlertReducer";
 import React from "react";
-
+import { v4 as uuidv4 } from 'uuid';
 interface AlertContextProviderProps {
     children: ReactNode;
 }
 
 interface AlertContextType {
+    id?: string;
     loading?: boolean;
     success?: string;
     errors?: string[] | string;
@@ -14,6 +15,7 @@ interface AlertContextType {
 }
 
 const initialState = {
+    id: undefined,
     loading: false,
     success: undefined,
     errors: undefined,
@@ -33,10 +35,10 @@ const useAlertContext = () => {
 const useAlertDispatch = () => {
     const { dispatch } = useAlertContext();
 
-    const showAlert = (payload: AlertState) => {
+    const showAlert = (payload: Omit<AlertState, 'id'>) => {
         dispatch({
             type: ALERT,
-            payload: payload,
+            payload: { ...payload, id: uuidv4() },
         });
     };
 

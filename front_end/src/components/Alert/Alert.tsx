@@ -4,7 +4,7 @@ import Loading from './Loading'
 import { Bounce, toast, ToastContainer } from 'react-toastify';
 
 const Alert = () => {
-    const { loading, success, errors } = useAlertContext()
+    const { loading, success, errors, id } = useAlertContext()
 
     useEffect(() => {
         if (success) {
@@ -13,7 +13,7 @@ const Alert = () => {
         if (errors) {
             toast.error(errors);
         }
-    }, [success, errors]);
+    }, [id, success, errors]);
 
     return (
         <>

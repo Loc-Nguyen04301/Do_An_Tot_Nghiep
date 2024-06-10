@@ -1,6 +1,7 @@
 export const ALERT = "ALERT"
 
 export interface AlertState {
+    id?: string;
     loading?: boolean;
     success?: string;
     errors?: string[] | string;

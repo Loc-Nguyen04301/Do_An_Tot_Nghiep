@@ -21,10 +21,12 @@ const ShoppingCart = () => {
     setIsModalOpen(true);
   };
 
-  const handleOk = (product: IProductItem) => {
-    dispatchAlert({ success: "Xóa sản phẩm thành công" })
-    dispatch(deleteItemToCart(product))
-    setIsModalOpen(false);
+  const handleOk = (item: IProductItem | null) => {
+    if (item) {
+      dispatchAlert({ success: "Xóa sản phẩm thành công" })
+      dispatch(deleteItemToCart(item))
+      setIsModalOpen(false);
+    }
   };
 
   const handleCancel = () => {
@@ -69,7 +71,12 @@ const ShoppingCart = () => {
                 colorPrimary: '#f48220'
               }
             }}>
-              <Modal centered title="Xóa sản phẩm" open={isModalOpen} onOk={() => handleOk(selectedItem)} onCancel={handleCancel}>
+              <Modal
+                centered
+                title="Xóa sản phẩm"
+                open={isModalOpen}
+                onOk={() => handleOk(selectedItem)}
+                onCancel={handleCancel}>
                 <p className='text-base'>Bạn muốn xóa sản phẩm này khỏi giỏ hàng ?</p>
               </Modal>
             </ConfigProvider>

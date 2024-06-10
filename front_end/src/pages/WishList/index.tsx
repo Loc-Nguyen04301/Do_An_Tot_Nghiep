@@ -21,7 +21,7 @@ const WishList = () => {
         setTimeout(() => {
             dispatch(addItemToCart({ ...product }))
             dispatch(removeProductToWishList({ id: product.id }))
-            dispatchAlert({ loading: false })
+            dispatchAlert({ loading: false, success: "Thêm vào giỏ hàng thành công" })
         }, 1000)
     }
 

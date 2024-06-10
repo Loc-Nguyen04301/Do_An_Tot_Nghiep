@@ -16,6 +16,7 @@ const Cart = () => {
     const { cartItems, totalAmount } = useAppSelector((state) => state.cart)
     const data: IProductItem[] = cartItems;
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedItem, setSelectedItem] = useState<IProductItem | null>(null);
 
     const dispatch = useAppDispatch()
     const dispatchAlert = useAlertDispatch()
@@ -38,14 +39,17 @@ const Cart = () => {
         }, 1000)
     }
 
-    const showModal = () => {
+    const showModal = (item: IProductItem) => {
+        setSelectedItem(item)
         setIsModalOpen(true);
     };
 
-    const handleOk = (product: any) => {
-        dispatchAlert({ success: "Xóa sản phẩm thành công" })
-        dispatch(deleteItemToCart(product))
-        setIsModalOpen(false);
+    const handleOk = (item: IProductItem | null) => {
+        if (item) {
+            dispatchAlert({ success: "Xóa sản phẩm thành công" })
+            dispatch(deleteItemToCart(item))
+            setIsModalOpen(false);
+        }
     };
 
     const handleCancel = () => {
@@ -110,18 +114,9 @@ const Cart = () => {
             key: 'deleteItem',
             render: (_, record) =>
                 <div className='flex items-center'>
-                    <div className='cursor-pointer transform hover:scale-125' onClick={showModal}>
+                    <div className='cursor-pointer transform hover:scale-125' onClick={() => { showModal(record) }}>
                         <DeleteOutlined className='text-red-500 text-2xl' />
                     </div>
-                    <ConfigProvider theme={{
-                        token: {
-                            colorPrimary: '#f48220'
-                        }
-                    }}>
-                        <Modal centered title="Xóa sản phẩm" open={isModalOpen} onOk={() => handleOk(record)} onCancel={handleCancel}>
-                            <p className='text-base'>Bạn muốn xóa sản phẩm này khỏi giỏ hàng ?</p>
-                        </Modal>
-                    </ConfigProvider>
                 </div >
         },
     ];
@@ -182,6 +177,20 @@ const Cart = () => {
                     </>
                 }
             </div>
+            <ConfigProvider theme={{
+                token: {
+                    colorPrimary: '#f48220'
+                }
+            }}>
+                <Modal
+                    centered
+                    title="Xóa sản phẩm"
+                    open={isModalOpen}
+                    onOk={() => handleOk(selectedItem)}
+                    onCancel={handleCancel}>
+                    <p className='text-base'>Bạn muốn xóa sản phẩm này khỏi giỏ hàng ?</p>
+                </Modal>
+            </ConfigProvider>
         </>
     )
 }

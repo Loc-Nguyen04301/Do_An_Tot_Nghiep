@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { RoutePath } from '@/routes'
 import clsx from 'clsx';
 import BillService from '@/services/BillService';
@@ -34,6 +34,7 @@ const Purchase = () => {
     const [disabled, setDisabled] = useState(false)
 
     const dispatchAlert = useAlertDispatch()
+    const navigate = useNavigate()
 
     const onChangePage: PaginationProps['onChange'] = (page) => {
         setCurrent(page);
@@ -110,6 +111,10 @@ const Purchase = () => {
         if (user) fetchBill(purchaseStatus, user.id, current, pageSize)
     }, [purchaseStatus, user, current, pageSize])
 
+    const navigatePurchaseDetail = (id: number) => {
+        navigate(`${RoutePath.PurchaseDetail}/${id}`)
+    }
+
     return (
         <>
             <Helmet>
@@ -145,45 +150,14 @@ const Purchase = () => {
                                                 <div className='flex flex-col'>
                                                     <span>Mã đơn hàng: {bill.id}</span>
                                                     <span>Ngày mua: {format(bill.created_at, DATETIME_FORMAT)}</span>
-                                                    {bill.payment_method === PaymentMethod.SHIPCOD && <span>Phương thức thanh toán: Ship COD</span>}
-                                                    {bill.payment_method === PaymentMethod.BANK_TRANSFER && <span>Phương thức thanh toán: Chuyển khoản ngân hàng</span>}
-                                                    {bill.payment_method === PaymentMethod.VNPAY && <span>Phương thức thanh toán: Thanh toán cổng VNPay</span>}
                                                 </div>
                                                 {bill.order_status === OrderStatus.PROCESSING && bill.payment_status === false && <Tag color="red" className='h-fit'>Chưa thanh toán</Tag>}
                                                 {bill.order_status === OrderStatus.PROCESSING && bill.payment_status === true && <Tag color="green" className='h-fit'>Đã thanh toán</Tag>}
                                                 {bill.order_status === OrderStatus.SUCCESS && <span className='text-[#ee4d2d] text-xl uppercase'>Hoàn thành</span>}
                                                 {bill.order_status === OrderStatus.CANCELLED && <span className='text-[#ee4d2d] text-xl uppercase'>Đã hủy</span>}
                                             </div>
-                                            {
-                                                bill.items.map((item, index) =>
-                                                    <div className='py-6 border-b border-border-color' key={`${bill.id}-${index}`}>
-                                                        <div className='flex justify-between items-center gap-2' >
-                                                            <div className='flex gap-2'>
-                                                                <img src={item.product.image} width={80} />
-                                                                <div className='flex flex-col justify-center'>
-                                                                    <span>{item.product.name} </span>
-                                                                    <span className='text-sm font-semibold'>x {item.quantity}</span>
-                                                                </div>
-                                                            </div>
-                                                            <div className='flex flex-col gap-2'>
-                                                                <div>
-                                                                    {
-                                                                        item.product.old_price != 0 &&
-                                                                        <del className='text-category-title mr-2'>{convertNumbertoMoney(item.product.old_price)}</del>
-                                                                    }
-                                                                    <span className='text-main-orange-color'>{convertNumbertoMoney(item.product.new_price)}</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <p className='text-right'>
-                                                            <span className='mr-2 text-nowrap'>Thành tiền:</span>
-                                                            <span className='text-main-orange-color font-semibold'>{convertNumbertoMoney(item.total_price)}</span>
-                                                        </p>
-                                                    </div>
-                                                )
-                                            }
                                             <div className='py-6 text-right'>
-                                                <span className='px-2'>Tổng cộng:</span>
+                                                <span className='px-2'>Tổng tiền:</span>
                                                 <span className='px-2 text-main-orange-color text-xl font-semibold'>{convertNumbertoMoney(bill.total_amount)}</span>
                                             </div>
                                             <div className={clsx('flex items-center', bill.order_status !== OrderStatus.CANCELLED ? 'justify-end' : 'justify-between')}>
@@ -205,6 +179,13 @@ const Purchase = () => {
                                                             Hủy đơn hàng
                                                         </button>
                                                     }
+                                                    <button
+                                                        className="min-w-[150px] bg-main-orange-color py-[10px] px-[8px] hover:shadow-checkout-btn rounded-md border border-border-color text-white"
+                                                        disabled={disabled}
+                                                        onClick={() => navigatePurchaseDetail(bill.id)}
+                                                    >
+                                                        Xem chi tiết
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>

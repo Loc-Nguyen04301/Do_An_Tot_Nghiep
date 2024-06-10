@@ -128,24 +128,24 @@ const UpdateBill = () => {
                         <h1 className='text-center font-semibold text-2xl'>Thông tin đơn hàng</h1>
                         <div className="my-2">
                             <div className="font-semibold tracking-wide">Mã đơn hàng</div>
-                            <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.id} disabled />
+                            <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.id} disabled />
                         </div>
                         <div className="my-2">
                             <div className="font-semibold tracking-wide">Ngày mua</div>
-                            <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={format(selectedBill.created_at, DATETIME_FORMAT)} disabled />
+                            <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={format(selectedBill.created_at, DATETIME_FORMAT)} disabled />
                         </div>
                         <div className="my-2">
                             <div className="font-semibold tracking-wide">Tên khách hàng</div>
-                            <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.customer_name} disabled />
+                            <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.customer_name} disabled />
                         </div>
                         <div className="my-2">
                             <div className="font-semibold tracking-wide">Địa chỉ giao hàng</div>
-                            <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.address} {...register('address')} disabled={disabled} />
+                            <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.address} {...register('address')} disabled={disabled} />
                             {errors.address && <p className="text-red-500 text-center">{errors.address.message}</p>}
                         </div>
                         <div className="my-2">
                             <div className="font-semibold tracking-wide">Số điện thoại</div>
-                            <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.phone_number} {...register('phone_number')} disabled={disabled} />
+                            <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.phone_number} {...register('phone_number')} disabled={disabled} />
                             {errors.phone_number && <p className="text-red-500 text-center">{errors.phone_number.message}</p>}
                         </div>
                         <div className="my-2">
@@ -190,7 +190,7 @@ const UpdateBill = () => {
                             </div>
                             <div className="my-2">
                                 <div className="font-semibold tracking-wide">Ghi chú</div>
-                                <textarea className="w-full min-h-[100px] border-[1px] border-[#adadad] rounded-sm" defaultValue={selectedBill.note} disabled />
+                                <textarea className="pl-2 w-full min-h-[100px] border-[1px] border-[#adadad] rounded-sm" defaultValue={selectedBill.note} disabled />
                             </div>
                             <div className='text-center'>
                                 {!disabled &&

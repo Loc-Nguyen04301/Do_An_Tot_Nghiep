@@ -122,21 +122,21 @@ const Profile = () => {
                                         <form>
                                             <div className='pb-5 flex items-center'>
                                                 <div className='inline-block w-1/4 text-right text-text-gray'>Email</div>
-                                                <input className='mx-3 w-3/4 h-[35px] border-[1px] border-[#adadad] rounded-sm' defaultValue={user?.email} disabled />
+                                                <input className='pl-2 mx-3 w-3/4 h-[35px] border-[1px] border-[#adadad] rounded-sm' defaultValue={user?.email} disabled />
                                             </div>
                                             <div className='pb-5 flex items-center'>
                                                 <div className='inline-block w-1/4 text-right text-text-gray'>Tên người dùng</div>
-                                                <input className='mx-3 w-3/4 h-[35px] border-[1px] border-[#adadad] rounded-sm' defaultValue={user?.username} {...register('username')} disabled={disabled} />
+                                                <input className='pl-2 mx-3 w-3/4 h-[35px] border-[1px] border-[#adadad] rounded-sm' defaultValue={user?.username} {...register('username')} disabled={disabled} />
                                             </div >
                                             {errors.username && <p className="text-red-500 text-center">{errors.username.message}</p>}
                                             <div className='pb-5 flex items-center'>
                                                 <div className='inline-block w-1/4 text-right text-text-gray'>Số điện thoại</div>
-                                                <input className='mx-3 w-3/4 h-[35px] border-[1px] border-[#adadad] rounded-sm' defaultValue={user?.phone_number} {...register('phone_number')} disabled={disabled} />
+                                                <input className='pl-2 mx-3 w-3/4 h-[35px] border-[1px] border-[#adadad] rounded-sm' defaultValue={user?.phone_number} {...register('phone_number')} disabled={disabled} />
                                             </div>
                                             {errors.phone_number && <p className="text-red-500 text-center">{errors.phone_number.message}</p>}
                                             <div className='pb-5 flex items-center'>
                                                 <div className='inline-block w-1/4 text-right text-text-gray'>Địa chỉ</div>
-                                                <input className='mx-3 w-3/4 h-[35px] border-[1px] border-[#adadad] rounded-sm' defaultValue={user?.address} {...register('address')} disabled={disabled} />
+                                                <input className='pl-2 mx-3 w-3/4 h-[35px] border-[1px] border-[#adadad] rounded-sm' defaultValue={user?.address} {...register('address')} disabled={disabled} />
                                             </div>
                                             {errors.address && <p className="text-red-500 text-center">{errors.address.message}</p>}
                                             <div className='text-center'>

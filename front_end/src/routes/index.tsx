@@ -23,6 +23,7 @@ const NotFound = lazy(() => import("@/pages/NotFound"));
 const Profile = lazy(() => import("@/pages/Profile"));
 const Purchase = lazy(() => import("@/pages/Purchase"));
 const WishList = lazy(() => import("@/pages/WishList"));
+const PurchaseDetail = lazy(() => import("@/pages/PurchaseDetail"));
 
 const DashBoard = lazy(() => import("@/pages/admin/Dashboard"));
 const Inventory = lazy(() => import("@/pages/admin/Inventory"));
@@ -48,6 +49,7 @@ export enum RoutePath {
   CheckoutPage = "/thanh-toan",
   OrderComplete = "/order-complete",
   WishList = "/wishlist",
+  PurchaseDetail = "/user/purchase/detail",
 
   DashBoard = "/admin",
   Inventory = "/admin/inventory",
@@ -204,6 +206,11 @@ const Router: React.FC = () => {
           path: RoutePath.WishList,
           element:
             <WishList />
+        },
+        {
+          path: `${RoutePath.PurchaseDetail}/:id`,
+          element:
+            <PurchaseDetail />
         },
         {
           path: `*`,

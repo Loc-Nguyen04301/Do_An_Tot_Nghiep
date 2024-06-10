@@ -5,21 +5,23 @@ import { useAppDispatch, useAppSelector } from "@/redux-toolkit/hook"
 import { convertNumbertoMoney } from "@/utils"
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { ConfigProvider, Modal } from "antd"
-import { deleteItemToCart } from "@/redux-toolkit/cartSlice"
+import { deleteItemToCart, IProductItem } from "@/redux-toolkit/cartSlice"
 import { useAlertDispatch } from "@/contexts/AlertContext"
 
 const ShoppingCart = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<IProductItem | null>(null);
   const { cartItems, totalAmount } = useAppSelector(state => state.cart)
 
   const dispatch = useAppDispatch()
   const dispatchAlert = useAlertDispatch()
 
-  const showModal = () => {
+  const showModal = (item: IProductItem) => {
+    setSelectedItem(item)
     setIsModalOpen(true);
   };
 
-  const handleOk = (product: any) => {
+  const handleOk = (product: IProductItem) => {
     dispatchAlert({ success: "Xóa sản phẩm thành công" })
     dispatch(deleteItemToCart(product))
     setIsModalOpen(false);
@@ -59,18 +61,18 @@ const ShoppingCart = () => {
                     </div>
                   </div>
                 </Link>
-                <CloseCircleOutlined className="text-lg text-category-title hover:text-main-orange-color pl-4" onClick={showModal} />
-                <ConfigProvider theme={{
-                  token: {
-                    colorPrimary: '#f48220'
-                  }
-                }}>
-                  <Modal centered title="Xóa sản phẩm" open={isModalOpen} onOk={() => handleOk(item)} onCancel={handleCancel}>
-                    <p className='text-base'>Bạn muốn xóa sản phẩm này khỏi giỏ hàng ?</p>
-                  </Modal>
-                </ConfigProvider>
+                <CloseCircleOutlined className="text-lg text-category-title hover:text-main-orange-color pl-4" onClick={() => { showModal(item) }} />
               </div>
             )}
+            <ConfigProvider theme={{
+              token: {
+                colorPrimary: '#f48220'
+              }
+            }}>
+              <Modal centered title="Xóa sản phẩm" open={isModalOpen} onOk={() => handleOk(selectedItem)} onCancel={handleCancel}>
+                <p className='text-base'>Bạn muốn xóa sản phẩm này khỏi giỏ hàng ?</p>
+              </Modal>
+            </ConfigProvider>
           </div>
           <p className="text-center text-lg text-main-grey-color py-3 border-b-[1px] border-border-color">
             <strong>Tạm tính:</strong>

@@ -38,7 +38,7 @@ const WishList = () => {
             title: '',
             key: 'deleteItem',
             render: (_, record) =>
-                <CloseCircleOutlined className='ml-4 cursor-pointer text-2xl hover:text-main-orange-color' onClick={() => { handleRemoveItemToWishList(record.id) }} />
+                <CloseCircleOutlined className='ml-4 cursor-pointer text-xl hover:text-main-orange-color' onClick={() => { handleRemoveItemToWishList(record.id) }} />
         },
         {
             title: "SẢN PHẨM",
@@ -75,7 +75,7 @@ const WishList = () => {
             key: 'deleteItem',
             render: (_, record) =>
                 <span className='cursor-pointer' onClick={() => { addProductToCart(record) }}>
-                    Add to cart
+                    Thêm vào giỏ hàng
                 </span>
         },
     ];
@@ -88,7 +88,7 @@ const WishList = () => {
             <div className='mx-auto max-w-[1140px] py-8 px-2'>
                 <div className='px-2'>
                     <h1 className="text-category-title text-2xl font-bold pb-5 w-fit tracking-wide">
-                        My Wishlist
+                        Sản phẩm yêu thích
                     </h1>
                     <div>
                         <Table columns={columns} dataSource={wishList} pagination={false} rowKey={(record) => record.id} />

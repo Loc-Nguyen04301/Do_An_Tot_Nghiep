@@ -31,6 +31,7 @@ const Purchase = () => {
     const [records, setRecords] = useState(0)
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedBill, setSelectedBill] = useState<IBill | null>(null);
+    const [disabled, setDisabled] = useState(false)
 
     const dispatchAlert = useAlertDispatch()
 
@@ -53,6 +54,7 @@ const Purchase = () => {
         try {
             const res = await BillService.updateBill({ order_status: OrderStatus.CANCELLED }, selectedBill.id)
             setIsModalOpen(false);
+            setDisabled(true)
             dispatchAlert({ success: res.data.message })
             setTimeout(() => {
                 window.location.reload()
@@ -197,7 +199,9 @@ const Purchase = () => {
                                                         bill.order_status === OrderStatus.PROCESSING && bill.payment_status === false &&
                                                         <button
                                                             className="min-w-[150px] bg-button-red-color py-[10px] px-[8px] hover:shadow-checkout-btn rounded-md border border-border-color text-white"
-                                                            onClick={() => { showModal(bill) }}>
+                                                            onClick={() => { showModal(bill) }}
+                                                            disabled={disabled}
+                                                        >
                                                             Hủy đơn hàng
                                                         </button>
                                                     }

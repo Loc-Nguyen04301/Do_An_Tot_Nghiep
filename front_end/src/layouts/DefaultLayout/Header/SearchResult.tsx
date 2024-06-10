@@ -19,7 +19,7 @@ const SearchResult = ({ setLoading }: SearchResultProps) => {
 
     const getProductsByName = async (name: string) => {
         try {
-            if (name.length >= 3) {
+            if (name.length >= 1) {
                 const res = await ProductService.getProductsByName(name)
                 setProducts(res.data.data)
             }

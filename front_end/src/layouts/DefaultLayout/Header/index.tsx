@@ -85,7 +85,7 @@ const Header = () => {
             </div>
             :
             <>
-              <p className="pl-10 pt-3 pb-2 text-text-gray text-sm">
+              <p className="pl-10 pt-3 pb-2 text-text-gray text-sm max-md:text-center">
                 Chào mừng bạn đến với THOL Store
                 <Link to={RoutePath.RegisterPage} className="text-main-orange-color px-1">
                   Đăng ký

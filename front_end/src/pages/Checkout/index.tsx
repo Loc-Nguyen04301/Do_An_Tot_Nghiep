@@ -1,38 +1,39 @@
-import React, { useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { RoutePath } from '@/routes'
-import { RightOutlined } from '@ant-design/icons';
-import { convertNumbertoMoney, setBillId, setPaymentURL } from '@/utils';
-import clsx from 'clsx';
-import { useAppSelector } from '@/redux-toolkit/hook';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
-import { useAlertDispatch } from '@/contexts/AlertContext';
-import BillService from '@/services/BillService';
-import { Collapse, CollapseProps } from 'antd';
-import { PaymentMethod } from '@/types';
-import VNPayService from '@/services/VNPayService';
-import VietQRService from '@/services/VietQRService';
+import { RightOutlined } from '@ant-design/icons'
+import { convertNumbertoMoney, setBillId, setPaymentURL } from '@/utils'
+import clsx from 'clsx'
+import { useAppSelector } from '@/redux-toolkit/hook'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useForm } from 'react-hook-form'
+import { useAlertDispatch } from '@/contexts/AlertContext'
+import BillService from '@/services/BillService'
+import { Collapse, CollapseProps, Select } from 'antd'
+import { PaymentMethod } from '@/types'
+import VNPayService from '@/services/VNPayService'
+import VietQRService from '@/services/VietQRService'
 import { format } from "date-fns"
-
+import axios from 'axios'
 import "./Checkout.scss"
 
+const { Option } = Select;
 var DATETIME_FORMAT = 'yyyyMMddHHmmss'
 
 interface FormData {
-    customer_name?: string;
-    address?: string;
-    phone_number?: string;
-    email?: string;
-    note?: string;
+    customer_name?: string
+    address?: string
+    phone_number?: string
+    email?: string
+    note?: string
 }
 
 export interface CreateBillDto extends FormData {
-    user_id?: number;
-    payment_method: string;
-    total_amount?: number;
+    user_id?: number
+    payment_method: string
+    total_amount?: number
 }
 
 const schema = yup
@@ -83,16 +84,26 @@ const Checkout = () => {
             children: <p>Thực hiện thanh toán thanh toán qua cổng VNPay</p>,
             showArrow: false,
         },
-    ];
+    ]
 
-    const { register, handleSubmit, formState: { errors }, getValues, watch } = useForm({
+    const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
-            customer_name: user?.username,
-            phone_number: user?.phone_number,
-            email: user?.email
+            customer_name: user?.username || '',
+            phone_number: user?.phone_number || '',
+            email: user?.email || '',
         }
-    });
+    })
+
+    useEffect(() => {
+        if (user) {
+            reset({
+                customer_name: user.username,
+                phone_number: user.phone_number,
+                email: user.email
+            });
+        }
+    }, [user, reset])
 
     const { totalAmount, cartItems } = useAppSelector(state => state.cart)
     const dispatchAlert = useAlertDispatch()
@@ -103,6 +114,9 @@ const Checkout = () => {
     })
 
     const onSubmit = async (data: FormData) => {
+        let { address } = data
+        address = address + `, ${selectedWard}, ${selectedDistrict}, ${selectedCity}`
+        data = { ...data, address }
         dispatchAlert({ loading: true })
         setTimeout(async () => {
             try {
@@ -115,7 +129,7 @@ const Checkout = () => {
                     })
                     // redirect đến cổng thanh toán VNPAY
                     window.location.replace(res.data.vnpUrl)
-                    return;
+                    return
                 }
                 else if (paymentMethod === PaymentMethod.BANK_TRANSFER) {
                     const now = new Date()
@@ -133,12 +147,79 @@ const Checkout = () => {
                 dispatchAlert({ errors: error.message })
             }
         }, 2000)
-    };
+    }
 
-    const onChange = (key: string | string[]) => {
+    const onChangePaymentMethod = (key: string | string[]) => {
         if (key.length > 0)
             setPaymentMethod(key[0])
-    };
+    }
+
+    interface City {
+        Id: string
+        Name: string
+        Districts: District[]
+    }
+    interface District {
+        Id: string
+        Name: string
+        Wards: Ward[]
+    }
+    interface Ward {
+        Id: string
+        Name: string
+    }
+
+    const [cities, setCities] = useState<City[]>([])
+    const [districts, setDistricts] = useState<District[]>([])
+    const [wards, setWards] = useState<Ward[]>([])
+    const [selectedCity, setSelectedCity] = useState('')
+    const [selectedDistrict, setSelectedDistrict] = useState('')
+    const [selectedWard, setSelectedWard] = useState('')
+
+    const handleCityChange = (value: string) => {
+        const cityName = value
+        setSelectedCity(cityName)
+        setDistricts([])
+        setSelectedDistrict('')
+        setWards([])
+        setSelectedWard('')
+
+        if (cityName) {
+            const selectedCity = cities.find(city => city.Name === cityName)
+            if (selectedCity) {
+                setDistricts(selectedCity.Districts)
+            }
+        }
+    }
+
+    const handleDistrictChange = (value: string) => {
+        const districtName = value
+        setSelectedDistrict(districtName)
+        setWards([])
+        setSelectedWard('')
+
+        if (districtName) {
+            const selectedDistrict = districts.find(district => district.Name === districtName)
+            if (selectedDistrict) {
+                setWards(selectedDistrict.Wards)
+            }
+        }
+    }
+
+    const handleWardChange = (value: string) => {
+        const wardName = value
+        setSelectedWard(wardName)
+    }
+
+    useEffect(() => {
+        axios.get('https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json')
+            .then((response) => {
+                setCities(response.data)
+            })
+            .catch((error: any) => {
+                console.log(error)
+            })
+    }, [])
 
     return (
         <>
@@ -163,22 +244,62 @@ const Checkout = () => {
                                 </h1>
                                 <div className="my-2">
                                     <div className="label-email tracking-wide leading-6 font-semibold">Tên người nhận hàng</div>
-                                    <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('customer_name')} disabled={!!user?.username} />
+                                    <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('customer_name')} disabled={!!user?.username} />
                                     {errors.email && <p className="text-red-500">{errors.customer_name?.message}</p>}
                                 </div>
                                 <div className="my-2">
                                     <div className="label-email tracking-wide leading-6 font-semibold">Địa chỉ giao hàng</div>
-                                    <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('address')} />
-                                    {errors.email && <p className="text-red-500">{errors.address?.message}</p>}
+                                    <div className='w-full flex gap-3'>
+                                        <Select
+                                            className="!w-1/3"
+                                            value={selectedCity}
+                                            onChange={handleCityChange}
+                                            placeholder="Chọn tỉnh thành"
+                                            style={{ width: '100%' }}
+                                        >
+                                            <Option value="">Chọn tỉnh thành</Option>
+                                            {cities.map(city => (
+                                                <Option key={city.Id} value={city.Name}>{city.Name}</Option>
+                                            ))}
+                                        </Select>
+                                        <Select
+                                            className="!w-1/3"
+                                            value={selectedDistrict}
+                                            onChange={handleDistrictChange}
+                                            placeholder="Chọn quận huyện"
+                                            disabled={!selectedCity}
+                                        >
+                                            <Option value="">Chọn quận huyện</Option>
+                                            {districts.map(district => (
+                                                <Option key={district.Id} value={district.Name}>{district.Name}</Option>
+                                            ))}
+                                        </Select>
+                                        <Select
+                                            className="!w-1/3"
+                                            value={selectedWard}
+                                            onChange={handleWardChange}
+                                            placeholder="Chọn phường xã"
+                                            disabled={!selectedDistrict}
+                                        >
+                                            <Option value="">Chọn phường xã</Option>
+                                            {wards.map(ward => (
+                                                <Option key={ward.Id} value={ward.Name}>{ward.Name}</Option>
+                                            ))}
+                                        </Select>
+                                    </div>
+                                    <div className='mt-2'>
+                                        <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('address')} placeholder='Số nhà, tên đường...' />
+                                        {errors.address && <p className="text-red-500">{errors.address?.message}</p>}
+                                    </div>
                                 </div>
                                 <div className="my-2">
                                     <div className="label-email tracking-wide leading-6 font-semibold">Số điện thoại</div>
-                                    <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('phone_number')} disabled={!!user?.phone_number} />
-                                    {errors.email && <p className="text-red-500">{errors.phone_number?.message}</p>}
+                                    <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('phone_number')} disabled={!!user?.phone_number} />
+                                    {errors.phone_number && <p className="text-red-500">{errors.phone_number?.message}</p>}
                                 </div>
                                 <div className="my-2">
                                     <div className="label-email tracking-wide leading-6 font-semibold">Địa chỉ email</div>
-                                    <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"email"} {...register('email')} disabled={!!user?.email} />
+                                    <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"email"} {...register('email')} disabled={!!user?.email} />
                                     {errors.email && <p className="text-red-500">{errors.email?.message}</p>}
                                 </div>
                                 <h1 className='mt-8 text-category-title text-lg'>
@@ -208,7 +329,7 @@ const Checkout = () => {
                                         <span className='font-extrabold text-black'>{convertNumbertoMoney(totalAmount)}</span>
                                     </div>
                                 </div>
-                                <Collapse className='mt-7 payment-accordion' activeKey={paymentMethod} ghost items={items} accordion onChange={onChange} />
+                                <Collapse className='mt-7 payment-accordion' activeKey={paymentMethod} ghost items={items} accordion onChange={onChangePaymentMethod} />
                                 <div className='my-5'>
                                     <p className='text-[#777777] text-sm'>Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our</p>
                                 </div>
@@ -216,7 +337,7 @@ const Checkout = () => {
                         </div>
                     </div>
                 </div>
-            </form>
+            </form >
         </>
     )
 }

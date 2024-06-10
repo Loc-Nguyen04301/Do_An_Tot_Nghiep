@@ -12,7 +12,7 @@ import { useForm } from 'react-hook-form'
 import { useAlertDispatch } from '@/contexts/AlertContext'
 import BillService from '@/services/BillService'
 import { Collapse, CollapseProps, Select } from 'antd'
-import { PaymentMethod } from '@/types'
+import { City, District, PaymentMethod, Ward } from '@/types'
 import VNPayService from '@/services/VNPayService'
 import VietQRService from '@/services/VietQRService'
 import { format } from "date-fns"
@@ -114,6 +114,10 @@ const Checkout = () => {
     })
 
     const onSubmit = async (data: FormData) => {
+        if (selectedWard.length === 0 && selectedCity.length === 0 && selectedDistrict.length === 0) {
+            window.alert("Vui lòng chọn đầy đủ thông tin địa chỉ giao hàng")
+            return
+        }
         let { address } = data
         address = address + `, ${selectedWard}, ${selectedDistrict}, ${selectedCity}`
         data = { ...data, address }
@@ -152,21 +156,6 @@ const Checkout = () => {
     const onChangePaymentMethod = (key: string | string[]) => {
         if (key.length > 0)
             setPaymentMethod(key[0])
-    }
-
-    interface City {
-        Id: string
-        Name: string
-        Districts: District[]
-    }
-    interface District {
-        Id: string
-        Name: string
-        Wards: Ward[]
-    }
-    interface Ward {
-        Id: string
-        Name: string
     }
 
     const [cities, setCities] = useState<City[]>([])

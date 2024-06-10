@@ -88,22 +88,7 @@ const Checkout = () => {
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: yupResolver(schema),
-        defaultValues: {
-            customer_name: user?.username || '',
-            phone_number: user?.phone_number || '',
-            email: user?.email || '',
-        }
     })
-
-    useEffect(() => {
-        if (user) {
-            reset({
-                customer_name: user.username,
-                phone_number: user.phone_number,
-                email: user.email
-            });
-        }
-    }, [user, reset])
 
     const { totalAmount, cartItems } = useAppSelector(state => state.cart)
     const dispatchAlert = useAlertDispatch()
@@ -233,7 +218,7 @@ const Checkout = () => {
                                 </h1>
                                 <div className="my-2">
                                     <div className="label-email tracking-wide leading-6 font-semibold">Tên người nhận hàng</div>
-                                    <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('customer_name')} disabled={!!user?.username} />
+                                    <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('customer_name')} />
                                     {errors.email && <p className="text-red-500">{errors.customer_name?.message}</p>}
                                 </div>
                                 <div className="my-2">
@@ -283,12 +268,12 @@ const Checkout = () => {
                                 </div>
                                 <div className="my-2">
                                     <div className="label-email tracking-wide leading-6 font-semibold">Số điện thoại</div>
-                                    <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('phone_number')} disabled={!!user?.phone_number} />
+                                    <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('phone_number')} />
                                     {errors.phone_number && <p className="text-red-500">{errors.phone_number?.message}</p>}
                                 </div>
                                 <div className="my-2">
                                     <div className="label-email tracking-wide leading-6 font-semibold">Địa chỉ email</div>
-                                    <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"email"} {...register('email')} disabled={!!user?.email} />
+                                    <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"email"} {...register('email')} />
                                     {errors.email && <p className="text-red-500">{errors.email?.message}</p>}
                                 </div>
                                 <h1 className='mt-8 text-category-title text-lg'>

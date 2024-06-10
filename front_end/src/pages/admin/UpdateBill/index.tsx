@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-    ArrowLeftOutlined
-} from '@ant-design/icons';
+import {ArrowLeftOutlined} from '@ant-design/icons';
 import { useAlertDispatch } from '@/contexts/AlertContext'
 import BillService from '@/services/BillService'
 import { IBill } from '@/types'

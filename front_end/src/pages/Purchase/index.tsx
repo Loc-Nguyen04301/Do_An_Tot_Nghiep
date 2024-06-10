@@ -180,7 +180,7 @@ const Purchase = () => {
                                                         </button>
                                                     }
                                                     <button
-                                                        className="min-w-[150px] bg-main-orange-color py-[10px] px-[8px] hover:shadow-checkout-btn rounded-md border border-border-color text-white"
+                                                        className="min-w-[150px] bg-main-grey-color py-[10px] px-[8px] hover:shadow-checkout-btn rounded-md border border-border-color text-white"
                                                         disabled={disabled}
                                                         onClick={() => navigatePurchaseDetail(bill.id)}
                                                     >

@@ -35,9 +35,9 @@ const UpdateBill = lazy(() => import("@/pages/admin/UpdateBill"));
 const Notification = lazy(() => import("@/pages/admin/Notification"));
 
 export enum RoutePath {
+  Home = "/",
   LoginPage = "/dang-nhap",
   RegisterPage = "/dang-ky",
-  Home = "/",
   Profile = "/user/profile",
   Purchase = "/user/purchase",
   AboutUs = "/gioi-thieu",
@@ -66,7 +66,7 @@ const Router: React.FC = () => {
 
   const routes = useRoutes([
     {
-      path: "/admin",
+      path: RoutePath.DashBoard,
       element: <AdminLayout />,
       children: [
         {
@@ -128,7 +128,7 @@ const Router: React.FC = () => {
       ]
     },
     {
-      path: "/",
+      path: RoutePath.Home,
       element: <DefaultLayout />,
       children: [
         {

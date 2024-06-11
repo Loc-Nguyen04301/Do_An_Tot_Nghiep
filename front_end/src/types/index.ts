@@ -94,6 +94,11 @@ export interface IBill {
     created_at: string
     update_at: string
     items: IItem[]
+    user: {
+        username: string
+        phone_number: string
+        email: string
+    } | null
 }
 
 export interface IItem {

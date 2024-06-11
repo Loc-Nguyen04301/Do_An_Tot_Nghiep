@@ -164,12 +164,6 @@ const Purchase = () => {
                                                 {bill.order_status === OrderStatus.CANCELLED && <span className='text-category-title text-sm'>Đã hủy bởi bạn</span>}
                                                 <div className='flex gap-5'>
                                                     {
-                                                        bill.order_status === OrderStatus.CANCELLED &&
-                                                        <button className="min-w-[150px] bg-main-orange-color py-[10px] px-[8px] hover:shadow-checkout-btn rounded-md border border-border-color text-white">
-                                                            Mua lại
-                                                        </button>
-                                                    }
-                                                    {
                                                         bill.order_status === OrderStatus.PROCESSING && bill.payment_status === false &&
                                                         <button
                                                             className="min-w-[150px] bg-button-red-color py-[10px] px-[8px] hover:shadow-checkout-btn rounded-md border border-border-color text-white"

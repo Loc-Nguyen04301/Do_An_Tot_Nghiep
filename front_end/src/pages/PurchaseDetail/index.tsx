@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Typography } from 'antd'
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -12,7 +11,6 @@ import { format } from "date-fns"
 import { convertNumbertoMoney } from '@/utils';
 
 var DATETIME_FORMAT = 'dd-MM-yyyy HH:mm'
-
 
 const PurchaseDetail = () => {
     const [selectedBill, setSelectedBill] = useState<IBill>()
@@ -33,7 +31,6 @@ const PurchaseDetail = () => {
                 console.log(error)
             }
         }
-
         getBillDetail(Number(params.id))
     }, [params.id])
 
@@ -48,23 +45,24 @@ const PurchaseDetail = () => {
                 </div>
             </div>
             <div className='mt-4'>
-                <FontAwesomeIcon icon={faClock} /> {format(selectedBill.created_at, DATETIME_FORMAT)}
+                <div>Mã đơn hàng: {selectedBill.id}</div>
             </div>
+            <FontAwesomeIcon icon={faClock} /> {format(selectedBill.created_at, DATETIME_FORMAT)}
             <div className='mt-2'>
                 <div className='relative w-[45%] inline-block bg-[#f5f5f5] border border-border-color p-4'>
                     <h1 className='text-lg'>Thông tin mua hàng</h1>
                     <div className='flex flex-col gap-2 mt-1'>
                         <div>
                             <FontAwesomeIcon icon={faUser} />
-                            <span className='ml-2'>Nguyen Van A</span>
+                            <span className='ml-2'>{selectedBill.user?.username}</span>
                         </div>
                         <div>
                             <FontAwesomeIcon icon={faPhone} />
-                            <span className='ml-2'>012345678</span>
+                            <span className='ml-2'>{selectedBill.user?.phone_number}</span>
                         </div>
                         <div>
                             <FontAwesomeIcon icon={faEnvelope} />
-                            <span className='ml-2'>abc@gmail.com</span>
+                            <span className='ml-2'>{selectedBill.user?.email}</span>
                         </div>
                     </div>
                 </div>

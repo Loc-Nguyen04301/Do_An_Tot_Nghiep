@@ -79,6 +79,13 @@ export class BillsService {
               quantity: true,
               total_price: true
             }
+          },
+          user: {
+            select: {
+              username: true,
+              phone_number: true,
+              email: true
+            }
           }
         }
       })

@@ -180,7 +180,7 @@ const OrderAdmin = () => {
             ...getColumnSearchProps('customer_name'),
         },
         {
-            title: "Địa chỉ giao hàng",
+            title: "Địa chỉ nhận hàng",
             key: "address",
             dataIndex: "address",
             ...getColumnSearchProps('address'),

@@ -222,7 +222,7 @@ const Checkout = () => {
                                     {errors.email && <p className="text-red-500">{errors.customer_name?.message}</p>}
                                 </div>
                                 <div className="my-2">
-                                    <div className="label-email tracking-wide leading-6 font-semibold">Địa chỉ giao hàng</div>
+                                    <div className="label-email tracking-wide leading-6 font-semibold">Địa chỉ nhận hàng</div>
                                     <div className='w-full flex gap-3'>
                                         <Select
                                             className="!w-1/3"

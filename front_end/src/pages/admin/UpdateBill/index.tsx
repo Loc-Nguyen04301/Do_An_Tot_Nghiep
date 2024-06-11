@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {ArrowLeftOutlined} from '@ant-design/icons';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useAlertDispatch } from '@/contexts/AlertContext'
 import BillService from '@/services/BillService'
 import { IBill } from '@/types'
@@ -18,8 +18,10 @@ var DATETIME_FORMAT = 'dd-MM-yyyy HH:mm'
 
 const schema = yup
     .object().shape({
+        customer_name: yup.string().required('Customer Name is required'),
         address: yup.string().required('Address is required'),
         phone_number: yup.string().required('Phone number is required').length(10, "Phone number is not valid").matches(phoneRegExp, 'Phone number is not valid'),
+        note: yup.string()
     })
 
 const UpdateBill = () => {
@@ -29,14 +31,16 @@ const UpdateBill = () => {
     const [paymentStatus, setPaymentStatus] = useState<boolean>()
     const [paymentMethod, setPaymentMethod] = useState<string>()
 
-    const { register, handleSubmit, formState: { errors }, setValue } = useForm({
+    const { register, handleSubmit, formState: { errors }, setValue, getValues } = useForm({
         resolver: yupResolver(schema),
     });
 
     useEffect(() => {
         if (selectedBill) {
+            setValue("customer_name", selectedBill.customer_name)
             setValue("address", selectedBill.address)
             setValue("phone_number", selectedBill.phone_number)
+            setValue("note", selectedBill.note)
         }
     }, [selectedBill])
 
@@ -133,18 +137,26 @@ const UpdateBill = () => {
                             <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={format(selectedBill.created_at, DATETIME_FORMAT)} disabled />
                         </div>
                         <div className="my-2">
-                            <div className="font-semibold tracking-wide">Tên khách hàng</div>
-                            <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.customer_name} disabled />
+                            <div className="font-semibold tracking-wide">Tên người mua</div>
+                            <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.user?.username || getValues("customer_name")} disabled />
                         </div>
                         <div className="my-2">
-                            <div className="font-semibold tracking-wide">Địa chỉ giao hàng</div>
-                            <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.address} {...register('address')} disabled={disabled} />
-                            {errors.address && <p className="text-red-500 text-center">{errors.address.message}</p>}
+                            <div className="font-semibold tracking-wide">Số điện thoại người mua</div>
+                            <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.user?.phone_number || getValues("phone_number")} disabled />
                         </div>
                         <div className="my-2">
-                            <div className="font-semibold tracking-wide">Số điện thoại</div>
-                            <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.phone_number} {...register('phone_number')} disabled={disabled} />
+                            <div className="font-semibold tracking-wide">Tên người nhận</div>
+                            <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('customer_name')} disabled={disabled} />
+                        </div>
+                        <div className="my-2">
+                            <div className="font-semibold tracking-wide">Số điện thoại người nhận</div>
+                            <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"}  {...register('phone_number')} disabled={disabled} />
                             {errors.phone_number && <p className="text-red-500 text-center">{errors.phone_number.message}</p>}
+                        </div>
+                        <div className="my-2">
+                            <div className="font-semibold tracking-wide">Địa chỉ nhận hàng</div>
+                            <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('address')} disabled={disabled} />
+                            {errors.address && <p className="text-red-500 text-center">{errors.address.message}</p>}
                         </div>
                         <div className="my-2">
                             <div className="font-semibold tracking-wide">Trạng thái đơn hàng</div>
@@ -188,7 +200,7 @@ const UpdateBill = () => {
                             </div>
                             <div className="my-2">
                                 <div className="font-semibold tracking-wide">Ghi chú</div>
-                                <textarea className="pl-2 w-full min-h-[100px] border-[1px] border-[#adadad] rounded-sm" defaultValue={selectedBill.note} disabled />
+                                <textarea className="pl-2 w-full min-h-[100px] border-[1px] border-[#adadad] rounded-sm" {...register("note")} disabled={disabled} />
                             </div>
                             <div className='text-center'>
                                 {!disabled &&
@@ -237,7 +249,6 @@ const UpdateBill = () => {
                         </div>
                     </div>
                 }
-
             </div >
         </>
     )

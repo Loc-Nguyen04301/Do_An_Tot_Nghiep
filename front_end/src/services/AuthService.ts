@@ -2,7 +2,11 @@ import axios from "axios";
 import { LoginInterface, RegisterInterface } from "@/types";
 import { getRefreshToken, isTokenExpiration } from "@/utils";
 import http, { getBaseUrl } from "./axios";
+import { GoogleRegister } from "@/pages/Login/OAuthLogin";
 
+const registerGoogle = (data: GoogleRegister) => {
+    return http.post("/auth/registerGoogle", data)
+}
 
 const register = (data: RegisterInterface) => {
     return http.post("/auth/register", data)
@@ -32,6 +36,6 @@ const refreshToken = () => {
 const getMe = () => {
     return http.post(`/auth/getMe`)
 }
-const AuthService = { register, login, refreshToken, logout, getMe }
+const AuthService = { register, login, refreshToken, logout, getMe, registerGoogle }
 
 export default AuthService

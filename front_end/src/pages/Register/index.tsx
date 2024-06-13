@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { RegisterInterface } from "@/types";
 import { useAlertDispatch } from "@/contexts/AlertContext";
-import { useAppDispatch } from "@/redux-toolkit/hook";
 import AuthService from "@/services/AuthService";
 
 import "../Login/Login.scss"
@@ -21,7 +20,6 @@ const schema = yup
   })
 
 const Register = () => {
-  const dispatch = useAppDispatch()
   const dispatchAlert = useAlertDispatch()
   const { register, handleSubmit, formState: { errors }, watch, getValues, reset } = useForm({
     resolver: yupResolver(schema),

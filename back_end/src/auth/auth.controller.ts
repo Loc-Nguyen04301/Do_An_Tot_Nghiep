@@ -27,6 +27,19 @@ export class AuthController {
 
   @Public()
   @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor())
+  @Post('registerGoogle')
+  registerGoogle(@Body() googleAuthPayload: {
+    email: string
+    name: string
+    picture: string
+    email_verified: boolean
+  }) {
+    return this.authService.registerGoogle(googleAuthPayload);
+  }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
   @UseInterceptors(new SuccessInterceptor('Register Success'))
   @Post('register')
   register(@Body() createAuthDto: CreateAuthDto) {

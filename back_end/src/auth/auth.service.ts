@@ -44,6 +44,39 @@ export class AuthService {
     });
   }
 
+  async registerGoogle(googleAuthPayload: {
+    email: string
+    name: string
+    picture: string
+    email_verified: boolean
+  }) {
+    const { email, email_verified, name, picture } = googleAuthPayload
+    // Check if user exists
+    if (!email_verified) throw new UnauthorizedException('Gmail chưa được xác thực. Vui lòng thử lại')
+    const password = email
+    const hashPassword = await this.hashData(password);
+    const existUser = await this.prisma.user.findUnique({
+      where: { email: email }
+    })
+    if (existUser) {
+      const data = await this.logIn({ email: email, password: password })
+      return data
+    }
+    else {
+      await this.prisma.user.create({
+        data: {
+          username: name,
+          email: email,
+          password: hashPassword,
+          avatar: picture,
+          active: true
+        },
+      });
+      const data = await this.logIn({ email: email, password: password })
+      return data
+    }
+  }
+
   async register(createAuthDto: CreateAuthDto) {
     // Check if user exists
     const existUser = await this.prisma.user.findUnique({

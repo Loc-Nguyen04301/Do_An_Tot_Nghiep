@@ -10,6 +10,7 @@ import AuthService from "@/services/AuthService";
 import { LoginInterface } from "@/types";
 import { useAppDispatch } from "@/redux-toolkit/hook";
 import { login } from "@/redux-toolkit/authSlice";
+import OAuthLogin from "@/pages/Login/OAuthLogin";
 
 import "./Login.scss"
 
@@ -74,6 +75,7 @@ const Login = () => {
                 <span className="underline">Bạn chưa có tài khoản ?</span>
               </Link>
             </div>
+            <OAuthLogin />
           </form>
         </div>
       </div >

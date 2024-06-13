@@ -52,16 +52,12 @@ export const authSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(getMe.fulfilled, (state, action: PayloadAction<AuthState>) => {
-            if (action?.payload?.refresh_token && action?.payload?.access_token) {
-                setRefreshToken(action.payload.refresh_token)
-                setAccessToken(action.payload.access_token)
-            }
             if (action.payload?.user) {
                 state.user = action.payload.user
             }
             state.loading = false
         })
-        builder.addCase(getMe.rejected, (state) => {
+        builder.addCase(getMe.rejected, () => {
             removeAccessToken()
             removeRefreshToken()
             return { ...initialState }
@@ -69,7 +65,7 @@ export const authSlice = createSlice({
         builder.addCase(getMe.pending, (state) => {
             state.loading = true
         })
-        builder.addCase(logOut.fulfilled, (state) => {
+        builder.addCase(logOut.fulfilled, () => {
             removeAccessToken()
             removeRefreshToken()
             return { ...initialState }

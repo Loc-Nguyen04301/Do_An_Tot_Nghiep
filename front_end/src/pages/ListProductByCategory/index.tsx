@@ -5,7 +5,7 @@ import { RoutePath } from "@/routes"
 import { Helmet } from "react-helmet-async"
 import { IProduct } from "@/types"
 import ProductService from "@/services/ProductService"
-import { convertNumbertoMoney } from "@/utils"
+import { calculateSalePercentage, convertNumbertoMoney } from "@/utils"
 import { Tag } from "antd"
 import { HeartOutlined } from '@ant-design/icons';
 import { addProductToWishList, IProductWishList, removeProductToWishList } from "@/redux-toolkit/wishListSlice"
@@ -47,7 +47,6 @@ const ListProductByCategory = () => {
     }, 1000)
   }
 
-
   return (
     <div>
       <div className="bg-[url('https://www.thol.com.vn/wp-content/uploads/2015/11/nang-luong-suc-khoe-scaled.jpg')] bg-no-repeat bg-center bg-cover">
@@ -76,12 +75,6 @@ const ListProductByCategory = () => {
               <div className="relative">
                 {
                   product.available === 0 && <Tag color="red" className="absolute top-0 left-0">Hết hàng</Tag>
-                }
-                {
-                  product.old_price != 0 &&
-                  <div className="absolute top-6 left-0 bg-[#fe0000] rounded-full py-3 px-1">
-                    <span className='text-white font-bold text-lg'>Giảm giá!</span>
-                  </div>
                 }
                 <Link
                   to={`${RoutePath.DetailProduct}/${product.id}`}
@@ -126,9 +119,12 @@ const ListProductByCategory = () => {
               >
                 {product.name}
               </Link>
-              <div className='flex justify-start gap-2'>
+              <div className='flex flex-col justify-start'>
                 {product.old_price != 0 && <span className="font-medium line-through text-category-title">{convertNumbertoMoney(product.old_price)}</span>}
-                <span className="font-semibold">{convertNumbertoMoney(product.new_price)}</span>
+                <div className='flex gap-3 items-center'>
+                  <span className="font-semibold">{convertNumbertoMoney(product.new_price)}</span>
+                  {product.old_price != 0 && <Tag color="#ed3324" className="font-semibold text-sm">{calculateSalePercentage(product.old_price, product.new_price)}</Tag>}
+                </div>
               </div>
             </div>)}
         </div>

@@ -5,7 +5,7 @@ import { SwiperSlide, Swiper } from 'swiper/react'
 import { Navigation } from 'swiper/modules'
 import ProductService from '@/services/ProductService'
 import { IProduct } from '@/types'
-import { convertNumbertoMoney } from '@/utils'
+import { calculateSalePercentage, convertNumbertoMoney } from '@/utils'
 import { Tag } from 'antd'
 import { useAlertDispatch } from '@/contexts/AlertContext'
 import {
@@ -72,12 +72,6 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                                 {
                                     product.available === 0 && <Tag color="red" className="absolute top-0 left-0">Hết hàng</Tag>
                                 }
-                                {
-                                    product.old_price != 0 &&
-                                    <div className="absolute top-6 left-0 bg-[#fe0000] rounded-full py-3 px-1">
-                                        <span className='text-white font-bold text-lg'>Giảm giá!</span>
-                                    </div>
-                                }
                                 <Link
                                     to={product.available !== 0 ? `${RoutePath.DetailProduct}/${product.id}` : ""}
                                     className="text-center block mx-auto"
@@ -121,9 +115,12 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                             >
                                 {product.name}
                             </Link>
-                            <div className='flex justify-start gap-2'>
+                            <div className='flex flex-col justify-start'>
                                 {product.old_price != 0 && <span className="font-medium line-through text-category-title">{convertNumbertoMoney(product.old_price)}</span>}
-                                <span className="font-semibold">{convertNumbertoMoney(product.new_price)}</span>
+                                <div className='flex gap-3 items-center'>
+                                    <span className="font-semibold">{convertNumbertoMoney(product.new_price)}</span>
+                                    {product.old_price != 0 && <Tag color="#ed3324" className="font-semibold text-sm">{calculateSalePercentage(product.old_price, product.new_price)}</Tag>}
+                                </div>
                             </div>
                         </div>)}
                 </div>
@@ -155,12 +152,6 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                                         {
                                             product.available === 0 && <Tag color="red" className="absolute top-0 left-0">Hết hàng</Tag>
                                         }
-                                        {
-                                            product.old_price != 0 &&
-                                            <div className="absolute top-6 left-0 bg-[#fe0000] rounded-full py-3 px-1">
-                                                <span className='text-white font-bold text-lg'>Giảm giá!</span>
-                                            </div>
-                                        }
                                         <Link
                                             to={`${RoutePath.DetailProduct}/${product.id}`}
                                             className="text-center block mx-auto"
@@ -180,13 +171,16 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                                     </div>
                                     <Link
                                         to={`${RoutePath.DetailProduct}/${product.id}`}
-                                        className="text-base block leading-5 mt-2"
+                                        className="text-base block leading-5 mt-2 mb-1"
                                     >
                                         {product.name}
                                     </Link>
-                                    <div className='flex justify-start gap-2'>
+                                    <div className='flex flex-col justify-start'>
                                         {product.old_price != 0 && <span className="font-medium line-through text-category-title">{convertNumbertoMoney(product.old_price)}</span>}
-                                        <span className="font-semibold">{convertNumbertoMoney(product.new_price)}</span>
+                                        <div className='flex gap-3 items-center'>
+                                            <span className="font-semibold">{convertNumbertoMoney(product.new_price)}</span>
+                                            {product.old_price != 0 && <Tag color="#ed3324" className="font-semibold text-sm">{calculateSalePercentage(product.old_price, product.new_price)}</Tag>}
+                                        </div>
                                     </div>
                                 </div>
                             </SwiperSlide>)}

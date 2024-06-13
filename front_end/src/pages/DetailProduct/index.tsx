@@ -7,15 +7,17 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation } from "swiper/modules"
 import { IProduct } from "@/types"
 import ProductService from "@/services/ProductService"
-import { convertNumbertoMoney } from "@/utils"
+import { calculateSalePercentage, convertNumbertoMoney } from "@/utils"
 import { RoutePath } from "@/routes"
 import { useAppDispatch, useAppSelector } from "@/redux-toolkit/hook"
 import { addItemToCartWithQuantity } from "@/redux-toolkit/cartSlice"
 import { useAlertDispatch } from "@/contexts/AlertContext"
+import { HeartOutlined } from '@ant-design/icons';
 
 import "swiper/scss"
 import "swiper/scss/navigation"
 import { Tag } from "antd"
+import { addProductToWishList, IProductWishList, removeProductToWishList } from "@/redux-toolkit/wishListSlice"
 
 interface Category {
   id: number;
@@ -43,6 +45,7 @@ const DetailProduct = () => {
   const [relatedProducts, setRelatedProducts] = useState<IDetailProduct[]>([]);
   const [quantity, setQuantity] = useState<number>(0)
   const { cartItems } = useAppSelector((state) => state.cart)
+  const { wishList } = useAppSelector(state => state.wishList)
 
   const dispatchAlert = useAlertDispatch()
 
@@ -128,6 +131,23 @@ const DetailProduct = () => {
       })
   }, [product])
 
+
+  const handleAddProductToWishList = (data: IProductWishList) => {
+    dispatchAlert({ loading: true })
+    setTimeout(() => {
+      dispatch(addProductToWishList({ ...data }))
+      dispatchAlert({ loading: false })
+    }, 1000)
+  }
+
+  const handleRemoveItemToWishList = (id: number) => {
+    dispatchAlert({ loading: true })
+    setTimeout(() => {
+      dispatch(removeProductToWishList({ id }))
+      dispatchAlert({ loading: false })
+    }, 1000)
+  }
+
   if (product)
     return (
       <>
@@ -154,9 +174,7 @@ const DetailProduct = () => {
               </h1>
               <div className="h-[3px] my-5 bg-[rgba(0,0,0,.1)] w-[30px]"></div>
               <div className="">
-                {
-                  product.old_price != 0
-                  &&
+                {product.old_price != 0 &&
                   <del className="text-main-grey-color text-2xl mr-4">
                     {convertNumbertoMoney(product.old_price)}
                   </del>
@@ -164,6 +182,9 @@ const DetailProduct = () => {
                 <span className="text-2xl font-bold">
                   {convertNumbertoMoney(product.new_price)}
                 </span>
+                {product.old_price != 0 &&
+                  <Tag color="#ed3324" className="ml-5 font-semibold text-lg">{calculateSalePercentage(product.old_price, product.new_price)}</Tag>
+                }
               </div>
               <div className="short-description my-5 text-text-gray text-lg">
                 <p>
@@ -247,12 +268,6 @@ const DetailProduct = () => {
                             {
                               product.available === 0 && <Tag color="red" className="absolute top-0 left-0">Hết hàng</Tag>
                             }
-                            {
-                              product.old_price != 0 &&
-                              <div className="absolute top-6 left-0 bg-[#fe0000] rounded-full py-3 px-1">
-                                <span className='text-white font-bold text-lg'>Giảm giá!</span>
-                              </div>
-                            }
                             <Link
                               to={`${RoutePath.DetailProduct}/${product.id}`}
                               className="text-center block mx-auto"
@@ -267,6 +282,26 @@ const DetailProduct = () => {
                                 Quick View
                               </span>
                             </div>
+                            {
+                              product.available !== 0 && wishList.findIndex((item) => item.id === product.id) === -1 ?
+                                <div
+                                  className={`hidden absolute top-0 right-0 w-[32px] h-[32px] border-2 border-main-grey-color rounded-full text-center opacity-95 duration-500 showView hover:bg-[#b20000] hover:border-[#b20000] cursor-pointer`}
+                                  title='Add to wishlist'
+                                  onClick={() => { handleAddProductToWishList({ ...product }) }}
+                                >
+                                  <HeartOutlined className='text-xl text-main-grey-color mt-[5px] show-heart' />
+                                </div>
+                                : product.available !== 0 && wishList.findIndex((item) => item.id === product.id) !== -1
+                                  ?
+                                  <div
+                                    className={`hidden absolute top-0 right-0 w-[32px] h-[32px] border-2 border-main-grey-color rounded-full text-center opacity-95 duration-500 showView hover:bg-[#b20000] hover:border-[#b20000] cursor-pointer`}
+                                    title='Remove to wishlist'
+                                    onClick={() => { handleRemoveItemToWishList(product.id) }}
+                                  >
+                                    <HeartOutlined className='text-xl text-main-grey-color mt-[5px] show-heart' />
+                                  </div>
+                                  : <></>
+                            }
                           </div>
                           <Link
                             to={`${RoutePath.DetailProduct}/${product.id}`}
@@ -274,9 +309,12 @@ const DetailProduct = () => {
                           >
                             {product.name}
                           </Link>
-                          <div className='flex justify-start gap-2'>
+                          <div className='flex flex-col justify-start gap-2'>
                             {product.old_price != 0 && <span className="font-medium line-through text-category-title">{convertNumbertoMoney(product.old_price)}</span>}
-                            <span className="font-semibold">{convertNumbertoMoney(product.new_price)}</span>
+                            <div className='flex gap-3 items-center'>
+                              <span className="font-semibold">{convertNumbertoMoney(product.new_price)}</span>
+                              {product.old_price != 0 && <Tag color="#ed3324" className="font-semibold text-sm">{calculateSalePercentage(product.old_price, product.new_price)}</Tag>}
+                            </div>
                           </div>
                         </div>
                       </SwiperSlide>)

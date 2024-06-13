@@ -100,3 +100,12 @@ export const imageUpload = async (file: File) => {
 };
 
 export const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+
+export const calculateSalePercentage = (old_price: number, new_price: number) => {
+    if (old_price === 0) {
+        return
+    }
+
+    const salePercentage = ((old_price - new_price) / old_price) * 100;
+    return `-${salePercentage.toFixed(0)}%`;
+}

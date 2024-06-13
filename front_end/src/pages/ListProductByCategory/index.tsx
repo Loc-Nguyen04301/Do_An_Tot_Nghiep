@@ -48,7 +48,11 @@ const ListProductByCategory = () => {
   }
 
   return (
-    <div>
+    <>
+      <Helmet>
+        <title>{categoryList.find((categoryItem) => categoryItem.path === category)?.title}</title>
+        <meta name='description' content='Beginner friendly page for learning React Helmet.' />
+      </Helmet>
       <div className="bg-[url('https://www.thol.com.vn/wp-content/uploads/2015/11/nang-luong-suc-khoe-scaled.jpg')] bg-no-repeat bg-center bg-cover">
         <div className="container max-w-[1140px] mx-auto max-md:text-center">
           {categoryList.map((categoryItem) =>
@@ -129,7 +133,7 @@ const ListProductByCategory = () => {
             </div>)}
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

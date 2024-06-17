@@ -117,7 +117,7 @@ const AdminLayout = ({ children }: AdminLayouttProps) => {
                         }
                     }} />
             </Sider>
-            <Layout className='!w-full'>
+            <Layout>
                 <header style={{ background: colorBgContainer }} className='flex justify-end items-center gap-5 h-[50px] px-10'>
                     <SearchOutlined className='text-2xl' />
                     <ShowNotification />

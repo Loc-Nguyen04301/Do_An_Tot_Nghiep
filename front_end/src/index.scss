@@ -284,6 +284,10 @@ body {
 }
 
 // admin dashboard
+.ant-layout {
+  min-width: max-content;
+}
+
 .ant-layout-sider-trigger {
   position: unset !important;
 }

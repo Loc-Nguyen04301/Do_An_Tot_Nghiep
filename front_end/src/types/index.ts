@@ -27,6 +27,7 @@ export interface IProduct {
     new_price: number
     image: string
     available: number
+    averageRating: number
     created_at: string
 }
 

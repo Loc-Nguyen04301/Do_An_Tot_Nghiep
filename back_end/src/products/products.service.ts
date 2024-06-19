@@ -93,9 +93,26 @@ export class ProductsService {
             }
           }
         }
+      },
+      include: {
+        reviews: {
+          select: {
+            star: true
+          }
+        },
       }
     })
-    return products;
+
+    const newProducts = products.map((product) => {
+      const totalStars = product.reviews.reduce((sum, review) => sum + review.star, 0);
+      const averageRating = totalStars / product.reviews.length || 0;
+      delete product.reviews
+      delete product.created_at
+      delete product.update_at
+      return { ...product, averageRating }
+    })
+
+    return newProducts;
   }
 
   async findByName(name: string) {
@@ -146,7 +163,7 @@ export class ProductsService {
 
   async update(id: number, updateProductDto: UpdateProductDto) {
     const { category_ids, name, brand, description, image, new_price, old_price, available } = updateProductDto
-    
+
     await this.prisma.categoriesOnProducts.deleteMany({ where: { product_id: id } })
 
     const categoryCreates = category_ids.map(category_id => ({

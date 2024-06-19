@@ -8,6 +8,7 @@ import "swiper/scss/navigation"
 import { Helmet } from "react-helmet-async"
 import ProductsByCategory from "./components/ProductsByCategory"
 import categoryList from "@/assets/data/categoryList"
+import "./Home.scss"
 
 const Home = () => {
   return (
@@ -26,6 +27,7 @@ const Home = () => {
           </div>
         </div>
         <div className="flex flex-col gap-14">
+          <ProductsByCategory categoryPath={categoryList[7].path} categoryTitle={categoryList[7].title} />
           <ProductsByCategory categoryPath={categoryList[0].path} categoryTitle={categoryList[0].title} />
           <ProductsByCategory categoryPath={categoryList[1].path} categoryTitle={categoryList[1].title} />
           <ProductsByCategory categoryPath={categoryList[2].path} categoryTitle={categoryList[2].title} />

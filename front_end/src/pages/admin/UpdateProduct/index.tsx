@@ -23,9 +23,17 @@ const schema = yup
         name: yup.string().required('Yêu cầu nhập tên sản phẩm'),
         brand: yup.string().required('Yêu cầu nhập tên thương hiệu'),
         description: yup.string().required('Yêu cầu mô tả sản phẩm'),
-        old_price: yup.number(),
-        new_price: yup.number().required('Yêu cầu nhập giá mới'),
-        available: yup.number()
+        old_price: yup.number()
+            .test('is-positive', 'Giá cũ phải lớn hơn giá mới', function (value) {
+                const { new_price } = this.parent;
+                if (value === 0) return true
+                if (new_price !== undefined && value !== undefined) {
+                    return value > new_price;
+                }
+                return true;
+            }),
+        new_price: yup.number().required('Yêu cầu nhập giá mới').moreThan(0, "Giá mới phải lớn hơn 0"),
+        available: yup.number().required('Nhập số lượng sản phẩm')
     })
 
 const UpdateProduct = () => {
@@ -36,7 +44,7 @@ const UpdateProduct = () => {
     const [disabled, setDisabled] = useState(false)
     const products = useAppSelector(state => state.product)
 
-    const { register, handleSubmit, formState: { errors }, watch, getValues } = useForm({
+    const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });
 
@@ -140,42 +148,42 @@ const UpdateProduct = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="my-2">
                     <div className="font-semibold tracking-wide">Mã sản phẩm</div>
-                    <input className="w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedProduct.id} disabled />
+                    <input className="pl-2 w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedProduct.id} disabled />
                 </div>
 
                 <div className="my-2">
                     <div className="label-email font-semibold tracking-wide">Tên sản phẩm</div>
-                    <input className="w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('name')} defaultValue={selectedProduct.name} />
+                    <input className="pl-2 w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('name')} defaultValue={selectedProduct.name} />
                     {errors.name && <p className="text-red-500">{errors.name?.message}</p>}
                 </div>
 
                 <div className="my-2">
                     <div className="label-email font-semibold tracking-wide">Tên thương hiệu</div>
-                    <input className="w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('brand')} defaultValue={selectedProduct.brand} />
+                    <input className="pl-2 w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('brand')} defaultValue={selectedProduct.brand} />
                     {errors.brand && <p className="text-red-500">{errors.brand?.message}</p>}
                 </div>
 
                 <div className="my-2">
                     <div className="label-email font-semibold tracking-wide">Mô tả</div>
-                    <textarea className="w-1/2 min-h-[100px] border-[1px] border-[#adadad] rounded-sm" {...register('description')} defaultValue={selectedProduct.description} />
+                    <textarea className="pl-2 w-1/2 min-h-[100px] border-[1px] border-[#adadad] rounded-sm" {...register('description')} defaultValue={selectedProduct.description} />
                     {errors.description && <p className="text-red-500">{errors.description?.message}</p>}
                 </div>
 
                 <div className="my-2">
                     <div className="label-email font-semibold tracking-wide">Giá cũ sản phẩm</div>
-                    <input className="w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"number"} {...register('old_price')} defaultValue={selectedProduct.old_price} />
+                    <input className="pl-2 w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"number"} {...register('old_price')} defaultValue={selectedProduct.old_price} />
                     {errors.old_price && <p className="text-red-500">{errors.old_price?.message}</p>}
                 </div>
 
                 <div className="my-2">
                     <div className="label-email font-semibold tracking-wide">Giá mới sản phẩm</div>
-                    <input className="w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"number"} {...register('new_price')} defaultValue={selectedProduct.new_price} />
+                    <input className="pl-2 w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"number"} {...register('new_price')} defaultValue={selectedProduct.new_price} />
                     {errors.new_price && <p className="text-red-500">{errors.new_price?.message}</p>}
                 </div>
 
                 <div className="my-2">
                     <div className="label-email font-semibold tracking-wide">Số lượng sản phẩm</div>
-                    <input className="w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"number"} {...register('available')} defaultValue={selectedProduct.available} />
+                    <input className="pl-2 w-1/2 h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"number"} {...register('available')} defaultValue={selectedProduct.available} />
                     {errors.available && <p className="text-red-500">{errors.available?.message}</p>}
                 </div>
 

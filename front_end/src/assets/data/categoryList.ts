@@ -6,6 +6,7 @@ const categoryList = [
   { path: "fashion", title: "Thời trang GYM" },
   { path: "gym-equipment", title: "Thiết bị phòng GYM" },
   { path: "fitness-gear", title: "Phụ kiện GYM" },
+  { path: "sale-off", title: "Sản phẩm khuyến mãi" }
 ]
 
 export default categoryList

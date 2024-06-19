@@ -76,7 +76,7 @@ const Register = () => {
                   <p className="text-red-500">Password not match</p>
                 ) : null}
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between mt-5">
                 <button type="submit" className="bg-main-orange-color text-white px-5 py-2 rounded-sm hover:bg-bold-main-orange-color">
                   <span>Đăng ký</span>
                 </button>

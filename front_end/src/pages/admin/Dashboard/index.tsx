@@ -5,6 +5,7 @@ import {
     ShoppingCartOutlined,
     ShoppingOutlined,
     UserOutlined,
+    StarOutlined
 } from "@ant-design/icons";
 import {
     Chart as ChartJS,
@@ -43,7 +44,7 @@ export interface IBestSoldOutProduct {
 }
 
 const DashBoard = () => {
-    const [count, setCount] = useState<{ billCount: number, productCount: number, userCount: number, revenueCount: number }>({ billCount: 0, productCount: 0, userCount: 0, revenueCount: 0 });
+    const [count, setCount] = useState<{ billCount: number, productCount: number, userCount: number, reviewCount: number, revenueCount: number }>({ billCount: 0, productCount: 0, userCount: 0, revenueCount: 0 });
     const [listProductSoldOut, setListProductSoldOut] = useState<IBestSoldOutProduct[]>([]);
     const dispatchAlert = useAlertDispatch()
 
@@ -77,59 +78,44 @@ const DashBoard = () => {
                 <Space direction="horizontal" className='w-full justify-center'>
                     <DashboardCard
                         icon={
-                            <ShoppingCartOutlined
-                                style={{
-                                    color: "green",
-                                    backgroundColor: "rgba(0,255,0,0.25)",
-                                    borderRadius: 20,
-                                    fontSize: 24,
-                                    padding: 8,
-                                }}
-                            />
-                        }
-                        title={"Đơn hàng"}
-                        value={count.billCount}
-                    />
-                    <DashboardCard
-                        icon={
-                            <ShoppingOutlined
-                                style={{
-                                    color: "blue",
-                                    backgroundColor: "rgba(0,0,255,0.25)",
-                                    borderRadius: 20,
-                                    fontSize: 24,
-                                    padding: 8,
-                                }}
-                            />
-                        }
-                        title={"Kho hàng"}
-                        value={count.productCount}
-                    />
-                    <DashboardCard
-                        icon={
                             <UserOutlined
-                                style={{
-                                    color: "purple",
-                                    backgroundColor: "rgba(0,255,255,0.25)",
-                                    borderRadius: 20,
-                                    fontSize: 24,
-                                    padding: 8,
-                                }}
+                                className='bg-blue-300 text-blue-500 p-2 text-2xl rounded-[20px]'
                             />
                         }
-                        title={"Khách thành viên"}
+                        title={"Số khách thành viên"}
                         value={count.userCount}
                     />
                     <DashboardCard
                         icon={
+                            <ShoppingOutlined
+                                className='bg-orange-300 text-orange-500 p-2 text-2xl rounded-[20px]'
+                            />
+                        }
+                        title={"Số sản phẩm"}
+                        value={count.productCount}
+                    />
+                    <DashboardCard
+                        icon={
+                            <ShoppingCartOutlined
+                                className='bg-green-300 text-green-500 p-2 text-2xl rounded-[20px]'
+                            />
+                        }
+                        title={"Số lượng đơn hàng"}
+                        value={count.billCount}
+                    />
+                    <DashboardCard
+                        icon={
+                            <StarOutlined
+                                className='bg-yellow-300 text-yellow-500 p-2 text-2xl rounded-[20px]'
+                            />
+                        }
+                        title={"Số lượt đánh giá"}
+                        value={count.reviewCount}
+                    />
+                    <DashboardCard
+                        icon={
                             <DollarCircleOutlined
-                                style={{
-                                    color: "red",
-                                    backgroundColor: "rgba(255,0,0,0.25)",
-                                    borderRadius: 20,
-                                    fontSize: 24,
-                                    padding: 8,
-                                }}
+                                className='bg-red-300 text-red-500 p-2 text-2xl rounded-[20px]'
                             />
                         }
                         title={"Tổng doanh thu"}
@@ -150,7 +136,7 @@ export default DashBoard
 
 const DashboardCard = ({ icon, title, value }: { icon: any, title: any, value: any }) => {
     return (
-        <Card>
+        <Card className='min-w-[230px]'>
             <Space direction="horizontal">
                 {icon}
                 <Statistic title={title} value={value} />

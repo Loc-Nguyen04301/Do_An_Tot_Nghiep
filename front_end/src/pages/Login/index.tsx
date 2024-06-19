@@ -67,7 +67,7 @@ const Login = () => {
               <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"password"} {...register('password')} autoComplete="current-password" />
               {errors.password && <p className="text-red-500">{errors.password.message}</p>}
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between mt-5">
               <button type="submit" className="bg-main-orange-color text-white px-5 py-2 rounded-sm hover:bg-bold-main-orange-color">
                 <span>Đăng nhập</span>
               </button>

@@ -61,7 +61,17 @@ body {
 
 .swiper-button-prev,
 .swiper-button-next {
-  color: var(--main-grey-color);
+  color: var(--main-orange-color) !important;
+  visibility: hidden;
+  z-index: 10000 !important;
+  top: 40% !important;
+}
+
+.swiper.swiper-initialized.swiper-horizontal.swiper-backface-hidden:hover {
+  .swiper-button-prev,
+  .swiper-button-next {
+    visibility: visible !important;
+  }
 }
 
 @media only screen and (max-width: 576px) {

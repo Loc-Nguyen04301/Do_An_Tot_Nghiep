@@ -34,14 +34,14 @@ const ProductCard = ({ product }: ProductCardProps) => {
     }
 
     return (
-        <div className={`px-[10px] containerProduct`}>
+        <div className={`p-4 containerProduct`}>
             <div className="relative">
                 {
                     product.available === 0 && <Tag color="red" className="absolute top-0 left-0">Hết hàng</Tag>
                 }
                 <Link
                     to={product.available !== 0 ? `${RoutePath.DetailProduct}/${product.id}` : ""}
-                    className="text-center block mx-auto"
+                    className="text-center block mx-auto pb-12"
                 >
                     <img
                         src={product.image}
@@ -78,14 +78,14 @@ const ProductCard = ({ product }: ProductCardProps) => {
             </div>
             <Link
                 to={`${RoutePath.DetailProduct}/${product.id}`}
-                className="text-base block leading-5 mt-2 mb-1"
+                className="text-base block leading-5 my-2"
             >
                 {product.name}
             </Link>
             <div className='flex flex-col justify-start'>
                 {product.old_price != 0 && <span className="font-medium line-through text-category-title">{convertNumbertoMoney(product.old_price)}</span>}
                 <div className='flex gap-3 items-center'>
-                    <span className="font-semibold">{convertNumbertoMoney(product.new_price)}</span>
+                    <span className="font-semibold text-lg">{convertNumbertoMoney(product.new_price)}</span>
                     {product.old_price != 0 && <Tag color="#ed3324" className="font-semibold text-sm">{calculateSalePercentage(product.old_price, product.new_price)}</Tag>}
                 </div>
                 <Rate value={product.averageRating} allowHalf disabled className='mt-2' />

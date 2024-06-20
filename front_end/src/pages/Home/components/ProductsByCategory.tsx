@@ -42,40 +42,37 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                 </a>
             </div>
             <div className="mt-8">
-                <div className="grid grid-cols-6 max-md:hidden gap-3">
+                {/* <div className="grid grid-cols-6 max-md:hidden gap-3">
                     {products && products.map((product) =>
                         <div key={product.id}>
                             <ProductCard product={product} />
                         </div>
                     )}
-                </div>
-
-                <div className="md:hidden">
-                    <Swiper
-                        navigation={true}
-                        modules={[Navigation]}
-                        loop={true}
-                        breakpoints={{
-                            850: {
-                                slidesPerView: 6,
-                            },
-                            680: {
-                                slidesPerView: 4,
-                            },
-                            530: {
-                                slidesPerView: 3,
-                            },
-                            300: {
-                                slidesPerView: 2,
-                            },
-                        }}
-                    >
-                        {products && products.map((product) =>
-                            <SwiperSlide key={product.id}>
-                                <ProductCard product={product} />
-                            </SwiperSlide>)}
-                    </Swiper>
-                </div>
+                </div> */}
+                <Swiper
+                    navigation={true}
+                    modules={[Navigation]}
+                    loop={true}
+                    breakpoints={{
+                        850: {
+                            slidesPerView: 5,
+                        },
+                        680: {
+                            slidesPerView: 4,
+                        },
+                        530: {
+                            slidesPerView: 3,
+                        },
+                        300: {
+                            slidesPerView: 2,
+                        },
+                    }}
+                >
+                    {products && products.map((product) =>
+                        <SwiperSlide key={product.id}>
+                            <ProductCard product={product} />
+                        </SwiperSlide>)}
+                </Swiper>
             </div>
         </div >
     )

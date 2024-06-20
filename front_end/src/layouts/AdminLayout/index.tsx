@@ -49,7 +49,7 @@ export enum RoutePathAdmin {
 
 const items: MenuItem[] = [
     getItem('Dashboard', RoutePathAdmin.DashBoard, <AppstoreOutlined />),
-    getItem('Kho hàng', RoutePathAdmin.Inventory, <ShopOutlined />),
+    getItem('Sản phẩm', RoutePathAdmin.Inventory, <ShopOutlined />),
     getItem('Đơn hàng', RoutePathAdmin.OrderAdmin, <ShoppingCartOutlined />),
     getItem('Thành viên', RoutePathAdmin.Customer, <UserOutlined />),
     getItem('Thông báo', RoutePathAdmin.Notification, <BellOutlined />),

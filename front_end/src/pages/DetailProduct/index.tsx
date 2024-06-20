@@ -12,10 +12,6 @@ import { RoutePath } from "@/routes"
 import { useAppDispatch, useAppSelector } from "@/redux-toolkit/hook"
 import { addItemToCartWithQuantity } from "@/redux-toolkit/cartSlice"
 import { useAlertDispatch } from "@/contexts/AlertContext"
-import { HeartOutlined } from '@ant-design/icons';
-
-import "swiper/scss"
-import "swiper/scss/navigation"
 import { Tag } from "antd"
 import { addProductToWishList, IProductWishList, removeProductToWishList } from "@/redux-toolkit/wishListSlice"
 import ProductCard from "@/components/ProductCard"
@@ -109,7 +105,7 @@ const DetailProduct = () => {
         if (relatedCategory) {
           const res = await ProductService.getProductsByCategory(relatedCategory)
           // Show maximum 6 items in Related Products
-          var relatedProducts = res.data.data.slice(0, 6) as IDetailProduct[]
+          var relatedProducts = res.data.data as IDetailProduct[]
           relatedProducts = relatedProducts.filter((item) => item.id !== product?.id)
           setRelatedProducts(relatedProducts)
           dispatchAlert({ loading: false })

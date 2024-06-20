@@ -55,10 +55,6 @@ export interface ReviewInterface {
     images?: string[]
 }
 
-export interface CreatePaymentDto {
-    amount: number
-}
-
 export interface ICategory {
     id: number
     name: string

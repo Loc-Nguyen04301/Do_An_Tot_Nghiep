@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Req, Res, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, Res, UseInterceptors } from '@nestjs/common';
 import { Response } from 'express';
 import { createHmac } from 'crypto';
 import { CreatePaymentDto } from './dto/create-payment.dto';
@@ -27,6 +27,7 @@ export class PaymentController {
 
         let amount = data.amount;
         let bankCode = data.bankCode
+        let orderInfo = data.orderInfo
 
         let vnpParams: any = {};
         vnpParams['vnp_Version'] = '2.1.0';
@@ -38,7 +39,7 @@ export class PaymentController {
         vnpParams['vnp_CurrCode'] = 'VND';
         vnpParams['vnp_IpAddr'] = '127.0.0.1';
         vnpParams['vnp_Locale'] = 'vn';
-        vnpParams['vnp_OrderInfo'] = "THANH TOAN DON HANG";
+        vnpParams['vnp_OrderInfo'] = orderInfo;
         vnpParams['vnp_OrderType'] = "other";
         vnpParams['vnp_ReturnUrl'] = returnUrl;
         vnpParams['vnp_TxnRef'] = orderId;

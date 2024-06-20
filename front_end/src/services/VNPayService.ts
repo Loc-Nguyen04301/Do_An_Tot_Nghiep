@@ -1,7 +1,10 @@
-import { CreatePaymentDto } from "@/types";
 import http from "./axios";
 
-const navigateVNPay = (data: CreatePaymentDto) => {
+const navigateVNPay = (data: {
+    amount: number,
+    orderInfo: string;
+}
+) => {
     return http.post("/payment/create_payment_url", data)
 }
 

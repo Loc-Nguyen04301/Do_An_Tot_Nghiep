@@ -124,12 +124,12 @@ const Checkout = () => {
             if (paymentMethod === PaymentMethod.VNPAY) {
                 const res = await VNPayService.navigateVNPay({
                     amount: total_amount,
+                    orderInfo: `Ma don hang ${billId} ${getValues("customer_name")} CK MUA HANG`
                 })
                 // redirect đến cổng thanh toán VNPAY
                 window.location.replace(res.data.vnpUrl)
             }
             else if (paymentMethod === PaymentMethod.BANK_TRANSFER) {
-                const now = new Date()
                 const res = await VietQRService.createPaymentQR({ amount: 10000, addInfo: `Ma don hang ${billId} ${getValues("customer_name")} CK MUA HANG` })
                 setPaymentURL(res.data.data.qrDataURL)
                 dispatchAlert({ loading: false })

@@ -16,6 +16,11 @@
   }
 }
 
+:where(.css-dev-only-do-not-override-amq5gd).ant-select-single
+  .ant-select-selector {
+  border-radius: 0.125rem !important;
+}
+
 .label-name::after,
 .label-email::after,
 .label-password::after {

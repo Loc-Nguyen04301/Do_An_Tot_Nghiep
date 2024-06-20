@@ -241,7 +241,7 @@ const DetailProduct = () => {
                 Danh mục:
                 {product.categories.map((item) =>
                   <span className="pl-1" key={item.category.name}>
-                    <a className="cursor-pointer">{item.category.name}</a>,
+                    <a className="cursor-pointer" href={`${RoutePath.ListByCategory}/${item.category.name}`}>{item.category.name}</a>,
                   </span>)}
               </div>
             </div>

@@ -225,7 +225,7 @@ const Checkout = () => {
                                     <div className="label-email tracking-wide leading-6 font-semibold">Địa chỉ nhận hàng</div>
                                     <div className='w-full flex gap-3'>
                                         <Select
-                                            className="!w-1/3"
+                                            className="!w-1/3 h-[35px]"
                                             value={selectedCity}
                                             onChange={handleCityChange}
                                             placeholder="Chọn tỉnh thành"
@@ -237,7 +237,7 @@ const Checkout = () => {
                                             ))}
                                         </Select>
                                         <Select
-                                            className="!w-1/3"
+                                            className="!w-1/3 h-[35px]"
                                             value={selectedDistrict}
                                             onChange={handleDistrictChange}
                                             placeholder="Chọn quận huyện"
@@ -249,7 +249,7 @@ const Checkout = () => {
                                             ))}
                                         </Select>
                                         <Select
-                                            className="!w-1/3"
+                                            className="!w-1/3 h-[35px]" 
                                             value={selectedWard}
                                             onChange={handleWardChange}
                                             placeholder="Chọn phường xã"
@@ -261,7 +261,7 @@ const Checkout = () => {
                                             ))}
                                         </Select>
                                     </div>
-                                    <div className='mt-2'>
+                                    <div className='mt-4'>
                                         <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('address')} placeholder='Số nhà, tên đường...' />
                                         {errors.address && <p className="text-red-500">{errors.address?.message}</p>}
                                     </div>

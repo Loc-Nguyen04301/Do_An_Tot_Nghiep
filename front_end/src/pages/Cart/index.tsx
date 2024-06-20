@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { RoutePath } from '@/routes'
-import { RightOutlined, DeleteOutlined } from '@ant-design/icons';
+import { RightOutlined, CloseOutlined } from '@ant-design/icons';
 import { ConfigProvider, Modal, Table, TableProps } from 'antd';
 import { convertNumbertoMoney } from '@/utils';
 import { useAppDispatch, useAppSelector } from '@/redux-toolkit/hook';
@@ -70,6 +70,16 @@ const Cart = () => {
 
     const columns: TableProps<IProductItem>['columns'] = [
         {
+            title: '',
+            key: 'deleteItem',
+            render: (_, record) =>
+                <div className='flex items-center'>
+                    <div className='cursor-pointer' onClick={() => { showModal(record) }}>
+                        <CloseOutlined className='ml-4 cursor-pointer text-xl hover:text-main-orange-color' />
+                    </div>
+                </div >
+        },
+        {
             title: "SẢN PHẨM",
             key: "name",
             render: (_, record) => <div>
@@ -108,16 +118,6 @@ const Cart = () => {
             render: (_, record) => <div className='flex items-center'>
                 <div className='font-bold'>{convertNumbertoMoney(record.totalPrice)}</div>
             </div>
-        },
-        {
-            title: '',
-            key: 'deleteItem',
-            render: (_, record) =>
-                <div className='flex items-center'>
-                    <div className='cursor-pointer transform hover:scale-125' onClick={() => { showModal(record) }}>
-                        <DeleteOutlined className='text-red-500 text-2xl' />
-                    </div>
-                </div >
         },
     ];
 

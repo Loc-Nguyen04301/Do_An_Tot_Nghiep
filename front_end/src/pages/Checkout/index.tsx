@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { RoutePath } from '@/routes'
 import { RightOutlined } from '@ant-design/icons'
-import { convertNumbertoMoney, setBillId, setPaymentURL } from '@/utils'
+import { convertNumbertoMoney, getBillId, setBillId, setPaymentURL } from '@/utils'
 import clsx from 'clsx'
 import { useAppSelector } from '@/redux-toolkit/hook'
 import * as yup from 'yup'
@@ -15,12 +15,10 @@ import { Collapse, CollapseProps, Select } from 'antd'
 import { City, District, PaymentMethod, Ward } from '@/types'
 import VNPayService from '@/services/VNPayService'
 import VietQRService from '@/services/VietQRService'
-import { format } from "date-fns"
 import axios from 'axios'
 import "./Checkout.scss"
 
 const { Option } = Select;
-var DATETIME_FORMAT = 'yyyyMMddHHmmss'
 
 interface FormData {
     customer_name?: string
@@ -48,6 +46,8 @@ const schema = yup
 const Checkout = () => {
     const { user } = useAppSelector(state => state.auth)
     const [paymentMethod, setPaymentMethod] = useState<string>(PaymentMethod.SHIPCOD)
+    const [isCreatedBill, setIsCreatedBill] = useState(false)
+    const billId = getBillId()
 
     const items: CollapseProps['items'] = [
         {
@@ -55,7 +55,7 @@ const Checkout = () => {
             label:
                 <div className='flex gap-3 items-center'>
                     <input type={"radio"} checked={paymentMethod === PaymentMethod.SHIPCOD} readOnly />
-                    <span className='font-bold'>Ship COD</span>
+                    <span className='font-bold'>Thanh toán khi nhận hàng (COD)</span>
                 </div>,
             children:
                 <p>Thanh toán sau khi nhận hàng</p>,
@@ -86,7 +86,7 @@ const Checkout = () => {
         },
     ]
 
-    const { register, handleSubmit, formState: { errors }, reset } = useForm({
+    const { register, handleSubmit, formState: { errors }, getValues } = useForm({
         resolver: yupResolver(schema),
     })
 
@@ -112,31 +112,36 @@ const Checkout = () => {
                 const createBillDto = { ...data, shortCartItems, user_id: user?.id, payment_method: paymentMethod, total_amount: totalAmount } as CreateBillDto
                 const res = await BillService.createBill(createBillDto)
                 setBillId(res.data.data.billId)
-                if (paymentMethod === PaymentMethod.VNPAY) {
-                    const res = await VNPayService.navigateVNPay({
-                        amount: totalAmount,
-                    })
-                    // redirect đến cổng thanh toán VNPAY
-                    window.location.replace(res.data.vnpUrl)
-                    return
-                }
-                else if (paymentMethod === PaymentMethod.BANK_TRANSFER) {
-                    const now = new Date()
-                    const createdAt = format(now, DATETIME_FORMAT)
-                    const res = await VietQRService.createPaymentQR({ amount: 10000, addInfo: `${data.customer_name} CHUYEN KHOAN MUA HANG ${createdAt}` })
-                    setPaymentURL(res.data.data.qrDataURL)
-                    dispatchAlert({ loading: false })
-                    navigate(RoutePath.OrderComplete)
-                }
-                else if (paymentMethod === PaymentMethod.SHIPCOD) {
-                    dispatchAlert({ loading: false })
-                    navigate(RoutePath.OrderComplete)
-                }
+                setIsCreatedBill(true)
             } catch (error: any) {
                 dispatchAlert({ errors: error.message })
             }
         }, 2000)
     }
+
+    useEffect(() => {
+        const handlePayment = async (total_amount: number) => {
+            if (paymentMethod === PaymentMethod.VNPAY) {
+                const res = await VNPayService.navigateVNPay({
+                    amount: total_amount,
+                })
+                // redirect đến cổng thanh toán VNPAY
+                window.location.replace(res.data.vnpUrl)
+            }
+            else if (paymentMethod === PaymentMethod.BANK_TRANSFER) {
+                const now = new Date()
+                const res = await VietQRService.createPaymentQR({ amount: 10000, addInfo: `Ma don hang ${billId} ${getValues("customer_name")} CK MUA HANG` })
+                setPaymentURL(res.data.data.qrDataURL)
+                dispatchAlert({ loading: false })
+                navigate(RoutePath.OrderComplete)
+            }
+            else if (paymentMethod === PaymentMethod.SHIPCOD) {
+                dispatchAlert({ loading: false })
+                navigate(RoutePath.OrderComplete)
+            }
+        }
+        if (isCreatedBill && billId) handlePayment(totalAmount)
+    }, [isCreatedBill, billId])
 
     const onChangePaymentMethod = (key: string | string[]) => {
         if (key.length > 0)
@@ -249,7 +254,7 @@ const Checkout = () => {
                                             ))}
                                         </Select>
                                         <Select
-                                            className="!w-1/3 h-[35px]" 
+                                            className="!w-1/3 h-[35px]"
                                             value={selectedWard}
                                             onChange={handleWardChange}
                                             placeholder="Chọn phường xã"

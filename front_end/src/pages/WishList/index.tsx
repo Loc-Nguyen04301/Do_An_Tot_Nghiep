@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom';
 import { convertNumbertoMoney } from '@/utils';
 import { RoutePath } from '@/routes';
-import { CloseCircleOutlined } from '@ant-design/icons';
+import { CloseOutlined } from '@ant-design/icons';
 import { IProductWishList, removeProductToWishList } from '@/redux-toolkit/wishListSlice';
 import { useAppDispatch, useAppSelector } from '@/redux-toolkit/hook';
 import { useAlertDispatch } from '@/contexts/AlertContext';
@@ -38,7 +38,7 @@ const WishList = () => {
             title: '',
             key: 'deleteItem',
             render: (_, record) =>
-                <CloseCircleOutlined className='ml-4 cursor-pointer text-xl hover:text-main-orange-color' onClick={() => { handleRemoveItemToWishList(record.id) }} />
+                <CloseOutlined className='ml-4 cursor-pointer text-xl hover:text-main-orange-color' onClick={() => { handleRemoveItemToWishList(record.id) }} />
         },
         {
             title: "SẢN PHẨM",

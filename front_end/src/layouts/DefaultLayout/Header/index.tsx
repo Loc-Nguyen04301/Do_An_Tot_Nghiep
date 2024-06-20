@@ -107,7 +107,7 @@ const Header = () => {
               onClick={showDrawerLeft}
             >
               <FontAwesomeIcon icon={faBars} size="lg" />
-              <span className="text-sm max-xs:text-white">Menu</span>
+              <span className="text-sm max-xs:hidden">Menu</span>
             </div>
             <DrawerLeftMenu
               openLeftModal={openLeftModal}
@@ -118,7 +118,7 @@ const Header = () => {
           <Logo />
           {/*Cart Drawer Mobile Screen*/}
           <div className="md:hidden">
-            <ul className="flex items-center gap-[15px] h-full">
+            <ul className="flex items-center gap-[15px] h-full max-xs:flex-col">
               <li className="cursor-pointer relative">
                 <Link to={RoutePath.WishList}>
                   <FontAwesomeIcon icon={faHeart} size="lg" />

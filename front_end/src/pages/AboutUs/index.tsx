@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCheck } from "@fortawesome/free-solid-svg-icons"
 import { Helmet } from 'react-helmet-async';
 
-
 const AboutUs = () => {
   return (
     <>

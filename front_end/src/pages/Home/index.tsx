@@ -18,7 +18,7 @@ const Home = () => {
         <meta name='description' content='Beginner friendly page for learning React Helmet.' />
       </Helmet>
       <div className="mx-auto max-w-[1140px] py-8">
-        <div className="grid grid-cols-2">
+        <div className="max-xs:hidden grid grid-cols-2">
           <div className="px-4 pb-7">
             <img src={homeImage1} />
           </div>

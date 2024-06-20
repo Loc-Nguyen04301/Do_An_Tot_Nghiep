@@ -164,7 +164,7 @@ const Footer = () => {
               </div>
             </div>
             <div className="text-[#ffffff80]">
-              Copyright 2023 © <strong>THOL.COM.VN</strong>
+              Copyright 2023 ©
             </div>
           </div>
         </div>

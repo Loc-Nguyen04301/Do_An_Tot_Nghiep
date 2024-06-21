@@ -13,8 +13,8 @@ export class MailService {
             port: 587,
             secure: false,
             auth: {
-                user: 'nguyengialoc7@gmail.com',
-                pass: 'jyryoryrtqnhmmaz',
+                user: process.env.SENDER_EMAIL,
+                pass: process.env.APP_GOOGLE_PASSWORD,
             },
         });
     }
@@ -37,7 +37,7 @@ export class MailService {
 
     async sendMailRejectBill({ to, subject, bill_id, customer_name }: { to: string, subject: string, bill_id: number, customer_name: string }) {
         const mailOptions: MailOptions = {
-            from: 'nguyengialoc7@gmail.com',
+            from: process.env.SENDER_EMAIL,
             to,
             subject,
             html: HTML_TEMPLATE_REJECT(bill_id, customer_name),

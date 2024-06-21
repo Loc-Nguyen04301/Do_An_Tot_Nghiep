@@ -10,6 +10,8 @@ import { Notifications } from 'react-push-notification';
 
 import "./index.scss"
 import 'react-toastify/dist/ReactToastify.css';
+import "swiper/scss"
+import "swiper/scss/navigation"
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <>

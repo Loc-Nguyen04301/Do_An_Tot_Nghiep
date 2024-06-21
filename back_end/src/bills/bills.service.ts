@@ -35,7 +35,7 @@ export class BillsService {
       // update notification bill state
       if (bill.id) await tr.notifiBill.create({ data: { bill_id: bill.id } })
       // phát thông điệp đến client 
-      this.appGateway.sendBillNotification(bill)
+      await this.appGateway.sendBillNotification(bill)
 
       const shortCartItemsData = shortCartItems.map((item => { return { bill_id: bill.id, product_id: item.product_id, quantity: item.quantity, total_price: item.total_price } }))
       await Promise.all(shortCartItemsData.map(async (cartItem) => {
@@ -46,8 +46,10 @@ export class BillsService {
           where: { id: cartItem.product_id },
         });
         if (product) {
-          const newAvailable = product.available - cartItem.quantity;
-          await tr.product.update({ where: { id: cartItem.product_id }, data: { available: newAvailable } })
+          await tr.product.update({ where: { id: cartItem.product_id }, data: { available: { decrement: cartItem.quantity } } })
+        }
+        else {
+          throw new BadRequestException('Không tìm thấy sản phẩm này trong hệ thống');
         }
       }))
 

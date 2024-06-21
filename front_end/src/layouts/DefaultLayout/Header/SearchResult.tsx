@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { forwardRef, useEffect, useState } from 'react'
 import {
     useSearchContext
 } from '@/contexts/SearchContext'
@@ -9,11 +9,10 @@ import { Link } from 'react-router-dom';
 import { RoutePath } from '@/routes';
 
 interface SearchResultProps {
-    loading?: boolean,
     setLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const SearchResult = ({ setLoading }: SearchResultProps) => {
+const SearchResult = forwardRef<HTMLDivElement, SearchResultProps>(({ setLoading }, ref) => {
     const [products, setProducts] = useState<IProduct[]>([]);
     const { search } = useSearchContext()
 
@@ -42,13 +41,13 @@ const SearchResult = ({ setLoading }: SearchResultProps) => {
     }, [search])
 
     return (
-        <div className="absolute left-0 w-full z-[10]" id="search-result">
+        <div ref={ref} className="absolute left-0 w-full z-[10]" id="search-result">
             <div className="max-h-[80vh] bg-white shadow-search-box overflow-y-auto">
                 <ul className="h-full">
                     {products.map((product) =>
-                        <Link
+                        <a
                             key={product.id}
-                            to={`${RoutePath.DetailProduct}/${product.id}`}
+                            href={`${RoutePath.DetailProduct}/${product.id}`}
                             className="p-3 flex items-center justify-between hover:bg-[#f7f7f7] hover:cursor-pointer border-b-[1px] gap-2"
                         >
                             <div className="flex items-center gap-5">
@@ -60,11 +59,11 @@ const SearchResult = ({ setLoading }: SearchResultProps) => {
                                     {convertNumbertoMoney(product.new_price)}
                                 </strong>
                             </span>
-                        </Link>)}
+                        </a>)}
                 </ul>
             </div>
         </div>
     )
-}
+})
 
 export default SearchResult

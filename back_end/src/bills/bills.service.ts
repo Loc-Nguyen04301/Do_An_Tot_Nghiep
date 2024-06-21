@@ -6,11 +6,12 @@ import * as bcrypt from 'bcrypt';
 import { ReturnStatus } from '@prisma/client';
 import { BillParams } from 'src/types';
 import { AppGateway } from 'src/app.gateway';
+import { MailService } from '../mail/mail.service';
 
 const saltOrRounds = 10;
 @Injectable()
 export class BillsService {
-  constructor(private prisma: PrismaService, private appGateway: AppGateway) { }
+  constructor(private prisma: PrismaService, private appGateway: AppGateway, private mailService: MailService) { }
 
   hashData(data: string) {
     return bcrypt.hash(data, saltOrRounds);
@@ -56,6 +57,12 @@ export class BillsService {
       return bill
     })
 
+    if (bill) await this.mailService.sendMailCreateBill({
+      bill_id: bill.id,
+      subject: `Xác nhận đơn hàng #${bill.id} từ THOL`,
+      to: bill.email,
+      customer_name: bill.customer_name
+    })
     return { billId: bill.id }
   }
 

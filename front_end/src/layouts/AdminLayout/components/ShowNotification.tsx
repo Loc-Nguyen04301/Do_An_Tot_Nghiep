@@ -25,13 +25,13 @@ const ShowNotification = () => {
                 <span className="text-xs font-semibold block">{unread_records}</span>
             </div>
             <BellOutlined className='text-2xl' onClick={handleNavigateNotification} />
-            <div className="dropdown-content notification bg-[#f0f8ff] !min-w-[400px] right-0 top-[30px] p-6 shadow-search-box z-10">
+            <div className="dropdown-content notification bg-[#ffffff] !min-w-[400px] right-0 top-[30px] p-6 rounded-md shadow-search-box z-10">
                 <ul className='max-h-[315px] overflow-y-auto'>
                     {bills.slice(0, 10).map((bill) =>
                         <li className='flex justify-between items-center hover:bg-[rgba(0,0,0,.2)] rounded-md px-2 py-2' key={bill.id} onClick={() => handleBillIsRead(bill.id)}>
                             <div>
                                 {bill.user_id ?
-                                    <p className=''>Mã đơn hàng {bill.id} được mua bởi khách thành viên {bill.customer_name}</p>
+                                    <p className=''>Mã đơn hàng {bill.id} được mua bởi khách thành viên <strong>{bill.customer_name}</strong></p>
                                     :
                                     <p className=''>Mã đơn hàng {bill.id} được mua bởi khách truy cập</p>
                                 }

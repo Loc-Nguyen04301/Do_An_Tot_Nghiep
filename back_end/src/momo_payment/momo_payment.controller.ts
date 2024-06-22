@@ -4,7 +4,6 @@ import { config } from 'src/momo_payment/config';
 import { createHmac } from 'crypto';
 import axios, { AxiosRequestConfig } from 'axios';
 import { CreatePaymentDto } from './dto/create-payment.dto';
-import { format } from 'date-fns';
 import { Response } from 'express';
 
 @Controller('api/v1/momo-payment')
@@ -21,14 +20,9 @@ export class MomoPaymentController {
             ipnUrl,
             requestType,
             extraData,
-            orderGroupId,
-            autoCapture,
-            lang
+            lang,
         } = config
-
-        const { amount, orderInfo } = data
-        var now = new Date();
-        var orderId = format(now, 'HHmmss')
+        const { amount, orderInfo, orderId } = data
         var requestId = orderId;
 
         var rawSignature =
@@ -57,19 +51,16 @@ export class MomoPaymentController {
 
         const requestBody = JSON.stringify({
             partnerCode: partnerCode,
-            partnerName: 'Test',
-            storeId: 'MomoTestStore',
+            accessKey: accessKey,
             requestId: requestId,
             amount: amount,
             orderId: orderId,
             orderInfo: orderInfo,
             redirectUrl: redirectUrl,
             ipnUrl: ipnUrl,
-            lang: lang,
-            requestType: requestType,
-            autoCapture: autoCapture,
             extraData: extraData,
-            orderGroupId: orderGroupId,
+            requestType: requestType,
+            lang: lang,
             signature: signature,
         });
 
@@ -85,8 +76,50 @@ export class MomoPaymentController {
 
         try {
             const response = await axios(options)
+            console.log({ response })
             const payUrl: string = response.data.payUrl
-            res.status(200).json({ payUrl })
+            res.status(200).json(response.data)
+        } catch (error) {
+            res.status(500).json({ error })
+        }
+    }
+
+    @Public()
+    @Post('callback')
+    @HttpCode(200)
+    async createIpnUrl(@Req() req: Request) {
+        console.log('callback: ');
+        console.log(req.body);
+    }
+
+    // check transaction status when not callback api is called
+    @Public()
+    @Post('check-status-transaction')
+    @HttpCode(200)
+    async checkTransactionStatus(@Res() res: Response, @Body() { orderId }: { orderId: number }) {
+        const { accessKey, secretKey, partnerCode } = config
+        const rawSignature = `accessKey=${accessKey}&orderId=${orderId}&partnerCode=${partnerCode}&requestId=${orderId}`
+
+        const signature = createHmac('sha256', secretKey).update(rawSignature).digest('hex');
+
+        const requestBody = JSON.stringify({
+            partnerCode: partnerCode,
+            requestId: orderId,
+            orderId: orderId,
+            lang: 'vi',
+            signature: signature,
+        });
+        const options: AxiosRequestConfig = {
+            method: 'POST',
+            url: 'https://test-payment.momo.vn/v2/gateway/api/query',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: requestBody,
+        };
+        try {
+            const result = await axios(options);
+            return res.status(200).json(result.data);
         } catch (error) {
             res.status(500).json({ error })
         }

@@ -7,6 +7,7 @@ import GuestGuard from "@/guards/GuestGuard";
 import AuthGuard from "@/guards/AuthGuard";
 import HavingCart from "@/guards/HavingCart";
 import CheckAvailable from "@/guards/CheckAvailable";
+import ChangePassword from "@/pages/ChangePassword";
 
 const Home = lazy(() => import("@/pages/Home"));
 const Login = lazy(() => import("@/pages/Login"));
@@ -50,6 +51,7 @@ export enum RoutePath {
   OrderComplete = "/order-complete",
   WishList = "/wishlist",
   PurchaseDetail = "/user/purchase/detail",
+  ChangePassword = "/user/change-password",
 
   DashBoard = "/admin",
   Inventory = "/admin/inventory",
@@ -62,8 +64,6 @@ export enum RoutePath {
 }
 
 const Router: React.FC = () => {
-  const { pathname } = useLocation();
-
   const routes = useRoutes([
     {
       path: RoutePath.DashBoard,
@@ -210,7 +210,16 @@ const Router: React.FC = () => {
         {
           path: `${RoutePath.PurchaseDetail}/:id`,
           element:
-            <PurchaseDetail />
+            <AuthGuard>
+              <PurchaseDetail />
+            </AuthGuard>
+        },
+        {
+          path: `${RoutePath.ChangePassword}`,
+          element:
+            <AuthGuard>
+              <ChangePassword />
+            </AuthGuard>
         },
         {
           path: `*`,
@@ -220,7 +229,7 @@ const Router: React.FC = () => {
     },
   ])
 
-
+  const { pathname } = useLocation();
   useEffect(() => {
     const scrollToTop = () => {
       window.scrollTo({

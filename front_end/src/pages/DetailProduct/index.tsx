@@ -73,7 +73,7 @@ const DetailProduct = () => {
       else {
         setTimeout(() => {
           dispatch(addItemToCartWithQuantity({ ...product, quantityAdded: quantity }))
-          dispatchAlert({ success: "Thêm vào giỏ hàng thành công" })
+          dispatchAlert({ loading: false })
         }, 2000)
       }
     } catch (error) {

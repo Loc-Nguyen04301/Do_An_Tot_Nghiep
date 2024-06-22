@@ -9,6 +9,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { CreateAuthDto } from './dto/create-auth.dto';
+import { ChangePasswordDto } from 'src/auth/dto/change-password-auth.dto';
 
 const saltOrRounds = 10;
 
@@ -191,5 +192,29 @@ export class AuthService {
         role: user.role
       },
     }
+  }
+
+  async changePassword(id: number, changePasswordDto: ChangePasswordDto) {
+    // delete refresh token in DB
+    const matchingUser = await this.prisma.user.findUnique({
+      where: { id: id },
+    });
+    console.log(changePasswordDto.password, matchingUser.password)
+    const isMatchingPassword = bcrypt.compareSync(
+      changePasswordDto.password,
+      matchingUser.password,
+    );
+    if (!isMatchingPassword) throw new ForbiddenException('Mật khẩu không đúng. Vui lòng thử lại.');
+
+    const hashPassword = await this.hashData(changePasswordDto.new_password);
+    const updateUser = await this.prisma.user.update({
+      where: { id: id },
+      data: {
+        password: hashPassword
+      }
+    })
+
+    if (!updateUser) throw new ForbiddenException('Đổi mật khẩu không thành công. Vui lòng thử lại !');
+    return
   }
 }

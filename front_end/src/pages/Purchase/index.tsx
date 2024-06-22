@@ -129,7 +129,10 @@ const Purchase = () => {
                                 Tài khoản của tôi
                             </NavLink>
                             <NavLink to={RoutePath.Purchase} className={({ isActive }) => clsx("pl-2 py-5 font-semibold cursor-pointer hover:text-main-orange-color", isActive && "text-main-orange-color")} >
-                                Đơn hàng
+                                Đơn mua
+                            </NavLink>
+                            <NavLink to={RoutePath.ChangePassword} className={({ isActive }) => clsx("pl-2 py-5 font-semibold cursor-pointer hover:text-main-orange-color", isActive && "text-main-orange-color")} >
+                                Đổi mật khẩu
                             </NavLink>
                         </div>
                     </div>

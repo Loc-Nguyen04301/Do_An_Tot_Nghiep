@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { RoutePath } from '@/routes'
 import { RightOutlined } from '@ant-design/icons'
-import { convertNumbertoMoney, getBillId, setBillId, setPaymentURL } from '@/utils'
+import { convertNumbertoMoney, getBillId, phoneRegExp, setBillId, setPaymentURL } from '@/utils'
 import clsx from 'clsx'
 import { useAppSelector } from '@/redux-toolkit/hook'
 import * as yup from 'yup'
@@ -38,7 +38,7 @@ const schema = yup
     .object({
         customer_name: yup.string().required('Customer name is required'),
         address: yup.string().required('Address is required'),
-        phone_number: yup.string().required('Phone number is required').min(10, 'Phone number is 10 characters').max(10, 'Phone number is 10 characters'),
+        phone_number: yup.string().required('Phone number is required').length(10, 'Phone number is not valid').matches(phoneRegExp, 'Phone number is not valid'),
         email: yup.string().required('Email is required').email('Must be a valid email'),
         note: yup.string()
     })
@@ -86,9 +86,13 @@ const Checkout = () => {
         },
     ]
 
-    const { register, handleSubmit, formState: { errors }, getValues } = useForm({
+    const { register, handleSubmit, formState: { errors }, getValues, setValue } = useForm({
         resolver: yupResolver(schema),
     })
+
+    useEffect(() => {
+        if (user) setValue("email", user.email)
+    }, [user])
 
     const { totalAmount, cartItems } = useAppSelector(state => state.cart)
     const dispatchAlert = useAlertDispatch()
@@ -278,7 +282,7 @@ const Checkout = () => {
                                 </div>
                                 <div className="my-2">
                                     <div className="label-email tracking-wide leading-6 font-semibold">Địa chỉ email</div>
-                                    <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"email"} {...register('email')} />
+                                    <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"email"} {...register('email')} disabled/>
                                     {errors.email && <p className="text-red-500">{errors.email?.message}</p>}
                                 </div>
                                 <h1 className='mt-8 text-category-title text-lg'>

@@ -20,6 +20,7 @@ import { Public, Roles } from 'src/common/decorators';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 import { CreateAuthDto } from './dto/create-auth.dto';
+import { ChangePasswordDto } from 'src/auth/dto/change-password-auth.dto';
 
 @Controller('api/v1/auth')
 export class AuthController {
@@ -80,5 +81,16 @@ export class AuthController {
   getMeProfile(@Req() req: Request) {
     const user = req.user as JwtPayload;
     return this.authService.getMeProfile(user.id);
+  }
+
+  @UseGuards(AtGuard)
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor("Update Password Success"))
+  @Post('changePassword')
+  changePassword(
+    @Req() req: Request, @Body() changePasswordDto: ChangePasswordDto
+  ) {
+    const user = req.user as JwtPayload;
+    return this.authService.changePassword(user.id, changePasswordDto);
   }
 }

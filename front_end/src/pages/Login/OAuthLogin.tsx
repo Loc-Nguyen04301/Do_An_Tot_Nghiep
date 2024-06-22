@@ -43,12 +43,11 @@ const OAuthLogin = () => {
             }
         } catch (error: any) {
             dispatchAlert({ errors: error.message })
-
         }
     }
 
     return (
-        <div className='mt-5'>
+        <div className='mt-5 flex justify-center'>
             <GoogleOAuthProvider clientId={clientId}>
                 <GoogleLogin
                     onSuccess={onSuccess}

@@ -67,13 +67,15 @@ const Login = () => {
               <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"password"} {...register('password')} autoComplete="current-password" />
               {errors.password && <p className="text-red-500">{errors.password.message}</p>}
             </div>
-            <div className="flex justify-between mt-5">
-              <button type="submit" className="bg-main-orange-color text-white px-5 py-2 rounded-sm hover:bg-bold-main-orange-color">
-                <span>Đăng nhập</span>
-              </button>
-              <Link to={RoutePath.RegisterPage}>
-                <span className="underline">Bạn chưa có tài khoản ?</span>
-              </Link>
+            <Link className="underline block" to={RoutePath.RegisterPage}>Quên mật khẩu?</Link>
+            <button type="submit" className="my-3 bg-main-orange-color text-white px-5 py-2 rounded-sm hover:bg-bold-main-orange-color">
+              <span>Đăng nhập</span>
+            </button>
+            <p>Bạn chưa có tài khoản?
+              <Link className="ml-1 underline text-main-orange-color" to={RoutePath.RegisterPage}>Tạo tài khoản mới</Link>
+            </p>
+            <div className="my-3 text-center strike overflow-hidden">
+              <span className="text-slate-600 dark:text-slate-500 text-base">Hoặc</span>
             </div>
             <OAuthLogin />
           </form>

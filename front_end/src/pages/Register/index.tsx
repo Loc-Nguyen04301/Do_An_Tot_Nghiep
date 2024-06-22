@@ -9,6 +9,7 @@ import { RegisterInterface } from "@/types";
 import { useAlertDispatch } from "@/contexts/AlertContext";
 import AuthService from "@/services/AuthService";
 import { phoneRegExp } from "@/utils";
+import OAuthLogin from "@/pages/Login/OAuthLogin";
 import "../Login/Login.scss"
 
 const schema = yup
@@ -82,14 +83,16 @@ const Register = () => {
                   <p className="text-red-500">Password not match</p>
                 ) : null}
               </div>
-              <div className="flex justify-between mt-5">
-                <button type="submit" className="bg-main-orange-color text-white px-5 py-2 rounded-sm hover:bg-bold-main-orange-color">
-                  <span>Đăng ký</span>
-                </button>
-                <Link to={RoutePath.LoginPage}>
-                  <span className="underline">Đăng nhập</span>
-                </Link>
+              <button type="submit" className="my-3 bg-main-orange-color text-white px-5 py-2 rounded-sm hover:bg-bold-main-orange-color">
+                <span>Đăng ký</span>
+              </button>
+              <p>Bạn đã có tài khoản?
+                <Link className="ml-1 underline text-main-orange-color" to={RoutePath.LoginPage}>Đăng nhập</Link>
+              </p>
+              <div className="my-3 text-center strike overflow-hidden">
+                <span className="text-slate-600 dark:text-slate-500 text-base">Hoặc</span>
               </div>
+              <OAuthLogin />
             </form>
           </div>
         </div>

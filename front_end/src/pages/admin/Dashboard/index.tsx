@@ -44,7 +44,7 @@ export interface IBestSoldOutProduct {
 }
 
 const DashBoard = () => {
-    const [count, setCount] = useState<{ billCount: number, productCount: number, userCount: number, reviewCount: number, revenueCount: number }>({ billCount: 0, productCount: 0, userCount: 0, revenueCount: 0 });
+    const [count, setCount] = useState<{ billCount: number, productCount: number, userCount: number, reviewCount: number, revenueCount: number }>({ billCount: 0, productCount: 0, userCount: 0, reviewCount: 0, revenueCount: 00 });
     const [listProductSoldOut, setListProductSoldOut] = useState<IBestSoldOutProduct[]>([]);
     const dispatchAlert = useAlertDispatch()
 

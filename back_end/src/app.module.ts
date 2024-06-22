@@ -18,6 +18,7 @@ import { PaymentController } from './payment/payment.controller';
 import { AtGuard, RolesGuard } from './common/guards';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { UserModule } from './user/user.module';
+import { MomoPaymentController } from './momo_payment/momo_payment.controller';
 
 @Module({
   imports: [
@@ -61,6 +62,6 @@ import { UserModule } from './user/user.module';
       useClass: HttpExceptionFilter,
     },
   ],
-  controllers: [PaymentController],
+  controllers: [PaymentController, MomoPaymentController],
 })
 export class AppModule { }

@@ -5,7 +5,6 @@ export interface LoginInterface {
 
 export interface RegisterInterface extends LoginInterface {
     username: string
-    phone_number: string
     confirmPassword: string
 }
 

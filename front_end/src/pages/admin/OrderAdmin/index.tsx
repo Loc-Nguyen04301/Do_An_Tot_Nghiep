@@ -220,7 +220,17 @@ const OrderAdmin = () => {
         {
             title: "Thanh toán",
             key: "payment_status",
-            sorter: (a, b) => Number(a.payment_status) - Number(b.payment_status),
+            filters: [
+                {
+                    text: 'Đã thanh toán',
+                    value: true,
+                },
+                {
+                    text: 'Chưa thanh toán',
+                    value: false,
+                },
+            ],
+            onFilter: (value, record) => record.payment_status === value,
             render: (_, record) =>
                 <>
                     {

@@ -93,4 +93,12 @@ export class AuthController {
     const user = req.user as JwtPayload;
     return this.authService.changePassword(user.id, changePasswordDto);
   }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor())
+  @Post('forgotPassword')
+  forgotPassword(@Body() { email }: { email: string }) {
+    return this.authService.forgotPassword(email);
+  }
 }

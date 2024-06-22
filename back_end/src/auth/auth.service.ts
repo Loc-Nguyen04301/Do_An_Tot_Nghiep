@@ -10,12 +10,13 @@ import { JwtService } from '@nestjs/jwt';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { ChangePasswordDto } from 'src/auth/dto/change-password-auth.dto';
+import { MailService } from 'src/mail/mail.service';
 
 const saltOrRounds = 10;
 
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService, private jwtService: JwtService) { }
+  constructor(private prisma: PrismaService, private jwtService: JwtService, private mailService: MailService) { }
 
   hashData(data: string) {
     return bcrypt.hash(data, saltOrRounds);
@@ -216,5 +217,32 @@ export class AuthService {
 
     if (!updateUser) throw new ForbiddenException('Đổi mật khẩu không thành công. Vui lòng thử lại !');
     return
+  }
+
+  async forgotPassword(email: string) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email: email
+      }
+    })
+    if (!user) throw new ForbiddenException('Email không tồn tại. Vui lòng thử lại.',)
+
+    const randomPassword = process.env.RANDOM_PASSWORD
+    const hashPassword = await this.hashData(randomPassword)
+    await this.prisma.$transaction(async (tr) => {
+      await tr.user.update({
+        where: {
+          email: email
+        },
+        data: {
+          password: hashPassword
+        }
+      })
+      await this.mailService.sendNewPassword({
+        to: email,
+        subject: `Xác nhận cấp mật khẩu mới từ THOL`,
+        new_password: randomPassword
+      })
+    })
   }
 }

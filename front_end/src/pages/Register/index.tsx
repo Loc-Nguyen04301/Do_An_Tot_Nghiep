@@ -15,7 +15,6 @@ import "../Login/Login.scss"
 const schema = yup
   .object().shape({
     username: yup.string().required('Username is required'),
-    phone_number: yup.string().required('Phone number is required').length(10, 'Phone number is not valid').matches(phoneRegExp, 'Phone number is not valid'),
     email: yup.string().required('Email is required').email('Must be a valid email'),
     password: yup.string().required('Password is required').min(6, 'Password must be at least 6 characters'),
     confirmPassword: yup.string().required('Please confirm your password')
@@ -58,11 +57,6 @@ const Register = () => {
                 <div className="label-email font-semibold tracking-wide">Tên người dùng</div>
                 <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('username')} />
                 {errors.email && <p className="text-red-500">{errors.username?.message}</p>}
-              </div>
-              <div className="my-2">
-                <div className="label-email font-semibold tracking-wide">Số điện thoại</div>
-                <input className="w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('phone_number')} />
-                {errors.phone_number && <p className="text-red-500">{errors.phone_number?.message}</p>}
               </div>
               <div className="my-2">
                 <div className="label-email font-semibold tracking-wide">Email</div>

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from "nodemailer"
 import { MailOptions } from 'nodemailer/lib/sendmail-transport';
-import { HTML_TEMPLATE_CREATE, HTML_TEMPLATE_REJECT } from 'src/utils';
+import { HTML_TEMPLATE_CREATE, HTML_TEMPLATE_NEWPASSWORD, HTML_TEMPLATE_REJECT } from 'src/utils';
 @Injectable()
 export class MailService {
     private transporter: nodemailer.Transporter;
@@ -41,6 +41,22 @@ export class MailService {
             to,
             subject,
             html: HTML_TEMPLATE_REJECT(bill_id, customer_name),
+        };
+
+        try {
+            const info = await this.transporter.sendMail(mailOptions);
+            console.log('Email sent: ' + info.response);
+        } catch (error) {
+            console.error('Error sending email: ', error);
+        }
+    }
+
+    async sendNewPassword({ to, subject, new_password }: { to: string, subject: string, new_password: string }) {
+        const mailOptions: MailOptions = {
+            from: process.env.SENDER_EMAIL,
+            to,
+            subject,
+            html: HTML_TEMPLATE_NEWPASSWORD(new_password),
         };
 
         try {

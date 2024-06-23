@@ -8,8 +8,8 @@ const NotFound = () => {
         <title>Không tìm thấy trang - THOL </title>
         <meta name='description' content='Beginner friendly page for learning React Helmet.' />
       </Helmet>
-      <div className="h-[30vh]">
-        <h1 className="text-center">Not Found</h1>
+      <div className="mx-auto max-w-[1140px] py-8 h-[300px] flex justify-center items-center">
+        <h1 className="text-center font-bold text-3xl text-[#555]">Oops! That page can’t be found.</h1>
       </div>
     </>
   )

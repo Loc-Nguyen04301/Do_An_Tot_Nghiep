@@ -49,21 +49,21 @@ const Purchase = () => {
         setIsModalOpen(false);
     };
 
-    const handleOk = async () => {
-        if (!selectedBill) return;
-        dispatchAlert({ loading: true })
-        try {
-            const res = await BillService.updateBill({ order_status: OrderStatus.CANCELLED }, selectedBill.id)
-            setIsModalOpen(false);
-            setDisabled(true)
-            dispatchAlert({ success: res.data.message })
-            setTimeout(() => {
-                window.location.reload()
-            }, 2000)
-        } catch (error: any) {
-            dispatchAlert({ errors: error.message })
-        }
-    }
+    // const handleOk = async () => {
+    //     if (!selectedBill) return;
+    //     dispatchAlert({ loading: true })
+    //     try {
+    //         const res = await BillService.updateBill({ order_status: OrderStatus.CANCELLED }, selectedBill.id)
+    //         setIsModalOpen(false);
+    //         setDisabled(true)
+    //         dispatchAlert({ success: res.data.message })
+    //         setTimeout(() => {
+    //             window.location.reload()
+    //         }, 2000)
+    //     } catch (error: any) {
+    //         dispatchAlert({ errors: error.message })
+    //     }
+    // }
 
     const fetchBill = async (purchaseStatus: PurchaseStatus, userId: number | undefined, current: number, pageSize: number) => {
         dispatchAlert({ loading: true })
@@ -208,7 +208,7 @@ const Purchase = () => {
                                 centered
                                 title={`Hủy đơn hàng mã ${selectedBill?.id}`}
                                 open={isModalOpen}
-                                onOk={handleOk}
+                                // onOk={handleOk}
                                 onCancel={handleCancel}>
                                 <p className='text-base'>Bạn muốn hủy đơn hàng này ?</p>
                             </Modal>

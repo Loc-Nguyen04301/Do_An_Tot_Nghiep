@@ -164,9 +164,9 @@ const Purchase = () => {
                                                 <span className='px-2 text-main-orange-color text-xl font-semibold'>{convertNumbertoMoney(bill.total_amount)}</span>
                                             </div>
                                             <div className={clsx('flex items-center', bill.order_status !== OrderStatus.CANCELLED ? 'justify-end' : 'justify-between')}>
-                                                {bill.order_status === OrderStatus.CANCELLED && <span className='text-category-title text-sm'>Đã hủy bởi bạn</span>}
+                                                {bill.order_status === OrderStatus.CANCELLED && <span className='text-category-title text-sm'>Đã hủy bởi hệ thống</span>}
                                                 <div className='flex gap-5'>
-                                                    {
+                                                    {/* {
                                                         bill.order_status === OrderStatus.PROCESSING && bill.payment_status === false &&
                                                         <button
                                                             className="min-w-[150px] bg-button-red-color py-[10px] px-[8px] hover:shadow-checkout-btn rounded-md border border-border-color text-white"
@@ -175,7 +175,7 @@ const Purchase = () => {
                                                         >
                                                             Hủy đơn hàng
                                                         </button>
-                                                    }
+                                                    } */}
                                                     <button
                                                         className="min-w-[150px] bg-main-grey-color py-[10px] px-[8px] hover:shadow-checkout-btn rounded-md border border-border-color text-white"
                                                         disabled={disabled}

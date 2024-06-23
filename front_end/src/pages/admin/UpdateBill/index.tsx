@@ -21,7 +21,9 @@ const schema = yup
         customer_name: yup.string().required('Customer Name is required'),
         address: yup.string().required('Address is required'),
         phone_number: yup.string().required('Phone number is required').length(10, "Phone number is not valid").matches(phoneRegExp, 'Phone number is not valid'),
-        note: yup.string()
+        email: yup.string().required('Email is required'),
+        note: yup.string(),
+        reason_cancelled: yup.string()
     })
 
 const UpdateBill = () => {
@@ -40,6 +42,7 @@ const UpdateBill = () => {
             setValue("customer_name", selectedBill.customer_name)
             setValue("address", selectedBill.address)
             setValue("phone_number", selectedBill.phone_number)
+            setValue("email", selectedBill.email)
             setValue("note", selectedBill.note)
         }
     }, [selectedBill])
@@ -145,6 +148,10 @@ const UpdateBill = () => {
                             <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.user?.phone_number || getValues("phone_number")} disabled />
                         </div>
                         <div className="my-2">
+                            <div className="font-semibold tracking-wide">Email người mua</div>
+                            <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"email"} defaultValue={selectedBill.user?.email || getValues("email")} disabled />
+                        </div>
+                        <div className="my-2">
                             <div className="font-semibold tracking-wide">Tên người nhận</div>
                             <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} {...register('customer_name')} disabled={disabled} />
                         </div>
@@ -159,15 +166,15 @@ const UpdateBill = () => {
                             {errors.address && <p className="text-red-500 text-center">{errors.address.message}</p>}
                         </div>
                         <div className="my-2">
-                            <div className="font-semibold tracking-wide">Trạng thái đơn hàng</div>
+                            <div className="font-semibold tracking-wide">Phương thức thanh toán</div>
                             <Select
                                 className="w-full"
-                                value={orderStatus}
-                                onChange={handleChangeOrderStatus}
+                                value={paymentMethod}
+                                onChange={handleChangePaymentMethod}
                                 options={[
-                                    { value: OrderStatus.PROCESSING, label: 'Đang xử lý' },
-                                    { value: OrderStatus.SUCCESS, label: 'Hoàn thành' },
-                                    { value: OrderStatus.CANCELLED, label: 'Hủy bỏ' },
+                                    { value: PaymentMethod.SHIPCOD, label: 'Ship COD' },
+                                    { value: PaymentMethod.BANK_TRANSFER, label: 'Chuyển khoản' },
+                                    { value: PaymentMethod.VNPAY, label: 'Thanh toán cổng VNPay' },
                                 ]}
                                 disabled={disabled}
                             />
@@ -184,31 +191,39 @@ const UpdateBill = () => {
                                 ]}
                                 disabled={disabled}
                             />
-                            <div className="my-2">
-                                <div className="font-semibold tracking-wide">Phương thức thanh toán</div>
-                                <Select
-                                    className="w-full"
-                                    value={paymentMethod}
-                                    onChange={handleChangePaymentMethod}
-                                    options={[
-                                        { value: PaymentMethod.SHIPCOD, label: 'Ship COD' },
-                                        { value: PaymentMethod.BANK_TRANSFER, label: 'Chuyển khoản' },
-                                        { value: PaymentMethod.VNPAY, label: 'Thanh toán cổng VNPay' },
-                                    ]}
-                                    disabled={disabled}
-                                />
+
+                        </div>
+                        <div className="my-2">
+                            <div className="font-semibold tracking-wide">Trạng thái đơn hàng</div>
+                            <Select
+                                className="w-full"
+                                value={orderStatus}
+                                onChange={handleChangeOrderStatus}
+                                options={[
+                                    { value: OrderStatus.PROCESSING, label: 'Đang xử lý' },
+                                    { value: OrderStatus.SUCCESS, label: 'Hoàn thành' },
+                                    { value: OrderStatus.CANCELLED, label: 'Hủy bỏ' },
+                                ]}
+                                disabled={disabled}
+                            />
+                        </div>
+                        {
+                            orderStatus === OrderStatus.CANCELLED &&
+                            <div className='my-2'>
+                                <div className="font-semibold tracking-wide">Lý do hủy đơn</div>
+                                <textarea className="pl-2 w-full min-h-[100px] border-[1px] border-[#adadad] rounded-sm" {...register("reason_cancelled")} disabled={disabled} />
                             </div>
-                            <div className="my-2">
-                                <div className="font-semibold tracking-wide">Ghi chú</div>
-                                <textarea className="pl-2 w-full min-h-[100px] border-[1px] border-[#adadad] rounded-sm" {...register("note")} disabled={disabled} />
-                            </div>
-                            <div className='text-center'>
-                                {!disabled &&
-                                    <button className='w-[100px] rounded-md bg-main-orange-color py-2 hover:shadow-checkout-btn' onClick={handleSubmit(onSubmit)}>
-                                        <span className='text-white font-semibold tracking-wide'>Lưu</span>
-                                    </button>
-                                }
-                            </div>
+                        }
+                        <div className="my-2">
+                            <div className="font-semibold tracking-wide">Ghi chú</div>
+                            <textarea className="pl-2 w-full min-h-[100px] border-[1px] border-[#adadad] rounded-sm" {...register("note")} disabled={disabled} />
+                        </div>
+                        <div className='text-center'>
+                            {!disabled &&
+                                <button className='w-[100px] rounded-md bg-main-orange-color py-2 hover:shadow-checkout-btn' onClick={handleSubmit(onSubmit)}>
+                                    <span className='text-white font-semibold tracking-wide'>Lưu</span>
+                                </button>
+                            }
                         </div>
                     </div>
                 </form>

@@ -13,6 +13,7 @@ lerna-debug.log*
 
 # Environment Variables
 .env
+.env.production
 
 # OS
 .DS_Store

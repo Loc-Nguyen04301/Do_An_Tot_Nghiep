@@ -5,4 +5,5 @@ INSERT INTO public."Category" (name,created_at,update_at) VALUES
 	 ('fashion','2024-03-24 13:54:22.86',NULL),
 	 ('gym-equipment','2024-03-24 13:54:22.906',NULL),
 	 ('energy-healthy','2024-03-24 13:54:22.763',NULL),
-	 ('fitness-gear','2024-03-24 13:54:22.954',NULL);
+	 ('fitness-gear','2024-03-24 13:54:22.954',NULL),
+	 ('sale-off','2024-06-19 14:35:05.412',NULL);

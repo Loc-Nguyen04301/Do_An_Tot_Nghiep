@@ -322,7 +322,9 @@ export class BillsService {
       },
     })
 
-    return { bills, total: bills.length }
+    const revenue = bills.reduce((sum, bill) => sum + bill.total_amount, 0)
+
+    return { bills, total: bills.length, revenue }
   }
 
   async findAllNotification() {

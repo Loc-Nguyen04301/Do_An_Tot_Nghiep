@@ -28,6 +28,7 @@ type DataIndex = keyof IBill;
 
 const OrderAdmin = () => {
     const [listBill, setListBill] = useState<IBill[]>([])
+    const [revenue, setRevenue] = useState(0)
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const [filterDate, setFilterDate] = useState<[string | undefined, string | undefined]>([undefined, undefined]);
@@ -41,6 +42,7 @@ const OrderAdmin = () => {
         try {
             const res = await BillService.getBillAdmin({ params: { from_date: filterDate[0], to_date: filterDate[1] } })
             setListBill(res.data.data.bills)
+            setRevenue(res.data.data.revenue)
             dispatchAlert({ loading: false })
         } catch (error) {
             console.log(error)
@@ -298,6 +300,7 @@ const OrderAdmin = () => {
                 <Typography.Title level={4}>Danh sách đơn hàng</Typography.Title>
                 <Space direction="vertical" size={12}>
                     <RangePicker format={DATETIME_FORMAT_FILTER} onChange={onChangeDate} />
+                    <Typography.Title level={5}>Doanh thu: {convertNumbertoMoney(revenue)}</Typography.Title>
                 </Space>
                 <Table
                     dataSource={listBill}

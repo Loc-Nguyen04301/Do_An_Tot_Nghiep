@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { DeleteOutlined, BarsOutlined, SearchOutlined, EditOutlined } from '@ant-design/icons';
-import { Avatar, Button, ConfigProvider, Modal, Rate, Space, Table, TableProps, Typography } from 'antd';
+import { Avatar, Button, ConfigProvider, Input, InputRef, Modal, Rate, Space, Table, TableColumnType, TableProps, Typography } from 'antd';
 import { convertNumbertoMoney } from '@/utils';
 import { deleteProduct, IProductDetail, retrieveProducts } from '@/redux-toolkit/productSlice';
 import { useAppDispatch, useAppSelector } from '@/redux-toolkit/hook';
@@ -9,12 +9,18 @@ import { useNavigate } from 'react-router-dom';
 import { RoutePath } from '@/routes';
 import { Helmet } from 'react-helmet-async';
 import categoryList from '@/assets/data/categoryList';
+import { FilterDropdownProps } from 'antd/es/table/interface';
+import Highlighter from 'react-highlight-words';
 
 import "./Inventory.scss"
 
 const Inventory = () => {
     const products = useAppSelector(state => state.product)
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const searchInput = useRef<InputRef>(null);
+    const [searchText, setSearchText] = useState('');
+    const [searchedColumn, setSearchedColumn] = useState('');
+    type DataIndex = keyof IProductDetail;
 
     const dispatch = useAppDispatch()
     const dispatchAlert = useAlertDispatch()
@@ -56,6 +62,100 @@ const Inventory = () => {
         getProducts()
     }, [getProducts]);
 
+    const handleSearch = (
+        selectedKeys: string[],
+        confirm: FilterDropdownProps['confirm'],
+        dataIndex: DataIndex,
+    ) => {
+        confirm();
+        setSearchText(selectedKeys[0]);
+        setSearchedColumn(dataIndex);
+    };
+
+    const handleReset = (clearFilters: () => void) => {
+        clearFilters();
+        setSearchText('');
+    };
+
+    const getColumnSearchProps = (dataIndex: DataIndex): TableColumnType<IProductDetail> => ({
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+            <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
+                <Input
+                    ref={searchInput}
+                    placeholder={`Search ${dataIndex}`}
+                    value={selectedKeys[0]}
+                    onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                    onPressEnter={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
+                    style={{ marginBottom: 8, display: 'block' }}
+                />
+                <Space>
+                    <Button
+                        type="primary"
+                        onClick={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
+                        icon={<SearchOutlined />}
+                        size="small"
+                        style={{ width: 90 }}
+                    >
+                        Search
+                    </Button>
+                    <Button
+                        onClick={() => clearFilters && handleReset(clearFilters)}
+                        size="small"
+                        style={{ width: 90 }}
+                    >
+                        Reset
+                    </Button>
+                    <Button
+                        type="link"
+                        size="small"
+                        onClick={() => {
+                            confirm({ closeDropdown: false });
+                            setSearchText((selectedKeys as string[])[0]);
+                            setSearchedColumn(dataIndex);
+                        }}
+                    >
+                        Filter
+                    </Button>
+                    <Button
+                        type="link"
+                        size="small"
+                        onClick={() => {
+                            close();
+                        }}
+                    >
+                        close
+                    </Button>
+                </Space>
+            </div>
+        ),
+        filterIcon: (filtered: boolean) => (
+            <SearchOutlined style={{ color: filtered ? '#1677ff' : undefined }} />
+        ),
+        onFilter: (value, record) =>
+            (record[dataIndex] ?? '')
+                .toString()
+                .toLowerCase()
+                .includes((value as string).toLowerCase()),
+        onFilterDropdownOpenChange: (visible) => {
+            if (visible) {
+                setTimeout(() => searchInput.current?.select(), 100);
+            }
+        },
+        render: (text) =>
+            searchedColumn === dataIndex ? (
+                <Highlighter
+                    highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+                    searchWords={[searchText]}
+                    autoEscape
+                    textToHighlight={text ? text.toString() : ''}
+                    className='truncate'
+                />
+            ) : (
+                <span className='truncate'>{text}</span>
+            ),
+    });
+
+
     const columns: TableProps<IProductDetail>['columns'] = [
         {
             title: "Ảnh sản phẩm",
@@ -65,20 +165,26 @@ const Inventory = () => {
         {
             title: "Tên sản phẩm",
             key: "name",
-            render: (_, record) => record.name
+            dataIndex: "name",
+            ...getColumnSearchProps('name'),
+            // render: (_, record) => record.name
         },
         {
             title: "Giá cũ",
-            key: "oldprice",
+            key: "old_price",
+            sorter: (a, b) => a.old_price - b.old_price,
             render: (_, record) => record.old_price !== 0 && <del>{convertNumbertoMoney(record.old_price)}</del>
         },
         {
             title: "Giá mới",
-            key: "newprice",
+            key: "new_price",
+            sorter: (a, b) => a.new_price - b.new_price,
             render: (_, record) => <span>{convertNumbertoMoney(record.new_price)}</span >,
         },
         {
             title: "Đánh giá",
+            key: "review",
+            sorter: (a, b) => a.averageRating - b.averageRating,
             render: (_, record) => {
                 return <Rate value={record.averageRating} allowHalf disabled />;
             },
@@ -86,6 +192,7 @@ const Inventory = () => {
         {
             title: "Số lượng",
             key: "available",
+            sorter: (a, b) => a.available - b.available,
             render: (_, record) => record.available
         },
         {
@@ -94,7 +201,7 @@ const Inventory = () => {
             render: (_, record) => <strong>{record.brand}</strong>
         },
         {
-            title: "Loại sản phẩm",
+            title: "Danh mục sản phẩm",
             key: "category",
             render: (_, record) =>
                 <Space direction='vertical' >

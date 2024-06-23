@@ -172,7 +172,7 @@ const CreateProduct = () => {
                 </div>
 
                 <div className="my-2">
-                    <div className="label-email font-semibold tracking-wide">Loại sản phẩm</div>
+                    <div className="label-email font-semibold tracking-wide">Danh mục sản phẩm</div>
                     <Checkbox.Group onChange={onChangeCheckbox}>
                         <Row>
                             {

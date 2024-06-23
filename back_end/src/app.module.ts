@@ -27,28 +27,24 @@ import { MomoPaymentController } from './momo_payment/momo_payment.controller';
       cache: true,
       envFilePath: ['.env.development.local', '.env.development'],
     }),
-    CacheModule.register({
-      isGlobal: true,
-      store: redisStore,
-      host: process.env.REDIS_HOST,
-      port: process.env.REDIS_PORT,
-      username: 'default',
-      password: 'Mfdt0Cfry7VvxgTYght0dfDFHjJp4T9t',
-      no_ready_check: true,
-    }),
+    // CacheModule.register({
+    //   isGlobal: true,
+    //   store: redisStore,
+    //   host: process.env.REDIS_HOST,
+    //   port: process.env.REDIS_PORT,
+    //   username: 'default',
+    //   password: 'Mfdt0Cfry7VvxgTYght0dfDFHjJp4T9t',
+    //   no_ready_check: true,
+    // }),
     // CacheModule.registerAsync({
     //   isGlobal: true,
     //   useFactory: async () => ({
-    //     // store: await redisStore({
-    //     //   socket: {
-    //     //     host: process.env.REDIS_HOST,
-    //     //     port: parseInt(process.env.REDIS_PORT),
-    //     //     password: 
-    //     //     tls: true
-    //     //   },
-    //     // }),
-    //     // store: await redisStore
-
+    //     store: await redisStore({
+    //       socket: {
+    //         host: process.env.REDIS_HOST,
+    //         port: parseInt(process.env.REDIS_PORT),
+    //       },
+    //     }),
     //   }),
     // }),
     PrismaModule,

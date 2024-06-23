@@ -282,7 +282,7 @@ const Checkout = () => {
                                 </div>
                                 <div className="my-2">
                                     <div className="label-email tracking-wide leading-6 font-semibold">Địa chỉ email</div>
-                                    <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"email"} {...register('email')} disabled/>
+                                    <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"email"} {...register('email')} disabled={getValues("email")?.length > 0} />
                                     {errors.email && <p className="text-red-500">{errors.email?.message}</p>}
                                 </div>
                                 <h1 className='mt-8 text-category-title text-lg'>

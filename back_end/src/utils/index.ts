@@ -37,7 +37,7 @@ export const HTML_TEMPLATE_CREATE = (bill_id: number, customer_name: string) => 
   `;
 }
 
-export const HTML_TEMPLATE_REJECT = (bill_id: number, customer_name: string) => {
+export const HTML_TEMPLATE_REJECT = (bill_id: number, customer_name: string, reason?: string) => {
   return `
     <!DOCTYPE html>
     <html>
@@ -50,7 +50,7 @@ export const HTML_TEMPLATE_REJECT = (bill_id: number, customer_name: string) => 
 
   </div><p>Xin chào ${customer_name}
   </p>
-  <p>Đơn hàng #${bill_id} của Anh/chị tại <strong>THOL</strong> đã bị hủy bỏ do một số tình huống bất khả kháng.</p>
+  <p>Đơn hàng #${bill_id} của Anh/chị tại <strong>THOL</strong> đã bị hủy bỏ  ${reason ? `vì lý do: <strong>${reason}</strong>` : '<strong>do một số tình huống bất khả kháng.</strong>'}</p>
   <p>Cám ơn Anh/chị đã đặt mua hàng tại <strong>THOL</strong>. Vào website để cập nhật những sản phẩm mới nhất:</p>
   <div style="margin-top:25px"><span style="padding:14px 35px;background:#357ebd"><a href="https://do-an-tot-nghiep-7dr3.vercel.app/" style="font-size:16px;text-decoration:none;color:#fff" target="_blank" data-saferedirecturl="https://www.google.com/url?q=http://gymstore.vn&amp;source=gmail&amp;ust=1719069692778000&amp;usg=AOvVaw0-Ammvxp72H40LEq_cjut-">Đến cửa hàng của chúng tôi</a></span></div> &nbsp;
   <hr>

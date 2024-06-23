@@ -144,7 +144,7 @@ const OrderComplete = () => {
                         <div className='max-md:col-span-12 col-span-5'>
                             <div className="px-7 py-6 bg-[rgba(0,0,0,0.02)]">
                                 <p className="mb-5 text-[#7a9c59] text-lg font-bold">
-                                    Cảm ơn bạn. Đơn hàng của bạn đã được nhận.
+                                    Cảm ơn bạn. Đơn hàng của bạn đã được xác nhận.
                                 </p>
                                 <ul className="list-disc text-category-title text-lg">
                                     <li className="ml-5 mb-2">

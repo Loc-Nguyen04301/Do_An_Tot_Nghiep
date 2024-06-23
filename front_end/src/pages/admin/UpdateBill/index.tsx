@@ -44,8 +44,13 @@ const UpdateBill = () => {
             setValue("phone_number", selectedBill.phone_number)
             setValue("email", selectedBill.email)
             setValue("note", selectedBill.note)
+            setValue("reason_cancelled", selectedBill?.ReasonCancelledBill?.reason_cancelled)
         }
     }, [selectedBill])
+
+    useEffect(() => {
+        if (orderStatus !== OrderStatus.CANCELLED) setValue("reason_cancelled", undefined)
+    }, [orderStatus])
 
     const dispatch = useAppDispatch()
     const dispatchAlert = useAlertDispatch()
@@ -104,7 +109,7 @@ const UpdateBill = () => {
     }
 
     const onSubmit = async (data: any) => {
-        if (orderStatus === OrderStatus.CANCELLED && getValues("reason_cancelled")?.length != 0) {
+        if (orderStatus === OrderStatus.CANCELLED && getValues("reason_cancelled")?.length == 0) {
             window.alert("Vui lòng ghi lý do hủy đơn hàng")
             return
         }

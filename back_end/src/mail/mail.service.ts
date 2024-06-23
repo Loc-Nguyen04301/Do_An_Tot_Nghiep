@@ -35,12 +35,12 @@ export class MailService {
         }
     }
 
-    async sendMailRejectBill({ to, subject, bill_id, customer_name }: { to: string, subject: string, bill_id: number, customer_name: string }) {
+    async sendMailRejectBill({ to, subject, bill_id, customer_name, reason }: { to: string, subject: string, bill_id: number, customer_name: string, reason?: string }) {
         const mailOptions: MailOptions = {
             from: process.env.SENDER_EMAIL,
             to,
             subject,
-            html: HTML_TEMPLATE_REJECT(bill_id, customer_name),
+            html: HTML_TEMPLATE_REJECT(bill_id, customer_name, reason),
         };
 
         try {

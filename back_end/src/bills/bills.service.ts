@@ -3,7 +3,7 @@ import { CreateBillDto } from './dto/create-bill.dto';
 import { UpdateBillDto } from './dto/update-bill.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { ReturnStatus } from '@prisma/client';
+import { OrderStatus, ReturnStatus } from '@prisma/client';
 import { BillParams } from 'src/types';
 import { AppGateway } from 'src/app.gateway';
 import { MailService } from '../mail/mail.service';
@@ -57,6 +57,7 @@ export class BillsService {
       return bill
     })
 
+    // send mail to user when create bill success
     if (bill) await this.mailService.sendMailCreateBill({
       bill_id: bill.id,
       subject: `Xác nhận đơn hàng #${bill.id} từ THOL`,
@@ -67,17 +68,54 @@ export class BillsService {
   }
 
   async update(updateBillDto: UpdateBillDto, id: number) {
+    const { reason_cancelled, ...restUpdateBillDto } = updateBillDto
     const bill = await this.prisma.bill.update({
       where: { id: id },
       data: {
-        ...updateBillDto
+        ...restUpdateBillDto,
       }
     })
 
-    // if (updateBillDto.reason_cancelled) {
-    //   const updateReasonBill = await this.prisma.
-    // }
+    if (reason_cancelled) {
+      const updateReasonBill = await this.prisma.reasonCancelledBill.upsert({
+        where: {
+          bill_id: bill.id
+        },
+        update: {
+          reason_cancelled: updateBillDto.reason_cancelled
+        },
+        create: {
+          bill_id: bill.id,
+          reason_cancelled: updateBillDto.reason_cancelled
+        }
+      })
+      if (!updateReasonBill) throw new BadRequestException('Không cập nhật được lý do hủy đơn');
 
+      // send mail to user when cancel bill
+      await this.mailService.sendMailRejectBill({
+        bill_id: bill.id,
+        customer_name: bill.customer_name,
+        subject: `Xác nhận hủy đơn hàng #${bill.id} từ THOL`,
+        to: bill.email,
+        reason: reason_cancelled
+      })
+
+    }
+    else if (!reason_cancelled && restUpdateBillDto.order_status !== OrderStatus.CANCELLED) {
+      const findBillReason = await this.prisma.reasonCancelledBill.findUnique({
+        where: {
+          bill_id: bill.id
+        }
+      })
+      if (findBillReason) {
+        const updateReasonBill = await this.prisma.reasonCancelledBill.delete({
+          where: {
+            bill_id: bill.id
+          }
+        })
+        if (!updateReasonBill) throw new BadRequestException('Không xóa được lý do hủy đơn');
+      }
+    }
     return bill
   }
 
@@ -98,6 +136,11 @@ export class BillsService {
               username: true,
               phone_number: true,
               email: true
+            }
+          },
+          ReasonCancelledBill: {
+            select: {
+              reason_cancelled: true
             }
           }
         }

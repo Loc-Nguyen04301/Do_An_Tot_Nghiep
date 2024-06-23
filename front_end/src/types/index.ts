@@ -96,6 +96,9 @@ export interface IBill {
         phone_number: string
         email: string
     } | null
+    ReasonCancelledBill: {
+        reason_cancelled: string
+    }
 }
 
 export interface IItem {

@@ -24,6 +24,8 @@ interface UpdateBillDto {
     order_status?: string
     payment_status?: boolean
     return_status?: string
+    note?: string
+    reason_cancelled: string
 }
 
 const createBill = (data: CreateBillDto) => {

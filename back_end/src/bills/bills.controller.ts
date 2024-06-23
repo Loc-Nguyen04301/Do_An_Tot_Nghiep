@@ -23,6 +23,7 @@ export class BillsController {
   @UseInterceptors(new SuccessInterceptor())
   @Patch(':id')
   update(@Param('id', ParseIntPipe) id: number, @Body() updateBillDto: UpdateBillDto) {
+    console.log({ updateBillDto })
     return this.billsService.update(updateBillDto, id);
   }
 

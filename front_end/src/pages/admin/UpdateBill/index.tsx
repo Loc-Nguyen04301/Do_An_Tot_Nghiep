@@ -104,6 +104,10 @@ const UpdateBill = () => {
     }
 
     const onSubmit = async (data: any) => {
+        if (orderStatus === OrderStatus.CANCELLED && getValues("reason_cancelled")?.length != 0) {
+            window.alert("Vui lòng ghi lý do hủy đơn hàng")
+            return
+        }
         dispatchAlert({ loading: true })
         const newData = { ...data, order_status: orderStatus, payment_status: paymentStatus, payment_method: paymentMethod }
         try {

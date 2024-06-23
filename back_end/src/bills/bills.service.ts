@@ -74,9 +74,9 @@ export class BillsService {
       }
     })
 
-    if (updateBillDto.reason_cancelled) { 
-      // const updateReasonBill = await this.prisma.
-    }
+    // if (updateBillDto.reason_cancelled) {
+    //   const updateReasonBill = await this.prisma.
+    // }
 
     return bill
   }

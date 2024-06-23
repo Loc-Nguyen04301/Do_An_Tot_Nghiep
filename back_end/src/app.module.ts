@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-// import { CacheModule } from '@nestjs/cache-manager';
-// import { redisStore } from 'cache-manager-redis-yet';
+import { CacheModule } from '@nestjs/cache-manager';
+import { redisStore } from 'cache-manager-redis-yet';
 import { APP_GUARD, APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 
@@ -27,17 +27,17 @@ import { MomoPaymentController } from './momo_payment/momo_payment.controller';
       cache: true,
       envFilePath: ['.env.development.local', '.env.development'],
     }),
-    // CacheModule.registerAsync({
-    //   isGlobal: true,
-    //   useFactory: async () => ({
-    //     store: await redisStore({
-    //       socket: {
-    //         host: process.env.REDIS_HOST,
-    //         port: parseInt(process.env.REDIS_PORT),
-    //       },
-    //     }),
-    //   }),
-    // }),
+    CacheModule.registerAsync({
+      isGlobal: true,
+      useFactory: async () => ({
+        store: await redisStore({
+          socket: {
+            host: process.env.REDIS_HOST,
+            port: parseInt(process.env.REDIS_PORT),
+          },
+        }),
+      }),
+    }),
     PrismaModule,
     AuthModule,
     ProductsModule,

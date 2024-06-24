@@ -11,6 +11,7 @@ import BillService from '@/services/BillService'
 import { PaymentMethod } from '@/types'
 import { useAlertDispatch } from '@/contexts/AlertContext'
 import { IBill, IItem } from '@/types'
+import MomoService from '@/services/MomoService'
 
 const OrderComplete = () => {
     const [bill, setBill] = useState<IBill>()
@@ -25,18 +26,19 @@ const OrderComplete = () => {
         dispatch(resetCart())
     }, [dispatch])
 
-    const getBillDetail = async (id: string) => {
-        try {
-            if (id) {
-                const res = await BillService.getBillDetailById(Number(id))
-                setBill(res.data.data)
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
     useEffect(() => {
+        const getBillDetail = async (id: string) => {
+            try {
+                if (id) {
+                    const res = await BillService.getBillDetailById(Number(id))
+                    setBill(res.data.data)
+                    await MomoService.checkTransactionStatus({ orderId: `THOL_${id}` })
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
         if (billId) getBillDetail(billId)
     }, [billId])
 

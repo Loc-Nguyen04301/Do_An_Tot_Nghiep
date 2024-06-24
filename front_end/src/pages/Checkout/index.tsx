@@ -132,7 +132,6 @@ const Checkout = () => {
                     orderId: `THOL_${bill_id}`,
                     orderInfo: `Ma don hang ${bill_id} ${getValues("customer_name")} CK MUA HANG`
                 })
-                dispatchAlert({ loading: false })
                 window.location.replace(res.data.data.payUrl)
             }
             else if (paymentMethod === PaymentMethod.BANK_TRANSFER) {

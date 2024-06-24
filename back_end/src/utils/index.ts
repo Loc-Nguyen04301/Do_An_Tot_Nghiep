@@ -86,3 +86,11 @@ export const HTML_TEMPLATE_NEWPASSWORD = (new_password: string) => {
     </html>
   `;
 }
+
+export const extractNumberFromPrefix = (str: string, prefix: string) => {
+  if (str.startsWith(prefix)) {
+    return parseInt(str.substring(prefix.length), 10);
+  } else {
+    throw new Error(`String does not start with the prefix ${prefix}`);
+  }
+}

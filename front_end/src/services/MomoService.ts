@@ -9,6 +9,13 @@ const navigateMomoPay = (data: {
     return http.post("/momo-payment/payment", data)
 }
 
-const MomoService = { navigateMomoPay }
+const checkTransactionStatus = (data: {
+    orderId: string
+}
+) => {
+    return http.post("/momo-payment/check-status-transaction", data)
+}
+
+const MomoService = { navigateMomoPay, checkTransactionStatus }
 
 export default MomoService

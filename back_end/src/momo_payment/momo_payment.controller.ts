@@ -1,13 +1,17 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Req, Res } from '@nestjs/common';
+import { BadGatewayException, BadRequestException, Body, Controller, HttpCode, HttpStatus, Post, Req, Res } from '@nestjs/common';
 import { Public } from 'src/common/decorators';
 import { config } from 'src/momo_payment/config';
 import { createHmac } from 'crypto';
 import axios, { AxiosRequestConfig } from 'axios';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { Response } from 'express';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { extractNumberFromPrefix } from 'src/utils';
 
 @Controller('api/v1/momo-payment')
 export class MomoPaymentController {
+    constructor(private prisma: PrismaService) { }
+
     @Public()
     @Post('payment')
     @HttpCode(HttpStatus.OK)
@@ -77,25 +81,30 @@ export class MomoPaymentController {
         try {
             const response = await axios(options)
             const data = response.data
-            res.status(200).json({ data })
+            return res.status(200).json({ data })
         } catch (error) {
-            res.status(500).json({ error })
+            return res.status(500).json({ error })
         }
     }
 
     @Public()
     @Post('callback')
     @HttpCode(200)
-    async createIpnUrl(@Req() req: Request) {
-        console.log('callback: ');
-        console.log(req.body);
+    async createIpnUrl(@Req() req: Request, @Res() res: Response) {
+        console.log('callback::::::::');
+        // const { orderId, resultCode, } = req.body
+        // if (resultCode === 0) {
+
+        // }
+        // return res.status(204).json(req.body);
     }
 
-    // check transaction status when not callback api is called
+    // check transaction status when callback api is not called
     @Public()
     @Post('check-status-transaction')
     @HttpCode(200)
-    async checkTransactionStatus(@Res() res: Response, @Body() { orderId }: { orderId: number }) {
+    async checkTransactionStatus(@Res() res: Response, @Body() { orderId }: { orderId: string }) {
+        const bill_id = extractNumberFromPrefix(orderId, 'THOL_')
         const { accessKey, secretKey, partnerCode } = config
         const rawSignature = `accessKey=${accessKey}&orderId=${orderId}&partnerCode=${partnerCode}&requestId=${orderId}`
 
@@ -118,9 +127,21 @@ export class MomoPaymentController {
         };
         try {
             const result = await axios(options);
+            const { resultCode } = result.data
+            if (resultCode === 0) {
+                const updateStatusBill = await this.prisma.bill.update(({
+                    where: {
+                        id: bill_id
+                    },
+                    data: {
+                        payment_status: true
+                    }
+                }))
+                if (!updateStatusBill) throw new BadRequestException("Đơn hàng chưa cập nhật được trạng thái thanh toán")
+            }
             return res.status(200).json(result.data);
         } catch (error) {
-            res.status(500).json({ error })
+            return res.status(500).json({ error })
         }
     }
 }

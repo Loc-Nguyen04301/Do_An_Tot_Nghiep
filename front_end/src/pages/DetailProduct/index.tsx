@@ -82,20 +82,22 @@ const DetailProduct = () => {
   }
 
   useEffect(() => {
-    const getProductById = async () => {
+    const getProductById = async (label: string) => {
       dispatchAlert({ loading: true })
       try {
-        const res = await ProductService.getProductById(Number(label))
-        setProduct(res.data.data)
-        const randomCategory = res.data.data.categories[0].category.name
-        setRelatedCategory(randomCategory)
-        dispatchAlert({ loading: false })
+        if (label && label.length > 0) {
+          const res = await ProductService.getProductById(Number(label))
+          setProduct(res.data.data)
+          const randomCategory = res.data.data.categories[0].category.name
+          setRelatedCategory(randomCategory)
+          dispatchAlert({ loading: false })
+        }
       } catch (error) {
         console.log(error)
       }
     }
 
-    getProductById()
+    getProductById(label)
   }, [label])
 
   useEffect(() => {

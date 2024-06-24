@@ -8,20 +8,21 @@ datasource db {
 }
 
 model User {
-  id            Int       @id @default(autoincrement())
-  username      String
-  email         String    @unique
-  password      String
-  refresh_token String?
-  avatar        String    @default("https://res.cloudinary.com/dr98sm712/image/upload/v1712373133/guest-user_it2nym.png")
-  role          Role      @default(USER)
-  active        Boolean   @default(false)
-  created_at    DateTime  @default(now())
-  update_at     DateTime? @updatedAt
-  address       String?
-  phone_number  String?
-  bills         Bill[]
-  reviews       Review[]
+  id              Int       @id @default(autoincrement())
+  username        String
+  email           String    @unique
+  password        String
+  refresh_token   String?
+  avatar          String    @default("https://res.cloudinary.com/dr98sm712/image/upload/v1712373133/guest-user_it2nym.png")
+  role            Role      @default(USER)
+  active          Boolean   @default(false)
+  created_at      DateTime  @default(now())
+  update_at       DateTime? @updatedAt
+  address         String?
+  phone_number    String?
+  is_social_login Boolean   @default(false)
+  bills           Bill[]
+  reviews         Review[]
 }
 
 model Product {

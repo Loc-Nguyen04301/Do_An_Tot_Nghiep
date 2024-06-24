@@ -16,6 +16,7 @@ export interface IUser {
     address: string
     phone_number: string
     role?: Role
+    is_social_login: boolean
 }
 
 export interface IProduct {

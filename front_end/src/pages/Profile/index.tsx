@@ -107,9 +107,9 @@ const Profile = () => {
                             <NavLink to={RoutePath.Purchase} className={({ isActive }) => clsx("pl-2 py-5 font-semibold cursor-pointer hover:text-main-orange-color", isActive && "text-main-orange-color")} >
                                 Đơn mua
                             </NavLink>
-                            <NavLink to={RoutePath.ChangePassword} className={({ isActive }) => clsx("pl-2 py-5 font-semibold cursor-pointer hover:text-main-orange-color", isActive && "text-main-orange-color")} >
+                            {user && !user.is_social_login && <NavLink to={RoutePath.ChangePassword} className={({ isActive }) => clsx("pl-2 py-5 font-semibold cursor-pointer hover:text-main-orange-color", isActive && "text-main-orange-color")} >
                                 Đổi mật khẩu
-                            </NavLink>
+                            </NavLink>}
                         </div>
                     </div>
                     <div className='w-full border border-[#e7e7e7] p-5'>

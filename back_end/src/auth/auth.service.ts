@@ -71,7 +71,8 @@ export class AuthService {
           email: email,
           password: hashPassword,
           avatar: picture,
-          active: true
+          active: true,
+          is_social_login: true
         },
       });
       const data = await this.logIn({ email: email, password: password })
@@ -136,7 +137,8 @@ export class AuthService {
         avatar: matchingUser.avatar,
         address: matchingUser.address,
         phone_number: matchingUser.phone_number,
-        role: matchingUser.role
+        role: matchingUser.role,
+        is_social_login: matchingUser.is_social_login
       },
       access_token: accessToken,
       refresh_token: refreshToken,
@@ -190,7 +192,8 @@ export class AuthService {
         avatar: user.avatar,
         address: user.address,
         phone_number: user.phone_number,
-        role: user.role
+        role: user.role,
+        is_social_login: user.is_social_login
       },
     }
   }

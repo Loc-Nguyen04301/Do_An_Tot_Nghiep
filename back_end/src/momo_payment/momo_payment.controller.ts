@@ -76,9 +76,8 @@ export class MomoPaymentController {
 
         try {
             const response = await axios(options)
-            console.log({ response })
-            const payUrl: string = response.data.payUrl
-            res.status(200).json(response.data)
+            const data = response.data
+            res.status(200).json({ data })
         } catch (error) {
             res.status(500).json({ error })
         }

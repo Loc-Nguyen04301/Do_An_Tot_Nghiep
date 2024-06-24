@@ -13,7 +13,8 @@ import { useAlertDispatch } from '@/contexts/AlertContext'
 import BillService from '@/services/BillService'
 import { Collapse, CollapseProps, Select } from 'antd'
 import { City, District, PaymentMethod, Ward } from '@/types'
-import VNPayService from '@/services/VNPayService'
+// import VNPayService from '@/services/VNPayService'
+import MomoService from '@/services/MomoService'
 import VietQRService from '@/services/VietQRService'
 import axios from 'axios'
 import "./Checkout.scss"
@@ -47,7 +48,7 @@ const Checkout = () => {
     const { user } = useAppSelector(state => state.auth)
     const [paymentMethod, setPaymentMethod] = useState<string>(PaymentMethod.SHIPCOD)
     const [isCreatedBill, setIsCreatedBill] = useState(false)
-    const billId = getBillId()
+    const billId = Number(getBillId())
 
     const items: CollapseProps['items'] = [
         {
@@ -120,21 +121,25 @@ const Checkout = () => {
             } catch (error: any) {
                 dispatchAlert({ errors: error.message })
             }
-        }, 2000)
+        }, 1000)
     }
 
     useEffect(() => {
-        const handlePayment = async (total_amount: number) => {
+        const handlePayment = async (bill_id: number, total_amount: number) => {
             if (paymentMethod === PaymentMethod.VNPAY) {
-                const res = await VNPayService.navigateVNPay({
+                const res = await MomoService.navigateMomoPay({
                     amount: total_amount,
-                    orderInfo: `Ma don hang ${billId} ${getValues("customer_name")} CK MUA HANG`
+                    orderId: `THOL_${bill_id}`,
+                    orderInfo: `Ma don hang ${bill_id} ${getValues("customer_name")} CK MUA HANG`
                 })
-                // redirect đến cổng thanh toán VNPAY
-                window.location.replace(res.data.vnpUrl)
+                dispatchAlert({ loading: false })
+                window.location.replace(res.data.data.payUrl)
             }
             else if (paymentMethod === PaymentMethod.BANK_TRANSFER) {
-                const res = await VietQRService.createPaymentQR({ amount: 10000, addInfo: `Ma don hang ${billId} ${getValues("customer_name")} CK MUA HANG` })
+                const res = await VietQRService.createPaymentQR({
+                    amount: total_amount,
+                    orderInfo: `Ma don hang ${bill_id} ${getValues("customer_name")} CK MUA HANG`
+                })
                 setPaymentURL(res.data.data.qrDataURL)
                 dispatchAlert({ loading: false })
                 navigate(RoutePath.OrderComplete)
@@ -144,8 +149,9 @@ const Checkout = () => {
                 navigate(RoutePath.OrderComplete)
             }
         }
-        if (isCreatedBill && billId) handlePayment(totalAmount)
-    }, [isCreatedBill, billId])
+
+        if (isCreatedBill && billId) handlePayment(billId, totalAmount)
+    }, [billId, isCreatedBill])
 
     const onChangePaymentMethod = (key: string | string[]) => {
         if (key.length > 0)

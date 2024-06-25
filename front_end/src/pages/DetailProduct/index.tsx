@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import ProductSlider from "./components/ProductSlider"
 import AccordingProduct from "./components/AccordingProduct"
 import { Helmet } from "react-helmet-async"
@@ -97,7 +97,7 @@ const DetailProduct = () => {
       }
     }
 
-    getProductById(label)
+    if (label) getProductById(label)
   }, [label])
 
   useEffect(() => {

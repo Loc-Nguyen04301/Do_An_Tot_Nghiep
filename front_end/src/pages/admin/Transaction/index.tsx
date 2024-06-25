@@ -17,7 +17,6 @@ interface ITransaction {
 
 const Transaction = () => {
     const [dataSource, setDataSource] = useState<ITransaction[]>([])
-    console.log({ dataSource })
     const [currentPage, setCurrentPage] = useState(1)
     const [totalRecords, setTotalRecords] = useState(0)
     const dispatchAlert = useAlertDispatch()
@@ -33,9 +32,9 @@ const Transaction = () => {
             try {
                 const res = await axios(
                     {
-                        headers: { "Authorization": "Apikey AK_CS.cbb8db900e1011ef9de15b8b5ddd4bba.zckMc8dUQxpCghhEsfZWuRTG1V1OO6Zy97peOD9QMpr75JC2WhvxAWThJHjqXfS1eGS7oAZF" },
+                        headers: { "Authorization": `${import.meta.env.VITE_CASSO_API_KEY}` },
                         method: 'GET',
-                        url: 'https://oauth.casso.vn/v2/transactions',
+                        url: `${import.meta.env.VITE_CASSO_TRANSACTION_URL}`,
                         params: {
                             "page": currentPage,
                             "sort": "DESC"

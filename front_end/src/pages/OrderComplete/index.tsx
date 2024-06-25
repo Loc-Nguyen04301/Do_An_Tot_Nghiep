@@ -27,12 +27,12 @@ const OrderComplete = () => {
     }, [dispatch])
 
     useEffect(() => {
-        const getBillDetail = async (id: string) => {
+        const getBillDetail = async (bill_id: string) => {
             try {
-                if (id) {
-                    const res = await BillService.getBillDetailById(Number(id))
+                if (bill_id) {
+                    const res = await BillService.getBillDetailById(Number(bill_id))
                     setBill(res.data.data)
-                    await MomoService.checkTransactionStatus({ orderId: `THOL_${id}` })
+                    await MomoService.checkTransactionStatus({ orderId: `${import.meta.env.VITE_PREFIX_ORDER}${bill_id}` })
                 }
             } catch (error) {
                 console.log(error)

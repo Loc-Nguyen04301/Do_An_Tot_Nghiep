@@ -203,7 +203,6 @@ export class AuthService {
     const matchingUser = await this.prisma.user.findUnique({
       where: { id: id },
     });
-    console.log(changePasswordDto.password, matchingUser.password)
     const isMatchingPassword = bcrypt.compareSync(
       changePasswordDto.password,
       matchingUser.password,

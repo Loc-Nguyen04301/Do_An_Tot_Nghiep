@@ -13,8 +13,6 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { CategoryModule } from './category/category.module';
 import { MailModule } from './mail/mail.module'
 
-import { PaymentController } from './payment/payment.controller';
-
 import { AtGuard, RolesGuard } from './common/guards';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { UserModule } from './user/user.module';
@@ -71,6 +69,6 @@ import { MomoPaymentController } from './momo_payment/momo_payment.controller';
       useClass: HttpExceptionFilter,
     },
   ],
-  controllers: [PaymentController, MomoPaymentController],
+  controllers: [MomoPaymentController],
 })
 export class AppModule { }

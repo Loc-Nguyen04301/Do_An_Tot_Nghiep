@@ -129,7 +129,7 @@ const Checkout = () => {
             if (paymentMethod === PaymentMethod.VNPAY) {
                 const res = await MomoService.navigateMomoPay({
                     amount: total_amount,
-                    orderId: `THOL_${bill_id}`,
+                    orderId: `${import.meta.env.VITE_PREFIX_ORDER}${bill_id}`,
                     orderInfo: `Ma don hang ${bill_id} ${getValues("customer_name")} CK MUA HANG`
                 })
                 window.location.replace(res.data.data.payUrl)
@@ -200,7 +200,7 @@ const Checkout = () => {
     }
 
     useEffect(() => {
-        axios.get('https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json')
+        axios.get(`${import.meta.env.VITE_GET_LOCATION_URL}`)
             .then((response) => {
                 setCities(response.data)
             })

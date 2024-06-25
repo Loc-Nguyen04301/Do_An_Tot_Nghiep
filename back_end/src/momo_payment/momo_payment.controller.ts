@@ -92,11 +92,6 @@ export class MomoPaymentController {
     @HttpCode(200)
     async createIpnUrl(@Req() req: Request, @Res() res: Response) {
         console.log('callback::::::::');
-        // const { orderId, resultCode, } = req.body
-        // if (resultCode === 0) {
-
-        // }
-        // return res.status(204).json(req.body);
     }
 
     // check transaction status when callback api is not called
@@ -104,7 +99,7 @@ export class MomoPaymentController {
     @Post('check-status-transaction')
     @HttpCode(200)
     async checkTransactionStatus(@Res() res: Response, @Body() { orderId }: { orderId: string }) {
-        const bill_id = extractNumberFromPrefix(orderId, 'THOL_')
+        const bill_id = extractNumberFromPrefix(orderId, `${process.env.PREFIX_ORDER}`)
         const { accessKey, secretKey, partnerCode } = config
         const rawSignature = `accessKey=${accessKey}&orderId=${orderId}&partnerCode=${partnerCode}&requestId=${orderId}`
 

@@ -1,6 +1,5 @@
 import { CreateProductDto, UpdateProductDto } from "@/types";
 import http from "./axios";
-import axios from "axios";
 
 const getAll = () => {
     return http.get(`/products`)

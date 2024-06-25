@@ -150,10 +150,6 @@ const OrderAdmin = () => {
             ),
     });
 
-    // const onChange: TableProps<IBill>['onChange'] = (pagination, filters, sorter, extra) => {
-    //     console.log({ pagination, filters, sorter, extra });
-    // };
-
     const onChangeDate = (date: any, dateString: [string, string]) => {
         setFilterDate([...dateString])
     }

@@ -167,7 +167,6 @@ const Inventory = () => {
             key: "name",
             dataIndex: "name",
             ...getColumnSearchProps('name'),
-            // render: (_, record) => record.name
         },
         {
             title: "Giá cũ",

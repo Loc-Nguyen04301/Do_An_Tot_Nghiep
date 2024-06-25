@@ -15,7 +15,7 @@ import { useAlertDispatch } from "@/contexts/AlertContext"
 import { Tag } from "antd"
 import { addProductToWishList, IProductWishList, removeProductToWishList } from "@/redux-toolkit/wishListSlice"
 import ProductCard from "@/components/ProductCard"
-
+import "./DetailProduct.scss"
 interface Category {
   id: number;
   name: string;

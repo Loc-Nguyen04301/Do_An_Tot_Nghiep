@@ -6,7 +6,8 @@ import {
     UserOutlined,
     LogoutOutlined,
     BellOutlined,
-    SearchOutlined
+    SearchOutlined,
+    TransactionOutlined
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Avatar, Layout, Menu, theme, Typography } from 'antd';
@@ -44,6 +45,7 @@ export enum RoutePathAdmin {
     OrderAdmin = "/admin/order",
     Customer = "/admin/customer",
     Notification = "/admin/notification",
+    Transaction = "/admin/transaction",
     Logout = "/"
 }
 
@@ -52,8 +54,9 @@ const items: MenuItem[] = [
     getItem('Sản phẩm', RoutePathAdmin.Inventory, <ShopOutlined />),
     getItem('Đơn hàng', RoutePathAdmin.OrderAdmin, <ShoppingCartOutlined />),
     getItem('Thành viên', RoutePathAdmin.Customer, <UserOutlined />),
+    getItem('Lịch sử giao dịch', RoutePathAdmin.Transaction, <TransactionOutlined />),
     getItem('Thông báo', RoutePathAdmin.Notification, <BellOutlined />),
-    getItem('Đăng xuất', RoutePathAdmin.Logout, <LogoutOutlined />),
+    getItem('Đăng xuất', RoutePathAdmin.Logout, <LogoutOutlined />)
 ];
 interface AdminLayouttProps {
     children?: React.ReactElement

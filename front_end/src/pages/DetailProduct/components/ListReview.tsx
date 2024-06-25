@@ -3,7 +3,6 @@ import { IDetailProduct, Review } from '@/pages/DetailProduct'
 import { Avatar, Pagination, Rate } from 'antd'
 import ReviewService from '@/services/ReviewService'
 import clsx from 'clsx'
-import { number } from 'yup'
 
 interface ListReviewProps {
     product: IDetailProduct

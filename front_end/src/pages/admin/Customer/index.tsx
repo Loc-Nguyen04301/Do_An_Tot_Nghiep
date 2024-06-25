@@ -16,18 +16,18 @@ const Customer = () => {
     const [isDisabled, setIsDisabled] = useState(false)
     const dispatchAlert = useAlertDispatch()
 
-    const getCustomers = async () => {
-        dispatchAlert({ loading: true })
-        try {
-            const res = await UserService.listUser()
-            setDataSource(res.data.data)
-            dispatchAlert({ loading: false })
-        } catch (error: any) {
-            dispatchAlert({ errors: error.message })
-        }
-    }
-
     useEffect(() => {
+        const getCustomers = async () => {
+            dispatchAlert({ loading: true })
+            try {
+                const res = await UserService.listUser()
+                setDataSource(res.data.data)
+                dispatchAlert({ loading: false })
+            } catch (error: any) {
+                dispatchAlert({ errors: error.message })
+            }
+        }
+
         getCustomers()
     }, [isDisabled]);
 

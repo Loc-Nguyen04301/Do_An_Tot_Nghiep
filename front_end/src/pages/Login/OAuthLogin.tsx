@@ -1,6 +1,5 @@
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode"
-import { RegisterInterface } from '@/types';
 import AuthService from '@/services/AuthService';
 import { useAlertDispatch } from '@/contexts/AlertContext';
 import { RoutePath } from '@/routes';
@@ -22,7 +21,7 @@ const OAuthLogin = () => {
     const navigate = useNavigate()
 
     const onError = () => {
-        console.log('Login Failed');
+        dispatchAlert({ errors: 'Login Google Failed' })
     }
 
     const onSuccess = async (credentialResponse: any) => {
@@ -31,7 +30,6 @@ const OAuthLogin = () => {
             const data = jwtDecode<GoogleRegister>(credentialResponse.credential)
             const registerData = { email: data?.email, name: data?.name, picture: data?.picture, email_verified: data?.email_verified }
             const res = await AuthService.registerGoogle(registerData)
-            console.log(res)
             const { user, access_token, refresh_token } = res.data.data
             if (access_token) {
                 dispatch(login({ user, access_token, refresh_token }))

@@ -9,11 +9,11 @@ import {
   faTiktok,
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons"
-import categoryList from "@/assets/data/categoryList"
 import SearchBar from "./SearchBar"
 import { Link, useLocation } from "react-router-dom"
 import { RoutePath } from "@/routes"
 import clsx from "clsx"
+import { useAppSelector } from "@/redux-toolkit/hook"
 
 interface DrawerLeftMenuProps {
   openLeftModal: boolean
@@ -23,6 +23,7 @@ const DrawerLeftMenu = ({
   openLeftModal,
   setOpenLeftModal,
 }: DrawerLeftMenuProps) => {
+  const { categoryList } = useAppSelector((state) => state.category)
   const drawerStyles: DrawerStyles = {
     content: {
       boxShadow: "-10px 0 10px #666",
@@ -70,7 +71,7 @@ const DrawerLeftMenu = ({
               className={clsx("category-item block py-4 border-b-[1px] border-border-color", currentPath.includes(category.path) && "text-main-orange-color")}
               onClick={onClose}
             >
-              {category.title}
+              {category.name}
             </Link>
           ))}
         </div>

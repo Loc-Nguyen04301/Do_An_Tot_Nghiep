@@ -28,8 +28,6 @@ export class CreateBillDto {
     @IsNotEmpty()
     phone_number: string;
 
-    @IsEmail()
-    @IsNotEmpty()
     email: string;
 
     @IsString()

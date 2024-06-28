@@ -40,7 +40,7 @@ const schema = yup
         customer_name: yup.string().required('Customer name is required'),
         address: yup.string().required('Address is required'),
         phone_number: yup.string().required('Phone number is required').length(10, 'Phone number is not valid').matches(phoneRegExp, 'Phone number is not valid'),
-        email: yup.string().required('Email is required').email('Must be a valid email'),
+        email: yup.string().email('Must be a valid email'),
         note: yup.string()
     })
 
@@ -100,7 +100,7 @@ const Checkout = () => {
     const navigate = useNavigate()
 
     const shortCartItems = cartItems.map((item) => {
-        return { product_id: item.id, quantity: item.quantity, total_price: item.totalPrice }
+        return { product_id: item.id, quantity: item.quantity, price: item.new_price, total_price: item.totalPrice }
     })
 
     const onSubmit = async (data: FormData) => {
@@ -286,8 +286,8 @@ const Checkout = () => {
                                     {errors.phone_number && <p className="text-red-500">{errors.phone_number?.message}</p>}
                                 </div>
                                 <div className="my-2">
-                                    <div className="label-email tracking-wide leading-6 font-semibold">Địa chỉ email</div>
-                                    <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"email"} {...register('email')} disabled={getValues("email")?.length > 0} />
+                                    <div className="tracking-wide leading-6 font-semibold">Địa chỉ email</div>
+                                    <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"email"} {...register('email')} disabled={!!user?.email} />
                                     {errors.email && <p className="text-red-500">{errors.email?.message}</p>}
                                 </div>
                                 <h1 className='mt-8 text-category-title text-lg'>

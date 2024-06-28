@@ -8,7 +8,6 @@ import { useAlertDispatch } from '@/contexts/AlertContext';
 import { useNavigate } from 'react-router-dom';
 import { RoutePath } from '@/routes';
 import { Helmet } from 'react-helmet-async';
-import categoryList from '@/assets/data/categoryList';
 import { FilterDropdownProps } from 'antd/es/table/interface';
 import Highlighter from 'react-highlight-words';
 
@@ -230,7 +229,7 @@ const Inventory = () => {
                 </div >
         },
     ]
-    
+
     return (
         <>
             <Helmet>

@@ -80,7 +80,7 @@ model Bill {
   customer_name       String
   address             String
   phone_number        String
-  email               String
+  email               String?
   note                String?
   user_id             Int?
   created_at          DateTime             @default(now())

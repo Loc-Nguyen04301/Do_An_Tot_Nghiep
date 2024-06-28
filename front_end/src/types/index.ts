@@ -96,8 +96,9 @@ export interface IBill {
 }
 
 export interface IItem {
-    product: { name: string, new_price: number, old_price: number, image: string }
+    product: { name: string, image: string }
     quantity: number
+    price: number
     total_price: number
 }
 

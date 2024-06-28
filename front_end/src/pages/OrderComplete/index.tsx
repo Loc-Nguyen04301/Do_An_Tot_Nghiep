@@ -22,9 +22,9 @@ const OrderComplete = () => {
     const dispatch = useAppDispatch()
     const dispatchAlert = useAlertDispatch()
 
-    useEffect(() => {
-        dispatch(resetCart())
-    }, [dispatch])
+    // useEffect(() => {
+    //     dispatch(resetCart())
+    // }, [dispatch])
 
     useEffect(() => {
         const getBillDetail = async (bill_id: string) => {
@@ -32,6 +32,7 @@ const OrderComplete = () => {
                 if (bill_id) {
                     const res = await BillService.getBillDetailById(Number(bill_id))
                     setBill(res.data.data)
+                    // check trạng thái thanh toán
                     await MomoService.checkTransactionStatus({ orderId: `${import.meta.env.VITE_PREFIX_ORDER}${bill_id}` })
                 }
             } catch (error) {

@@ -250,14 +250,8 @@ const UpdateBill = () => {
                                                 <span className='text-sm font-semibold'>x {item.quantity}</span>
                                             </div>
                                         </div>
-                                        <div className='flex flex-col gap-2'>
-                                            <div>
-                                                {
-                                                    item.product.old_price != 0 &&
-                                                    <del className='text-category-title mr-2'>{convertNumbertoMoney(item.product.old_price)}</del>
-                                                }
-                                                <span className='text-main-orange-color'>{convertNumbertoMoney(item.product.new_price)}</span>
-                                            </div>
+                                        <div>
+                                            <span className='font-semibold'>{convertNumbertoMoney(item.price)}</span>
                                         </div>
                                     </div>
                                     <p className='text-right'>

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Bill" ALTER COLUMN "email" DROP NOT NULL;

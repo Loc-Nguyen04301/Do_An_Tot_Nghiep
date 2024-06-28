@@ -35,7 +35,7 @@ const ListProductByCategory = () => {
   return (
     <>
       <Helmet>
-        <title>{categoryList.find((categoryItem) => categoryItem.path === category)?.title}</title>
+        <title>{categoryList.find((categoryItem) => categoryItem.path === category)?.name}</title>
         <meta name='description' content='Beginner friendly page for learning React Helmet.' />
       </Helmet>
       <div className="bg-[url('https://www.thol.com.vn/wp-content/uploads/2015/11/nang-luong-suc-khoe-scaled.jpg')] bg-no-repeat bg-center bg-cover">

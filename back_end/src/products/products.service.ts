@@ -85,7 +85,6 @@ export class ProductsService {
   }
 
   async findByCategory(path: string) {
-    console.log({ path })
     const products = await this.prisma.product.findMany({
       where: {
         categories: {
@@ -104,8 +103,6 @@ export class ProductsService {
         },
       }
     })
-
-    console.log({ products })
 
     const newProducts = products.map((product) => {
       const totalStars = product.reviews.reduce((sum, review) => sum + review.star, 0);

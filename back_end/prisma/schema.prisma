@@ -43,6 +43,7 @@ model Product {
 
 model Category {
   id         Int                    @id @default(autoincrement())
+  path       String                 @unique
   name       String                 @unique
   created_at DateTime               @default(now())
   update_at  DateTime?              @updatedAt
@@ -110,6 +111,7 @@ model ReasonCancelledBill {
 model Item {
   bill_id     Int
   product_id  Int
+  price       Int
   quantity    Int
   created_at  DateTime  @default(now())
   update_at   DateTime? @updatedAt

@@ -53,7 +53,7 @@ export class ProductsService {
         new_price: true,
         image: true,
         available: true,
-        categories: { select: { category: { select: { id: true, name: true } } } },
+        categories: { select: { category: { select: { id: true, name: true, path: true } } } },
         reviews: {
           select: {
             id: true,
@@ -80,13 +80,14 @@ export class ProductsService {
     return product;
   }
 
-  async findByCategory(category: string) {
+  async findByCategory(path: string) {
+    console.log({ path })
     const products = await this.prisma.product.findMany({
       where: {
         categories: {
           some: {
             category: {
-              name: category
+              path: path
             }
           }
         }
@@ -99,6 +100,8 @@ export class ProductsService {
         },
       }
     })
+
+    console.log({ products })
 
     const newProducts = products.map((product) => {
       const totalStars = product.reviews.reduce((sum, review) => sum + review.star, 0);

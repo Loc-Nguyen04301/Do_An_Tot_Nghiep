@@ -30,31 +30,31 @@ export class ProductsController {
   @Get()
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(new SuccessInterceptor("Get Successfully")
-    , CacheInterceptor
+    // , CacheInterceptor
   )
-  @CacheTTL(300000)
+  // @CacheTTL(300000)
   findAll() {
     return this.productsService.findAll();
   }
 
   @Public()
-  @Get('/category/:category')
+  @Get('/category/:path')
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(new SuccessInterceptor()
-    , CacheInterceptor
+    // , CacheInterceptor
   )
-  @CacheTTL(300000)
-  findByCategory(@Param('category') category: string) {
-    return this.productsService.findByCategory(category)
+  // @CacheTTL(300000)
+  findByCategory(@Param('path') path: string) {
+    return this.productsService.findByCategory(path)
   }
 
   @Public()
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(new SuccessInterceptor()
-    , CacheInterceptor
+    // , CacheInterceptor
   )
-  @CacheTTL(300000)
+  // @CacheTTL(300000)
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.productsService.findOne(id);
   }
@@ -63,9 +63,9 @@ export class ProductsController {
   @Get('/name/:name')
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(new SuccessInterceptor()
-    , CacheInterceptor
+    // , CacheInterceptor
   )
-  @CacheTTL(300000)
+  // @CacheTTL(300000)
   findByName(@Param('name') name: string) {
     return this.productsService.findByName(name);
   }

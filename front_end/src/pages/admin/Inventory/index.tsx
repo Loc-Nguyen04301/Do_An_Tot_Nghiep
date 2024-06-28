@@ -237,7 +237,7 @@ const Inventory = () => {
                 <title>Kho hàng</title>
                 <meta name='description' content='Beginner friendly page for learning React Helmet.' />
             </Helmet>
-            <Typography.Title level={4}>Kho hàng</Typography.Title>
+            <Typography.Title level={4}>Danh sách sản phẩm</Typography.Title>
             <div className='mb-4 flex justify-end'>
                 <Button type='primary' icon={<EditOutlined />} onClick={handleCreateProduct}>
                     Thêm mới sản phẩm

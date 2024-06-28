@@ -6,7 +6,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import CategoryService from '@/services/CategoryService';
 import { useAlertDispatch } from '@/contexts/AlertContext';
-import { CreateProductDto, ICategory } from '@/types';
+import { CreateProductDto } from '@/types';
 import { checkImage, imageUpload } from '@/utils';
 import * as yup from 'yup';
 import { useForm } from "react-hook-form";
@@ -17,6 +17,7 @@ import { Helmet } from 'react-helmet-async';
 import { CheckboxValueType } from 'antd/es/checkbox/Group';
 import "../UpdateProduct/UpdateProduct.scss"
 import categories from '@/assets/data/categoryList';
+import { ICategory } from '@/redux-toolkit/categorySlice';
 
 
 const schema = yup

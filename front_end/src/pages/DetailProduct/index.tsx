@@ -16,30 +16,27 @@ import { Tag } from "antd"
 import { addProductToWishList, IProductWishList, removeProductToWishList } from "@/redux-toolkit/wishListSlice"
 import ProductCard from "@/components/ProductCard"
 import "./DetailProduct.scss"
-interface Category {
-  id: number;
-  name: string;
-}
+import { ICategory } from "@/redux-toolkit/categorySlice"
 
 export interface Review {
-  id: number;
-  user: { id: number, avatar: string, username: string };
-  images: string[],
-  description: string;
-  star: number;
-  created_at: string;
+  id: number
+  user: { id: number, avatar: string, username: string }
+  images: string[]
+  description: string
+  star: number
+  created_at: string
 }
 
 export interface IDetailProduct extends IProduct {
   reviews: Review[]
-  categories: { category: Category }[]
+  categories: { category: ICategory }[]
   _count: { reviews: number }
 }
 
 const DetailProduct = () => {
-  const [product, setProduct] = useState<IDetailProduct>();
+  const [product, setProduct] = useState<IDetailProduct>()
   const [relatedCategory, setRelatedCategory] = useState("")
-  const [relatedProducts, setRelatedProducts] = useState<IDetailProduct[]>([]);
+  const [relatedProducts, setRelatedProducts] = useState<IDetailProduct[]>([])
   const [quantity, setQuantity] = useState<number>(0)
   const { cartItems } = useAppSelector((state) => state.cart)
   const { wishList } = useAppSelector(state => state.wishList)
@@ -125,7 +122,7 @@ const DetailProduct = () => {
       cartItems.map((item) => {
         if (item.id === product.id) {
           setQuantity(item.quantity)
-          return;
+          return
         }
       })
   }, [product])
@@ -239,7 +236,7 @@ const DetailProduct = () => {
                 Danh mục:
                 {product.categories.map((item) =>
                   <span className="pl-1" key={item.category.name}>
-                    <a className="cursor-pointer" href={`${RoutePath.ListByCategory}/${item.category.name}`}>{item.category.name}</a>,
+                    <a className="cursor-pointer" href={`${RoutePath.ListByCategory}/${item.category.path}`}>{item.category.name}</a>,
                   </span>)}
               </div>
             </div>

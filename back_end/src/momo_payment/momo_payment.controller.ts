@@ -15,7 +15,7 @@ export class MomoPaymentController {
     @Public()
     @Post('payment')
     @HttpCode(HttpStatus.OK)
-    async createPayment(@Req() req: Request, @Res() res: Response, @Body() data: CreatePaymentDto) {
+    async createPayment(@Res() res: Response, @Body() data: CreatePaymentDto) {
         let {
             accessKey,
             secretKey,
@@ -90,7 +90,7 @@ export class MomoPaymentController {
     @Public()
     @Post('callback')
     @HttpCode(200)
-    async createIpnUrl(@Req() req: Request, @Res() res: Response) {
+    async createIpnUrl() {
         console.log('callback::::::::');
     }
 

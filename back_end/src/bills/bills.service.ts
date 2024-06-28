@@ -38,7 +38,7 @@ export class BillsService {
       // phát thông điệp đến client 
       await this.appGateway.sendBillNotification(bill)
 
-      const shortCartItemsData = shortCartItems.map((item => { return { bill_id: bill.id, product_id: item.product_id, quantity: item.quantity, total_price: item.total_price } }))
+      const shortCartItemsData = shortCartItems.map((item => { return { bill_id: bill.id, product_id: item.product_id, price: item.price, quantity: item.quantity, total_price: item.total_price } }))
       await Promise.all(shortCartItemsData.map(async (cartItem) => {
         // create each item in bill
         const item = await tr.item.create({ data: cartItem })

@@ -7,6 +7,7 @@ import cartReducer, { CartState } from "./cartSlice"
 import productReducer from "./productSlice"
 import billNotiReducer from "./billNotiSlice"
 import wishListReducer, { WishListState } from "./wishListSlice"
+import categoryReducer, { CategoryState } from "./categorySlice"
 
 const persistConfig = {
     key: 'root',
@@ -24,9 +25,15 @@ const wishListPersistConfig = {
     key: 'wishList',
 }
 
+const categoryPersistConfig = {
+    ...persistConfig,
+    key: 'category',
+}
+
 const rootReducer = combineReducers({
     cart: persistReducer<CartState>(cartPersistConfig, cartReducer),
     wishList: persistReducer<WishListState>(wishListPersistConfig, wishListReducer),
+    category: persistReducer<CategoryState>(categoryPersistConfig, categoryReducer),
     auth: authReducer,
     product: productReducer,
     billNoti: billNotiReducer

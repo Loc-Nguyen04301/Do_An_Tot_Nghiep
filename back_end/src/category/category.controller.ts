@@ -16,4 +16,12 @@ export class CategoryController {
   findAll() {
     return this.categoryService.findAll();
   }
+
+  @Public()
+  @Post()
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor())
+  create(@Body() createCategoryDto: CreateCategoryDto) {
+    return this.categoryService.create(createCategoryDto);
+  }
 }

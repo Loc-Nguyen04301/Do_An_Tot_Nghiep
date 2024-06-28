@@ -4,10 +4,12 @@ import homeImage2 from "@/assets/images/home_image2.jpg"
 import bottomImage from "@/assets/images/bottom_image.jpg"
 import { Helmet } from "react-helmet-async"
 import ProductsByCategory from "./components/ProductsByCategory"
-import categoryList from "@/assets/data/categoryList"
 import "./Home.scss"
+import { useAppSelector } from "@/redux-toolkit/hook"
 
 const Home = () => {
+  const { categoryList } = useAppSelector((state) => state.category)
+
   return (
     <>
       <Helmet>
@@ -24,11 +26,11 @@ const Home = () => {
           </div>
         </div>
         <div className="flex flex-col gap-14">
-          <ProductsByCategory categoryPath={categoryList[7].path} categoryTitle={categoryList[7].title} />
-          <ProductsByCategory categoryPath={categoryList[0].path} categoryTitle={categoryList[0].title} />
-          <ProductsByCategory categoryPath={categoryList[1].path} categoryTitle={categoryList[1].title} />
-          <ProductsByCategory categoryPath={categoryList[2].path} categoryTitle={categoryList[2].title} />
-          <ProductsByCategory categoryPath={categoryList[3].path} categoryTitle={categoryList[3].title} />
+          <ProductsByCategory categoryPath={categoryList[7].path} categoryName={categoryList[7].name} />
+          <ProductsByCategory categoryPath={categoryList[0].path} categoryName={categoryList[0].name} />
+          <ProductsByCategory categoryPath={categoryList[1].path} categoryName={categoryList[1].name} />
+          <ProductsByCategory categoryPath={categoryList[2].path} categoryName={categoryList[2].name} />
+          <ProductsByCategory categoryPath={categoryList[3].path} categoryName={categoryList[3].name} />
         </div>
       </div>
       <img src={bottomImage} className="w-full" />

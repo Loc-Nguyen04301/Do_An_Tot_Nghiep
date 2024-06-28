@@ -9,16 +9,12 @@ const removeProduct = (id: number) => {
     return http.delete(`/products/${id}`);
 };
 
-const getProductByCategory = (category: string) => {
-    return http.get(`/products/category/${category}`)
-}
-
 const getProductById = (id: number) => {
     return http.get(`/products/${id}`)
 }
 
-const getProductsByCategory = (category: string) => {
-    return http.get(`/products/category/${category}`)
+const getProductsByCategory = (categoryPath: string) => {
+    return http.get(`/products/category/${categoryPath}`)
 }
 
 const getProductsByName = (name: string) => {
@@ -33,6 +29,6 @@ const updateProduct = (id: number, data: UpdateProductDto) => {
     return http.patch(`/products/${id}`, data)
 }
 
-const ProductService = { getProductByCategory, getProductById, getProductsByCategory, getProductsByName, getAll, removeProduct, createProduct, updateProduct }
+const ProductService = { getProductById, getProductsByCategory, getProductsByName, getAll, removeProduct, createProduct, updateProduct }
 
 export default ProductService

@@ -7,7 +7,7 @@ import { useAppSelector } from '@/redux-toolkit/hook';
 import { IProductDetail } from '@/redux-toolkit/productSlice';
 import { useAlertDispatch } from '@/contexts/AlertContext';
 import CategoryService from '@/services/CategoryService';
-import { UpdateProductDto, ICategory } from '@/types';
+import { UpdateProductDto } from '@/types';
 import * as yup from 'yup';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -17,6 +17,7 @@ import { CheckboxValueType } from 'antd/es/checkbox/Group';
 import categories from '@/assets/data/categoryList';
 
 import "./UpdateProduct.scss"
+import { ICategory } from '@/redux-toolkit/categorySlice';
 
 const schema = yup
     .object().shape({

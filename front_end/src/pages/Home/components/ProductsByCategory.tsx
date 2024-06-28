@@ -9,17 +9,17 @@ import { RoutePath } from '@/routes'
 
 interface ProductsByCategoryProps {
     categoryPath: string;
-    categoryTitle: string;
+    categoryName: string;
 }
 
-const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryProps) => {
+const ProductsByCategory = ({ categoryPath, categoryName }: ProductsByCategoryProps) => {
     const [products, setProducts] = useState<IProduct[]>([]);
     const dispatchAlert = useAlertDispatch()
 
     const getProductsByCategory = async () => {
         dispatchAlert({ loading: true })
         try {
-            const res = await ProductService.getProductByCategory(categoryPath)
+            const res = await ProductService.getProductsByCategory(categoryPath)
             setProducts(res.data.data)
             dispatchAlert({ loading: false })
         } catch (error) {
@@ -38,7 +38,7 @@ const ProductsByCategory = ({ categoryPath, categoryTitle }: ProductsByCategoryP
                     className="text-category-title text-[20px] font-bold uppercase border-b-[3px] border-border-color pb-2"
                     href={`${RoutePath.ListByCategory}/${categoryPath}`}
                 >
-                    {categoryTitle}
+                    {categoryName}
                 </a>
             </div>
             <div className="mt-8">

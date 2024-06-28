@@ -56,13 +56,6 @@ export interface ReviewInterface {
     images?: string[]
 }
 
-export interface ICategory {
-    id: number
-    name: string
-    created_at: string
-    update_at: string
-}
-
 export interface CreateProductDto {
     brand?: string
     name?: string

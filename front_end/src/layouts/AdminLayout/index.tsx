@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import {
-    AppstoreOutlined,
     ShopOutlined,
     ShoppingCartOutlined,
     UserOutlined,
     LogoutOutlined,
     BellOutlined,
     SearchOutlined,
-    TransactionOutlined
+    TransactionOutlined,
+    HomeOutlined,
+    MenuOutlined
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Avatar, Layout, Menu, theme, Typography } from 'antd';
@@ -18,10 +19,10 @@ import { useAppDispatch, useAppSelector } from '@/redux-toolkit/hook';
 import { logOut } from '@/redux-toolkit/authSlice';
 import { useAlertDispatch } from '@/contexts/AlertContext';
 import ShowNotification from '@/layouts/AdminLayout/components/ShowNotification';
-import "./AdminLayout.scss"
 import useBillNotification from '@/hooks/useBillNotification';
 import { fetchBillNoti } from '@/redux-toolkit/billNotiSlice';
 import { RoutePath } from '@/routes';
+import "./AdminLayout.scss"
 
 const { Content, Sider } = Layout;
 type MenuItem = Required<MenuProps>['items'][number];
@@ -46,15 +47,17 @@ export enum RoutePathAdmin {
     Customer = "/admin/customer",
     Notification = "/admin/notification",
     Transaction = "/admin/transaction",
+    Category = "/admin/category",
     Logout = "/"
 }
 
 const items: MenuItem[] = [
-    getItem('Dashboard', RoutePathAdmin.DashBoard, <AppstoreOutlined />),
-    getItem('Sản phẩm', RoutePathAdmin.Inventory, <ShopOutlined />),
+    getItem('Dashboard', RoutePathAdmin.DashBoard, <HomeOutlined />),
     getItem('Đơn hàng', RoutePathAdmin.OrderAdmin, <ShoppingCartOutlined />),
-    getItem('Thành viên', RoutePathAdmin.Customer, <UserOutlined />),
     getItem('Lịch sử giao dịch', RoutePathAdmin.Transaction, <TransactionOutlined />),
+    getItem('Sản phẩm', RoutePathAdmin.Inventory, <ShopOutlined />),
+    getItem('Danh mục sản phẩm', RoutePathAdmin.Category, <MenuOutlined />),
+    getItem('Thành viên', RoutePathAdmin.Customer, <UserOutlined />),
     getItem('Thông báo', RoutePathAdmin.Notification, <BellOutlined />),
     getItem('Đăng xuất', RoutePathAdmin.Logout, <LogoutOutlined />)
 ];

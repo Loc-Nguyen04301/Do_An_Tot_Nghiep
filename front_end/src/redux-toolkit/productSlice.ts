@@ -3,8 +3,9 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import ProductService from '@/services/ProductService'
 
 interface Category {
-    id: number;
-    name: string;
+    id: number
+    name: string
+    path: string
 }
 export interface IProductDetail {
     id: number
@@ -44,11 +45,11 @@ export const productSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(retrieveProducts.fulfilled, (state, action: PayloadAction<IProductDetail[]>) => {
             return [...action.payload];
-        }),
-            builder.addCase(deleteProduct.fulfilled, (state, action: PayloadAction<{ id: number }>) => {
-                let index = state.findIndex(({ id }) => id === action.payload.id);
-                state.splice(index, 1);
-            })
+        })
+        builder.addCase(deleteProduct.fulfilled, (state, action: PayloadAction<{ id: number }>) => {
+            let index = state.findIndex(({ id }) => id === action.payload.id);
+            state.splice(index, 1);
+        })
     }
 })
 

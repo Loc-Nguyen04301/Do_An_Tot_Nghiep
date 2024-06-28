@@ -10,6 +10,8 @@ class ShortCartItem {
     @IsNotEmpty()
     quantity: number
 
+    price: number
+
     total_price: number
 }
 

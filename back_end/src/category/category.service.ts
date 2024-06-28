@@ -7,9 +7,19 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class CategoryService {
   constructor(private prisma: PrismaService) { }
 
-  findAll() {
-    const categories = this.prisma.category.findMany()
+  async findAll() {
+    const categories = await this.prisma.category.findMany()
     return categories
   }
 
+  async create(createCategoryDto: CreateCategoryDto) {
+    const { name, path } = createCategoryDto
+    const category = await this.prisma.category.create({
+      data: {
+        name: name,
+        path: path,
+      }
+    })
+    return category
+  }
 }

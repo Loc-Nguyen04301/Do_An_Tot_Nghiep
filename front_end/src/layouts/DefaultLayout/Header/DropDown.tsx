@@ -1,16 +1,17 @@
 import React from "react"
 import { faBars, faChevronDown } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import categoryList from "@/assets/data/categoryList"
 import { RoutePath } from "@/routes"
-import { Link, useLocation } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 import clsx from "clsx"
+import { useAppSelector } from "@/redux-toolkit/hook"
 
 const DropDown = () => {
+  const { categoryList } = useAppSelector((state) => state.category)
   const location = useLocation()
   const currentPath = location.pathname
-
   return (
+    categoryList.length > 0 &&
     <div className="dropdown">
       <div className="dropbtn flex items-center justify-between gap-3 w-[244px]">
         <FontAwesomeIcon icon={faBars} />
@@ -25,11 +26,11 @@ const DropDown = () => {
             key={category.path}
             href={`${RoutePath.ListByCategory}/${category.path}`}
             className={clsx("px-4 py-3 block w-[244px] border-b border-border-color", currentPath.includes(category.path) && "text-main-orange-color")}>
-            {category.title}
+            {category.name}
           </a>
         ))}
       </div>
-    </div >
+    </div>
   )
 }
 

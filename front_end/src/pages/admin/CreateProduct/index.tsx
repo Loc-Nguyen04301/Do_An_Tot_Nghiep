@@ -1,10 +1,9 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
-import { Button, Checkbox, Col, Form, FormProps, Input, Row, Typography } from 'antd'
+import React, { ChangeEvent, useState } from 'react'
+import { Button, Checkbox, Col, Row, Typography } from 'antd'
 import {
     ArrowLeftOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import CategoryService from '@/services/CategoryService';
 import { useAlertDispatch } from '@/contexts/AlertContext';
 import { CreateProductDto } from '@/types';
 import { checkImage, imageUpload } from '@/utils';
@@ -16,9 +15,7 @@ import { RoutePath } from '@/routes';
 import { Helmet } from 'react-helmet-async';
 import { CheckboxValueType } from 'antd/es/checkbox/Group';
 import "../UpdateProduct/UpdateProduct.scss"
-import categories from '@/assets/data/categoryList';
-import { ICategory } from '@/redux-toolkit/categorySlice';
-
+import { useAppSelector } from '@/redux-toolkit/hook';
 
 const schema = yup
     .object().shape({
@@ -40,7 +37,7 @@ const schema = yup
 
 const CreateProduct = () => {
     const [selectedImage, setSelectedImage] = useState<File>();
-    const [categoryList, setCategoryList] = useState<ICategory[]>([])
+    const { categoryList } = useAppSelector((state) => state.category)
     const [selectedCategories, setSelectedCategories] = useState<CheckboxValueType[]>()
     const [disabled, setDisabled] = useState(false)
 
@@ -53,21 +50,6 @@ const CreateProduct = () => {
 
     const dispatchAlert = useAlertDispatch()
     const navigate = useNavigate();
-
-    const getCategoryList = async () => {
-        dispatchAlert({ loading: true })
-        try {
-            const res = await CategoryService.getAll()
-            setCategoryList(res.data.data)
-            dispatchAlert({ loading: false })
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    useEffect(() => {
-        getCategoryList()
-    }, [])
 
     const handleChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files
@@ -180,12 +162,7 @@ const CreateProduct = () => {
                                 categoryList && categoryList.map((category) =>
                                     <Col span={8} key={category.id}>
                                         <Checkbox value={category.id} style={{ lineHeight: '32px' }}>
-                                            {categories.map((cat) => {
-                                                if (cat.path === category.name) {
-                                                    return cat.title;
-                                                }
-                                                return null;
-                                            })}
+                                            {category.name}
                                         </Checkbox>
                                     </Col>
                                 )

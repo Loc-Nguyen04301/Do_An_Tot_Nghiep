@@ -1,12 +1,10 @@
-import { Button, Checkbox, Col, Form, Input, Row, Typography } from 'antd'
+import { Button, Checkbox, Col, Row, Typography } from 'antd'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import type { FormProps } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '@/redux-toolkit/hook';
 import { IProductDetail } from '@/redux-toolkit/productSlice';
 import { useAlertDispatch } from '@/contexts/AlertContext';
-import CategoryService from '@/services/CategoryService';
 import { UpdateProductDto } from '@/types';
 import * as yup from 'yup';
 import { useForm } from "react-hook-form";
@@ -14,10 +12,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { checkImage, imageUpload } from '@/utils';
 import ProductService from '@/services/ProductService';
 import { CheckboxValueType } from 'antd/es/checkbox/Group';
-import categories from '@/assets/data/categoryList';
-
-import "./UpdateProduct.scss"
 import { ICategory } from '@/redux-toolkit/categorySlice';
+import "./UpdateProduct.scss"
 
 const schema = yup
     .object().shape({
@@ -39,7 +35,7 @@ const schema = yup
 
 const UpdateProduct = () => {
     const [selectedProduct, setSelectedProduct] = useState<IProductDetail>()
-    const [categoryList, setCategoryList] = useState<ICategory[]>([])
+    const { categoryList } = useAppSelector((state) => state.category)
     const [selectedImage, setSelectedImage] = useState<File>();
     const [selectedCategories, setSelectedCategories] = useState<CheckboxValueType[]>()
     const [disabled, setDisabled] = useState(false)
@@ -81,21 +77,6 @@ const UpdateProduct = () => {
             setSelectedCategories(selectedCategories)
         }
     }, [selectedProduct])
-
-    const getCategoryList = async () => {
-        dispatchAlert({ loading: true })
-        try {
-            const res = await CategoryService.getAll()
-            setCategoryList(res.data.data)
-            dispatchAlert({ loading: false })
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    useEffect(() => {
-        getCategoryList()
-    }, [])
 
     const handleChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files
@@ -221,12 +202,7 @@ const UpdateProduct = () => {
                                                 value={category.id}
                                                 style={{ lineHeight: '32px' }}
                                             >
-                                                {categories.map((cat) => {
-                                                    if (cat.path === category.name) {
-                                                        return cat.title;
-                                                    }
-                                                    return null;
-                                                })}
+                                                {category.name}
                                             </Checkbox>
                                         </Col>
                                     )

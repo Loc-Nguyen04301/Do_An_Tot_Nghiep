@@ -21,11 +21,15 @@ export class ProductsService {
             category: {
               select: {
                 id: true,
-                name: true
+                name: true,
+                path: true
               }
             }
           }
         }
+      },
+      orderBy: {
+        id: "asc"
       }
     });
 

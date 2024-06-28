@@ -1,12 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import ProductService from '@/services/ProductService'
+import { ICategory } from '@/redux-toolkit/categorySlice'
 
-interface Category {
-    id: number
-    name: string
-    path: string
-}
 export interface IProductDetail {
     id: number
     name: string
@@ -17,7 +13,7 @@ export interface IProductDetail {
     image: string
     available: number
     averageRating: number
-    categories: { category: Category }[]
+    categories: { category: ICategory }[]
 }
 
 const initialState: IProductDetail[] = []

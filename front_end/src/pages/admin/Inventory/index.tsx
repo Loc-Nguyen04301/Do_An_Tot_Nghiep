@@ -205,8 +205,7 @@ const Inventory = () => {
             render: (_, record) =>
                 <Space direction='vertical' >
                     {record.categories.map((category) => {
-                        const foundCategory = categoryList.find(item => item.path === category.category.name);
-                        return foundCategory ? <strong className='truncate' key={foundCategory.path} >{foundCategory.title}</strong> : null;
+                        return <strong className='truncate' key={category.category.name} >{category.category.name}</strong>
                     })}
                 </Space>
         },
@@ -231,6 +230,7 @@ const Inventory = () => {
                 </div >
         },
     ]
+    
     return (
         <>
             <Helmet>

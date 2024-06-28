@@ -1,6 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -14,6 +13,17 @@ export class CategoryService {
 
   async create(createCategoryDto: CreateCategoryDto) {
     const { name, path } = createCategoryDto
+    const categoryExisted = await this.prisma.category.findFirst({
+      where: {
+        OR: [
+          { name: name },
+          { path: path }
+        ]
+      }
+    })
+
+    if (categoryExisted) throw new ForbiddenException("Tên hoặc Đường Dẫn URL danh mục đã tồn tài")
+
     const category = await this.prisma.category.create({
       data: {
         name: name,

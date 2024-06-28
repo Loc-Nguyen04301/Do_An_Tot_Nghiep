@@ -157,7 +157,7 @@ const UpdateBill = () => {
                             <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"text"} defaultValue={selectedBill.user?.phone_number || getValues("phone_number")} disabled />
                         </div>
                         <div className="my-2">
-                            <div className="font-semibold tracking-wide">Email người mua</div>
+                            <div className="font-semibold tracking-wide">Email</div>
                             <input className="pl-2 w-full h-[35px] border-[1px] border-[#adadad] rounded-sm" type={"email"} defaultValue={selectedBill.user?.email || getValues("email")} disabled />
                         </div>
                         <div className="my-2">

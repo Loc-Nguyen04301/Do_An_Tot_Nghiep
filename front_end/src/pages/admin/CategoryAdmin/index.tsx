@@ -1,31 +1,38 @@
 import React, { useState } from 'react'
-import { Button, Modal, Space, Table, TableProps, Typography } from 'antd'
+import { Button, Form, FormProps, Input, Modal, Space, Table, TableProps, Typography } from 'antd'
 import { Helmet } from 'react-helmet-async'
-import { EditOutlined } from '@ant-design/icons';
-import { useAppSelector } from '@/redux-toolkit/hook';
-import { ICategory } from '@/redux-toolkit/categorySlice';
-import "../Inventory/Inventory.scss"
+import { EditOutlined } from '@ant-design/icons'
+import { useAppDispatch, useAppSelector } from '@/redux-toolkit/hook'
+import { createCategory, ICategory } from '@/redux-toolkit/categorySlice'
+import { useAlertDispatch } from '@/contexts/AlertContext'
+import "./CategoryAdmin.scss"
+
+export type CreateCategoryType = {
+  name: string
+  path: string
+}
+
 const CategoryAdmin = () => {
   const { categoryList } = useAppSelector((state) => state.category)
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [disabled, setDisabled] = useState(false)
+
+  const dispatch = useAppDispatch()
+  const dispatchAlert = useAlertDispatch()
 
   const showModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
+    setIsModalOpen(true)
+  }
 
   const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+    setIsModalOpen(false)
+  }
 
   const columns: TableProps<ICategory>['columns'] = [
     {
       title: "Id",
       key: "id",
-      render: (_, record) => record.id
+      render: (_, record, index) => index
     },
     {
       title: "Tên danh mục",
@@ -39,6 +46,29 @@ const CategoryAdmin = () => {
     },
   ]
 
+  const onFinish: FormProps<CreateCategoryType>['onFinish'] = async (values) => {
+    dispatchAlert({ loading: true })
+    try {
+      const resultAction = await dispatch(createCategory(values));
+      console.log({ resultAction })
+      if (createCategory.fulfilled.match(resultAction)) {
+        dispatchAlert({ success: 'Category created successfully!' });
+        setDisabled(true);
+        setTimeout(() => {
+          handleCancel();
+          setDisabled(false);
+        }, 2000);
+      } else {
+        dispatchAlert({ errors: resultAction.payload as string });
+      }
+    } catch (error: any) {
+      dispatchAlert({ errors: error.message })
+    }
+  }
+
+  const onFinishFailed: FormProps<CreateCategoryType>['onFinishFailed'] = (errorInfo) => {
+    console.log('Failed:', errorInfo)
+  }
 
   return (
     <>
@@ -52,16 +82,46 @@ const CategoryAdmin = () => {
           Thêm mới danh mục
         </Button>
       </div>
-      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+      <Modal title="Tạo mới danh mục" open={isModalOpen} onCancel={handleCancel}>
+        <Form
+          name="basic"
+          labelCol={{ span: 7 }}
+          wrapperCol={{ span: 15 }}
+          style={{ maxWidth: 600 }}
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
+          className='mt-10'
+        >
+          <Form.Item<CreateCategoryType>
+            label="Tên danh mục"
+            name="name"
+            rules={[{ required: true, message: 'Vui lòng nhập tên danh mục!' }, { min: 3, message: "Độ dài tối thiểu 3 kí tự" }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item<CreateCategoryType>
+            label="Đường dẫn URL"
+            name="path"
+            rules={[{ required: true, message: 'Vui lòng nhập đường dẫn danh mục!' }, { min: 3, message: "Độ dài tối thiểu 3 kí tự" }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item wrapperCol={{ offset: 10, span: 24 }}>
+            <Button type="primary" htmlType="submit" disabled={disabled}>
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
       </Modal>
       <Space direction="horizontal" className='w-full justify-center !block'>
         <Table
           columns={columns}
           dataSource={categoryList}
-          pagination={{ position: ['bottomCenter'] }}
+          pagination={false}
           rowKey={(record) => record.id}
         ></Table>
       </Space>

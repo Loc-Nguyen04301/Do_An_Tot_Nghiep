@@ -124,6 +124,7 @@ model Item {
 
 enum Role {
   USER
+  SELLER
   ADMIN
 }
 

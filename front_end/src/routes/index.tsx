@@ -124,7 +124,7 @@ const Router: React.FC = () => {
           path: RoutePath.OrderAdmin,
           element:
             <AuthGuard>
-              <ManagementGuard onlyAdmin={true}>
+              <ManagementGuard>
                 <OrderAdmin />
               </ManagementGuard>
             </AuthGuard>
@@ -133,7 +133,7 @@ const Router: React.FC = () => {
           path: RoutePath.Customer,
           element:
             <AuthGuard>
-              <ManagementGuard onlyAdmin={true}>
+              <ManagementGuard>
                 <Customer />
               </ManagementGuard>
             </AuthGuard>

@@ -12,6 +12,7 @@ import { useAppSelector } from "@/redux-toolkit/hook";
 var DATETIME_FORMAT = 'dd-MM-yyyy HH:mm'
 
 const Customer = () => {
+    const { user } = useAppSelector((state) => state.auth)
     const [dataSource, setDataSource] = useState<ICustomer[]>([]);
     const [isDisabled, setIsDisabled] = useState(false)
     const dispatchAlert = useAlertDispatch()
@@ -128,7 +129,7 @@ const Customer = () => {
             render: (_, record) =>
                 <div className='flex items-center' >
                     <div className='flex gap-2'>
-                        {record?.role === Role.USER &&
+                        {user?.role === Role.ADMIN &&
                             <Button className={clsx('cursor-pointer', record.active ? "text-red-500 hover:!border-red-500 hover:!text-red-500" : "text-blue-500 ")}
                                 onClick={() => handleActive(record.id)}
                                 disabled={isDisabled}>

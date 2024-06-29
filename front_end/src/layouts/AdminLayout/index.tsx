@@ -76,6 +76,7 @@ const AdminLayout = ({ children }: AdminLayouttProps) => {
         ? [
             getItem('Dashboard', RoutePathAdmin.DashBoard, <HomeOutlined />),
             getItem('Đơn hàng', RoutePathAdmin.OrderAdmin, <ShoppingCartOutlined />),
+            getItem('Thành viên', RoutePathAdmin.Customer, <UserOutlined />),
             getItem('Thông báo', RoutePathAdmin.Notification, <BellOutlined />),
             getItem('Đăng xuất', RoutePathAdmin.Logout, <LogoutOutlined />)
         ]

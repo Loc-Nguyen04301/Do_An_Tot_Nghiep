@@ -23,6 +23,7 @@ import useBillNotification from '@/hooks/useBillNotification';
 import { fetchBillNoti } from '@/redux-toolkit/billNotiSlice';
 import { RoutePath } from '@/routes';
 import "./AdminLayout.scss"
+import { Role } from '@/types';
 
 const { Content, Sider } = Layout;
 type MenuItem = Required<MenuProps>['items'][number];
@@ -51,24 +52,34 @@ export enum RoutePathAdmin {
     Logout = "/"
 }
 
-const items: MenuItem[] = [
-    getItem('Dashboard', RoutePathAdmin.DashBoard, <HomeOutlined />),
-    getItem('Đơn hàng', RoutePathAdmin.OrderAdmin, <ShoppingCartOutlined />),
-    getItem('Lịch sử giao dịch', RoutePathAdmin.Transaction, <TransactionOutlined />),
-    getItem('Sản phẩm', RoutePathAdmin.Inventory, <ShopOutlined />),
-    getItem('Danh mục sản phẩm', RoutePathAdmin.Category, <MenuOutlined />),
-    getItem('Thành viên', RoutePathAdmin.Customer, <UserOutlined />),
-    getItem('Thông báo', RoutePathAdmin.Notification, <BellOutlined />),
-    getItem('Đăng xuất', RoutePathAdmin.Logout, <LogoutOutlined />)
-];
 interface AdminLayouttProps {
     children?: React.ReactElement
 }
 
 const AdminLayout = ({ children }: AdminLayouttProps) => {
+    const { user } = useAppSelector((state) => state.auth)
     const [collapsed, setCollapsed] = useState(false);
     const [selectedKeys, setSelectedKeys] = useState<string>(RoutePathAdmin.DashBoard);
-    const { user } = useAppSelector(state => state.auth)
+
+    const items: MenuItem[] = [
+        getItem('Dashboard', RoutePathAdmin.DashBoard, <HomeOutlined />),
+        getItem('Đơn hàng', RoutePathAdmin.OrderAdmin, <ShoppingCartOutlined />),
+        getItem('Lịch sử giao dịch', RoutePathAdmin.Transaction, <TransactionOutlined />),
+        getItem('Sản phẩm', RoutePathAdmin.Inventory, <ShopOutlined />),
+        getItem('Danh mục sản phẩm', RoutePathAdmin.Category, <MenuOutlined />),
+        getItem('Thành viên', RoutePathAdmin.Customer, <UserOutlined />),
+        getItem('Thông báo', RoutePathAdmin.Notification, <BellOutlined />),
+        getItem('Đăng xuất', RoutePathAdmin.Logout, <LogoutOutlined />)
+    ];
+
+    const filteredItems = user?.role === Role.SELLER
+        ? [
+            getItem('Dashboard', RoutePathAdmin.DashBoard, <HomeOutlined />),
+            getItem('Đơn hàng', RoutePathAdmin.OrderAdmin, <ShoppingCartOutlined />),
+            getItem('Thông báo', RoutePathAdmin.Notification, <BellOutlined />),
+            getItem('Đăng xuất', RoutePathAdmin.Logout, <LogoutOutlined />)
+        ]
+        : items;
 
     const dispatch = useAppDispatch()
     const dispatchAlert = useAlertDispatch()
@@ -104,7 +115,7 @@ const AdminLayout = ({ children }: AdminLayouttProps) => {
                     theme='dark'
                     mode="inline"
                     selectedKeys={[selectedKeys]}
-                    items={items}
+                    items={filteredItems}
                     onClick={(item) => {
                         if (item.key === RoutePathAdmin.Logout) {
                             dispatchAlert({ loading: true })

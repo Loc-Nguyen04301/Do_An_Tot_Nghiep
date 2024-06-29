@@ -111,11 +111,11 @@ model ReasonCancelledBill {
 model Item {
   bill_id     Int
   product_id  Int
-  price       Int
   quantity    Int
   created_at  DateTime  @default(now())
   update_at   DateTime? @updatedAt
   total_price Int?
+  price       Int
   bill        Bill      @relation(fields: [bill_id], references: [id], onDelete: Cascade)
   product     Product   @relation(fields: [product_id], references: [id], onDelete: Cascade)
 
@@ -124,8 +124,8 @@ model Item {
 
 enum Role {
   USER
-  SELLER
   ADMIN
+  SELLER
 }
 
 enum OrderStatus {

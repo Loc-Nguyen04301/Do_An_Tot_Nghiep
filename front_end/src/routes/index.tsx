@@ -5,6 +5,7 @@ import AdminLayout from "@/layouts/AdminLayout";
 import Loading from "@/components/Alert/Loading";
 import GuestGuard from "@/guards/GuestGuard";
 import AuthGuard from "@/guards/AuthGuard";
+import ManagementGuard from "@/guards/ManagementGuard";
 import HavingCart from "@/guards/HavingCart";
 import CheckAvailable from "@/guards/CheckAvailable";
 import ChangePassword from "@/pages/ChangePassword";
@@ -38,6 +39,7 @@ const Transaction = lazy(() => import("@/pages/admin/Transaction"));
 const CategoryAdmin = lazy(() => import("@/pages/admin/CategoryAdmin"));
 
 export enum RoutePath {
+  NotFound = "/not-found",
   Home = "/",
   LoginPage = "/dang-nhap",
   RegisterPage = "/dang-ky",
@@ -77,70 +79,90 @@ const Router: React.FC = () => {
           path: RoutePath.DashBoard,
           element:
             <AuthGuard>
-              <DashBoard />
+              <ManagementGuard>
+                <DashBoard />
+              </ManagementGuard>
             </AuthGuard>
         },
         {
           path: `${RoutePath.UpdateProduct}/:id`,
           element:
             <AuthGuard>
-              <UpdateProduct />
+              <ManagementGuard onlyAdmin={true}>
+                <UpdateProduct />
+              </ManagementGuard>
             </AuthGuard>
         },
         {
           path: `${RoutePath.CreateProduct}`,
           element:
             <AuthGuard>
-              <CreateProduct />
+              <ManagementGuard onlyAdmin={true}>
+                <CreateProduct />
+              </ManagementGuard>
             </AuthGuard>
         },
         {
           path: `${RoutePath.UpdateBill}/:id`,
           element:
             <AuthGuard>
-              <UpdateBill />
+              <ManagementGuard onlyAdmin={true}>
+                <UpdateBill />
+              </ManagementGuard>
             </AuthGuard>
         },
         {
           path: RoutePath.Inventory,
           element:
             <AuthGuard>
-              <Inventory />
+              <ManagementGuard onlyAdmin={true}>
+                <Inventory />
+              </ManagementGuard>
             </AuthGuard>
         },
         {
           path: RoutePath.OrderAdmin,
           element:
             <AuthGuard>
-              <OrderAdmin />
+              <ManagementGuard onlyAdmin={true}>
+                <OrderAdmin />
+              </ManagementGuard>
             </AuthGuard>
         },
         {
           path: RoutePath.Customer,
           element:
             <AuthGuard>
-              <Customer />
+              <ManagementGuard onlyAdmin={true}>
+                <Customer />
+              </ManagementGuard>
             </AuthGuard>
         },
         {
           path: RoutePath.Notification,
           element:
             <AuthGuard>
-              <Notification />
+              <ManagementGuard>
+                <Notification />
+              </ManagementGuard>
             </AuthGuard>
         },
         {
           path: RoutePath.Transaction,
           element:
             <AuthGuard>
-              <Transaction />
+              <ManagementGuard onlyAdmin={true}>
+                <Transaction />
+              </ManagementGuard>
             </AuthGuard>
         },
         {
           path: RoutePath.Category,
           element:
             <AuthGuard>
-              <CategoryAdmin />
+              <ManagementGuard onlyAdmin={true}>
+                <CategoryAdmin />
+              </ManagementGuard>
             </AuthGuard>
         },
       ]

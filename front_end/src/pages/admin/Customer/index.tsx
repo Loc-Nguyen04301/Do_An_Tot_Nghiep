@@ -92,8 +92,13 @@ const Customer = () => {
                                 <Tag color={"blue"}>
                                     {record.role}
                                 </Tag>
-                                :
-                                <></>
+                                : record.role === Role.SELLER
+                                    ?
+                                    <Tag color={"green"}>
+                                        {record.role}
+                                    </Tag>
+                                    :
+                                    <></>
                     }
 
                 </>
@@ -123,7 +128,7 @@ const Customer = () => {
             render: (_, record) =>
                 <div className='flex items-center' >
                     <div className='flex gap-2'>
-                        {record?.role !== Role.ADMIN &&
+                        {record?.role === Role.USER &&
                             <Button className={clsx('cursor-pointer', record.active ? "text-red-500 hover:!border-red-500 hover:!text-red-500" : "text-blue-500 ")}
                                 onClick={() => handleActive(record.id)}
                                 disabled={isDisabled}>

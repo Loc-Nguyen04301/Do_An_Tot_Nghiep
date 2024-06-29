@@ -74,7 +74,7 @@ const Header = () => {
                 <div className="dropdown-content profile top-[30px] right-0 bg-gray-200 rounded-md">
                   <div className="py-2 px-4 min-w-[160px] rounded-lg">
                     <div className="text-center text-[#666666] text-base flex flex-col gap-1">
-                      {user.role === Role.ADMIN && <Link to={RoutePath.DashBoard} className="cursor-pointer hover:text-main-orange-color">Quản lý</Link>}
+                      {user.role !== Role.USER && <Link to={RoutePath.DashBoard} className="cursor-pointer hover:text-main-orange-color">Quản lý</Link>}
                       {user.role === Role.USER && <Link to={RoutePath.Profile} className="cursor-pointer hover:text-main-orange-color">Tài khoản của tôi</Link>}
                       {user.role === Role.USER && <Link to={RoutePath.Purchase} className="cursor-pointer hover:text-main-orange-color">Đơn mua</Link>}
                       <div className="cursor-pointer hover:text-main-orange-color" onClick={handleLogout}>Đăng xuất</div>

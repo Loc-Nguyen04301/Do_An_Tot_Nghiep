@@ -21,7 +21,6 @@ import DashboardService from '@/services/DashboardService';
 import { useAlertDispatch } from '@/contexts/AlertContext';
 import { convertNumbertoMoney } from '@/utils';
 import { Helmet } from 'react-helmet-async';
-import useAdminCheck from '@/hooks/useAdminCheck';
 import dayjs from "dayjs"
 
 ChartJS.register(
@@ -64,8 +63,6 @@ const DashBoard = () => {
     useEffect(() => {
         getDashboard()
     }, [])
-
-    useAdminCheck()
 
     return (
         <>

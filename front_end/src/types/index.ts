@@ -34,6 +34,7 @@ export interface IProduct {
 
 export enum Role {
     USER = 'USER',
+    SELLER = 'SELLER',
     ADMIN = 'ADMIN',
 }
 

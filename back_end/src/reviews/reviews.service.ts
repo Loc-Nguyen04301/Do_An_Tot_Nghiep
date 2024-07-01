@@ -1,6 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateReviewDto } from './dto/create-review.dto';
-import { UpdateReviewDto } from './dto/update-review.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -15,7 +14,8 @@ export class ReviewsService {
   async getListReviewByProductId(productId: number) {
     const listReview = await this.prisma.review.findMany({
       where: {
-        product_id: productId
+        product_id: productId,
+        active: false
       },
       select: {
         id: true,
@@ -30,6 +30,9 @@ export class ReviewsService {
         description: true,
         star: true,
         created_at: true
+      },
+      orderBy: {
+        created_at: "desc"
       }
     })
 
@@ -63,7 +66,12 @@ export class ReviewsService {
         },
         star: true,
         description: true,
-        images: true
+        images: true,
+        active: true,
+        created_at: true
+      },
+      orderBy: {
+        created_at: "desc"
       }
     })
 
@@ -73,20 +81,40 @@ export class ReviewsService {
       user_name: review.user.username,
       star: review.star,
       description: review.description,
-      images: review.images
+      images: review.images,
+      active: review.active,
+      created_at: review.created_at
     }));
     return transformedReviews
   }
 
-  // findOne(id: number) {
-  //   return `This action returns a #${id} review`;
-  // }
+  async blockReview(ids: number[]) {
+    if (ids.length > 0) {
+      const updateReviews = await this.prisma.review.updateMany({
+        where: {
+          id: {
+            in: ids
+          }
+        },
+        data: {
+          active: false
+        }
+      })
 
-  // update(id: number, updateReviewDto: UpdateReviewDto) {
-  //   return `This action updates a #${id} review`;
-  // }
+      if (!updateReviews) throw new BadRequestException('Lỗi cập nhật đánh giá');
+    }
+    else {
+      throw new BadRequestException('Không có danh sách ids đánh giá');
+    }
+  }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} review`;
-  // }
+  async activeReview(id: number) {
+    const updateReview = await this.prisma.review.update({
+      where: { id },
+      data: {
+        active: true
+      }
+    })
+    return updateReview
+  }
 }

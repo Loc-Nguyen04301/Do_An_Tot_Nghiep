@@ -1,19 +1,19 @@
-import { Avatar, Button, Space, Table, TableProps, Tag, Typography } from "antd";
-import { useEffect, useState } from "react";
-import { useAlertDispatch } from "@/contexts/AlertContext";
-import UserService from "@/services/UserService";
-import { Helmet } from "react-helmet-async";
-import { CheckOutlined, CloseOutlined, BarsOutlined } from '@ant-design/icons';
+import { Avatar, Button, Space, Table, TableProps, Tag, Typography } from "antd"
+import { useEffect, useState } from "react"
+import { useAlertDispatch } from "@/contexts/AlertContext"
+import UserService from "@/services/UserService"
+import { Helmet } from "react-helmet-async"
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
 import { format } from "date-fns"
-import { ICustomer, Role } from "@/types";
-import clsx from "clsx";
-import { useAppSelector } from "@/redux-toolkit/hook";
+import { ICustomer, Role } from "@/types"
+import clsx from "clsx"
+import { useAppSelector } from "@/redux-toolkit/hook"
 
 var DATETIME_FORMAT = 'dd-MM-yyyy HH:mm'
 
 const Customer = () => {
     const { user } = useAppSelector((state) => state.auth)
-    const [dataSource, setDataSource] = useState<ICustomer[]>([]);
+    const [dataSource, setDataSource] = useState<ICustomer[]>([])
     const [isDisabled, setIsDisabled] = useState(false)
     const dispatchAlert = useAlertDispatch()
 
@@ -30,7 +30,7 @@ const Customer = () => {
         }
 
         getCustomers()
-    }, [isDisabled]);
+    }, [isDisabled])
 
     const handleActive = async (id: number) => {
         dispatchAlert({ loading: true })
@@ -129,13 +129,13 @@ const Customer = () => {
             render: (_, record) =>
                 <div className='flex items-center' >
                     <div className='flex gap-2'>
-                        {user?.role === Role.ADMIN &&
-                            <Button className={clsx('cursor-pointer', record.active ? "text-red-500 hover:!border-red-500 hover:!text-red-500" : "text-blue-500 ")}
-                                onClick={() => handleActive(record.id)}
-                                disabled={isDisabled}>
-                                {record.active ? "Inactive" : "Active"}
-                            </Button>
-                        }
+                        <Button
+                            className={clsx('cursor-pointer', record.active ? "text-red-500 hover:!border-red-500 hover:!text-red-500" : "text-blue-500 ")}
+                            onClick={() => handleActive(record.id)}
+                            disabled={isDisabled}
+                        >
+                            {record.active ? "Inactive" : "Active"}
+                        </Button>
                     </div>
                 </div >
         },
@@ -157,7 +157,7 @@ const Customer = () => {
                 ></Table>
             </Space>
         </>
-    );
+    )
 }
 
-export default Customer;
+export default Customer

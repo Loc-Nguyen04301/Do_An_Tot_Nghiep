@@ -33,18 +33,19 @@ export class ReviewsController {
     return this.reviewsService.getListReviewByProductId(productId);
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.reviewsService.findOne(+id);
-  // }
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor('Review Success'))
+  @Post('/list/block')
+  blockReview(@Body() { ids }: { ids: number[] }) {
+    return this.reviewsService.blockReview(ids);
+  }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto) {
-  //   return this.reviewsService.update(+id, updateReviewDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.reviewsService.remove(+id);
-  // }
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor('Review Success'))
+  @Patch('/active/:id')
+  activeReview(@Param('id', ParseIntPipe) id: number) {
+    return this.reviewsService.activeReview(id);
+  }
 }

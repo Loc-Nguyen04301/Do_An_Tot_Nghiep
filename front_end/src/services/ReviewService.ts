@@ -13,6 +13,14 @@ const getListReview = () => {
     return http.get(`/reviews/list`)
 }
 
-const ReviewService = { createReview, getListReviewByProductId, getListReview }
+const blockListReview = (data: { ids: number[] }) => {
+    return http.post(`/reviews/list/block`, data)
+}
+
+const activeReview = (id: number) => {
+    return http.patch(`/reviews/active/${id}`)
+}
+
+const ReviewService = { createReview, getListReviewByProductId, getListReview, blockListReview, activeReview }
 
 export default ReviewService

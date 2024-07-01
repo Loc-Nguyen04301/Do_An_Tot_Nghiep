@@ -20,6 +20,14 @@ export class ReviewsController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(new SuccessInterceptor('Review Success'))
+  @Get('/list')
+  getListReview() {
+    return this.reviewsService.getListReview();
+  }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor('Review Success'))
   @Get('/list/:productId')
   getListReviewByProductId(@Param('productId', ParseIntPipe) productId: number) {
     return this.reviewsService.getListReviewByProductId(productId);

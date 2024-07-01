@@ -8,7 +8,8 @@ import {
     SearchOutlined,
     TransactionOutlined,
     HomeOutlined,
-    MenuOutlined
+    MenuOutlined,
+    StarOutlined
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Avatar, Layout, Menu, theme, Typography } from 'antd';
@@ -49,6 +50,7 @@ export enum RoutePathAdmin {
     Notification = "/admin/notification",
     Transaction = "/admin/transaction",
     Category = "/admin/category",
+    ReviewAdmin = "/admin/review",
     Logout = "/"
 }
 
@@ -67,6 +69,7 @@ const AdminLayout = ({ children }: AdminLayouttProps) => {
         getItem('Lịch sử giao dịch', RoutePathAdmin.Transaction, <TransactionOutlined />),
         getItem('Sản phẩm', RoutePathAdmin.Inventory, <ShopOutlined />),
         getItem('Danh mục sản phẩm', RoutePathAdmin.Category, <MenuOutlined />),
+        getItem('Đánh giá sản phẩm', RoutePathAdmin.ReviewAdmin, <StarOutlined />),
         getItem('Thành viên', RoutePathAdmin.Customer, <UserOutlined />),
         getItem('Thông báo', RoutePathAdmin.Notification, <BellOutlined />),
         getItem('Đăng xuất', RoutePathAdmin.Logout, <LogoutOutlined />)

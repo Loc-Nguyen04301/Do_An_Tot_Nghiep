@@ -1,5 +1,8 @@
-:where(.css-dev-only-do-not-override-amq5gd).ant-btn-primary {
+.ant-btn-primary {
   background-color: #1677ff !important;
+  &:hover {
+    background-color: #4096ff !important;
+  }
 }
 .ant-segmented {
   background-color: white;

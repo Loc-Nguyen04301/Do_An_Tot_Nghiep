@@ -9,6 +9,10 @@ const getListReviewByProductId = (productId: number) => {
     return http.get(`/reviews/list/${productId}`)
 }
 
-const ReviewService = { createReview, getListReviewByProductId }
+const getListReview = () => {
+    return http.get(`/reviews/list`)
+}
+
+const ReviewService = { createReview, getListReviewByProductId, getListReview }
 
 export default ReviewService

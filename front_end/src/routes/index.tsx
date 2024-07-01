@@ -37,6 +37,7 @@ const UpdateBill = lazy(() => import("@/pages/admin/UpdateBill"));
 const Notification = lazy(() => import("@/pages/admin/Notification"));
 const Transaction = lazy(() => import("@/pages/admin/Transaction"));
 const CategoryAdmin = lazy(() => import("@/pages/admin/CategoryAdmin"));
+const ReviewAdmin = lazy(() => import("@/pages/admin/ReviewAdmin"));
 
 export enum RoutePath {
   NotFound = "/not-found",
@@ -67,6 +68,7 @@ export enum RoutePath {
   UpdateBill = "/admin/bill/detail",
   Transaction = "/admin/transaction",
   Category = "/admin/category",
+  ReviewAdmin = "/admin/review",
 }
 
 const Router: React.FC = () => {
@@ -162,6 +164,15 @@ const Router: React.FC = () => {
             <AuthGuard>
               <ManagementGuard onlyAdmin={true}>
                 <CategoryAdmin />
+              </ManagementGuard>
+            </AuthGuard>
+        },
+        {
+          path: RoutePath.ReviewAdmin,
+          element:
+            <AuthGuard>
+              <ManagementGuard onlyAdmin={true}>
+                <ReviewAdmin />
               </ManagementGuard>
             </AuthGuard>
         },

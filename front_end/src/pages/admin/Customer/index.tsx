@@ -148,7 +148,7 @@ const Customer = () => {
                 <meta name='description' content='Beginner friendly page for learning React Helmet.' />
             </Helmet>
             <Typography.Title level={4}>Thành viên</Typography.Title>
-            <Space direction="horizontal" className='w-full justify-center !block'>
+            <Space direction="horizontal" className='w-full !block'>
                 <Table
                     columns={columns}
                     dataSource={dataSource}

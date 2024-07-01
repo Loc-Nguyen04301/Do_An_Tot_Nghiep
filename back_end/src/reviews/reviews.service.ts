@@ -47,6 +47,37 @@ export class ReviewsService {
     return { listReview, all_star, five_star, four_star, three_star, two_star, one_star, average_rating }
   }
 
+  async getListReview() {
+    const listReview = await this.prisma.review.findMany({
+      select: {
+        id: true,
+        product: {
+          select: {
+            name: true
+          }
+        },
+        user: {
+          select: {
+            username: true
+          }
+        },
+        star: true,
+        description: true,
+        images: true
+      }
+    })
+
+    const transformedReviews = listReview.map(review => ({
+      key: review.id,
+      product_name: review.product.name,
+      user_name: review.user.username,
+      star: review.star,
+      description: review.description,
+      images: review.images
+    }));
+    return transformedReviews
+  }
+
   // findOne(id: number) {
   //   return `This action returns a #${id} review`;
   // }

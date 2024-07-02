@@ -5,8 +5,8 @@ import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
 import { format } from 'date-fns'
-import "./ReviewAdmin.scss"
 import { clsx } from 'clsx'
+import "./ReviewAdmin.scss"
 
 var DATETIME_FORMAT = 'dd-MM-yyyy HH:mm'
 
@@ -25,6 +25,7 @@ const ReviewAdmin = () => {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
     const [dataSource, setDataSource] = useState<IReviewAdmin[]>([])
+    const [isDisabled, setIsDisabled] = useState(false)
     const dispatchAlert = useAlertDispatch()
 
     const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
@@ -52,7 +53,7 @@ const ReviewAdmin = () => {
         }
 
         getReviews()
-    }, [])
+    }, [isDisabled])
 
     const showModal = () => {
         setIsModalOpen(true)
@@ -77,9 +78,12 @@ const ReviewAdmin = () => {
     const handleActive = async (id: React.Key) => {
         dispatchAlert({ loading: true })
         try {
-            await ReviewService.activeReview(id as number)
-            dispatchAlert({ loading: false })
-            window.location.reload()
+            const res = await ReviewService.activeReview(id as number)
+            dispatchAlert({ success: res.data.message })
+            setIsDisabled(true)
+            setTimeout(() => {
+                setIsDisabled(false)
+            }, 2000)
         } catch (error: any) {
             dispatchAlert({ errors: error.message })
         }
@@ -137,6 +141,7 @@ const ReviewAdmin = () => {
                             <Button
                                 className={clsx('cursor-pointer', record.active ? "text-red-500 hover:!border-red-500 hover:!text-red-500" : "text-blue-500 ")}
                                 onClick={() => handleActive(record.key)}
+                                disabled={isDisabled}
                             >
                                 Active
                             </Button>

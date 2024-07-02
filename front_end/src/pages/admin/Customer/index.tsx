@@ -7,12 +7,10 @@ import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
 import { format } from "date-fns"
 import { ICustomer, Role } from "@/types"
 import clsx from "clsx"
-import { useAppSelector } from "@/redux-toolkit/hook"
 
 var DATETIME_FORMAT = 'dd-MM-yyyy HH:mm'
 
 const Customer = () => {
-    const { user } = useAppSelector((state) => state.auth)
     const [dataSource, setDataSource] = useState<ICustomer[]>([])
     const [isDisabled, setIsDisabled] = useState(false)
     const dispatchAlert = useAlertDispatch()
@@ -36,8 +34,8 @@ const Customer = () => {
         dispatchAlert({ loading: true })
         try {
             const res = await UserService.activeUser(id)
-            setIsDisabled(true)
             dispatchAlert({ success: res.data.message })
+            setIsDisabled(true)
             setTimeout(() => {
                 setIsDisabled(false)
             }, 2000)

@@ -6,7 +6,8 @@ import axios from 'axios'
 import { Helmet } from 'react-helmet-async'
 import { FilterDropdownProps } from 'antd/es/table/interface'
 import Highlighter from 'react-highlight-words'
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined } from '@ant-design/icons'
+import { format, subMonths } from 'date-fns'
 
 interface ITransaction {
     id: number
@@ -18,16 +19,22 @@ interface ITransaction {
 const Transaction = () => {
     const [dataSource, setDataSource] = useState<ITransaction[]>([])
     const [currentPage, setCurrentPage] = useState(1)
+    const [pageSize, setPageSize] = useState(10)
     const [totalRecords, setTotalRecords] = useState(0)
     const dispatchAlert = useAlertDispatch()
 
-    type DataIndex = keyof ITransaction;
-    const searchInput = useRef<InputRef>(null);
-    const [searchText, setSearchText] = useState('');
-    const [searchedColumn, setSearchedColumn] = useState('');
+    type DataIndex = keyof ITransaction
+    const searchInput = useRef<InputRef>(null)
+    const [searchText, setSearchText] = useState('')
+    const [searchedColumn, setSearchedColumn] = useState('')
+
+    // Get time 1 month ago
+    const currentDate = new Date()
+    const oneMonthAgo = subMonths(currentDate, 1)
+    const fromDate = format(oneMonthAgo, 'yyyy-MM-dd')
 
     useEffect(() => {
-        const getTransactions = async (currentPage: number) => {
+        const getTransactions = async () => {
             dispatchAlert({ loading: true })
             try {
                 const res = await axios(
@@ -37,7 +44,9 @@ const Transaction = () => {
                         url: `${import.meta.env.VITE_CASSO_TRANSACTION_URL}`,
                         params: {
                             "page": currentPage,
-                            "sort": "DESC"
+                            "sort": "DESC",
+                            "pageSize": pageSize,
+                            "fromDate": fromDate
                         }
                     },)
                 setDataSource(res.data.data.records)
@@ -47,23 +56,23 @@ const Transaction = () => {
                 dispatchAlert({ errors: error.message })
             }
         }
-        if (currentPage) getTransactions(currentPage)
-    }, [currentPage])
+        if (currentPage && pageSize && fromDate) getTransactions()
+    }, [currentPage, pageSize, fromDate])
 
     const handleSearch = (
         selectedKeys: string[],
         confirm: FilterDropdownProps['confirm'],
         dataIndex: DataIndex,
     ) => {
-        confirm();
-        setSearchText(selectedKeys[0]);
-        setSearchedColumn(dataIndex);
-    };
+        confirm()
+        setSearchText(selectedKeys[0])
+        setSearchedColumn(dataIndex)
+    }
 
     const handleReset = (clearFilters: () => void) => {
-        clearFilters();
-        setSearchText('');
-    };
+        clearFilters()
+        setSearchText('')
+    }
 
     const getColumnSearchProps = (dataIndex: DataIndex): TableColumnType<ITransaction> => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
@@ -97,9 +106,9 @@ const Transaction = () => {
                         type="link"
                         size="small"
                         onClick={() => {
-                            confirm({ closeDropdown: false });
-                            setSearchText((selectedKeys as string[])[0]);
-                            setSearchedColumn(dataIndex);
+                            confirm({ closeDropdown: false })
+                            setSearchText((selectedKeys as string[])[0])
+                            setSearchedColumn(dataIndex)
                         }}
                     >
                         Filter
@@ -108,7 +117,7 @@ const Transaction = () => {
                         type="link"
                         size="small"
                         onClick={() => {
-                            close();
+                            close()
                         }}
                     >
                         close
@@ -126,7 +135,7 @@ const Transaction = () => {
                 .includes((value as string).toLowerCase()),
         onFilterDropdownOpenChange: (visible) => {
             if (visible) {
-                setTimeout(() => searchInput.current?.select(), 100);
+                setTimeout(() => searchInput.current?.select(), 100)
             }
         },
         render: (text) =>
@@ -141,7 +150,7 @@ const Transaction = () => {
             ) : (
                 <span className='truncate'>{text}</span>
             ),
-    });
+    })
 
     const columns: TableProps<ITransaction>['columns'] = [
         {
@@ -173,13 +182,16 @@ const Transaction = () => {
     ]
 
     const paginationConfig: TablePaginationConfig = {
-        pageSize: 10,
-        total: totalRecords,
         current: currentPage,
+        pageSize: pageSize,
+        total: totalRecords,
         onChange: (page: number) => {
             setCurrentPage(page)
         },
-        position: ["bottomCenter"]
+        position: ["bottomCenter"],
+        onShowSizeChange(current, size) {
+            setPageSize(size)
+        },
     }
 
     return (

@@ -82,7 +82,7 @@ const CategoryAdmin = () => {
           Thêm mới danh mục
         </Button>
       </div>
-      <Modal title="Tạo mới danh mục" open={isModalOpen} onCancel={handleCancel}>
+      <Modal title="Tạo mới danh mục" open={isModalOpen} onCancel={handleCancel} onOk={handleCancel}>
         <Form
           name="basic"
           labelCol={{ span: 7 }}

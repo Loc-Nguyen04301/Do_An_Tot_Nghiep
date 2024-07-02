@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import {
     ShopOutlined,
     ShoppingCartOutlined,
@@ -160,4 +160,4 @@ const AdminLayout = ({ children }: AdminLayouttProps) => {
     )
 }
 
-export default AdminLayout
+export default memo(AdminLayout)

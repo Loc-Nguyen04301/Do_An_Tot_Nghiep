@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { memo, useEffect } from 'react'
 import { useAlertContext } from '@/contexts/AlertContext'
 import Loading from './Loading'
 import { Bounce, toast, ToastContainer } from 'react-toastify';
@@ -35,4 +35,4 @@ const Alert = () => {
     )
 }
 
-export default Alert
+export default memo(Alert)

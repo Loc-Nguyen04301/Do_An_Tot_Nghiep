@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect } from "react";
+import React, { Suspense, lazy, memo, useEffect } from "react";
 import { useLocation, useRoutes } from "react-router-dom";
 import DefaultLayout from "@/layouts/DefaultLayout";
 import AdminLayout from "@/layouts/AdminLayout";
@@ -307,4 +307,4 @@ const Router: React.FC = () => {
   return <Suspense fallback={<Loading />}>{routes}</Suspense>;
 };
 
-export default Router;
+export default memo(Router)

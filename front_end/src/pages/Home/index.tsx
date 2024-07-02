@@ -9,6 +9,8 @@ import { useAppSelector } from "@/redux-toolkit/hook"
 
 const Home = () => {
   const { categoryList } = useAppSelector((state) => state.category)
+  const fromDate = ""
+  const toDate = ""
 
   return (
     <>
@@ -28,6 +30,10 @@ const Home = () => {
         <div className="flex flex-col gap-14">
           {categoryList.length > 0 &&
             <>
+              {
+                fromDate && toDate &&
+                <ProductsByCategory categoryPath={categoryList[8].path} categoryName={categoryList[8].name} isSuperSale />
+              }
               <ProductsByCategory categoryPath={categoryList[7].path} categoryName={categoryList[7].name} />
               <ProductsByCategory categoryPath={categoryList[0].path} categoryName={categoryList[0].name} />
               <ProductsByCategory categoryPath={categoryList[1].path} categoryName={categoryList[1].name} />

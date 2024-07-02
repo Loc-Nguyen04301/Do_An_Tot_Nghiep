@@ -1,0 +1,50 @@
+.flash-sale-header {
+  margin-left: 50px;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 40%;
+  left: 35%;
+  transform: translate(-50%, -50%);
+}
+
+.show-counter .countdown-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #000;
+  margin-bottom: 8px;
+}
+
+.show-counter {
+  .countdown,
+  .countdown-danger {
+    padding: 0 0.75rem 0 0.75rem;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.show-counter .countdown-danger > p {
+  color: #ff0000;
+  font-size: 1rem;
+}
+
+.show-counter .countdown-danger > span {
+  color: #ff0000;
+  margin: 0 !important;
+  font-size: 1rem;
+  line-height: 1rem;
+}
+
+.show-counter .countdown > p {
+  font-size: 1rem;
+}
+
+.show-counter .countdown > span {
+  font-size: 1rem;
+  line-height: 1rem;
+}

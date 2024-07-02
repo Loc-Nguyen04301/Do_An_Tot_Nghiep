@@ -6,13 +6,15 @@ import { IProduct } from '@/types'
 import { useAlertDispatch } from '@/contexts/AlertContext'
 import ProductCard from '@/components/ProductCard'
 import { RoutePath } from '@/routes'
+import CountDownTimer from '@/pages/Home/components/CountDownTimer'
 
 interface ProductsByCategoryProps {
     categoryPath: string;
     categoryName: string;
+    isSuperSale?: boolean
 }
 
-const ProductsByCategory = ({ categoryPath, categoryName }: ProductsByCategoryProps) => {
+const ProductsByCategory = ({ categoryPath, categoryName, isSuperSale = false }: ProductsByCategoryProps) => {
     const [products, setProducts] = useState<IProduct[]>([]);
     const dispatchAlert = useAlertDispatch()
 
@@ -33,13 +35,14 @@ const ProductsByCategory = ({ categoryPath, categoryName }: ProductsByCategoryPr
 
     return (
         <div className="px-2">
-            <div className="border-b-[1px] border-border-color pb-2">
+            <div className="border-b-[1px] border-border-color flex relative">
                 <a
                     className="text-category-title text-[20px] font-bold uppercase border-b-[3px] border-border-color pb-2"
                     href={`${RoutePath.ListByCategory}/${categoryPath}`}
                 >
                     {categoryName}
                 </a>
+                {isSuperSale && <CountDownTimer fromDate="2024-07-03" toDate='2024-07-04' />}
             </div>
             <div className="mt-8">
                 {products.length > 0 &&

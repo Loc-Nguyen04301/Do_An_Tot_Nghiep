@@ -12,12 +12,12 @@ import { BillsModule } from './bills/bills.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { CategoryModule } from './category/category.module';
 import { MailModule } from './mail/mail.module'
+import { SaleCampaignModule } from './salecampaign/salecampaign.module';
 
 import { AtGuard, RolesGuard } from './common/guards';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { UserModule } from './user/user.module';
 import { MomoPaymentController } from './momo_payment/momo_payment.controller';
-import { SalecampaignModule } from './salecampaign/salecampaign.module';
 
 @Module({
   imports: [
@@ -55,7 +55,7 @@ import { SalecampaignModule } from './salecampaign/salecampaign.module';
     UserModule,
     CategoryModule,
     MailModule,
-    SalecampaignModule
+    SaleCampaignModule
   ],
   providers: [
     {

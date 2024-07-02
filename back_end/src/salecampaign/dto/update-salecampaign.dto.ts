@@ -1,8 +1,8 @@
 import { PartialType } from '@nestjs/swagger';
-import { CreateSalecampaignDto } from './create-salecampaign.dto';
+import { CreateSaleCampaignDto } from './create-saleCampaign.dto';
 import { IsBoolean } from 'class-validator';
 
-export class UpdateSalecampaignDto extends PartialType(CreateSalecampaignDto) {
+export class UpdateSaleCampaignDto extends PartialType(CreateSaleCampaignDto) {
     @IsBoolean()
     active: boolean
 }

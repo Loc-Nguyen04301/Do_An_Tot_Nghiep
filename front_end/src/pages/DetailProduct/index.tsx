@@ -85,7 +85,7 @@ const DetailProduct = () => {
         if (label && label.length > 0) {
           const res = await ProductService.getProductById(Number(label))
           setProduct(res.data.data)
-          const randomCategory = res.data.data.categories[0].category.name
+          const randomCategory = res.data.data.categories[0].category.path
           setRelatedCategory(randomCategory)
           dispatchAlert({ loading: false })
         }
@@ -103,7 +103,6 @@ const DetailProduct = () => {
       try {
         if (relatedCategory) {
           const res = await ProductService.getProductsByCategory(relatedCategory)
-          // Show maximum 6 items in Related Products
           var relatedProducts = res.data.data as IDetailProduct[]
           relatedProducts = relatedProducts.filter((item) => item.id !== product?.id)
           setRelatedProducts(relatedProducts)

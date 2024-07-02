@@ -19,6 +19,14 @@ const getOnlyCampaignActive = () => {
     return http.get(`/salecampaign/only`)
 }
 
-const SaleCampaignService = { createCampaign, getCampaign, getOnlyCampaignActive }
+const activeCampaign = (id: number) => {
+    return http.post(`/salecampaign/active/${id}`)
+}
+
+const deleteCampaign = (id: number) => {
+    return http.delete(`/salecampaign/delete/${id}`)
+}
+
+const SaleCampaignService = { createCampaign, getCampaign, getOnlyCampaignActive, activeCampaign, deleteCampaign }
 
 export default SaleCampaignService

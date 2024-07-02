@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, UseInterceptors, ParseIntPipe } from '@nestjs/common';
 import { SaleCampaignService } from './salecampaign.service';
 import { CreateSaleCampaignDto } from './dto/create-salecampaign.dto';
 import { UpdateSaleCampaignDto } from './dto/update-salecampaign.dto';
@@ -33,6 +33,23 @@ export class SaleCampaignController {
   getOnlyCampaignActive() {
     return this.salecampaignService.getOnlyCampaignActive();
   }
+
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor())
+  @Post('/active/:id')
+  activeCampaign(@Param('id', ParseIntPipe) id: number) {
+    return this.salecampaignService.activeCampaign(id);
+  }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor())
+  @Delete('/delete/:id')
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.salecampaignService.remove(+id);
+  }
   // @Get(':id')
   // findOne(@Param('id') id: string) {
   //   return this.salecampaignService.findOne(+id);
@@ -43,8 +60,4 @@ export class SaleCampaignController {
   //   return this.salecampaignService.update(+id, updateSalecampaignDto);
   // }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.salecampaignService.remove(+id);
-  // }
 }

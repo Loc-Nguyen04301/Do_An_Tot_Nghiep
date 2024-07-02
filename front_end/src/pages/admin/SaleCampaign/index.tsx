@@ -8,8 +8,11 @@ import "./SaleCampaign.scss"
 import SaleCampaignService from '@/services/SaleCampaignService';
 import { useAlertDispatch } from '@/contexts/AlertContext';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
+import clsx from "clsx"
+import { useAppDispatch, useAppSelector } from '@/redux-toolkit/hook';
+import { activeCampaign, createCampaign, deleteCampaign, getCampaigns } from '@/redux-toolkit/saleCampaignSlice';
 
-interface ISaleCampaign {
+export interface ISaleCampaign {
     id: number
     name: string
     from_date: string
@@ -17,25 +20,13 @@ interface ISaleCampaign {
     active: boolean
 }
 
-type FieldType = {
-    name?: string
-};
-
 const SaleCampaign = () => {
-    const [listCampaign, setListCampaign] = useState<ISaleCampaign[]>([])
+    const { listCampaign } = useAppSelector(state => state.saleCampaign)
     const dispatchAlert = useAlertDispatch()
+    const dispatch = useAppDispatch()
+
     useEffect(() => {
-        const getCampaigns = async () => {
-            dispatchAlert({ loading: true })
-            try {
-                const res = await SaleCampaignService.getCampaign()
-                setListCampaign(res.data.data)
-                dispatchAlert({ loading: false })
-            } catch (error: any) {
-                dispatchAlert({ errors: error.message })
-            }
-        }
-        getCampaigns()
+        dispatch(getCampaigns())
     }, [])
 
     const columns: TableProps<ISaleCampaign>['columns'] = [
@@ -56,8 +47,8 @@ const SaleCampaign = () => {
         },
         {
             title: "Ngày kết thúc",
-            key: "from_date",
-            render: (_, record) => record.from_date
+            key: "to_date",
+            render: (_, record) => record.to_date
         },
         {
             title: "Trạng thái",
@@ -72,9 +63,49 @@ const SaleCampaign = () => {
                             <CloseOutlined className="text-red-500" />
                     }
                 </>
-
+        },
+        {
+            title: '',
+            key: 'activeItem',
+            render: (_, record) => <div className='flex items-center' >
+                <div className='flex gap-2'>
+                    <Button
+                        className={clsx('cursor-pointer', "text-blue-500 ", !record.active && 'invisible')}
+                        onClick={() => handleActive(record.id)}
+                    >
+                        Kích hoạt
+                    </Button>
+                    <Button
+                        className={clsx('cursor-pointer', "text-red-500 hover:!border-red-500 hover:!text-red-500")}
+                        onClick={() => handleDelete(record.id)}
+                    >
+                        Xóa
+                    </Button>
+                </div>
+            </div >
         },
     ]
+    const handleActive = async (id: number) => {
+        dispatchAlert({ loading: true })
+        try {
+            dispatch(activeCampaign(id)).then(() => {
+                dispatchAlert({ success: "Kích hoạt thành công" })
+            })
+        } catch (error: any) {
+            dispatchAlert({ errors: error.message })
+        }
+    }
+
+    const handleDelete = async (id: number) => {
+        dispatchAlert({ loading: true })
+        try {
+            dispatch(deleteCampaign(id)).then(() => {
+                dispatchAlert({ success: "Xóa chiến dịch thành công" })
+            })
+        } catch (error: any) {
+            dispatchAlert({ errors: error.message })
+        }
+    }
 
     const onFinish = async (fieldsValue: any) => {
         const rangeValue = fieldsValue['range-picker'];
@@ -85,16 +116,15 @@ const SaleCampaign = () => {
         }
         dispatchAlert({ loading: true })
         try {
-            const res = await SaleCampaignService.createCampaign(values)
-            dispatchAlert({ success: res.data.message })
-            console.log(res)
+            dispatch(createCampaign(values)).then(() => {
+                dispatchAlert({ success: 'Tạo chiến dịch thành công' })
+            })
         } catch (error) {
-            console.log(error)
+            dispatchAlert({ errors: 'Tạo chiến dịch thất bại' })
         }
-        console.log('Received values of form: ', values);
     };
 
-    const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+    const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
 
@@ -117,7 +147,7 @@ const SaleCampaign = () => {
                         autoComplete="off"
                         className='w-[600px] text-center'
                     >
-                        <Form.Item<FieldType>
+                        <Form.Item
                             label="Tên chiến dịch"
                             name="name"
                             rules={[{ required: true, message: 'Vui lòng nhập tên chiến dịch!' }]}

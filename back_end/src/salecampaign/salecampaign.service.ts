@@ -32,6 +32,30 @@ export class SaleCampaignService {
     return campaign
   }
 
+  async activeCampaign(id: number) {
+    await this.prisma.$transaction(async (tr) => {
+      await tr.saleCampaign.update({
+        where: { id: id },
+        data: { active: true },
+      });
+
+      await tr.saleCampaign.updateMany({
+        where: { id: { not: id } },
+        data: { active: false },
+      });
+    })
+    return
+  }
+
+  async remove(id: number) {
+    const campaign = await this.prisma.saleCampaign.delete({
+      where: {
+        id: id
+      }
+    })
+    return campaign
+  }
+
   // findOne(id: number) {
   //   return `This action returns a #${id} salecampaign`;
   // }
@@ -40,7 +64,5 @@ export class SaleCampaignService {
   //   return `This action updates a #${id} salecampaign`;
   // }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} salecampaign`;
-  // }
+
 }

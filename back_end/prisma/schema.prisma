@@ -130,7 +130,7 @@ model Item {
 
 model SaleCampaign {
   id         Int       @id @default(autoincrement())
-  name       String
+  name       String    @unique
   from_date  String
   to_date    String
   active     Boolean

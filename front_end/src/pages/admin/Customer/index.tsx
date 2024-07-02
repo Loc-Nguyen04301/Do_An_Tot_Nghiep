@@ -28,7 +28,7 @@ const Customer = () => {
         }
 
         getCustomers()
-    }, [isDisabled])
+    }, [])
 
     const handleActive = async (id: number) => {
         dispatchAlert({ loading: true })
@@ -37,7 +37,7 @@ const Customer = () => {
             dispatchAlert({ success: res.data.message })
             setIsDisabled(true)
             setTimeout(() => {
-                setIsDisabled(false)
+                window.location.reload()
             }, 2000)
         } catch (error) {
             console.log(error)
@@ -123,7 +123,7 @@ const Customer = () => {
         },
         {
             title: '',
-            key: 'deleteItem',
+            key: 'activeItem',
             render: (_, record) =>
                 <div className='flex items-center' >
                     <div className='flex gap-2'>

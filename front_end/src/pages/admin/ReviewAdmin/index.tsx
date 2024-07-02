@@ -29,7 +29,6 @@ const ReviewAdmin = () => {
     const dispatchAlert = useAlertDispatch()
 
     const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-        console.log('selectedRowKeys changed: ', newSelectedRowKeys)
         setSelectedRowKeys(newSelectedRowKeys)
     }
 
@@ -65,7 +64,10 @@ const ReviewAdmin = () => {
             await ReviewService.blockListReview({ ids: selectedRowKeys as number[] })
             setIsModalOpen(false)
             dispatchAlert({ loading: false })
-            window.location.reload()
+            setIsDisabled(true)
+            setTimeout(() => {
+                setIsDisabled(false)
+            }, 2000)
         } catch (error: any) {
             dispatchAlert({ errors: error.message })
         }
@@ -159,7 +161,7 @@ const ReviewAdmin = () => {
             <Typography.Title level={4}>Đánh giá sản phẩm</Typography.Title>
             <Space direction="vertical" className='w-full gap-3'>
                 <Space direction='horizontal'>
-                    <Button disabled={!hasSelected} onClick={showModal}>
+                    <Button type='primary' danger disabled={!hasSelected} onClick={showModal}>
                         Block
                     </Button>
                 </Space>

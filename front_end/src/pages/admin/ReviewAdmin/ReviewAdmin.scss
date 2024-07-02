@@ -1,4 +1,10 @@
 .ant-btn-primary {
+  &.ant-btn-dangerous {
+    background-color: #ff4d4f !important;
+    &:hover {
+      background-color: #ff7875 !important;
+    }
+  }
   background-color: #1677ff !important;
   &:hover {
     background-color: #4096ff !important;

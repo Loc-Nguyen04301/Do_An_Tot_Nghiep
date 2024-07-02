@@ -9,8 +9,8 @@ import { useAppSelector } from "@/redux-toolkit/hook"
 
 const Home = () => {
   const { categoryList } = useAppSelector((state) => state.category)
-  const fromDate = ""
-  const toDate = ""
+  const fromDate = "2024-07-03"
+  const toDate = "2024-07-03"
 
   return (
     <>

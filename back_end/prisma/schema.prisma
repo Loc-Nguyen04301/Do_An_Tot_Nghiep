@@ -43,10 +43,10 @@ model Product {
 
 model Category {
   id         Int                    @id @default(autoincrement())
-  path       String                 @unique
   name       String                 @unique
   created_at DateTime               @default(now())
   update_at  DateTime?              @updatedAt
+  path       String                 @unique
   products   CategoriesOnProducts[]
 }
 
@@ -67,10 +67,10 @@ model Review {
   star        Int       @default(3)
   user_id     Int
   product_id  Int
-  images      String[]
-  active      Boolean   @default(true)
   created_at  DateTime  @default(now())
+  images      String[]
   update_at   DateTime? @updatedAt
+  active      Boolean   @default(true)
   product     Product   @relation(fields: [product_id], references: [id], onDelete: Cascade)
   user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
@@ -85,13 +85,13 @@ model Bill {
   email               String?
   note                String?
   user_id             Int?
+  created_at          DateTime             @default(now())
   order_status        OrderStatus          @default(PROCESSING)
   payment_status      Boolean              @default(false)
   return_status       ReturnStatus         @default(NONE)
+  update_at           DateTime?            @updatedAt
   payment_method      PaymentMethod
   total_amount        Int?
-  created_at          DateTime             @default(now())
-  update_at           DateTime?            @updatedAt
   user                User?                @relation(fields: [user_id], references: [id], onDelete: Cascade)
   items               Item[]
   NotifiBill          NotifiBill?
@@ -118,14 +118,24 @@ model Item {
   bill_id     Int
   product_id  Int
   quantity    Int
-  total_price Int?
-  price       Int
   created_at  DateTime  @default(now())
   update_at   DateTime? @updatedAt
+  total_price Int?
+  price       Int
   bill        Bill      @relation(fields: [bill_id], references: [id], onDelete: Cascade)
   product     Product   @relation(fields: [product_id], references: [id], onDelete: Cascade)
 
   @@unique([bill_id, product_id])
+}
+
+model SaleCampaign {
+  id         Int       @id @default(autoincrement())
+  name       String
+  from_date  String
+  to_date    String
+  active     Boolean
+  created_at DateTime  @default(now())
+  update_at  DateTime? @updatedAt
 }
 
 enum Role {

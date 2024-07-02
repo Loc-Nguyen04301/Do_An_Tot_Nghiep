@@ -25,7 +25,7 @@ const DropDown = () => {
           <a
             key={category.path}
             href={`${RoutePath.ListByCategory}/${category.path}`}
-            className={clsx("px-4 py-3 block w-[244px] border-b border-border-color", currentPath.includes(category.path) && "text-main-orange-color")}>
+            className={clsx("px-4 py-3 block w-[244px] border-b border-border-color uppercase", currentPath.includes(category.path) && "text-main-orange-color")}>
             {category.name}
           </a>
         ))}

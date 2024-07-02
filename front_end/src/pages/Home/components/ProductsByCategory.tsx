@@ -42,7 +42,7 @@ const ProductsByCategory = ({ categoryPath, categoryName, isSuperSale = false }:
                 >
                     {categoryName}
                 </a>
-                {isSuperSale && <CountDownTimer fromDate="2024-07-03" toDate='2024-07-04' />}
+                {isSuperSale && <CountDownTimer fromDate="2024-07-02" toDate='2024-07-03' />}
             </div>
             <div className="mt-8">
                 {products.length > 0 &&

@@ -17,6 +17,7 @@ import { AtGuard, RolesGuard } from './common/guards';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { UserModule } from './user/user.module';
 import { MomoPaymentController } from './momo_payment/momo_payment.controller';
+import { SalecampaignModule } from './salecampaign/salecampaign.module';
 
 @Module({
   imports: [
@@ -53,7 +54,8 @@ import { MomoPaymentController } from './momo_payment/momo_payment.controller';
     DashboardModule,
     UserModule,
     CategoryModule,
-    MailModule
+    MailModule,
+    SalecampaignModule
   ],
   providers: [
     {

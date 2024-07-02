@@ -116,9 +116,12 @@ const SaleCampaign = () => {
         }
         dispatchAlert({ loading: true })
         try {
-            dispatch(createCampaign(values)).then(() => {
-                dispatchAlert({ success: 'Tạo chiến dịch thành công' })
-            })
+            const resultAction = await dispatch(createCampaign(values))
+            if (createCampaign.fulfilled.match(resultAction)) {
+                dispatchAlert({ success: 'Tạo chiến dịch thành công' });
+            } else {
+                dispatchAlert({ errors: resultAction.payload as string });
+            }
         } catch (error) {
             dispatchAlert({ errors: 'Tạo chiến dịch thất bại' })
         }

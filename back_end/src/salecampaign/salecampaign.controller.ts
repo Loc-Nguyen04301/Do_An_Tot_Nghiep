@@ -14,7 +14,6 @@ export class SaleCampaignController {
   @UseInterceptors(new SuccessInterceptor())
   @Post()
   create(@Body() createSalecampaignDto: CreateSaleCampaignDto) {
-    console.log({ createSalecampaignDto })
     return this.salecampaignService.create(createSalecampaignDto);
   }
 

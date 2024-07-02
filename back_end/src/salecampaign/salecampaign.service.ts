@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadGatewayException, Injectable } from '@nestjs/common';
 import { CreateSaleCampaignDto } from './dto/create-salecampaign.dto';
 import { UpdateSaleCampaignDto } from './dto/update-salecampaign.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -8,6 +8,12 @@ export class SaleCampaignService {
   constructor(private prisma: PrismaService) { }
 
   async create(createSaleCampaignDto: CreateSaleCampaignDto) {
+    const existedCampaign = await this.prisma.saleCampaign.findUnique({
+      where: {
+        name: createSaleCampaignDto.name
+      }
+    })
+    if (existedCampaign) throw new BadGatewayException("Chiến lược đã tồn tại")
     const campaign = await this.prisma.saleCampaign.create({
       data: {
         ...createSaleCampaignDto,

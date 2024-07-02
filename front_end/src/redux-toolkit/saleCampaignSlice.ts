@@ -23,9 +23,13 @@ const initialState: SaleCampaignState = {
 
 export const createCampaign = createAsyncThunk(
     "saleCampaign/createCampaign",
-    async ({ name, from_date, to_date }: ICreateSaleCampaign) => {
-        const res = await SaleCampaignService.createCampaign({ name, from_date, to_date })
-        return res.data.data
+    async ({ name, from_date, to_date }: ICreateSaleCampaign, { rejectWithValue }) => {
+        try {
+            const res = await SaleCampaignService.createCampaign({ name, from_date, to_date })
+            return res.data.data
+        } catch (error: any) {
+            return rejectWithValue(error.message);
+        }
     }
 );
 

@@ -7,9 +7,20 @@ import clsx from "clsx"
 import { useAppSelector } from "@/redux-toolkit/hook"
 
 const DropDown = () => {
-  const { categoryList } = useAppSelector((state) => state.category)
+  var { categoryList } = useAppSelector((state) => state.category)
+  const { from_date, to_date } = useAppSelector((state) => state.saleCampaign)
+  const nowMilliSeconds = new Date().getTime()
+  if (
+    !(from_date &&
+      to_date &&
+      new Date(from_date).getTime() <= nowMilliSeconds &&
+      nowMilliSeconds <= new Date(to_date).getTime())
+  ) {
+    categoryList = categoryList.filter(c => c.path !== 'super-sale')
+  }
   const location = useLocation()
   const currentPath = location.pathname
+
   return (
     categoryList.length > 0 &&
     <div className="dropdown">

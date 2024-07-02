@@ -1,16 +1,15 @@
-import React from "react"
 import homeImage1 from "@/assets/images/home_image1.jpg"
 import homeImage2 from "@/assets/images/home_image2.jpg"
 import bottomImage from "@/assets/images/bottom_image.jpg"
 import { Helmet } from "react-helmet-async"
 import ProductsByCategory from "./components/ProductsByCategory"
-import "./Home.scss"
 import { useAppSelector } from "@/redux-toolkit/hook"
+import "./Home.scss"
 
 const Home = () => {
   const { categoryList } = useAppSelector((state) => state.category)
-  const fromDate = "2024-07-03"
-  const toDate = "2024-07-03"
+  const { from_date, to_date } = useAppSelector((state) => state.saleCampaign)
+  const nowMilliSeconds = new Date().getTime()
 
   return (
     <>
@@ -31,8 +30,11 @@ const Home = () => {
           {categoryList.length > 0 &&
             <>
               {
-                fromDate && toDate &&
-                <ProductsByCategory categoryPath={categoryList[8].path} categoryName={categoryList[8].name} isSuperSale />
+                from_date &&
+                to_date &&
+                new Date(from_date).getTime() <= nowMilliSeconds &&
+                nowMilliSeconds <= new Date(to_date).getTime() &&
+                <ProductsByCategory categoryPath={categoryList[8].path} categoryName={categoryList[8].name} from_date={from_date} to_date={to_date} />
               }
               <ProductsByCategory categoryPath={categoryList[7].path} categoryName={categoryList[7].name} />
               <ProductsByCategory categoryPath={categoryList[0].path} categoryName={categoryList[0].name} />

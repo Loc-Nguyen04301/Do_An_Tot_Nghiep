@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { getMe } from "./redux-toolkit/authSlice";
 import { useAppDispatch } from "./redux-toolkit/hook";
 import { retrieveCategory } from "@/redux-toolkit/categorySlice";
+import { getOnlyCampaignActive } from "@/redux-toolkit/saleCampaignSlice";
 
 function App() {
   const dispatch = useAppDispatch()
@@ -13,6 +14,7 @@ function App() {
   useEffect(() => {
     dispatch(getMe())
     dispatch(retrieveCategory())
+    dispatch(getOnlyCampaignActive())
   }, [])
 
   return (

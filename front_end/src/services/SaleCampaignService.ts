@@ -11,6 +11,14 @@ const createCampaign = (data: ICreateSaleCampaign) => {
     return http.post(`/salecampaign`, data)
 }
 
-const SaleCampaignService = { createCampaign }
+const getCampaign = () => {
+    return http.get(`/salecampaign`)
+}
+
+const getOnlyCampaignActive = () => {
+    return http.get(`/salecampaign/only`)
+}
+
+const SaleCampaignService = { createCampaign, getCampaign, getOnlyCampaignActive }
 
 export default SaleCampaignService

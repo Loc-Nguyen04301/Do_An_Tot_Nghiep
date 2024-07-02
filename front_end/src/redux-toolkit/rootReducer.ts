@@ -8,6 +8,7 @@ import productReducer from "./productSlice"
 import billNotiReducer from "./billNotiSlice"
 import wishListReducer, { WishListState } from "./wishListSlice"
 import categoryReducer, { CategoryState } from "./categorySlice"
+import saleCampaignReducer from "./saleCampaignSlice"
 
 const persistConfig = {
     key: 'root',
@@ -36,7 +37,8 @@ const rootReducer = combineReducers({
     category: persistReducer<CategoryState>(categoryPersistConfig, categoryReducer),
     auth: authReducer,
     product: productReducer,
-    billNoti: billNotiReducer
+    billNoti: billNotiReducer,
+    saleCampaign: saleCampaignReducer
 })
 
 export default rootReducer

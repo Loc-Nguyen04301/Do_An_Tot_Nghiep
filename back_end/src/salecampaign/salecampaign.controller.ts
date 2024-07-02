@@ -5,7 +5,7 @@ import { UpdateSaleCampaignDto } from './dto/update-salecampaign.dto';
 import { Public } from 'src/common/decorators';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 
-@Controller('salecampaign')
+@Controller('api/v1/salecampaign')
 export class SaleCampaignController {
   constructor(private readonly salecampaignService: SaleCampaignService) { }
 
@@ -18,14 +18,21 @@ export class SaleCampaignController {
     return this.salecampaignService.create(createSalecampaignDto);
   }
 
-  // @Public()
-  // @HttpCode(HttpStatus.OK)
-  // @UseInterceptors(new SuccessInterceptor())
-  // @Get()
-  // findAll() {
-  //   return this.salecampaignService.findAll();
-  // }
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor())
+  @Get()
+  findAll() {
+    return this.salecampaignService.findAll();
+  }
 
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor())
+  @Get('/only')
+  getOnlyCampaignActive() {
+    return this.salecampaignService.getOnlyCampaignActive();
+  }
   // @Get(':id')
   // findOne(@Param('id') id: string) {
   //   return this.salecampaignService.findOne(+id);

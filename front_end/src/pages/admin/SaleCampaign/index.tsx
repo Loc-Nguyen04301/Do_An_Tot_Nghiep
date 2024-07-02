@@ -1,5 +1,5 @@
 import { Button, DatePicker, Form, FormProps, Input, Space, Table, TableProps, Typography } from 'antd'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 const { RangePicker } = DatePicker;
 const { Text } = Typography;
@@ -7,6 +7,7 @@ const DATETIME_FORMAT_FILTER = 'YYYY-MM-DD';
 import "./SaleCampaign.scss"
 import SaleCampaignService from '@/services/SaleCampaignService';
 import { useAlertDispatch } from '@/contexts/AlertContext';
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
 
 interface ISaleCampaign {
     id: number
@@ -21,15 +22,21 @@ type FieldType = {
 };
 
 const SaleCampaign = () => {
+    const [listCampaign, setListCampaign] = useState<ISaleCampaign[]>([])
     const dispatchAlert = useAlertDispatch()
-    // const onChangeDate = (date: any, dateString: [string, string]) => {
-    //     console.log(dateString)
-    //     setFilterDate([...dateString])
-    // }
-
-    const createCampaign = () => {
-
-    }
+    useEffect(() => {
+        const getCampaigns = async () => {
+            dispatchAlert({ loading: true })
+            try {
+                const res = await SaleCampaignService.getCampaign()
+                setListCampaign(res.data.data)
+                dispatchAlert({ loading: false })
+            } catch (error: any) {
+                dispatchAlert({ errors: error.message })
+            }
+        }
+        getCampaigns()
+    }, [])
 
     const columns: TableProps<ISaleCampaign>['columns'] = [
         {
@@ -55,7 +62,17 @@ const SaleCampaign = () => {
         {
             title: "Trạng thái",
             key: "active",
-            render: (_, record) => record.active
+            render: (_, record) =>
+                <>
+                    {
+                        record.active === true
+                            ?
+                            <CheckOutlined className="text-green-500" />
+                            :
+                            <CloseOutlined className="text-red-500" />
+                    }
+                </>
+
         },
     ]
 
@@ -66,8 +83,10 @@ const SaleCampaign = () => {
             'from_date': rangeValue[0].format(DATETIME_FORMAT_FILTER),
             'to_date': rangeValue[1].format(DATETIME_FORMAT_FILTER)
         }
+        dispatchAlert({ loading: true })
         try {
             const res = await SaleCampaignService.createCampaign(values)
+            dispatchAlert({ success: res.data.message })
             console.log(res)
         } catch (error) {
             console.log(error)
@@ -125,7 +144,7 @@ const SaleCampaign = () => {
                 <Text type="danger" className='label-email'>Lưu ý: Chỉ kích hoạt 1 chiến dịch duy nhất</Text>
             </div>
             <Table
-                // dataSource={listBill}
+                dataSource={listCampaign}
                 columns={columns}
                 pagination={{ position: ["bottomCenter"] }}
                 rowKey={(record) => record.id}

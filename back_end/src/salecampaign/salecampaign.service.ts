@@ -17,10 +17,20 @@ export class SaleCampaignService {
     return campaign
   }
 
-  // async findAll() {
-  //   const campaign = await this.prisma.saleCampaign.findMany({ orderBy: "desc" })
-  //   return campaign
-  // }
+  async findAll() {
+    const listCampaigns = await this.prisma.saleCampaign.findMany({ orderBy: { created_at: "desc" } })
+    return listCampaigns
+  }
+
+  async getOnlyCampaignActive() {
+    const campaign = await this.prisma.saleCampaign.findFirst({
+      where: {
+        active: true
+      }
+    })
+
+    return campaign
+  }
 
   // findOne(id: number) {
   //   return `This action returns a #${id} salecampaign`;

@@ -9,27 +9,27 @@ import { RoutePath } from '@/routes'
 import CountDownTimer from '@/pages/Home/components/CountDownTimer'
 
 interface ProductsByCategoryProps {
-    categoryPath: string;
-    categoryName: string;
-    isSuperSale?: boolean
+    categoryPath: string
+    categoryName: string
+    from_date?: string
+    to_date?: string
 }
 
-const ProductsByCategory = ({ categoryPath, categoryName, isSuperSale = false }: ProductsByCategoryProps) => {
-    const [products, setProducts] = useState<IProduct[]>([]);
+const ProductsByCategory = ({ categoryPath, categoryName, from_date, to_date }: ProductsByCategoryProps) => {
+    const [products, setProducts] = useState<IProduct[]>([])
     const dispatchAlert = useAlertDispatch()
 
-    const getProductsByCategory = async () => {
-        dispatchAlert({ loading: true })
-        try {
-            const res = await ProductService.getProductsByCategory(categoryPath)
-            setProducts(res.data.data)
-            dispatchAlert({ loading: false })
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
     useEffect(() => {
+        const getProductsByCategory = async () => {
+            dispatchAlert({ loading: true })
+            try {
+                const res = await ProductService.getProductsByCategory(categoryPath)
+                setProducts(res.data.data)
+                dispatchAlert({ loading: false })
+            } catch (error) {
+                console.log(error)
+            }
+        }
         getProductsByCategory()
     }, [categoryPath])
 
@@ -42,7 +42,7 @@ const ProductsByCategory = ({ categoryPath, categoryName, isSuperSale = false }:
                 >
                     {categoryName}
                 </a>
-                {isSuperSale && <CountDownTimer fromDate="2024-07-02" toDate='2024-07-03' />}
+                {from_date && to_date && <CountDownTimer fromDate={from_date} toDate={to_date} />}
             </div>
             <div className="mt-8">
                 {products.length > 0 &&

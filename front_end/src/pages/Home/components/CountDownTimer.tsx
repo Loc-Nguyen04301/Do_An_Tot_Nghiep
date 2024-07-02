@@ -65,10 +65,8 @@ interface CountDownTimerProps {
 }
 const CountDownTimer = ({ fromDate, toDate }: CountDownTimerProps) => {
     const [days, hours, minutes, seconds, countdown] = useCountDown(fromDate, toDate)
-    const fromDateMilliSeconds = new Date(fromDate).getTime()
-    const nowMilliSeconds = new Date().getTime()
 
-    if (countdown < 0 || nowMilliSeconds < fromDateMilliSeconds) return <></>
+    if (countdown < 0) return <></>
     else {
         return (
             <ShowCounter

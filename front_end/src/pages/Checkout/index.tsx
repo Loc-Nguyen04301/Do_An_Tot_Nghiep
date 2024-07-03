@@ -237,9 +237,9 @@ const Checkout = () => {
                                 </div>
                                 <div className="my-2">
                                     <div className="label-email tracking-wide leading-6 font-semibold">Địa chỉ nhận hàng</div>
-                                    <div className='w-full flex gap-3'>
+                                    <div className='w-full flex justify-between gap-3 max-md:flex-col'>
                                         <Select
-                                            className="!w-1/3 h-[35px]"
+                                            className="w-[33%] h-[35px] max-md:w-full"
                                             value={selectedCity}
                                             onChange={handleCityChange}
                                             placeholder="Chọn tỉnh thành"
@@ -251,7 +251,7 @@ const Checkout = () => {
                                             ))}
                                         </Select>
                                         <Select
-                                            className="!w-1/3 h-[35px]"
+                                            className="w-[33%] h-[35px] max-md:w-full"
                                             value={selectedDistrict}
                                             onChange={handleDistrictChange}
                                             placeholder="Chọn quận huyện"
@@ -263,7 +263,7 @@ const Checkout = () => {
                                             ))}
                                         </Select>
                                         <Select
-                                            className="!w-1/3 h-[35px]"
+                                            className="w-[33%] h-[35px] max-md:w-full"
                                             value={selectedWard}
                                             onChange={handleWardChange}
                                             placeholder="Chọn phường xã"

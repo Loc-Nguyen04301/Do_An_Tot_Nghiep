@@ -12,6 +12,7 @@ import { ConfigProvider, Pagination, Tag, Modal } from 'antd';
 import type { PaginationProps } from 'antd';
 import { IBill, PaymentMethod } from '@/types';
 import { OrderStatus } from '@/types';
+import noBillImage from "@/assets/images/no-bill.png"
 
 var DATETIME_FORMAT = 'dd/MM/yyyy HH:mm'
 
@@ -192,7 +193,7 @@ const Purchase = () => {
                                 </section>
                                 :
                                 <div className='bg-white h-[400px] flex justify-center items-center flex-col gap-3'>
-                                    <img src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/return/5fafbb923393b712b964.png' className='w-[100px] h-[100px]' />
+                                    <img src={noBillImage} className='w-[100px] h-[100px]' />
                                     <span> {`Bạn hiện không có đơn hàng nào`}</span>
                                 </div>
                         }

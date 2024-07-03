@@ -85,8 +85,8 @@ export class BillsController {
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(new SuccessInterceptor())
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.billsService.findOne(id);
+  getBillDetailById(@Param('id', ParseIntPipe) id: number) {
+    return this.billsService.getBillDetailById(id);
   }
 
   @Public()

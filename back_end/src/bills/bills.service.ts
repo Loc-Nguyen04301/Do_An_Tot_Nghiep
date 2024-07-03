@@ -21,7 +21,7 @@ export class BillsService {
     const { address, customer_name, email, note, phone_number, user_id, payment_method, total_amount, shortCartItems, order_status, payment_status } = createBillDto
     const billData = { customer_name, address, phone_number, email, note, user_id, payment_method, order_status, payment_status, total_amount }
 
-    // check available item in database
+    // check available product
     await Promise.all(shortCartItems.map(async (cartItem) => {
       const product = await this.prisma.product.findUnique({
         where: { id: cartItem.product_id },
@@ -33,12 +33,25 @@ export class BillsService {
       // create bill
       const bill = await tr.bill.create({ data: billData })
       if (!bill) throw new BadRequestException('Không tạo được đơn hàng');
-      const shortCartItemsData = shortCartItems.map((item => { return { bill_id: bill.id, product_id: item.product_id, price: item.price, quantity: item.quantity, total_price: item.total_price } }))
+      const shortCartItemsData = shortCartItems.map((item => {
+        return {
+          bill_id: bill.id,
+          product_id: item.product_id,
+          price: item.price,
+          quantity: item.quantity,
+          total_price: item.total_price
+        }
+      }))
+      // create each item in bill
       await Promise.all(shortCartItemsData.map(async (cartItem) => {
-        // create each item in bill
         const item = await tr.item.create({ data: cartItem })
         if (!item) throw new BadRequestException('Không lưu được sản phẩm trong đơn hàng');
-        const updateAvailableProduct = await tr.product.update({ where: { id: cartItem.product_id }, data: { available: { decrement: cartItem.quantity } } })
+        const updateAvailableProduct = await tr.product.update({
+          where: { id: cartItem.product_id },
+          data: {
+            available: { decrement: cartItem.quantity }
+          }
+        })
         if (!updateAvailableProduct) throw new BadRequestException('Không cập nhật được số lượng tồn kho của sản phẩm');
       }))
 
@@ -52,7 +65,7 @@ export class BillsService {
       // emit real-time message to client 
       this.appGateway.sendBillNotification(bill)
 
-      // send gmail 
+      // send information of success order to gmail 
       await this.mailService.sendMailCreateBill({
         bill_id: bill.id,
         subject: `Xác nhận đơn hàng #${bill.id} từ THOL`,
@@ -73,22 +86,23 @@ export class BillsService {
       }
     })
 
-    if (reason_cancelled) {
+    // create or update reason for cancelled bill
+    if (reason_cancelled && restUpdateBillDto.order_status === OrderStatus.CANCELLED) {
       const updateReasonBill = await this.prisma.reasonCancelledBill.upsert({
         where: {
           bill_id: bill.id
         },
         update: {
-          reason_cancelled: updateBillDto.reason_cancelled
+          reason_cancelled
         },
         create: {
           bill_id: bill.id,
-          reason_cancelled: updateBillDto.reason_cancelled
+          reason_cancelled
         }
       })
-      if (!updateReasonBill) throw new BadRequestException('Không cập nhật được lý do hủy đơn');
+      if (!updateReasonBill) throw new BadRequestException('Không cập nhật được lý do hủy đơn hàng');
 
-      // send mail to user when cancel bill
+      // send information of cancelled order to gmail 
       await this.mailService.sendMailRejectBill({
         bill_id: bill.id,
         customer_name: bill.customer_name,
@@ -96,27 +110,21 @@ export class BillsService {
         to: bill.email,
         reason: reason_cancelled
       })
-
     }
-    else if (!reason_cancelled && restUpdateBillDto.order_status !== OrderStatus.CANCELLED) {
-      const findBillReason = await this.prisma.reasonCancelledBill.findUnique({
+    // delete reason for cancelled bill
+    else {
+      const updateReasonBill = await this.prisma.reasonCancelledBill.delete({
         where: {
           bill_id: bill.id
         }
       })
-      if (findBillReason) {
-        const updateReasonBill = await this.prisma.reasonCancelledBill.delete({
-          where: {
-            bill_id: bill.id
-          }
-        })
-        if (!updateReasonBill) throw new BadRequestException('Không xóa được lý do hủy đơn');
-      }
+      if (!updateReasonBill) throw new BadRequestException('Không xóa được lý do hủy đơn');
     }
+
     return bill
   }
 
-  async findOne(id: number) {
+  async getBillDetailById(id: number) {
     const bill = await this.prisma.bill.findUnique(
       {
         where: { id: id },
@@ -143,6 +151,7 @@ export class BillsService {
           }
         }
       })
+
     return bill
   }
 

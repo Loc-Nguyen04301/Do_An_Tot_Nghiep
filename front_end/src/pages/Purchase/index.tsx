@@ -40,10 +40,10 @@ const Purchase = () => {
         setCurrent(page);
     };
 
-    const showModal = (bill: IBill) => {
-        setSelectedBill(bill)
-        setIsModalOpen(true);
-    };
+    // const showModal = (bill: IBill) => {
+    //     setSelectedBill(bill)
+    //     setIsModalOpen(true);
+    // };
 
     const handleCancel = () => {
         setIsModalOpen(false);
@@ -65,7 +65,7 @@ const Purchase = () => {
     //     }
     // }
 
-    const fetchBill = async (purchaseStatus: PurchaseStatus, userId: number | undefined, current: number, pageSize: number) => {
+    const fetchBill = async (purchaseStatus: PurchaseStatus, userId: number, current: number, pageSize: number) => {
         dispatchAlert({ loading: true })
         try {
             let res
@@ -102,14 +102,14 @@ const Purchase = () => {
         }
     }
 
+    useEffect(() => {
+        if (user && user.id) fetchBill(purchaseStatus, user.id, current, pageSize)
+    }, [purchaseStatus, user, current, pageSize])
+
     const handleChangeStatusPurchase = (status: PurchaseStatus) => {
         setPurchaseStatus(status)
         setCurrent(1)
     }
-
-    useEffect(() => {
-        if (user) fetchBill(purchaseStatus, user.id, current, pageSize)
-    }, [purchaseStatus, user, current, pageSize])
 
     const navigatePurchaseDetail = (id: number) => {
         navigate(`${RoutePath.PurchaseDetail}/${id}`)
@@ -131,9 +131,11 @@ const Purchase = () => {
                             <NavLink to={RoutePath.Purchase} className={({ isActive }) => clsx("pl-2 py-5 font-semibold cursor-pointer hover:text-main-orange-color", isActive && "text-main-orange-color")} >
                                 Đơn mua
                             </NavLink>
-                            {user && !user.is_social_login && <NavLink to={RoutePath.ChangePassword} className={({ isActive }) => clsx("pl-2 py-5 font-semibold cursor-pointer hover:text-main-orange-color", isActive && "text-main-orange-color")} >
-                                Đổi mật khẩu
-                            </NavLink>}
+                            {
+                                user && !user.is_social_login && <NavLink to={RoutePath.ChangePassword} className={({ isActive }) => clsx("pl-2 py-5 font-semibold cursor-pointer hover:text-main-orange-color", isActive && "text-main-orange-color")} >
+                                    Đổi mật khẩu
+                                </NavLink>
+                            }
                         </div>
                     </div>
                     <div className='w-full'>
@@ -204,14 +206,14 @@ const Purchase = () => {
                                 records > pageSize &&
                                 <Pagination current={current} pageSize={pageSize} total={records} onChange={onChangePage} className='text-center mt-5' showSizeChanger={false} />
                             }
-                            <Modal
+                            {/* <Modal
                                 centered
                                 title={`Hủy đơn hàng mã ${selectedBill?.id}`}
                                 open={isModalOpen}
-                                // onOk={handleOk}
+                                onOk={handleOk}
                                 onCancel={handleCancel}>
                                 <p className='text-base'>Bạn muốn hủy đơn hàng này ?</p>
-                            </Modal>
+                            </Modal> */}
                         </ConfigProvider>
                     </div>
                 </div>

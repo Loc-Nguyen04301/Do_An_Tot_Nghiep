@@ -14,7 +14,6 @@ var DATETIME_FORMAT = 'dd-MM-yyyy HH:mm'
 
 const PurchaseDetail = () => {
     const [selectedBill, setSelectedBill] = useState<IBill>()
-
     const navigate = useNavigate()
     const params = useParams()
     const dispatchAlert = useAlertDispatch()
@@ -31,7 +30,8 @@ const PurchaseDetail = () => {
                 console.log(error)
             }
         }
-        getBillDetail(Number(params.id))
+
+        if (params.id) getBillDetail(Number(params.id))
     }, [params.id])
 
     return (
@@ -100,6 +100,13 @@ const PurchaseDetail = () => {
                     {selectedBill.order_status === OrderStatus.PROCESSING && <span className='ml-2'>Chờ xử lý</span>}
                     {selectedBill.order_status === OrderStatus.CANCELLED && <span className='ml-2'>Đã hủy</span>}
                 </div>
+                {
+                    selectedBill.order_status === OrderStatus.CANCELLED &&
+                    <div className='mt-1'>
+                        <strong>Lý do hủy đơn hàng:</strong>
+                        <span> {selectedBill.ReasonCancelledBill.reason_cancelled}</span>
+                    </div>
+                }
             </div>
             <div className='mt-8'>
                 {

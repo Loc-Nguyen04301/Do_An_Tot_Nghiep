@@ -40,7 +40,7 @@ const Home = () => {
               <ProductsByCategory categoryPath={categoryList[0].path} categoryName={categoryList[0].name} />
               <ProductsByCategory categoryPath={categoryList[1].path} categoryName={categoryList[1].name} />
               <ProductsByCategory categoryPath={categoryList[2].path} categoryName={categoryList[2].name} />
-              <ProductsByCategory categoryPath={categoryList[3].path} categoryName={categoryList[3].name} />
+              <ProductsByCategory categoryPath={categoryList[5].path} categoryName={categoryList[5].name} />
             </>
           }
         </div>

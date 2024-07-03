@@ -15,8 +15,8 @@ import { useAlertDispatch } from "@/contexts/AlertContext"
 import { Tag } from "antd"
 import { addProductToWishList, IProductWishList, removeProductToWishList } from "@/redux-toolkit/wishListSlice"
 import ProductCard from "@/components/ProductCard"
-import "./DetailProduct.scss"
 import { ICategory } from "@/redux-toolkit/categorySlice"
+import "./DetailProduct.scss"
 
 export interface Review {
   id: number
@@ -132,7 +132,7 @@ const DetailProduct = () => {
     setTimeout(() => {
       dispatch(addProductToWishList({ ...data }))
       dispatchAlert({ loading: false })
-    }, 1000)
+    }, 500)
   }
 
   const handleRemoveItemToWishList = (id: number) => {
@@ -140,7 +140,7 @@ const DetailProduct = () => {
     setTimeout(() => {
       dispatch(removeProductToWishList({ id }))
       dispatchAlert({ loading: false })
-    }, 1000)
+    }, 500)
   }
 
   if (product)

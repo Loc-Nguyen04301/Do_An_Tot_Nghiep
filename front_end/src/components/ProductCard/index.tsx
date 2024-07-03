@@ -22,7 +22,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         setTimeout(() => {
             dispatch(addProductToWishList({ ...data }))
             dispatchAlert({ loading: false })
-        }, 1000)
+        }, 500)
     }
 
     const handleRemoveItemToWishList = (id: number) => {
@@ -30,7 +30,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         setTimeout(() => {
             dispatch(removeProductToWishList({ id }))
             dispatchAlert({ loading: false })
-        }, 1000)
+        }, 500)
     }
 
     return (

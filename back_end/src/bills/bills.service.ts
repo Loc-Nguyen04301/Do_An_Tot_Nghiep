@@ -33,37 +33,34 @@ export class BillsService {
       // create bill
       const bill = await tr.bill.create({ data: billData })
       if (!bill) throw new BadRequestException('Không tạo được đơn hàng');
-      // update notification bill state
-      if (bill.id) await tr.notifiBill.create({ data: { bill_id: bill.id } })
-      // phát thông điệp đến client 
-      await this.appGateway.sendBillNotification(bill)
-
       const shortCartItemsData = shortCartItems.map((item => { return { bill_id: bill.id, product_id: item.product_id, price: item.price, quantity: item.quantity, total_price: item.total_price } }))
       await Promise.all(shortCartItemsData.map(async (cartItem) => {
         // create each item in bill
         const item = await tr.item.create({ data: cartItem })
-        if (!item) throw new BadRequestException('Không tạo được sản phẩm trong đơn hàng');
-        const product = await tr.product.findUnique({
-          where: { id: cartItem.product_id },
-        });
-        if (product) {
-          await tr.product.update({ where: { id: cartItem.product_id }, data: { available: { decrement: cartItem.quantity } } })
-        }
-        else {
-          throw new BadRequestException('Không tìm thấy sản phẩm này trong hệ thống');
-        }
+        if (!item) throw new BadRequestException('Không lưu được sản phẩm trong đơn hàng');
+        const updateAvailableProduct = await tr.product.update({ where: { id: cartItem.product_id }, data: { available: { decrement: cartItem.quantity } } })
+        if (!updateAvailableProduct) throw new BadRequestException('Không cập nhật được số lượng tồn kho của sản phẩm');
       }))
 
       return bill
     })
 
-    // send mail to user when create bill success
-    if (bill) await this.mailService.sendMailCreateBill({
-      bill_id: bill.id,
-      subject: `Xác nhận đơn hàng #${bill.id} từ THOL`,
-      to: bill.email,
-      customer_name: bill.customer_name
-    })
+    if (bill) {
+      // create notification bill
+      await this.prisma.notifiBill.create({ data: { bill_id: bill.id } })
+
+      // emit real-time message to client 
+      this.appGateway.sendBillNotification(bill)
+
+      // send gmail 
+      await this.mailService.sendMailCreateBill({
+        bill_id: bill.id,
+        subject: `Xác nhận đơn hàng #${bill.id} từ THOL`,
+        to: bill.email,
+        customer_name: bill.customer_name
+      })
+    }
+
     return { billId: bill.id }
   }
 

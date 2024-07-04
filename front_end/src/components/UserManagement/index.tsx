@@ -1,6 +1,6 @@
 import { useAppSelector } from '@/redux-toolkit/hook'
 import { RoutePath } from '@/routes'
-import React from 'react'
+import React, { memo } from 'react'
 import { NavLink } from 'react-router-dom'
 import clsx from 'clsx';
 
@@ -35,4 +35,4 @@ const UserManagement = ({ children }: UserManagementProps) => {
     )
 }
 
-export default UserManagement
+export default memo(UserManagement)

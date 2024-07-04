@@ -76,7 +76,6 @@ instance.interceptors.response.use(
     if (error.response && error.response.status === 401 && error.response.data) {
       removeAccessToken()
       removeRefreshToken()
-      window.location.href = RoutePath.Home
     }
     if (error.response && error.response.status !== 401 && error.response.data) {
       return Promise.reject(error.response.data);

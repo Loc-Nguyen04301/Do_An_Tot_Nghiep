@@ -21,6 +21,7 @@ import { LoginAuthDto } from './dto/login-auth.dto';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { ChangePasswordDto } from 'src/auth/dto/change-password-auth.dto';
+import { GoogleOAuthGuard } from 'src/common/guards/google-oauth.guard';
 
 @Controller('api/v1/auth')
 export class AuthController {
@@ -37,6 +38,22 @@ export class AuthController {
     email_verified: boolean
   }) {
     return this.authService.registerGoogle(googleAuthPayload);
+  }
+
+  //Api working with Passport
+  @Public()
+  @UseGuards(GoogleOAuthGuard)
+  @Get('google')
+  async googleAuth(@Req() req: Request) {
+    console.log("call api google")
+  }
+
+  @Public()
+  @UseGuards(GoogleOAuthGuard)
+  @Get('google/callback')
+  googleAuthRedirect(@Req() req: Request) {
+    console.log(req)
+    return { user: req.user };
   }
 
   @Public()

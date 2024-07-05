@@ -35,7 +35,7 @@ export interface IDetailProduct extends IProduct {
 
 const DetailProduct = () => {
   const [product, setProduct] = useState<IDetailProduct>()
-  const [relatedCategory, setRelatedCategory] = useState("")
+  const [relatedCategory, setRelatedCategory] = useState()
   const [relatedProducts, setRelatedProducts] = useState<IDetailProduct[]>([])
   const [quantity, setQuantity] = useState<number>(0)
   const { cartItems } = useAppSelector((state) => state.cart)
@@ -82,49 +82,43 @@ const DetailProduct = () => {
     const getProductById = async (label: string) => {
       dispatchAlert({ loading: true })
       try {
-        if (label && label.length > 0) {
-          const res = await ProductService.getProductById(Number(label))
-          setProduct(res.data.data)
-          const randomCategory = res.data.data.categories[0].category.path
-          setRelatedCategory(randomCategory)
-          dispatchAlert({ loading: false })
-        }
+        const res = await ProductService.getProductById(Number(label))
+        setProduct(res.data.data)
+        const randomCategory = res.data.data.categories[0].category.path
+        setRelatedCategory(randomCategory)
+        dispatchAlert({ loading: false })
       } catch (error) {
         console.log(error)
       }
     }
 
-    if (label) getProductById(label)
+    if (label && label.length > 0) getProductById(label)
   }, [label])
 
   useEffect(() => {
-    const getProductsByCategory = async (relatedCategory: string) => {
+    const getProductsByCategory = async (relatedCategory: string, product: IDetailProduct) => {
       dispatchAlert({ loading: true })
       try {
-        if (relatedCategory) {
-          const res = await ProductService.getProductsByCategory(relatedCategory)
-          var relatedProducts = res.data.data as IDetailProduct[]
-          relatedProducts = relatedProducts.filter((item) => item.id !== product?.id)
-          setRelatedProducts(relatedProducts)
-          dispatchAlert({ loading: false })
-        }
+        const res = await ProductService.getProductsByCategory(relatedCategory)
+        var relatedProducts = res.data.data as IDetailProduct[]
+        relatedProducts = relatedProducts.filter((item) => item.id !== product?.id)
+        setRelatedProducts(relatedProducts)
+        dispatchAlert({ loading: false })
       } catch (error) {
         console.log(error)
       }
     }
 
-    getProductsByCategory(relatedCategory)
-  }, [relatedCategory])
+    if (relatedCategory && product) getProductsByCategory(relatedCategory, product)
+  }, [relatedCategory, product])
 
   useEffect(() => {
-    if (product)
-      cartItems.map((item) => {
-        if (item.id === product.id) {
-          setQuantity(item.quantity)
-          return
-        }
-      })
-  }, [product])
+    if (product) {
+      const checkItem = cartItems.find(item => item.id === product.id)
+      if (checkItem) setQuantity(checkItem.quantity)
+      else setQuantity(0)
+    }
+  }, [product?.id])
 
 
   const handleAddProductToWishList = (data: IProductWishList) => {
@@ -271,7 +265,8 @@ const DetailProduct = () => {
                     relatedProducts.map(product =>
                       <SwiperSlide key={product.id}>
                         <ProductCard product={product} />
-                      </SwiperSlide>)
+                      </SwiperSlide>
+                    )
                   }
                 </Swiper>
               </div>

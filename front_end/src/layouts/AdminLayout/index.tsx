@@ -108,7 +108,7 @@ const AdminLayout = ({ children }: AdminLayouttProps) => {
     } = theme.useToken();
 
     const navigateHomePage = () => {
-        window.location.href = RoutePath.Home
+        navigate(RoutePath.Home)
     }
     useBillNotification()
 

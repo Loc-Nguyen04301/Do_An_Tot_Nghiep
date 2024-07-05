@@ -31,8 +31,8 @@ const Purchase = () => {
     const [current, setCurrent] = useState(1)
     const [pageSize] = useState(5)
     const [records, setRecords] = useState(0)
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedBill, setSelectedBill] = useState<IBill | null>(null);
+    // const [isModalOpen, setIsModalOpen] = useState(false);
+    // const [selectedBill, setSelectedBill] = useState<IBill | null>(null);
     const [disabled, setDisabled] = useState(false)
 
     const dispatchAlert = useAlertDispatch()
@@ -47,9 +47,9 @@ const Purchase = () => {
     //     setIsModalOpen(true);
     // };
 
-    const handleCancel = () => {
-        setIsModalOpen(false);
-    };
+    // const handleCancel = () => {
+    //     setIsModalOpen(false);
+    // };
 
     // const handleOk = async () => {
     //     if (!selectedBill) return;

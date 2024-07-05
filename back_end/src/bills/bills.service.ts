@@ -354,7 +354,6 @@ export class BillsService {
         }
       }
     })
-
     const unread_records = await this.prisma.notifiBill.count({ where: { is_read: false } })
 
     billNotis = billNotis.map(({ bill, is_read }) => ({

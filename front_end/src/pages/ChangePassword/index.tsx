@@ -4,10 +4,11 @@ import { Helmet } from 'react-helmet-async'
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import "../Login/Login.scss"
 import { useAlertDispatch } from '@/contexts/AlertContext';
 import AuthService from '@/services/AuthService';
 import UserManagement from '@/components/UserManagement';
+import { useNavigate } from 'react-router-dom';
+import "../Login/Login.scss"
 
 export interface ChangePassword {
     password: string
@@ -26,6 +27,8 @@ const ChangePassword = () => {
     });
     const [disabled, setDisabled] = useState(false)
     const [isMatchingPassword, setIsMatchingPassword] = useState(false)
+
+    const navigate = useNavigate()
     const dispatchAlert = useAlertDispatch()
     const onSubmit = async (data: ChangePassword) => {
         if (!isMatchingPassword) return
@@ -35,7 +38,7 @@ const ChangePassword = () => {
             dispatchAlert({ success: res.data.message })
             setDisabled(true)
             setTimeout(() => {
-                window.location.href = RoutePath.Profile
+                navigate(RoutePath.Profile)
             }, 2000)
         } catch (error: any) {
             dispatchAlert({ errors: error.message })

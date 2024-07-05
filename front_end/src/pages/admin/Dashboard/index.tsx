@@ -74,8 +74,9 @@ const DashBoard = () => {
 
         return () => {
             socket.off('ONLINE_USERS_COUNT')
+            socket.disconnect()
         }
-    }, [socket])
+    }, [])
 
     return (
         <>

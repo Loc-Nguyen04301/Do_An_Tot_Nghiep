@@ -80,7 +80,6 @@ export interface IBill {
     user_id: number | null
     order_status: string
     payment_status: boolean
-    return_status: string
     payment_method: string
     total_amount: number
     created_at: string

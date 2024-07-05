@@ -11,7 +11,6 @@ interface BillParams {
     page_size?: number
     order_status?: string
     payment_status?: boolean
-    return_status?: string
     from_date?: string,
     to_date?: string,
 }
@@ -23,7 +22,6 @@ interface UpdateBillDto {
     user_id?: number,
     order_status?: string
     payment_status?: boolean
-    return_status?: string
     note?: string
     reason_cancelled?: string
 }

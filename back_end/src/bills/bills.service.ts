@@ -246,7 +246,6 @@ export class BillsService {
     phone_number,
     order_status,
     payment_status,
-    return_status,
     from_date,
     to_date
   }: BillParams) {
@@ -288,9 +287,6 @@ export class BillsService {
     }
     if (typeof (payment_status) === 'boolean') {
       whereClause = { ...whereClause, payment_status };
-    }
-    if (return_status) {
-      whereClause = { ...whereClause, return_status };
     }
     if (from_date && to_date) {
       whereClause = {

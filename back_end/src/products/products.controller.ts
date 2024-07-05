@@ -15,7 +15,6 @@ import {
   CacheTTL,
 } from '@nestjs/common';
 import { CacheInterceptor } from '@nestjs/cache-manager';
-
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';

@@ -3,7 +3,7 @@ import { CreateBillDto } from './dto/create-bill.dto';
 import { UpdateBillDto } from './dto/update-bill.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { OrderStatus, ReturnStatus } from '@prisma/client';
+import { OrderStatus } from '@prisma/client';
 import { BillParams } from 'src/types';
 import { AppGateway } from 'src/app.gateway';
 import { MailService } from '../mail/mail.service';
@@ -161,7 +161,6 @@ export class BillsService {
     user_id,
     order_status,
     payment_status,
-    return_status,
     page_index,
     page_size,
     from_date,
@@ -169,7 +168,6 @@ export class BillsService {
   }: BillParams) {
     page_index = page_index || 0;
     page_size = page_size || 5;
-    return_status = return_status || ReturnStatus.NONE
 
     const take = page_size as number
     const skip = page_index * page_size as number
@@ -183,9 +181,6 @@ export class BillsService {
     }
     if (typeof (payment_status) === 'boolean') {
       whereClause = { ...whereClause, payment_status };
-    }
-    if (return_status) {
-      whereClause = { ...whereClause, return_status };
     }
     if (from_date && to_date) {
       whereClause = {
@@ -260,7 +255,6 @@ export class BillsService {
     phone_number = phone_number || null
     order_status = order_status || null
     payment_status = payment_status
-    return_status = return_status || ReturnStatus.NONE
     if (isNaN(from_date.getTime())) from_date = null
     if (isNaN(to_date.getTime())) to_date = null
 

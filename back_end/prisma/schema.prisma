@@ -88,7 +88,6 @@ model Bill {
   created_at          DateTime             @default(now())
   order_status        OrderStatus          @default(PROCESSING)
   payment_status      Boolean              @default(false)
-  return_status       ReturnStatus         @default(NONE)
   update_at           DateTime?            @updatedAt
   payment_method      PaymentMethod
   total_amount        Int?
@@ -148,13 +147,6 @@ enum OrderStatus {
   PROCESSING
   SUCCESS
   CANCELLED
-}
-
-enum ReturnStatus {
-  NONE
-  REQUESTED
-  PROCESSING
-  RETURNED
 }
 
 enum PaymentMethod {

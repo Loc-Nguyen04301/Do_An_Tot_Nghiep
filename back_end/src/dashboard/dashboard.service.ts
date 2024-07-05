@@ -11,14 +11,15 @@ export class DashboardService {
   async countDashboard() {
     const listBill = await this.prisma.bill.findMany()
     const revenueCount = listBill.reduce((total, bill) => { return total + bill.total_amount }, 0)
-    const [billCount, productCount, userCount, reviewCount] = await Promise.all([
+    const [billCount, productCount, userCount, itemCount, reviewCount] = await Promise.all([
       this.prisma.bill.count(),
       this.prisma.product.count(),
       this.prisma.user.count(),
+      this.prisma.item.count(),
       this.prisma.review.count()
     ]);
 
-    return { billCount, productCount, userCount, reviewCount, revenueCount }
+    return { billCount, productCount, userCount, reviewCount, itemCount, revenueCount }
   }
 
   async listProductSoldOut() {

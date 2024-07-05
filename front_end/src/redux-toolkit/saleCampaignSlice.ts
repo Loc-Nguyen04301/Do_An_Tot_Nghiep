@@ -1,5 +1,5 @@
-import SaleCampaignService, { ICreateSaleCampaign } from "@/services/SaleCampaignService";
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import SaleCampaignService, { ICreateSaleCampaign } from "@/services/SaleCampaignService"
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 interface ISaleCampaign {
     id: number
@@ -28,10 +28,10 @@ export const createCampaign = createAsyncThunk(
             const res = await SaleCampaignService.createCampaign({ name, from_date, to_date })
             return res.data.data
         } catch (error: any) {
-            return rejectWithValue(error.message);
+            return rejectWithValue(error.message)
         }
     }
-);
+)
 
 export const getOnlyCampaignActive = createAsyncThunk(
     "saleCampaign/getTime",
@@ -39,7 +39,7 @@ export const getOnlyCampaignActive = createAsyncThunk(
         const res = await SaleCampaignService.getOnlyCampaignActive()
         return res.data.data
     }
-);
+)
 
 export const getCampaigns = createAsyncThunk(
     "saleCampaign/getListCampaigns",
@@ -74,11 +74,14 @@ export const saleCampaignSlice = createSlice({
             state.listCampaign?.unshift(action.payload)
         })
         builder.addCase(getOnlyCampaignActive.fulfilled, (state, action) => {
-            state.from_date = action.payload.from_date;
-            state.to_date = action.payload.to_date;
+            if (action.payload) {
+                const { from_date, to_date } = action.payload
+                state.from_date = from_date
+                state.to_date = to_date
+            }
         })
         builder.addCase(getCampaigns.fulfilled, (state, action) => {
-            state.listCampaign = action.payload;
+            state.listCampaign = action.payload
         })
         builder.addCase(activeCampaign.fulfilled, (state, action) => {
             state.listCampaign = state.listCampaign?.map((campaign) => {

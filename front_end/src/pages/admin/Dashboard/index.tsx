@@ -5,7 +5,8 @@ import {
     ShoppingCartOutlined,
     ShoppingOutlined,
     UserOutlined,
-    StarOutlined
+    StarOutlined,
+    ShopOutlined
 } from "@ant-design/icons";
 import {
     Chart as ChartJS,
@@ -22,6 +23,7 @@ import { useAlertDispatch } from '@/contexts/AlertContext';
 import { convertNumbertoMoney } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import dayjs from "dayjs"
+import { socket } from "@/socket"
 
 ChartJS.register(
     CategoryScale,
@@ -43,26 +45,37 @@ export interface IBestSoldOutProduct {
 }
 
 const DashBoard = () => {
-    const [count, setCount] = useState<{ billCount: number, productCount: number, userCount: number, reviewCount: number, revenueCount: number }>({ billCount: 0, productCount: 0, userCount: 0, reviewCount: 0, revenueCount: 0 });
+    const [count, setCount] = useState<{ billCount: number, productCount: number, userCount: number, reviewCount: number, itemCount: number, revenueCount: number }>({ billCount: 0, productCount: 0, userCount: 0, reviewCount: 0, itemCount: 0, revenueCount: 0 });
     const [listProductSoldOut, setListProductSoldOut] = useState<IBestSoldOutProduct[]>([]);
+    const [onlineUser, setOnlineUser] = useState(0)
     const dispatchAlert = useAlertDispatch()
 
-    const getDashboard = async () => {
-        dispatchAlert({ loading: true })
-        try {
-            const res1 = await DashboardService.countDashboard()
-            setCount(res1.data.data)
-            const res2 = await DashboardService.listSoldOut()
-            setListProductSoldOut(res2.data.data)
-            dispatchAlert({ loading: false })
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
     useEffect(() => {
+        const getDashboard = async () => {
+            dispatchAlert({ loading: true })
+            try {
+                const res1 = await DashboardService.countDashboard()
+                setCount(res1.data.data)
+                const res2 = await DashboardService.listSoldOut()
+                setListProductSoldOut(res2.data.data)
+                dispatchAlert({ loading: false })
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
         getDashboard()
     }, [])
+
+    useEffect(() => {
+        socket.on('ONLINE_USERS_COUNT', (onlineUserCount: number) => {
+            setOnlineUser(onlineUserCount)
+        })
+
+        return () => {
+            socket.off('ONLINE_USERS_COUNT')
+        }
+    }, [socket])
 
     return (
         <>
@@ -70,8 +83,18 @@ const DashBoard = () => {
                 <title>Dashboard</title>
                 <meta name='description' content='Beginner friendly page for learning React Helmet.' />
             </Helmet>
-            <Space direction='vertical' size={20} className='w-full'>
-                <Typography.Title level={4}>Dashboard</Typography.Title>
+            <Typography.Title level={4}>Dashboard</Typography.Title>
+            <Space direction='vertical' size={20} className='w-full mt-10'>
+                <Space className='text-center'>
+                    <DashboardCard
+                        icon={
+                            <span className="dot_online_user"></span>
+                        }
+                        title={"Người dùng hoạt động"}
+                        value={onlineUser}
+                    />
+                </Space>
+                <Typography.Title level={5}>Thống kê tổng quan</Typography.Title>
                 <Space direction="horizontal" className='w-full justify-center'>
                     <DashboardCard
                         icon={
@@ -79,26 +102,17 @@ const DashBoard = () => {
                                 className='bg-blue-300 text-blue-500 p-2 text-2xl rounded-[20px]'
                             />
                         }
-                        title={"Số khách thành viên"}
+                        title={"Khách thành viên"}
                         value={count.userCount}
                     />
                     <DashboardCard
                         icon={
-                            <ShoppingOutlined
+                            <ShopOutlined
                                 className='bg-orange-300 text-orange-500 p-2 text-2xl rounded-[20px]'
                             />
                         }
-                        title={"Số sản phẩm"}
+                        title={"Mẫu sản phẩm"}
                         value={count.productCount}
-                    />
-                    <DashboardCard
-                        icon={
-                            <ShoppingCartOutlined
-                                className='bg-green-300 text-green-500 p-2 text-2xl rounded-[20px]'
-                            />
-                        }
-                        title={"Số lượng đơn hàng"}
-                        value={count.billCount}
                     />
                     <DashboardCard
                         icon={
@@ -108,6 +122,24 @@ const DashBoard = () => {
                         }
                         title={"Số lượt đánh giá"}
                         value={count.reviewCount}
+                    />
+                    <DashboardCard
+                        icon={
+                            <ShoppingCartOutlined
+                                className='bg-green-300 text-green-500 p-2 text-2xl rounded-[20px]'
+                            />
+                        }
+                        title={"Số đơn đặt hàng"}
+                        value={count.billCount}
+                    />
+                    <DashboardCard
+                        icon={
+                            <ShoppingOutlined
+                                className='bg-indigo-300 text-indigo-500 p-2 text-2xl rounded-[20px]'
+                            />
+                        }
+                        title={"Sản phẩm bán ra"}
+                        value={count.itemCount}
                     />
                     <DashboardCard
                         icon={
@@ -136,7 +168,7 @@ const DashboardCard = ({ icon, title, value }: { icon: any, title: any, value: a
         <Card className='min-w-[230px]'>
             <Space direction="horizontal">
                 {icon}
-                <Statistic title={title} value={value} />
+                <Statistic title={title} value={value} className='text-center' />
             </Space>
         </Card>
     )
@@ -178,7 +210,7 @@ const RecentOrders = ({ listProductSoldOut }: { listProductSoldOut: IBestSoldOut
 
     return (
         <>
-            <Typography.Title level={5}>Sản phẩm đã bán ra</Typography.Title>
+            <Typography.Title level={5}>Thống kê sản phẩm đã bán</Typography.Title>
             <Table
                 columns={columns}
                 dataSource={listProductSoldOut}

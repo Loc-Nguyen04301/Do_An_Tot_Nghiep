@@ -44,8 +44,24 @@ export interface IBestSoldOutProduct {
     total_quantity_sold: number
 }
 
+export interface ICount {
+    billCount: number
+    productCount: number
+    userCount: number
+    reviewCount: number
+    itemCount: number
+    revenueCount: number
+}
+
 const DashBoard = () => {
-    const [count, setCount] = useState<{ billCount: number, productCount: number, userCount: number, reviewCount: number, itemCount: number, revenueCount: number }>({ billCount: 0, productCount: 0, userCount: 0, reviewCount: 0, itemCount: 0, revenueCount: 0 });
+    const [count, setCount] = useState<ICount>({
+        billCount: 0,
+        productCount: 0,
+        userCount: 0,
+        reviewCount: 0,
+        itemCount: 0,
+        revenueCount: 0
+    });
     const [listProductSoldOut, setListProductSoldOut] = useState<IBestSoldOutProduct[]>([]);
     const [onlineUser, setOnlineUser] = useState(0)
     const dispatchAlert = useAlertDispatch()
@@ -72,9 +88,13 @@ const DashBoard = () => {
             setOnlineUser(onlineUserCount)
         })
 
+        socket.on('UPDATE_BILL_COUNT', (billCount: number) => {
+            setCount((prev) => { return { ...prev, billCount: billCount } })
+        })
+
         return () => {
             socket.off('ONLINE_USERS_COUNT')
-            socket.disconnect()
+            socket.off('UPDATE_BILL_COUNT')
         }
     }, [])
 

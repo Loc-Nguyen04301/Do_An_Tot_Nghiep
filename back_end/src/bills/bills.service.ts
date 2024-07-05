@@ -64,6 +64,8 @@ export class BillsService {
 
       // emit real-time message to client 
       this.appGateway.sendBillNotification(bill)
+      const billCount = await this.prisma.bill.count()
+      this.appGateway.updateBillCount(billCount)
 
       // send information of success order to gmail 
       await this.mailService.sendMailCreateBill({

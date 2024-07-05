@@ -38,4 +38,8 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
         this.server.emit('BILL_NOTIFICATION', bill)
         console.log("emit notification")
     }
+
+    updateBillCount(billCount: number) {
+        this.server.emit('UPDATE_BILL_COUNT', billCount)
+    }
 }

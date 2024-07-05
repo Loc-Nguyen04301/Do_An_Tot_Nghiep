@@ -130,14 +130,14 @@ const Checkout = () => {
                 const res = await MomoService.navigateMomoPay({
                     amount: total_amount,
                     orderId: `${import.meta.env.VITE_PREFIX_ORDER}${bill_id}`,
-                    orderInfo: `Ma don hang ${bill_id} ${getValues("customer_name")} CK MUA HANG`
+                    orderInfo: `Ma don hang ${import.meta.env.VITE_PREFIX_ORDER}${bill_id} ${getValues("customer_name")} CK MUA HANG`
                 })
                 window.location.replace(res.data.data.payUrl)
             }
             else if (paymentMethod === PaymentMethod.BANK_TRANSFER) {
                 const res = await VietQRService.createPaymentQR({
                     amount: total_amount,
-                    orderInfo: `Ma don hang ${bill_id} ${getValues("customer_name")} CK MUA HANG`
+                    orderInfo: `Ma don hang ${import.meta.env.VITE_PREFIX_ORDER}${bill_id} ${getValues("customer_name")} CK MUA HANG`
                 })
                 setPaymentURL(res.data.data.qrDataURL)
                 dispatchAlert({ loading: false })

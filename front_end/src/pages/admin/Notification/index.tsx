@@ -11,21 +11,21 @@ import clsx from 'clsx'
 const DATETIME_FORMAT = 'dd-MM-yyyy HH:mm'
 
 const Notification = () => {
-    const [stateNoti, setstateNoti] = useState<string | number>('All');
-    const { bills, unread_records } = useAppSelector(state => state.billNoti)
-    const [filterBills, setFilterBills] = useState<IBillNoti[]>([])
+    const [stateNoti, setStateNoti] = useState<string | number>('All');
+    const { billNotis, unread_records } = useAppSelector(state => state.billNoti)
+    const [filterBillNotis, setFilterBillNotis] = useState<IBillNoti[]>([])
 
     const navigate = useNavigate()
 
     useEffect(() => {
         if (stateNoti !== 'All') {
-            const filterBills = bills.filter((item) => item.is_read === false)
-            setFilterBills(filterBills)
+            const filterBills = billNotis.filter((item) => item.is_read === false)
+            setFilterBillNotis(filterBills)
         }
         else {
-            setFilterBills(bills)
+            setFilterBillNotis(billNotis)
         }
-    }, [stateNoti, bills])
+    }, [stateNoti, billNotis])
 
     const handleBillIsRead = (billId: number) => {
         navigate(`${RoutePath.UpdateBill}/${billId}`)
@@ -39,9 +39,9 @@ const Notification = () => {
             </Helmet>
             <Typography.Title level={4}>Thông báo</Typography.Title>
             <div className='container mx-auto w-[700px]'>
-                <Segmented size="large" options={['All', `Unread (${unread_records})`]} className='w-full bg-white !rounded-none p-2' value={stateNoti} onChange={setstateNoti} />
+                <Segmented size="large" options={['All', `Unread (${unread_records})`]} className='w-full bg-white !rounded-none p-2' value={stateNoti} onChange={setStateNoti} />
                 <ul className='border-t-2 bg-white'>
-                    {filterBills && filterBills.map(item =>
+                    {filterBillNotis && filterBillNotis.map(item =>
                         <li className={clsx('p-4 cursor-pointer flex justify-between items-center hover:bg-[rgba(0,0,0,.2)]', !item.is_read && 'bg-[#f0f8ff]')} key={item.id} onClick={() => handleBillIsRead(item.id)}>
                             <div>
                                 {item.user_id ?

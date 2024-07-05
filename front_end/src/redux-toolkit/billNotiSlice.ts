@@ -10,12 +10,12 @@ export interface IBillNoti {
 }
 
 interface BillNotiState {
-   bills: IBillNoti[],
+   billNotis: IBillNoti[],
    unread_records: number
 }
 
 const initialState: BillNotiState = {
-   bills: [],
+   billNotis: [],
    unread_records: 0
 }
 
@@ -33,14 +33,14 @@ export const billNotiSlice = createSlice({
    initialState,
    reducers: {
       markReadBill: (state, action: PayloadAction<{ id: number }>) => {
-         const isReadBill = state.bills.find((item) => item.id === action.payload.id)
+         const isReadBill = state.billNotis.find((item) => item.id === action.payload.id)
          if (isReadBill && isReadBill.is_read === false) {
             isReadBill.is_read = true
             state.unread_records -= 1
          }
       },
       createBillNoti: (state, action: PayloadAction<IBillNoti>) => {
-         state.bills = [action.payload, ...state.bills]
+         state.billNotis = [action.payload, ...state.billNotis]
          state.unread_records += 1
       }
    },

@@ -335,8 +335,8 @@ export class BillsService {
   }
 
   async findAllNotification() {
-    let bills: any[] = [];
-    bills = await this.prisma.notifiBill.findMany({
+    let billNotis: any[] = [];
+    billNotis = await this.prisma.notifiBill.findMany({
       select: {
         bill: {
           select: {
@@ -357,11 +357,11 @@ export class BillsService {
 
     const unread_records = await this.prisma.notifiBill.count({ where: { is_read: false } })
 
-    bills = bills.map(({ bill, is_read }) => ({
+    billNotis = billNotis.map(({ bill, is_read }) => ({
       ...bill,
       is_read
     }));
-    return { bills, unread_records }
+    return { billNotis, unread_records }
   }
 
   async isReadBill(billId: number) {

@@ -1,9 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, UseGuards, UseInterceptors, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller, Get, Post, Body, Patch, Param,
+  HttpCode, HttpStatus, UseGuards, UseInterceptors, ParseIntPipe,
+  CacheTTL
+} from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { AtGuard } from 'src/common/guards';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 import { Public } from 'src/common/decorators';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('api/v1/reviews')
 export class ReviewsController {
@@ -27,8 +32,11 @@ export class ReviewsController {
 
   @Public()
   @HttpCode(HttpStatus.OK)
-  @UseInterceptors(new SuccessInterceptor('Review Success'))
   @Get('/list/:productId')
+  @UseInterceptors(new SuccessInterceptor()
+    , CacheInterceptor
+  )
+  @CacheTTL(6000)
   getListReviewByProductId(@Param('productId', ParseIntPipe) productId: number) {
     return this.reviewsService.getListReviewByProductId(productId);
   }

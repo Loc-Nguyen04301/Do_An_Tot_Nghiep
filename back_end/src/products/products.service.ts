@@ -12,9 +12,12 @@ export class ProductsService {
     const products = await this.prisma.product.findMany({
       include: {
         reviews: {
+          where: {
+            active: true
+          },
           select: {
             star: true
-          }
+          },
         },
         categories: {
           select: {
@@ -97,6 +100,9 @@ export class ProductsService {
       },
       include: {
         reviews: {
+          where: {
+            active: true
+          },
           select: {
             star: true
           }

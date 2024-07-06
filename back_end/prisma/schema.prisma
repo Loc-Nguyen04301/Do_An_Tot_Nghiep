@@ -70,7 +70,7 @@ model Review {
   created_at  DateTime  @default(now())
   images      String[]
   update_at   DateTime? @updatedAt
-  active      Boolean   @default(true)
+  active      Boolean   @default(false)
   product     Product   @relation(fields: [product_id], references: [id], onDelete: Cascade)
   user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
 

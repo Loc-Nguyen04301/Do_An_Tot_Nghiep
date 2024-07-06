@@ -31,7 +31,7 @@ export class ProductsController {
   @UseInterceptors(new SuccessInterceptor("Get Successfully")
     , CacheInterceptor
   )
-  @CacheTTL(60000)
+  @CacheTTL(6000)
   findAll() {
     return this.productsService.findAll();
   }
@@ -42,7 +42,7 @@ export class ProductsController {
   @UseInterceptors(new SuccessInterceptor()
     , CacheInterceptor
   )
-  @CacheTTL(60000)
+  @CacheTTL(6000)
   findByCategory(@Param('path') path: string) {
     return this.productsService.findByCategory(path)
   }
@@ -53,7 +53,7 @@ export class ProductsController {
   @UseInterceptors(new SuccessInterceptor()
     , CacheInterceptor
   )
-  @CacheTTL(60000)
+  @CacheTTL(6000)
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.productsService.findOne(id);
   }
@@ -64,7 +64,7 @@ export class ProductsController {
   @UseInterceptors(new SuccessInterceptor()
     , CacheInterceptor
   )
-  @CacheTTL(60000)
+  @CacheTTL(6000)
   findByName(@Param('name') name: string) {
     return this.productsService.findByName(name);
   }

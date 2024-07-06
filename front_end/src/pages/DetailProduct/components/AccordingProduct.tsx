@@ -82,7 +82,7 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
             Đánh giá sản phẩm
           </h3>
           {
-            product.reviews.length !== 0
+            product._count.reviews !== 0
               ? <ListReview product={product} handlePreviewImage={handlePreviewImage} />
               : <p className="text-[#777777] text-[16px] text-center mt-2">
                 Hiện tại sản phẩm chưa có đánh giá nào, bạn hãy trở thành người đầu tiên đánh giá cho sản phẩm này.
@@ -92,15 +92,15 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
             accessToken && isReviewed === -1
               ?
               <ReviewContainer product={product} handlePreviewImage={handlePreviewImage} />
-              : accessToken && isReviewed !== -1
+              : !accessToken
                 ?
-                <></>
-                :
                 <div className="border-2 border-main-orange-color pt-3 pl-8 pb-10 mt-10">
                   <span className="text-lg">
                     Chỉ những khách hàng đã đăng nhập mới có thể đưa ra đánh giá.
                   </span>
                 </div>
+                :
+                <></>
           }
         </div>
       ),

@@ -295,7 +295,7 @@ const Checkout = () => {
                                 </h1>
                                 <div className="my-2">
                                     <div className="tracking-wide leading-6 font-semibold">Ghi chú đơn hàng (tuỳ chọn)</div>
-                                    <textarea className="w-full h-[80px] border-[1px] border-[#adadad] rounded-sm" title='abc' {...register('note')} />
+                                    <textarea className="w-full min-h-[80px] border-[1px] border-[#adadad] rounded-sm" title='abc' {...register('note')} />
                                 </div>
                                 <div className='mt-5'>
                                     <button className='w-1/4 bg-button-red-color py-2 hover:shadow-checkout-btn'>

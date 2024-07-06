@@ -7,7 +7,6 @@ import axios, {
 } from "axios";
 import { isTokenExpiration, getAccessToken, setAccessToken, setRefreshToken, removeAccessToken, removeRefreshToken } from "@/utils";
 import AuthService from "./AuthService";
-import { RoutePath } from "@/routes";
 
 export const getBaseUrl = () => {
   if (import.meta.env.MODE === 'development') {
@@ -80,7 +79,7 @@ instance.interceptors.response.use(
     if (error.response && error.response.status !== 401 && error.response.data) {
       return Promise.reject(error.response.data);
     } else {
-      return Promise.reject({ message: 'Unknown error' });
+      return Promise.reject({ message: 'Axios response error' });
     }
   },
 );

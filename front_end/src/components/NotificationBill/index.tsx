@@ -10,16 +10,17 @@ import addNotification from 'react-push-notification';
 
 const audio = new Audio(notificationSound);
 
-const useBillNotification = () => {
+const NotificationBill = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch()
+    const [api, contextHolder] = notification.useNotification();
 
     useEffect(() => {
         socket.on('BILL_NOTIFICATION', (bill) => {
             dispatch(createBillNoti({ ...bill, is_read: false }));
 
             // push notification UI
-            notification.info({
+            api.info({
                 message: `Thông báo mới`,
                 description: bill.user_id
                     ? `Mã đơn hàng ${bill.id} được mua bởi khách thành viên ${bill.customer_name}`
@@ -48,8 +49,9 @@ const useBillNotification = () => {
         return () => {
             socket.off('BILL_NOTIFICATION');
         };
-    }, [dispatch, navigate]);
+    }, [dispatch, api]);
 
+    return <>{contextHolder}</>
 };
 
-export default useBillNotification;
+export default NotificationBill;

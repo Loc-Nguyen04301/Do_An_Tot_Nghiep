@@ -21,7 +21,7 @@ import { useAppDispatch, useAppSelector } from '@/redux-toolkit/hook';
 import { logOut } from '@/redux-toolkit/authSlice';
 import { useAlertDispatch } from '@/contexts/AlertContext';
 import ShowNotification from '@/layouts/AdminLayout/components/ShowNotification';
-import useBillNotification from '@/hooks/useBillNotification';
+import NotificationBill from '@/components/NotificationBill';
 import { fetchBillNoti } from '@/redux-toolkit/billNotiSlice';
 import { RoutePath } from '@/routes';
 import "./AdminLayout.scss"
@@ -110,7 +110,6 @@ const AdminLayout = ({ children }: AdminLayouttProps) => {
     const navigateHomePage = () => {
         navigate(RoutePath.Home)
     }
-    useBillNotification()
 
     return (
         <Layout style={{ minHeight: '100vh' }}>
@@ -156,6 +155,7 @@ const AdminLayout = ({ children }: AdminLayouttProps) => {
                     </div>
                 </Content>
             </Layout>
+            <NotificationBill />
         </Layout>
     )
 }

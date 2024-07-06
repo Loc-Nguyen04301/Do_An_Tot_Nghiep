@@ -1,6 +1,6 @@
 import { BellOutlined } from '@ant-design/icons';
 import "./ShowNotification.scss"
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { RoutePathAdmin } from '@/layouts/AdminLayout';
 import { useAppSelector } from '@/redux-toolkit/hook';
 import { format } from 'date-fns';

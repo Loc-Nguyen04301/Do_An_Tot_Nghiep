@@ -35,13 +35,12 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
     return (
         <div className={`p-4 containerProduct`}>
-            <div className="relative">
+            <div className="relative min-h-[250px]">
                 {
                     product.available === 0 && <Tag color="red" className="absolute top-0 left-0">Hết hàng</Tag>
                 }
                 <Link
                     to={product.available !== 0 ? `${RoutePath.DetailProduct}/${product.id}` : ""}
-                    className="text-center block mx-auto pb-12"
                 >
                     <img
                         src={product.image}

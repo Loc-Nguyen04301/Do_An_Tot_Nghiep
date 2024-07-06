@@ -159,56 +159,50 @@ const Header = () => {
       </div>
       <div className="header-bottom bg-main-orange-color max-[950px]:text-xs text-sm max-md:hidden">
         <div className="max-w-[1140px] mx-auto container px-4 flex items-center justify-between">
-          <div className="max-h-full">
-            <div className="flex">
-              <DropDown />
-              <NavigationBar currentPath={currentPath} />
-            </div>
+          <div className="flex">
+            <DropDown />
+            <NavigationBar currentPath={currentPath} />
           </div>
-          <div className="max-h-full">
-            <div className="3-icon">
-              <ul className="flex items-center gap-[10px]">
-                <li className="cursor-pointer relative">
-                  <Link to={RoutePath.WishList}>
-                    <FontAwesomeIcon icon={faHeart} size="xl" />
-                    {totalProduct !== 0 &&
-                      <div className="absolute -top-2 -right-1 bg-button-red-color text-white w-4 h-4 rounded-full text-center">
-                        <span className="text-xs font-semibold block">{totalProduct}</span>
-                      </div>
-                    }
-                  </Link>
-                </li>
-                <li className="divider border-l-[1px] h-[2rem] border-white opacity-40"></li>
-                <li className="cursor-pointer">
-                  <Link to={RoutePath.LoginPage}>
-                    <FontAwesomeIcon icon={faUser} size="xl" />
-                  </Link>
-                </li>
-                <li className="divider border-l-[1px] h-[2rem] border-white opacity-40"></li>
-                <li className="dropdown">
-                  <Link to={RoutePath.CartPage}>
-                    <FontAwesomeIcon icon={faCartShopping} size="xl" />
-                    <div className="absolute -top-2 -right-1 bg-button-red-color text-white w-4 h-4 rounded-full text-center">
-                      <span className="text-xs font-semibold block">{totalQuantity}</span>
-                    </div>
-                  </Link>
-                  <ShoppingCart />
-                </li>
-                <li className="divider border-l-[1px] h-[2rem] border-white opacity-40"></li>
-                <li>
-                  <Link to={RoutePath.CheckoutPage}>
-                    <div className="bg-button-red-color rounded-full hover:bg-red-800 duration-300 cursor-pointer">
-                      <div className="px-3 block h-[2rem]">
-                        <span className="uppercase text-white font-semibold tracking-wide block leading-[2rem]">
-                          Thanh toán
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
+          <ul className="flex items-center gap-[10px]">
+            <li className="cursor-pointer relative">
+              <Link to={RoutePath.WishList}>
+                <FontAwesomeIcon icon={faHeart} size="xl" />
+                {totalProduct !== 0 &&
+                  <div className="absolute -top-2 -right-1 bg-button-red-color text-white w-4 h-4 rounded-full text-center">
+                    <span className="text-xs font-semibold block">{totalProduct}</span>
+                  </div>
+                }
+              </Link>
+            </li>
+            <li className="divider border-l-[1px] h-[2rem] border-white opacity-40"></li>
+            <li className="cursor-pointer">
+              <Link to={RoutePath.LoginPage}>
+                <FontAwesomeIcon icon={faUser} size="xl" />
+              </Link>
+            </li>
+            <li className="divider border-l-[1px] h-[2rem] border-white opacity-40"></li>
+            <li className="dropdown">
+              <Link to={RoutePath.CartPage}>
+                <FontAwesomeIcon icon={faCartShopping} size="xl" />
+                <div className="absolute -top-2 -right-1 bg-button-red-color text-white w-4 h-4 rounded-full text-center">
+                  <span className="text-xs font-semibold block">{totalQuantity}</span>
+                </div>
+              </Link>
+              <ShoppingCart />
+            </li>
+            <li className="divider border-l-[1px] h-[2rem] border-white opacity-40"></li>
+            <li>
+              <Link to={RoutePath.CheckoutPage}>
+                <div className="bg-button-red-color rounded-full hover:bg-red-800 duration-300 cursor-pointer">
+                  <div className="px-3 block h-[2rem]">
+                    <span className="uppercase text-white font-semibold tracking-wide block leading-[2rem]">
+                      Thanh toán
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            </li>
+          </ul>
         </div>
       </div>
       <div className="mx-4 max-md:border-b-[1px]"></div>

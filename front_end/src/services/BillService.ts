@@ -59,10 +59,18 @@ const isReadBill = (id: number) => {
     return http.patch(`/bills/isread/${id}`)
 }
 
+const getShipping = (id: number) => {
+    return http.get(`/bills/shipping/${id}`)
+}
+
 const createShipping = (data: CreateBillShippingDto) => {
     return http.post(`/bills/shipping`, data)
 }
 
-const BillService = { createBill, getBillDetailById, getBill, getBillAdmin, getBillNotification, isReadBill, updateBill, createShipping }
+const cancelShipping = (data: { order_codes: string }) => {
+    return http.post(`/bills/shipping/cancel`, data)
+}
+
+const BillService = { createBill, getBillDetailById, getBill, getBillAdmin, getBillNotification, isReadBill, updateBill, getShipping, createShipping, cancelShipping }
 
 export default BillService

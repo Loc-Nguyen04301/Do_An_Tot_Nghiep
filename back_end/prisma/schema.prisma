@@ -95,7 +95,7 @@ model Bill {
   items               Item[]
   NotifiBill          NotifiBill?
   ReasonCancelledBill ReasonCancelledBill?
-  ShippingBilll       ShippingBilll?
+  ShippingBill        ShippingBill?
 }
 
 model NotifiBill {
@@ -114,7 +114,7 @@ model ReasonCancelledBill {
   bill             Bill      @relation(fields: [bill_id], references: [id], onDelete: Cascade)
 }
 
-model ShippingBilll {
+model ShippingBill {
   bill_id         Int            @unique
   ghn_order_code  String         @unique
   shipping_status ShippingStatus @default(READY_TO_PICK)

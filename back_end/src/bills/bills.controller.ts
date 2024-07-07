@@ -129,8 +129,24 @@ export class BillsController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(new SuccessInterceptor())
+  @Get('shipping/:id')
+  getShipping(@Param('id', ParseIntPipe) id: number) {
+    return this.billsService.getShipping(id);
+  }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor())
   @Post('shipping')
   createShipping(@Body() createBillShippingDto: CreateBillShippingDto) {
     return this.billsService.createShipping(createBillShippingDto);
+  }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor())
+  @Post('shipping/cancel')
+  cancelShipping(@Body() cancelBillShippingDto: { order_codes: string }) {
+    return this.billsService.cancelShipping(cancelBillShippingDto);
   }
 }

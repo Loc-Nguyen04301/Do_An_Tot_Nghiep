@@ -369,16 +369,47 @@ export class BillsService {
     return
   }
 
-  async createShipping(createBillShippingDto: CreateBillShippingDto) {
-    const { bill_id, ghn_order_code } = createBillShippingDto
-    const shippingBill = await this.prisma.shippingBilll.create({
-      data: {
-        bill_id,
-        ghn_order_code,
+  async getShipping(id: number) {
+    const shippingBill = await this.prisma.shippingBill.findUnique({
+      where: {
+        bill_id: id
       }
     })
 
-    if (!shippingBill) throw new BadRequestException('Không lưu được thông tin đơn giao hàng');
+    if (!shippingBill) throw new BadRequestException('Không lấy được thông tin đơn giao hàng')
     return shippingBill
+  }
+
+  async createShipping(createBillShippingDto: CreateBillShippingDto) {
+    const { bill_id, ghn_order_code } = createBillShippingDto
+    const shippingBill = await this.prisma.shippingBill.upsert({
+      where: { bill_id },
+      create: {
+        bill_id,
+        ghn_order_code,
+        shipping_status: "READY_TO_PICK"
+      },
+      update: {
+        ghn_order_code,
+        shipping_status: "READY_TO_PICK"
+      }
+    });
+
+    if (!shippingBill) throw new BadRequestException('Không lưu được thông tin đơn giao hàng')
+    return shippingBill
+  }
+
+  async cancelShipping(cancelBillShippingDto: { order_codes: string }) {
+    const cancelBill = await this.prisma.shippingBill.update({
+      where: {
+        ghn_order_code: cancelBillShippingDto.order_codes
+      },
+      data: {
+        shipping_status: 'CANCEL'
+      }
+    });
+
+    if (!cancelBill) throw new BadRequestException('Không cập nhật được thông tin đơn giao hàng')
+    return cancelBill
   }
 }

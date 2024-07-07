@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAlertDispatch } from '@/contexts/AlertContext'
 import { IBill } from '@/types'
-import { Button, Typography } from 'antd'
+import { Button, Select, Space, Typography } from 'antd'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
 import BillService from '@/services/BillService'
@@ -10,8 +10,19 @@ interface ShippingGHNProps {
     selectedBill: IBill
 }
 
+interface ShippingBill {
+    bill_id: number
+    ghn_order_code: string
+    shipping_status: string
+    created_at: string
+    update_at: string
+}
+
 const ShippingGHN = ({ selectedBill }: ShippingGHNProps) => {
-    const params = useParams()
+    const [ghnOrderCode, setGhnOrderCode] = useState()
+    const [shippingBill, setShippingBill] = useState<ShippingBill>()
+    console.log({ ghnOrderCode, shippingBill })
+
     const dispatchAlert = useAlertDispatch()
     const items = selectedBill.items
     const convertItemToGHNFormat = items.map((item) => {
@@ -21,10 +32,25 @@ const ShippingGHN = ({ selectedBill }: ShippingGHNProps) => {
             weight: 1
         }
     })
-    
+
+    useEffect(() => {
+        const getShipping = async (id: number) => {
+            try {
+                const res = await BillService.getShipping(id)
+                setGhnOrderCode(res.data.data.ghn_order_code)
+                setShippingBill(res.data.data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        if (selectedBill.id) getShipping(selectedBill.id)
+    }, [selectedBill.id])
+
     const handleCreateShipping = async () => {
         dispatchAlert({ loading: true })
         try {
+            // call api to create shipping order with GHN
             const response = await axios.post("https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create",
                 {
                     "from_name": "Nguyễn Gia Lộc",
@@ -56,12 +82,15 @@ const ShippingGHN = ({ selectedBill }: ShippingGHNProps) => {
                         "ShopId": "192793"
                     }
                 })
+            // call api to create shipping order database
             await BillService.createShipping(
                 {
                     bill_id: selectedBill.id,
                     ghn_order_code: response.data.data.order_code
                 }
-            ).then(() => {
+            ).then((res) => {
+                setGhnOrderCode(response.data.data.order_code)
+                setShippingBill(res.data.data)
                 dispatchAlert({ success: "Tạo đơn giao hàng thành công" })
             })
         } catch (error) {
@@ -69,20 +98,83 @@ const ShippingGHN = ({ selectedBill }: ShippingGHNProps) => {
         }
     }
 
-    const handleCancelShipping = () => { }
+    const handleCancelShipping = async () => {
+        if (ghnOrderCode) {
+            dispatchAlert({ loading: true })
+            try {
+                // call api to cancel shipping order with GHN
+                await axios.post("https://dev-online-gateway.ghn.vn/shiip/public-api/v2/switch-status/cancel",
+                    {
+                        "order_codes": [ghnOrderCode]
+                    },
+                    {
+                        headers: {
+                            "Token": "39bb6c37-39e4-11ef-8e53-0a00184fe694",
+                            "ShopId": "192793"
+                        }
+                    })
+                // call api to cancel shipping order database
+                await BillService.cancelShipping({ order_codes: ghnOrderCode })
+                    .then((res) => {
+                        console.log(res)
+                        setGhnOrderCode(undefined)
+                        setShippingBill(res.data.data)
+                        dispatchAlert({ success: "Hủy đơn giao hàng thành công" })
+                    })
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    }
 
     return (
-        <div className='bg-white mb-10 p-6'>
-            <Typography.Title level={4}>
-                Thiết lập giao hàng
+        <div className='bg-white mt-10 p-6'>
+            <div className="my-2">
+                <div className="font-semibold tracking-wide">Trạng thái giao hàng</div>
+                <Select
+                    className="w-full"
+                    value={shippingBill?.shipping_status === 'READY_TO_PICK'
+                        ? 'Chờ lấy hàng'
+                        : shippingBill?.shipping_status === 'DELIVERED'
+                            ? 'Đã giao hàng'
+                            : shippingBill?.shipping_status === 'CANCEL'
+                                ? 'Hủy giao hàng'
+                                : "Chưa tạo đơn giao hàng"}
+                    disabled={true}
+                />
+            </div>
+            <Typography.Title level={4} className='mt-5'>
+                Tạo đơn giao hàng tại GiaoHangNhanh
             </Typography.Title>
-            <Button type="primary" onClick={handleCreateShipping}>
-                Tạo đơn giao hàng
-            </Button>
-            <Button type="primary" danger>
-                Hủy đơn giao hàng
-            </Button>
-        </div>
+            <Space>
+                {
+                    shippingBill &&
+                    <Button type="primary">
+                        <a href={`https://5sao.ghn.dev/order/edit/${ghnOrderCode}`} target='_blank'>
+                            Chi tiết đơn giao hàng
+                        </a>
+                    </Button>
+                }
+                {
+                    !shippingBill &&
+                    <Button type="primary" onClick={handleCreateShipping}>
+                        Tạo mới đơn giao hàng
+                    </Button>
+                }
+                {
+                    shippingBill && shippingBill.shipping_status === 'CANCEL' &&
+                    <Button type="primary" onClick={handleCreateShipping}>
+                        Tạo lại đơn giao hàng
+                    </Button>
+                }
+                {
+                    shippingBill && shippingBill.shipping_status === 'READY_TO_PICK' &&
+                    <Button type="primary" danger onClick={handleCancelShipping}>
+                        Hủy đơn giao hàng
+                    </Button>
+                }
+            </Space>
+        </div >
     )
 }
 

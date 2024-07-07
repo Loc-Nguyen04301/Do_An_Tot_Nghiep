@@ -70,7 +70,7 @@ const SaleCampaign = () => {
             render: (_, record) => <div className='flex items-center' >
                 <div className='flex gap-2'>
                     <Button
-                        className={clsx('cursor-pointer', "text-blue-500 ", !record.active && 'invisible')}
+                        className={clsx('cursor-pointer', "text-blue-500 ", record.active && 'invisible')}
                         onClick={() => handleActive(record.id)}
                     >
                         Kích hoạt

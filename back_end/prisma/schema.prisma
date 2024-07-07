@@ -85,16 +85,17 @@ model Bill {
   email               String?
   note                String?
   user_id             Int?
-  created_at          DateTime             @default(now())
   order_status        OrderStatus          @default(PROCESSING)
   payment_status      Boolean              @default(false)
-  update_at           DateTime?            @updatedAt
   payment_method      PaymentMethod
   total_amount        Int?
+  created_at          DateTime             @default(now())
+  update_at           DateTime?            @updatedAt
   user                User?                @relation(fields: [user_id], references: [id], onDelete: Cascade)
   items               Item[]
   NotifiBill          NotifiBill?
   ReasonCancelledBill ReasonCancelledBill?
+  ShippingBilll       ShippingBilll?
 }
 
 model NotifiBill {
@@ -111,6 +112,15 @@ model ReasonCancelledBill {
   created_at       DateTime  @default(now())
   update_at        DateTime? @updatedAt
   bill             Bill      @relation(fields: [bill_id], references: [id], onDelete: Cascade)
+}
+
+model ShippingBilll {
+  bill_id         Int            @unique
+  ghn_order_code  Int            @unique
+  shipping_status ShippingStatus @default(READY_TO_PICK)
+  created_at      DateTime       @default(now())
+  update_at       DateTime?      @updatedAt
+  bill            Bill           @relation(fields: [bill_id], references: [id], onDelete: Cascade)
 }
 
 model Item {
@@ -153,4 +163,10 @@ enum PaymentMethod {
   SHIPCOD
   BANK_TRANSFER
   VNPAY
+}
+
+enum ShippingStatus {
+  READY_TO_PICK
+  DELIVERED
+  CANCEL
 }

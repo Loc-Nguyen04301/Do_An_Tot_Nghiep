@@ -26,6 +26,11 @@ interface UpdateBillDto {
     reason_cancelled?: string
 }
 
+interface CreateBillShippingDto {
+    bill_id: number
+    ghn_order_code: string
+}
+
 const createBill = (data: CreateBillDto) => {
     return http.post(`/bills`, data)
 }
@@ -54,6 +59,10 @@ const isReadBill = (id: number) => {
     return http.patch(`/bills/isread/${id}`)
 }
 
-const BillService = { createBill, getBillDetailById, getBill, getBillAdmin, getBillNotification, isReadBill, updateBill }
+const createShipping = (data: CreateBillShippingDto) => {
+    return http.post(`/bills/shipping`, data)
+}
+
+const BillService = { createBill, getBillDetailById, getBill, getBillAdmin, getBillNotification, isReadBill, updateBill, createShipping }
 
 export default BillService

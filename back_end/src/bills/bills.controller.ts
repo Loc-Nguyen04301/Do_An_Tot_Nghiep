@@ -5,6 +5,7 @@ import { UpdateBillDto } from './dto/update-bill.dto';
 import { Public } from 'src/common/decorators';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 import { OrderStatus } from '@prisma/client';
+import { CreateBillShippingDto } from 'src/bills/dto/create-shipping.dto';
 
 @Controller('api/v1/bills')
 export class BillsController {
@@ -123,5 +124,13 @@ export class BillsController {
       from_date: parsedFromDate,
       to_date: parsedToDate
     });
+  }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(new SuccessInterceptor())
+  @Post('shipping')
+  createShipping(@Body() createBillShippingDto: CreateBillShippingDto) {
+    return this.billsService.createShipping(createBillShippingDto);
   }
 }

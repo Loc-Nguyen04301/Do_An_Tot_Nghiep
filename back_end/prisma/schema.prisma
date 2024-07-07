@@ -116,7 +116,7 @@ model ReasonCancelledBill {
 
 model ShippingBilll {
   bill_id         Int            @unique
-  ghn_order_code  Int            @unique
+  ghn_order_code  String         @unique
   shipping_status ShippingStatus @default(READY_TO_PICK)
   created_at      DateTime       @default(now())
   update_at       DateTime?      @updatedAt

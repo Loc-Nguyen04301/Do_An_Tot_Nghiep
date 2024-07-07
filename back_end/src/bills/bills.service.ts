@@ -7,6 +7,7 @@ import { OrderStatus } from '@prisma/client';
 import { BillParams } from 'src/types';
 import { AppGateway } from 'src/app.gateway';
 import { MailService } from '../mail/mail.service';
+import { CreateBillShippingDto } from 'src/bills/dto/create-shipping.dto';
 
 const saltOrRounds = 10;
 @Injectable()
@@ -366,5 +367,18 @@ export class BillsService {
     })
 
     return
+  }
+
+  async createShipping(createBillShippingDto: CreateBillShippingDto) {
+    const { bill_id, ghn_order_code } = createBillShippingDto
+    const shippingBill = await this.prisma.shippingBilll.create({
+      data: {
+        bill_id,
+        ghn_order_code,
+      }
+    })
+
+    if (!shippingBill) throw new BadRequestException('Không lưu được thông tin đơn giao hàng');
+    return shippingBill
   }
 }

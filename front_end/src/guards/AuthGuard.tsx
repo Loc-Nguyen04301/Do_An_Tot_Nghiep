@@ -10,7 +10,7 @@ interface AuthGuardProps {
 const AuthGuard = ({ children }: AuthGuardProps) => {
     const accessToken = getAccessToken()
 
-    if (!accessToken) return <Navigate to={RoutePath.NotFound} replace />
+    if (!accessToken) return <Navigate to={RoutePath.Home} replace />
     return <>{children}</>
 }
 

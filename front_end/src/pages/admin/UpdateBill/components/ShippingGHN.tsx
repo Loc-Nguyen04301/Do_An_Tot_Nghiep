@@ -21,7 +21,6 @@ interface ShippingBill {
 const ShippingGHN = ({ selectedBill }: ShippingGHNProps) => {
     const [ghnOrderCode, setGhnOrderCode] = useState()
     const [shippingBill, setShippingBill] = useState<ShippingBill>()
-    console.log({ ghnOrderCode, shippingBill })
 
     const dispatchAlert = useAlertDispatch()
     const items = selectedBill.items
@@ -51,7 +50,7 @@ const ShippingGHN = ({ selectedBill }: ShippingGHNProps) => {
         dispatchAlert({ loading: true })
         try {
             // call api to create shipping order with GHN
-            const response = await axios.post("https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create",
+            const response = await axios.post(import.meta.env.VITE_GHN_CREATE_URL,
                 {
                     "from_name": "Nguyễn Gia Lộc",
                     "from_phone": "0915677049",
@@ -78,8 +77,8 @@ const ShippingGHN = ({ selectedBill }: ShippingGHNProps) => {
                 },
                 {
                     headers: {
-                        "Token": "39bb6c37-39e4-11ef-8e53-0a00184fe694",
-                        "ShopId": "192793"
+                        "Token": `${import.meta.env.VITE_GHN_TOKEN}`,
+                        "ShopId": `${import.meta.env.VITE_GHN_SHOP_ID}`
                     }
                 })
             // call api to create shipping order database
@@ -103,14 +102,14 @@ const ShippingGHN = ({ selectedBill }: ShippingGHNProps) => {
             dispatchAlert({ loading: true })
             try {
                 // call api to cancel shipping order with GHN
-                await axios.post("https://dev-online-gateway.ghn.vn/shiip/public-api/v2/switch-status/cancel",
+                await axios.post(import.meta.env.VITE_GHN_CANCEL_URL,
                     {
                         "order_codes": [ghnOrderCode]
                     },
                     {
                         headers: {
-                            "Token": "39bb6c37-39e4-11ef-8e53-0a00184fe694",
-                            "ShopId": "192793"
+                            "Token": `${import.meta.env.VITE_GHN_TOKEN}`,
+                            "ShopId": `${import.meta.env.VITE_GHN_SHOP_ID}`
                         }
                     })
                 // call api to cancel shipping order database

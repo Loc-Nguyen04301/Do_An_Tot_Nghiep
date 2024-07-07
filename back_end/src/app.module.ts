@@ -19,6 +19,7 @@ import { AtGuard, RolesGuard } from './common/guards';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { UserModule } from './user/user.module';
 import { MomoPaymentController } from './momo_payment/momo_payment.controller';
+import { CacheController } from 'src/cache/cache.controller';
 
 @Module({
   imports: [
@@ -58,6 +59,9 @@ import { MomoPaymentController } from './momo_payment/momo_payment.controller';
       useClass: HttpExceptionFilter,
     },
   ],
-  controllers: [MomoPaymentController],
+  controllers: [
+    MomoPaymentController,
+    CacheController
+  ],
 })
 export class AppModule { }

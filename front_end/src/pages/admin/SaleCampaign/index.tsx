@@ -134,11 +134,11 @@ const SaleCampaign = () => {
     return (
         <>
             <Helmet>
-                <title>Chiến dịch giảm giá</title>
+                <title>Siêu khuyến mãi</title>
                 <meta name='description' content='Beginner friendly page for learning React Helmet.' />
             </Helmet>
             <Space size={20} direction="vertical">
-                <Typography.Title level={4}>Chiến dịch giảm giá</Typography.Title>
+                <Typography.Title level={4}>Siêu khuyến mãi</Typography.Title>
                 <Space direction="horizontal">
                     <Form
                         name="basic"

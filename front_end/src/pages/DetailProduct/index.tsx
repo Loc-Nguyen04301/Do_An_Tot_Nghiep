@@ -247,13 +247,13 @@ const DetailProduct = () => {
                   modules={[Navigation]}
                   loop={true}
                   breakpoints={{
-                    850: {
-                      slidesPerView: 6,
+                    1000: {
+                      slidesPerView: 5,
                     },
-                    680: {
+                    800: {
                       slidesPerView: 4,
                     },
-                    530: {
+                    600: {
                       slidesPerView: 3,
                     },
                     300: {

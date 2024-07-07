@@ -71,7 +71,7 @@ const AdminLayout = ({ children }: AdminLayouttProps) => {
         getItem('Lịch sử giao dịch', RoutePathAdmin.Transaction, <TransactionOutlined />),
         getItem('Sản phẩm', RoutePathAdmin.Inventory, <ShopOutlined />),
         getItem('Danh mục sản phẩm', RoutePathAdmin.Category, <MenuOutlined />),
-        getItem('Chiến dịch giảm giá', RoutePathAdmin.SaleCampaign, <GiftFilled />),
+        getItem('Siêu khuyến mãi', RoutePathAdmin.SaleCampaign, <GiftFilled />),
         getItem('Đánh giá sản phẩm', RoutePathAdmin.ReviewAdmin, <StarOutlined />),
         getItem('Thành viên', RoutePathAdmin.Customer, <UserOutlined />),
         getItem('Thông báo', RoutePathAdmin.Notification, <BellOutlined />),

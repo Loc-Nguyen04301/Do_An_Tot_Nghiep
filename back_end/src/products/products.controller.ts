@@ -31,7 +31,7 @@ export class ProductsController {
   @UseInterceptors(new SuccessInterceptor("Get Successfully")
     , CacheInterceptor
   )
-  @CacheTTL(6000)
+  @CacheTTL(10)
   findAll() {
     return this.productsService.findAll();
   }
@@ -42,7 +42,7 @@ export class ProductsController {
   @UseInterceptors(new SuccessInterceptor()
     , CacheInterceptor
   )
-  @CacheTTL(6000)
+  @CacheTTL(10)
   findByCategory(@Param('path') path: string) {
     return this.productsService.findByCategory(path)
   }

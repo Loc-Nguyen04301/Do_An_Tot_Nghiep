@@ -27,12 +27,12 @@ import { CacheController } from 'src/cache/cache.controller';
       isGlobal: true,
       cache: true,
       envFilePath: ['.env.development.local', '.env.development'],
-
     }),
     CacheModule.register<RedisClientOptions>({
       isGlobal: true,
       store: redisStore,
       url: process.env.REDIS_URL,
+      ttl: 30,
     }),
     PrismaModule,
     AuthModule,

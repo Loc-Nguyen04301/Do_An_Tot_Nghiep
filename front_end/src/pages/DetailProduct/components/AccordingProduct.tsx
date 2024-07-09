@@ -73,7 +73,7 @@ const AccordingProduct = ({ product }: AccordingProductProps) => {
           className="text-lg hover:text-main-orange-color block"
           href="#danhgia"
         >
-          Đánh giá ({product._count.reviews})
+          Đánh giá
         </a>
       ),
       children: (

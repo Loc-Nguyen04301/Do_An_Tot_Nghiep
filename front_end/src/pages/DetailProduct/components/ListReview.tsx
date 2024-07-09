@@ -50,7 +50,7 @@ const ListReview = ({ product, handlePreviewImage }: ListReviewProps) => {
         }
 
         if (product.id) getListReviewByProductId(product.id)
-    }, [product.id])
+    }, [product])
 
     useEffect(() => {
         var filterReviews: Review[];
@@ -103,7 +103,7 @@ const ListReview = ({ product, handlePreviewImage }: ListReviewProps) => {
             <div className='bg-[#fffbf8] border border-[#f9ede5] p-7 flex gap-10 mt-3'>
                 <div>
                     <div className='text-main-orange-color'>
-                        <span className='text-[30px] mr-2'>{numberByStar.average_rating?.toFixed(1)}</span>
+                        <span className='text-[30px] mr-2'>{numberByStar.average_rating?.toFixed(1) || 0}</span>
                         <span className='text-[18px]'>trên 5</span>
                     </div>
                     <Rate value={numberByStar?.average_rating} disabled allowHalf />

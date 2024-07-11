@@ -12,7 +12,6 @@ import {
   HttpStatus,
   UseInterceptors,
   Inject,
-  CacheTTL,
 } from '@nestjs/common';
 import { CacheInterceptor } from '@nestjs/cache-manager';
 import { ProductsService } from './products.service';
@@ -38,10 +37,7 @@ export class ProductsController {
   @Public()
   @Get('/category/:path')
   @HttpCode(HttpStatus.OK)
-  @UseInterceptors(new SuccessInterceptor()
-    , CacheInterceptor
-  )
-  @CacheTTL(10000)
+  @UseInterceptors(new SuccessInterceptor(), CacheInterceptor)
   findByCategory(@Param('path') path: string) {
     return this.productsService.findByCategory(path)
   }
@@ -49,8 +45,7 @@ export class ProductsController {
   @Public()
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  @UseInterceptors(new SuccessInterceptor()
-    , CacheInterceptor
+  @UseInterceptors(new SuccessInterceptor(), CacheInterceptor
   )
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.productsService.findOne(id);
@@ -59,9 +54,7 @@ export class ProductsController {
   @Public()
   @Get('/name/:name')
   @HttpCode(HttpStatus.OK)
-  @UseInterceptors(new SuccessInterceptor()
-    , CacheInterceptor
-  )
+  @UseInterceptors(new SuccessInterceptor())
   findByName(@Param('name') name: string) {
     return this.productsService.findByName(name);
   }

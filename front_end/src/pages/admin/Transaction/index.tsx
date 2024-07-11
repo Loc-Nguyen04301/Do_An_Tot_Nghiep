@@ -37,18 +37,17 @@ const Transaction = () => {
         const getTransactions = async () => {
             dispatchAlert({ loading: true })
             try {
-                const res = await axios(
-                    {
-                        headers: { "Authorization": `${import.meta.env.VITE_CASSO_API_KEY}` },
-                        method: 'GET',
-                        url: `${import.meta.env.VITE_CASSO_TRANSACTION_URL}`,
-                        params: {
-                            "page": currentPage,
-                            "sort": "DESC",
-                            "pageSize": pageSize,
-                            "fromDate": fromDate
-                        }
-                    },)
+                const res = await axios({
+                    headers: { "Authorization": `${import.meta.env.VITE_CASSO_API_KEY}` },
+                    method: 'GET',
+                    url: `${import.meta.env.VITE_CASSO_TRANSACTION_URL}`,
+                    params: {
+                        "page": currentPage,
+                        "sort": "DESC",
+                        "pageSize": pageSize,
+                        "fromDate": fromDate
+                    }
+                })
                 setDataSource(res.data.data.records)
                 setTotalRecords(res.data.data.totalRecords)
                 dispatchAlert({ loading: false })

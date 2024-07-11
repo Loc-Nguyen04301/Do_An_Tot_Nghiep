@@ -147,6 +147,13 @@ model SaleCampaign {
   update_at  DateTime? @updatedAt
 }
 
+model Transaction {
+  id          Int    @id
+  description String
+  when        String
+  amount      Int
+}
+
 enum Role {
   USER
   ADMIN

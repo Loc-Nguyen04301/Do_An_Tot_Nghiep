@@ -11,10 +11,10 @@ const fromDate = format(new Date(), 'yyyy-MM-dd')
 export class ScheduleTaskService {
     constructor(private prisma: PrismaService) { }
 
-    @Cron(CronExpression.EVERY_10_MINUTES)
+    @Cron(CronExpression.EVERY_5_MINUTES)
     async getTransactions() {
         try {
-            console.log("START FETCHING TRANSACTIONS EVERY_10_MINUTES")
+            console.log("START FETCHING TRANSACTIONS EVERY_5_MINUTES")
             // get latest 20 transactions
             const res = await axios({
                 headers: { "Authorization": `${process.env.CASSO_API_KEY}` },
@@ -30,6 +30,7 @@ export class ScheduleTaskService {
 
             // save transaction in database
             const transactions = res.data.data.records
+            console.log({ transactions })
 
             await Promise.all(
                 transactions.map(async (transaction: Transaction) => {
@@ -40,7 +41,7 @@ export class ScheduleTaskService {
                             id: transaction.id,
                             description: transaction.description,
                             amount: transaction.amount,
-                            when: transaction.when
+                            when: new Date(transaction.when)
                         },
                     })
                     console.log({ newTransaction })
@@ -49,51 +50,53 @@ export class ScheduleTaskService {
             console.log("SUCCESS FETCHING DATA FROM API CASSO")
         } catch (error) {
             console.error('ERROR FETCHING DATA FROM API CASSO', error);
-
         }
     }
 
-    @Cron(CronExpression.EVERY_10_MINUTES)
+    @Cron(CronExpression.EVERY_5_MINUTES)
     async updateStatusPaymentBill() {
-        const today = new Date();
-        const startOfDay = new Date(today.setHours(0, 0, 0, 0));
-        const endOfDay = new Date(today.setHours(23, 59, 59, 999));
+        try {
+            console.log("START UPDATE PAYMENT STATUS EVERY_5_MINUTES")
+            const today = new Date();
+            const startOfDay = new Date(today.setHours(0, 0, 0, 0));
+            const endOfDay = new Date(today.setHours(23, 59, 59, 999));
 
-        const need_checking_bill_list = await this.prisma.bill.findMany({
-            where: {
-                payment_status: false,
-                order_status: OrderStatus.PROCESSING,
-                created_at: {
-                    gte: startOfDay,
-                    lt: endOfDay,
-                },
-            }
-        })
-        console.log({ need_checking_bill_list })
-        const need_checking_transaction_list = await this.prisma.transaction.findMany({
-            where: {
-                when: {
-                    gte: startOfDay,
-                    lt: endOfDay,
-                },
-            }
-        })
-        console.log({ need_checking_transaction_list })
-
-        await Promise.all(need_checking_bill_list.map((bill) => {
-            need_checking_transaction_list.forEach(async (transaction) => {
-                if (transaction.description.includes(String(bill.id))) {
-                    await this.prisma.bill.update({
-                        where: {
-                            id: bill.id
-                        },
-                        data: {
-                            payment_status: true
-                        }
-                    })
-                    return
+            const need_checking_bill_list = await this.prisma.bill.findMany({
+                where: {
+                    payment_status: false,
+                    order_status: OrderStatus.PROCESSING,
+                    created_at: {
+                        gte: startOfDay,
+                        lt: endOfDay,
+                    },
                 }
             })
-        }))
+            const need_checking_transaction_list = await this.prisma.transaction.findMany({
+                where: {
+                    when: {
+                        gte: startOfDay,
+                        lt: endOfDay,
+                    },
+                }
+            })
+
+            await Promise.all(need_checking_bill_list.map((bill) => {
+                need_checking_transaction_list.forEach(async (transaction) => {
+                    if (transaction.description.includes(String(bill.id))) {
+                        await this.prisma.bill.update({
+                            where: {
+                                id: bill.id
+                            },
+                            data: {
+                                payment_status: true
+                            }
+                        })
+                        return
+                    }
+                })
+            }))
+        } catch (error) {
+            console.error('ERROR UPDATE PAYMENT STATUS ', error);
+        }
     }
 }

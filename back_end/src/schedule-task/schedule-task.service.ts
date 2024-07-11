@@ -1,15 +1,16 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { format } from 'date-fns';
 import { OrderStatus, Transaction } from '@prisma/client';
+
 const fromDate = format(new Date(), 'yyyy-MM-dd')
 
 @Injectable()
 export class ScheduleTaskService {
     constructor(private prisma: PrismaService) { }
-    // private readonly logger = new Logger();
+
     @Cron(CronExpression.EVERY_10_MINUTES)
     async getTransactions() {
         try {
@@ -57,6 +58,7 @@ export class ScheduleTaskService {
         const today = new Date();
         const startOfDay = new Date(today.setHours(0, 0, 0, 0));
         const endOfDay = new Date(today.setHours(23, 59, 59, 999));
+
         const need_checking_bill_list = await this.prisma.bill.findMany({
             where: {
                 payment_status: false,
@@ -67,6 +69,31 @@ export class ScheduleTaskService {
                 },
             }
         })
+        console.log({ need_checking_bill_list })
+        const need_checking_transaction_list = await this.prisma.transaction.findMany({
+            where: {
+                when: {
+                    gte: startOfDay,
+                    lt: endOfDay,
+                },
+            }
+        })
+        console.log({ need_checking_transaction_list })
 
+        await Promise.all(need_checking_bill_list.map((bill) => {
+            need_checking_transaction_list.forEach(async (transaction) => {
+                if (transaction.description.includes(String(bill.id))) {
+                    await this.prisma.bill.update({
+                        where: {
+                            id: bill.id
+                        },
+                        data: {
+                            payment_status: true
+                        }
+                    })
+                    return
+                }
+            })
+        }))
     }
 }

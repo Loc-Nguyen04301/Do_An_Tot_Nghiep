@@ -15,7 +15,7 @@ export class ScheduleTaskService {
     async getTransactions() {
         try {
             console.log("START FETCHING TRANSACTIONS EVERY_5_MINUTES")
-            // get latest 20 transactions
+            // get latest 100 transactions
             const res = await axios({
                 headers: { "Authorization": `${process.env.CASSO_API_KEY}` },
                 method: 'GET',

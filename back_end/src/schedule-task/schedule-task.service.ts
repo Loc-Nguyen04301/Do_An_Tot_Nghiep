@@ -23,18 +23,17 @@ export class ScheduleTaskService {
                 params: {
                     "sort": "DESC",
                     "page": 1,
-                    "pageSize": 20,
+                    "pageSize": 100,
                     "fromDate": fromDate
                 }
             })
 
             // save transaction in database
             const transactions = res.data.data.records
-            console.log({ transactions })
 
             await Promise.all(
                 transactions.map(async (transaction: Transaction) => {
-                    const newTransaction = await this.prisma.transaction.upsert({
+                    await this.prisma.transaction.upsert({
                         where: { id: transaction.id },
                         update: {},
                         create: {
@@ -44,7 +43,6 @@ export class ScheduleTaskService {
                             when: new Date(transaction.when)
                         },
                     })
-                    console.log({ newTransaction })
                 })
             )
             console.log("SUCCESS FETCHING DATA FROM API CASSO")
@@ -80,8 +78,8 @@ export class ScheduleTaskService {
                 }
             })
 
-            await Promise.all(need_checking_bill_list.map((bill) => {
-                need_checking_transaction_list.forEach(async (transaction) => {
+            await Promise.all(need_checking_bill_list.map(async (bill) => {
+                for (const transaction of need_checking_transaction_list) {
                     if (transaction.description.includes(String(bill.id))) {
                         await this.prisma.bill.update({
                             where: {
@@ -91,9 +89,9 @@ export class ScheduleTaskService {
                                 payment_status: true
                             }
                         })
-                        return
+                        break;
                     }
-                })
+                }
             }))
         } catch (error) {
             console.error('ERROR UPDATE PAYMENT STATUS ', error);

@@ -13,7 +13,7 @@ import {
   UseInterceptors,
   Inject,
 } from '@nestjs/common';
-import { CacheInterceptor } from '@nestjs/cache-manager';
+
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -27,9 +27,7 @@ export class ProductsController {
   @Public()
   @Get()
   @HttpCode(HttpStatus.OK)
-  @UseInterceptors(new SuccessInterceptor("Get Successfully")
-    , CacheInterceptor
-  )
+  @UseInterceptors(new SuccessInterceptor("Get Successfully"))
   findAll() {
     return this.productsService.findAll();
   }
@@ -37,7 +35,7 @@ export class ProductsController {
   @Public()
   @Get('/category/:path')
   @HttpCode(HttpStatus.OK)
-  @UseInterceptors(new SuccessInterceptor(), CacheInterceptor)
+  @UseInterceptors(new SuccessInterceptor())
   findByCategory(@Param('path') path: string) {
     return this.productsService.findByCategory(path)
   }
@@ -45,8 +43,7 @@ export class ProductsController {
   @Public()
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  @UseInterceptors(new SuccessInterceptor(), CacheInterceptor
-  )
+  @UseInterceptors(new SuccessInterceptor())
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.productsService.findOne(id);
   }

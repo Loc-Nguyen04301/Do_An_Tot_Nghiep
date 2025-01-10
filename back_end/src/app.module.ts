@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { CacheModule } from '@nestjs/cache-manager';
-import * as redisStore from 'cache-manager-redis-store';
+// import { CacheModule } from '@nestjs/cache-manager';
+// import * as redisStore from 'cache-manager-redis-store';
 // import * as redisStore from 'cache-manager-redis-yet';
 import { APP_GUARD, APP_FILTER } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
-import type { RedisClientOptions } from "redis";
+// import type { RedisClientOptions } from "redis";
 
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
@@ -21,7 +21,7 @@ import { AtGuard, RolesGuard } from './common/guards';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { UserModule } from './user/user.module';
 import { MomoPaymentController } from './momo_payment/momo_payment.controller';
-import { CacheController } from 'src/cache/cache.controller';
+// import { CacheController } from 'src/cache/cache.controller';
 
 import { ScheduleTaskService } from './schedule-task/schedule-task.service';
 
@@ -33,12 +33,12 @@ import { ScheduleTaskService } from './schedule-task/schedule-task.service';
       envFilePath: ['.env.development.local', '.env.development'],
     }),
     ScheduleModule.forRoot(),
-    CacheModule.register<RedisClientOptions>({
-      isGlobal: true,
-      store: redisStore,
-      url: process.env.REDIS_URL,
-      ttl: 60,
-    }),
+    // CacheModule.register<RedisClientOptions>({
+    //   isGlobal: true,
+    //   store: redisStore,
+    //   url: process.env.REDIS_URL,
+    //   ttl: 60,
+    // }),
     PrismaModule,
     AuthModule,
     ProductsModule,
@@ -67,7 +67,7 @@ import { ScheduleTaskService } from './schedule-task/schedule-task.service';
   ],
   controllers: [
     MomoPaymentController,
-    CacheController
+    // CacheController
   ],
 })
 export class AppModule { }

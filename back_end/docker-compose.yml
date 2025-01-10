@@ -1,16 +1,16 @@
-# docker-compose.yml
+# # docker-compose.yml
 
-version: '3.8'
-services:
-  # Docker connection string: postgres://postgres:postgres@localhost:5432/
-  redis:
-    container_name: redis_cache
-    image: redis
-    volumes:
-      - redis:/data
-    ports:
-      - 6379:6379
+# version: '3.8'
+# services:
+#   # Docker connection string: postgres://postgres:postgres@localhost:5432/
+#   redis:
+#     container_name: redis_cache
+#     image: redis
+#     volumes:
+#       - redis:/data
+#     ports:
+#       - 6379:6379
 
-volumes:
-  redis:
-    driver: local
+# volumes:
+#   redis:
+#     driver: local

@@ -12,7 +12,9 @@ import { CreateBillShippingDto } from 'src/bills/dto/create-shipping.dto';
 const saltOrRounds = 10;
 @Injectable()
 export class BillsService {
-  constructor(private prisma: PrismaService, private appGateway: AppGateway, private mailService: MailService) { }
+  constructor(private prisma: PrismaService,
+    private appGateway: AppGateway,
+    private mailService: MailService) { }
 
   hashData(data: string) {
     return bcrypt.hash(data, saltOrRounds);
